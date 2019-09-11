@@ -17,6 +17,11 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@interfaces/*": ["../common/interfaces/*"],
+      "@models/*": ["../common/models/*"],
+      "@enums/*": ["../common/enums/*"],
+    }
   }
 }

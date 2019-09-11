@@ -1,0 +1,11 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@interfaces/*": ["../common/interfaces/*"],
+      "@models/*": ["../common/models/*"],
+      "@enums/*": ["../common/enums/*"],
+    }
+  }
+}

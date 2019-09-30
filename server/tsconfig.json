@@ -4,8 +4,10 @@
     "baseUrl": "./",
     "paths": {
       "@interfaces/*": ["../common/interfaces/*"],
-      "@models/*": ["../common/models/*"],
+      "@models/*": ["library/models/*"],
+      "@controllers/*": ["library/controllers/*"],
       "@enums/*": ["../common/enums/*"],
+      "@routes/*": ["library/routes/*"],
     }
   }
 }

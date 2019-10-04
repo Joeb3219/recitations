@@ -1,0 +1,88 @@
+<h3 
+	*ngIf="(form && form.pages && form.pages[pageNumber])">
+	{{ form.pages[pageNumber].label }}
+</h3>
+
+<form
+	*ngIf="form"
+	(submit)="submit($event)">
+
+	<!-- Iterate over all of the pages -->
+	<ng-container
+		*ngFor="let page of form.pages; let i = index"
+	>
+		<div 
+			class="form-page"
+			[class.disabled]="i != pageNumber"
+		>
+
+			<!-- now we iterate over each of our groupings of inputs on this page -->
+			<ng-container
+				*ngFor="let group of form.inputGroups"
+			>
+
+				<div
+					*ngIf="group.page == i"
+				>
+					
+					<!-- now we go through all inputs of the group and actually render them -->
+					<ng-container
+						*ngFor="let input of form.inputs"
+					>
+
+						<div
+							class="form-group"
+							*ngIf="input.group == group.name || (group.name == '' && !input.group)"
+						>
+
+							<label>
+								{{ input.label }}:
+								<input
+									*ngIf="input.type == 'text'"
+									type="text"
+									class="form-control"
+									name="{{ input.name }}"
+									(change)="fieldUpdated(input.name, $event)"
+								>
+
+
+								<input
+									*ngIf="input.type == 'password'"
+									type="password"
+									class="form-control"
+									name="{{ input.name }}"
+									(change)="fieldUpdated(input.name, $event)"
+								>
+							</label>
+
+						</div>
+
+					</ng-container>
+
+				</div>
+
+			</ng-container>
+
+
+			<!-- This will navigate use through the form pages -->
+			<button 
+				type="button"
+				class="btn btn-primary"
+				(click)="prevPage()"
+				*ngIf="pageNumber != 0"
+			>{{ page.previousButton || "Back" }}</button>
+
+
+
+			<button 
+				type="button"
+				class="btn btn-primary"
+				(click)="nextPage()"
+			>{{ page.continueButton || "Submit" }}</button>
+
+		</div>
+	
+	</ng-container>
+
+
+</form>

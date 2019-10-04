@@ -7,9 +7,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SidebarComponent implements OnInit {
 
-  constructor() { }
+	sidebarURLs: {
+		url: string,
+		name: string
+	}[] = []
 
-  ngOnInit() {
-  }
+	constructor() { }
+
+	ngOnInit() {
+		this.generateLoggedOutSidebar();
+	}
+
+	generateLoggedOutSidebar(){
+		this.sidebarURLs.push({
+			url: 'foo',
+			name: 'Foo',
+		})
+		this.sidebarURLs.push({
+			url: 'bar',
+			name: 'Bar',
+		})
+	}
 
 }

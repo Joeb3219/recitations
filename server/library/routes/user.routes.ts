@@ -7,4 +7,9 @@ export function registerUserRoutes(app){
 		.get(
 			controller.getCurrentUser
 		)
+
+	app.route('/user/signin')
+		.post(
+			controller.signin
+		)
 }

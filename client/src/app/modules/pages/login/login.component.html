@@ -1,0 +1,8 @@
+<div class = "page">
+	<h4>Login</h4>
+
+	<app-manual-login-form
+		*ngIf="authMechanism == 'manual'"
+		(onSuccessfulLogin)="successfulLogin($event)">
+	</app-manual-login-form>
+</div>

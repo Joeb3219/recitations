@@ -19,8 +19,12 @@
       "dom"
     ],
     "paths": {
+      "@environment": ["./src/environments/environment"],
+      "@services/*": ["./src/app/services/*"],
+      "@models/*": ["./src/app/models/*"],
+      "@components/*": ["./src/app/modules/components/*"],
+      "@pages/*": ["./src/app/modules/pages/*"],
       "@interfaces/*": ["../common/interfaces/*"],
-      "@models/*": ["../common/models/*"],
       "@enums/*": ["../common/enums/*"],
     }
   }

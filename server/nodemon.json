@@ -3,5 +3,5 @@
     "library/app.ts"
   ],
   "ext": "ts",
-  "exec": "ts-node ./library/app.ts"
+  "exec": "ts-node -r tsconfig-paths/register ./library/app.ts"
 }

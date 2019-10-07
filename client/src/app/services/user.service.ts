@@ -39,10 +39,6 @@ export class UserService {
 		return this.http.get(url, { headers: this.getHeaders() })
 	}
 
-	public getUser(username: string){
-
-	}
-
 	public signin(username: string, password: string){
 		const url = `${environment.apiURL}/user/signin`
 		const httpOptions = {

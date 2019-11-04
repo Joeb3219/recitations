@@ -1,6 +1,8 @@
 {
   "watch": [
-    "library/app.ts"
+    "library/app.ts",
+    "library/*",
+    "../common/*"
   ],
   "ext": "ts",
   "exec": "ts-node -r tsconfig-paths/register ./library/app.ts"

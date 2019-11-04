@@ -36,6 +36,7 @@ export class LoginComponent implements OnInit {
 
 	successfulLogin(jwt){
 		localStorage.setItem("jwt", jwt)
+		this._userService.flushCurrentUser()
 		this._router.navigate(['/'])
 	}
 

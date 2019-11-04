@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
+import { BehaviorSubject, Observable } from 'rxjs'
+
 import { environment } from '@environment'
 
 import { User } from '@models/user'
@@ -8,30 +10,36 @@ import { User } from '@models/user'
 @Injectable()
 export class UserService {
 
-	private currentUser: User = null;
+	private currentUserObservable: BehaviorSubject<User> = new BehaviorSubject<User>(null);
 
 	constructor(
 		private http: HttpClient
-	){}
+	){
+		this.flushCurrentUser()
+	}
 
 	public getHeaders(){
 		return new HttpHeaders({
-				'Content-Type':  'application/json',
-				'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+			'Content-Type':  'application/json',
+			'Authorization': 'Bearer ' + localStorage.getItem('jwt')
+		})
+	}
+
+	public flushCurrentUser() {
+		if(!localStorage.getItem('jwt')) this.currentUserObservable.next(null)
+		else{
+			this.getMyUserObject().subscribe((result: { data: User } ) => {
+				if(result) this.currentUserObservable.next(result.data)
 			})
+		}
 	}
 
 	public signOut(){
-		this.currentUser = null;
+		this.flushCurrentUser()
 	}
 
-	public async getCurrentUser(){
-		if(this.currentUser == null && localStorage.getItem('jwt')){
-			const userRequest = (await this.getMyUserObject().toPromise()) as any;
-			if(userRequest) this.currentUser = userRequest.data
-		}
-
-		return this.currentUser;
+	public getCurrentUser(): Observable<User> {
+		return this.currentUserObservable.asObservable()
 	}
 
 	public getMyUserObject(){

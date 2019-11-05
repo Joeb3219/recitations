@@ -1,0 +1,14 @@
+<div class = "page">
+	<ng-container
+		*ngIf="!isLoading && !course">
+		<h4>Not Found</h4>
+	</ng-container>
+	<ng-container
+		*ngIf="course">
+
+		{{ course.name }}<br>
+		{{ course.department }}<br>
+		{{ course.courseCode }}<br>
+
+	</ng-container>
+</div>

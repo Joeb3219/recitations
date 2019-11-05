@@ -1,4 +1,6 @@
 import { Request, Response } from 'express'
+import { OK, NOT_FOUND, BAD_REQUEST } from 'http-status-codes'
+
 import { Course } from '@models/course.model'
 
 export class CourseController{
@@ -23,10 +25,10 @@ export class CourseController{
 
 			course = await course.save()
 
-			return res.status(200).json({ data: res.locals.currentUser, message: `Successfully created course.` })
+			return res.status(OK).json({ data: res.locals.currentUser, message: `Successfully created course.` })
 		}catch(err){
 			console.error(err);
-			return res.status(400).json({ error: err, message: `Failed to create course.` })
+			return res.status(BAD_REQUEST).json({ error: err, message: `Failed to create course.` })
 		}
 	}
 
@@ -35,10 +37,26 @@ export class CourseController{
 			// First, we collect all of the submitted data
 			let courses = await Course.find({ createdBy: res.locals.currentUser._id })
 
-			return res.status(200).json({ data: courses, message: `Successfully fetched courses.` })
+			return res.status(OK).json({ data: courses, message: `Successfully fetched courses.` })
 		}catch(err){
 			console.error(err);
-			return res.status(400).json({ error: err, message: `Failed to fetch courses.` })
+			return res.status(BAD_REQUEST).json({ error: err, message: `Failed to fetch courses.` })
+		}
+	}
+
+	getCourse = async (req: Request, res: Response) => {
+		try{
+			const courseID = req.params.courseID
+
+			if(!courseID) return res.status(NOT_FOUND).json({ message: 'No courseID specified.' }).end()
+
+			const course = await Course.findOne({ _id: courseID })
+
+			if(course) return res.status(OK).json({ data: course, message: `Successfully fetched course.` })
+			else res.status(NOT_FOUND).json({ message: 'Failed to find specified course.' })
+		}catch(err){
+			console.error(err);
+			return res.status(BAD_REQUEST).json({ error: err, message: `Failed to fetch courses.` })
 		}
 	}
 

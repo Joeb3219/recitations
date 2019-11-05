@@ -15,4 +15,11 @@ export function registerCourseRoutes(app){
 			controller.getCourses
 		)
 
+
+	app.route('/course/:courseID')
+		.get(
+			isAuthenticated,
+			controller.getCourse
+		)
+
 }

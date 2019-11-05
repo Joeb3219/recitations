@@ -13,6 +13,7 @@ import { FormComponent } from './modules/components/forms/form/form.component';
 
 import { UserService } from './services/user.service';
 import { CourseService } from './services/course.service';
+import { ViewCourseComponent } from './modules/pages/courses/view-course/view-course.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { CourseService } from './services/course.service';
     FooterComponent,
     LoginComponent,
     ManualLoginFormComponent,
-    FormComponent
+    FormComponent,
+    ViewCourseComponent
   ],
   imports: [
     HttpClientModule,

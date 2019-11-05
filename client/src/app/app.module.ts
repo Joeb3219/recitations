@@ -12,6 +12,7 @@ import { ManualLoginFormComponent } from './modules/components/forms/manual-logi
 import { FormComponent } from './modules/components/forms/form/form.component';
 
 import { UserService } from './services/user.service';
+import { CourseService } from './services/course.service';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { UserService } from './services/user.service';
     AppRoutingModule
   ],
   providers: [
-    UserService
+    UserService,
+    CourseService,
   ],
   bootstrap: [AppComponent]
 })

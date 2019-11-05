@@ -10,6 +10,7 @@ export interface CourseInterface {
 	sections: SectionInterface[];	// All of the sections in the course
 
 	createdBy: UserInterface;		// The user who created the course
+
 	// mongo specific
 	_id: string;			// the document id
 	createdAt: Date;		// when the document was created

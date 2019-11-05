@@ -12,12 +12,12 @@ export interface SectionInterface {
 	ta?: UserInterface; 	// the TA for the section
 	professor?: UserInterface;		// the professor for the section
 
-	meetingTimes: [{
+	meetingTimes: {
 		startTime: Date;
 		endTime: Date;
 		weekday: string;
 		type: MeetingType;
-	}]
+	}[]
 
 	createdBy: UserInterface;		// The user who created the section
 

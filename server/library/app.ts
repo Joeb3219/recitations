@@ -5,6 +5,7 @@ import * as mongoose from 'mongoose'
 import * as jwt from 'jsonwebtoken'
 
 import { registerUserRoutes } from '@routes/user.routes'
+import { registerCourseRoutes } from '@routes/course.routes'
 
 import { User } from '@models/user.model'
 
@@ -59,5 +60,6 @@ app.use(function (req, res, next) {
 app.get("/", (req, res) => res.send("Hello World"))
 
 registerUserRoutes(app)
+registerCourseRoutes(app)
 
 app.listen(port, () => console.log(`Dynamic Recitation backend listening on port ${port}!`))

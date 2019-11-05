@@ -8,6 +8,7 @@
       "@controllers/*": ["library/controllers/*"],
       "@enums/*": ["../common/enums/*"],
       "@routes/*": ["library/routes/*"],
+      "@helpers/*": ["library/helpers/*"],
     }
   }
 }

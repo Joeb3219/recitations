@@ -12,12 +12,8 @@ import { Course } from '@models/course'
 })
 export class SidebarComponent implements OnInit {
 
-	sidebarURLs: {
-		url: string,
-		name: string
-	}[] = []
-
 	userCourses: Course[] = []
+	selectedCourse: Course = null
 
 	constructor(
 		private _userService: UserService,
@@ -27,35 +23,14 @@ export class SidebarComponent implements OnInit {
 	ngOnInit() {
 		this._userService.getCurrentUser().subscribe({
 			next: async (user) => {
-				this.sidebarURLs = []
-				if(user) await this.generateLoggedInSidebar()
-				else this.generateLoggedOutSidebar()
+				this.userCourses = await this._courseService.getCourses()
 			}
 		})
-		this.generateLoggedOutSidebar();
 	}
 
-	async generateLoggedInSidebar(){
-		this.userCourses = await this._courseService.getCourses()
-	
-		this.userCourses.forEach((course) => {
-			this.sidebarURLs.push({
-				url: `courses/${course._id}`,
-				name: course.name
-			})
-		})
-
-	}
-
-	generateLoggedOutSidebar(){
-		this.sidebarURLs.push({
-			url: 'foo',
-			name: 'Foo',
-		})
-		this.sidebarURLs.push({
-			url: 'bar',
-			name: 'Bar',
-		})
+	toggleActivteCourse(course){
+		if(this.selectedCourse && this.selectedCourse._id == course._id) this.selectedCourse = null
+		else this.selectedCourse = course
 	}
 
 }

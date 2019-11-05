@@ -11,6 +11,23 @@
 	.nav-link {
 		font-weight: 500;
 		color: #333;
+		border-bottom: 1px solid grey;
+		background-color: #dbdbdb;
+		padding: 4px;
+		cursor: pointer;
+	}
+
+	.submenu {
+
+		padding: 0px;
+	    list-style-type: none;
+		margin-right: 1px;
+
+		.nav-link {
+			margin-left: 5px;
+			background-color: #f8f9fa;
+		}
+
 	}
 
 }

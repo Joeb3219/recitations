@@ -1,0 +1,28 @@
+<ng-template #header>
+	<ng-content select="[title]">		
+	</ng-content>
+</ng-template>
+<ng-template #body>
+	<ng-content select="[body]">		
+	</ng-content>
+</ng-template>
+<ng-template #footer>
+	<ng-content select="[footer]">		
+	</ng-content>
+</ng-template>
+
+<ng-template class="modal" #modal>
+	<div class="modal-header">
+		<h4 class="modal-title" *ngTemplateOutlet="header"></h4>
+		<button type="button" class="close" aria-label="Close" (click)="closeModal()">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div>
+	<div class="modal-body">
+		<ng-container *ngTemplateOutlet="body">
+		</ng-container>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline-dark" (click)="closeModal()">Close</button>
+	</div>
+</ng-template>

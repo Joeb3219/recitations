@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HttpClientModule } from '@angular/common/http'; 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -10,10 +11,15 @@ import { FooterComponent } from './modules/components/footer/footer.component';
 import { LoginComponent } from './modules/pages/login/login.component';
 import { ManualLoginFormComponent } from './modules/components/forms/manual-login-form/manual-login-form.component';
 import { FormComponent } from './modules/components/forms/form/form.component';
+import { ViewCourseComponent } from './modules/pages/courses/view-course/view-course.component';
+import { ViewSectionsComponent } from './modules/pages/sections/view-sections/view-sections.component';
 
 import { UserService } from './services/user.service';
 import { CourseService } from './services/course.service';
-import { ViewCourseComponent } from './modules/pages/courses/view-course/view-course.component';
+import { SectionService } from './services/section.service';
+import { ModalComponent } from './modules/components/modal/modal.component';
+import { SectionEditComponent } from './modules/components/sections/section-edit/section-edit.component';
+import { UserSearchFormfieldComponent } from './modules/components/users/user-search-formfield/user-search-formfield.component';
 
 @NgModule({
   declarations: [
@@ -24,16 +30,22 @@ import { ViewCourseComponent } from './modules/pages/courses/view-course/view-co
     LoginComponent,
     ManualLoginFormComponent,
     FormComponent,
-    ViewCourseComponent
+    ViewCourseComponent,
+    ViewSectionsComponent,
+    ModalComponent,
+    SectionEditComponent,
+    UserSearchFormfieldComponent
   ],
   imports: [
     HttpClientModule,
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgbModule,
   ],
   providers: [
     UserService,
     CourseService,
+    SectionService,
   ],
   bootstrap: [AppComponent]
 })

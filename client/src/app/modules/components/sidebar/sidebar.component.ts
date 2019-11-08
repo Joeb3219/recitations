@@ -38,7 +38,6 @@ export class SidebarComponent implements OnInit {
 		// comparing those slugs with what we current have stored.
 		this.router.events.subscribe({
 			next: async (event) => {
-				console.log(event)
 				// ensure this event describes a URL change
 				if(event && event["url"]){
 					this.setActiveCourseFromRouter()

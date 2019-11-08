@@ -6,6 +6,7 @@ import * as jwt from 'jsonwebtoken'
 
 import { registerUserRoutes } from '@routes/user.routes'
 import { registerCourseRoutes } from '@routes/course.routes'
+import { registerSectionRoutes } from '@routes/section.routes'
 
 import { User } from '@models/user.model'
 
@@ -61,5 +62,6 @@ app.get("/", (req, res) => res.send("Hello World"))
 
 registerUserRoutes(app)
 registerCourseRoutes(app)
+registerSectionRoutes(app)
 
 app.listen(port, () => console.log(`Dynamic Recitation backend listening on port ${port}!`))

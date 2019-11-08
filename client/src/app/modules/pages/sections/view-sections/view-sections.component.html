@@ -1,0 +1,54 @@
+<app-modal 
+	*ngIf="isNewSectionModalOpen"
+	(onClose)="handleCloseNewSectionModal()"
+>
+	<span title>Testing</span>
+	<div body>
+		<app-section-edit
+			[section]="null"
+		>
+		</app-section-edit>
+	</div>
+</app-modal>
+
+<div class = "page">
+	<ng-container
+		*ngIf="!isLoading && !course">
+		<h4>Not Found</h4>
+	</ng-container>
+	<ng-container
+		*ngIf="course">
+		<h4>{{ course.name }} Sections</h4>
+
+		<button 
+			type="button" 
+			class="btn btn-primary"
+			(click)="handleOpenNewSectionModal()"
+		>Add Section</button>
+
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Section Number</th>
+					<th>Index Code</th>
+					<th>TA</th>
+					<th>Professor</th>
+					<th>Meeting Times</th>
+					<th>Modify</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr
+					*ngFor="let section of sections">
+					<td>Section Number</td>
+					<td>Index Code</td>
+					<td>TA</td>
+					<td>Professor</td>
+					<td>Meeting Times</td>
+					<td>Modify</td>
+				</tr>
+			</tbody>
+		</table>
+
+	</ng-container>
+</div>

@@ -19,9 +19,11 @@
     "mongoose": "^5.7.1",
     "mongoose-timestamps": "0.0.1",
     "nodemon": "^1.19.2",
+    "pg": "^7.12.1",
     "ts-node": "^7.0.0",
     "tsconfig": "^7.0.0",
     "tsconfig-paths": "^3.9.0",
+    "typeorm": "^0.2.20",
     "typescript": "^3.6.2"
   }
 }

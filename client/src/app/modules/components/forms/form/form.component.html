@@ -40,6 +40,7 @@
 								<input
 									*ngIf="input.type == 'text'"
 									type="text"
+									value="{{ input.value }}"
 									class="form-control"
 									name="{{ input.name }}"
 									(change)="fieldUpdated(input.name, $event)"
@@ -49,6 +50,7 @@
 								<input
 									*ngIf="input.type == 'password'"
 									type="password"
+									value="{{ input.value }}"
 									class="form-control"
 									name="{{ input.name }}"
 									(change)="fieldUpdated(input.name, $event)"

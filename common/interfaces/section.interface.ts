@@ -1,6 +1,6 @@
-import { CourseInterface } from './course.interface'
-import { UserInterface } from './user.interface'
-import { MeetingType } from '../enums/meetingType.enum'
+import { CourseInterface } from '@interfaces/course.interface'
+import { UserInterface } from '@interfaces/user.interface'
+import { MeetingTimeInterface } from '@interfaces/meetingTime.interface'
 
 export interface SectionInterface {
 
@@ -12,12 +12,7 @@ export interface SectionInterface {
 	ta?: UserInterface; 	// the TA for the section
 	professor?: UserInterface;		// the professor for the section
 
-	meetingTimes: {
-		startTime: Date;
-		endTime: Date;
-		weekday: string;
-		type: MeetingType;
-	}[]
+	meetingTimes: MeetingTimeInterface[]
 
 	createdBy: UserInterface;		// The user who created the section
 

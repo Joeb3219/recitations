@@ -1,6 +1,6 @@
 import { SectionInterface } from '@interfaces/section.interface'
 import { User } from '@models/user'
-import { MeetingType } from '@enums/meetingType.enum'
+import { MeetingTime } from '@models/meetingTime'
 
 export class Section implements SectionInterface{
 	constructor(
@@ -9,12 +9,7 @@ export class Section implements SectionInterface{
 		public students: User[] = [], 
 		public ta: User = null,
 		public professor: User = null,
-		public meetingTimes: {
-			startTime: Date;
-			endTime: Date;
-			weekday: string;
-			type: MeetingType;
-		}[] = [],
+		public meetingTimes: MeetingTime[] = [],
 		public createdBy: User = null,
 		public _id: string = '',
 		public createdAt: Date = null,

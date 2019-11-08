@@ -24,7 +24,8 @@ export class Form{
 			group?: string,
 			name?: string,
 			label?: string,
-			type?: string
+			type?: string,
+			value?: any,
 		}[] = []
 	){}
 }

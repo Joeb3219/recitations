@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { OK, NOT_FOUND, BAD_REQUEST } from 'http-status-codes'
 
-import { Course } from '@models/course.model'
+import { Course } from '@models/course'
 
 export class CourseController{
 
@@ -12,18 +12,15 @@ export class CourseController{
 				name,
 				department,
 				courseCode,
-				sections
 			} = req.body
 
 			let course = new Course({
 				name,
 				department,
 				courseCode,
-				sections,
-				createdBy: res.locals.currentUser
 			})
 
-			course = await course.save()
+			course = await res.locals.repo(Course).save(course)
 
 			return res.status(OK).json({ data: res.locals.currentUser, message: `Successfully created course.` })
 		}catch(err){
@@ -35,7 +32,7 @@ export class CourseController{
 	getCourses = async (req: Request, res: Response) => {
 		try{
 			// First, we collect all of the submitted data
-			let courses = await Course.find({ createdBy: res.locals.currentUser._id })
+			let courses = await res.locals.repo(Course).find({ })
 
 			return res.status(OK).json({ data: courses, message: `Successfully fetched courses.` })
 		}catch(err){
@@ -50,7 +47,7 @@ export class CourseController{
 
 			if(!courseID) return res.status(NOT_FOUND).json({ message: 'No courseID specified.' }).end()
 
-			const course = await Course.findOne({ _id: courseID })
+			const course = await res.locals.repo(Course).findOne({ id: courseID })
 
 			if(course) return res.status(OK).json({ data: course, message: `Successfully fetched course.` })
 			else res.status(NOT_FOUND).json({ message: 'Failed to find specified course.' })

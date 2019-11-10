@@ -12,4 +12,5 @@ export function registerUserRoutes(app){
 		.post(
 			controller.signin
 		)
+
 }

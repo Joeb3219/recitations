@@ -26,7 +26,7 @@ export class SectionService {
 		// if course is an object, we will grab its id
 		// otherwise, we assume course is a string representing the id
 		console.log(course)
-		const courseID = (course instanceof String) ? course : course._id
+		const courseID = (course instanceof String) ? course : course.id
 
 		const url = `${environment.apiURL}/course/${courseID}/sections`
 

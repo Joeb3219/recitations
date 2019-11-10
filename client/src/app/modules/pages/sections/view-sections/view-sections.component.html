@@ -40,11 +40,11 @@
 			<tbody>
 				<tr
 					*ngFor="let section of sections">
-					<td>Section Number</td>
-					<td>Index Code</td>
-					<td>TA</td>
-					<td>Professor</td>
-					<td>Meeting Times</td>
+					<td>{{ section.sectionNumber }}</td>
+					<td>{{ section.index }}</td>
+					<td>{{ section.ta }}</td>
+					<td>{{ section.professor }}</td>
+					<td>{{ section.meetingTimes.length }}</td>
 					<td>Modify</td>
 				</tr>
 			</tbody>

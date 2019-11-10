@@ -53,7 +53,7 @@ export class SidebarComponent implements OnInit {
 		this.userCourses.forEach((course) => {
 			// this slug is the prefix to the URL that would indicate that this course is 
 			// currently active/being worked in. 
-			const slug = `/courses/${course._id}`
+			const slug = `/courses/${course.id}`
 			if(url.indexOf(slug) == 0){
 				this.selectedCourse = course
 			}
@@ -63,7 +63,7 @@ export class SidebarComponent implements OnInit {
 	// toggles what the currently selected course is
 	// this function is triggered by the UI element. 
 	handleToggleActiveCourse(course: Course){
-		if(this.selectedCourse && this.selectedCourse._id == course._id) this.selectedCourse = null
+		if(this.selectedCourse && this.selectedCourse.id == course.id) this.selectedCourse = null
 		else this.selectedCourse = course
 	}
 

@@ -15,18 +15,21 @@
     "typeRoots": [
       "node_modules/@types"
     ],
+    "types": ["node"],
     "lib": [
       "es2018",
       "dom"
     ],
     "paths": {
+      "typeorm": ["./shim/typeorm.shim.ts"],
       "@environment": ["./src/environments/environment"],
       "@services/*": ["./src/app/services/*"],
-      "@models/*": ["./src/app/models/*"],
+      "@models/*": ["../common/models/*"],
       "@components/*": ["./src/app/modules/components/*"],
       "@pages/*": ["./src/app/modules/pages/*"],
       "@interfaces/*": ["../common/interfaces/*"],
       "@enums/*": ["../common/enums/*"],
     }
-  }
+  },
+  "types": ["node"]
 }

@@ -32,6 +32,7 @@ export class ViewSectionsComponent implements OnInit {
 			if(params['courseID']) {
 				this.course = await this._courseService.getCourse(params['courseID'])
 				this.sections = await this._sectionService.getCourseSections(this.course)
+				console.log(this.sections)
 				this.isLoading = false
 			}
 		});

@@ -16,16 +16,16 @@
 
 			<ul
 				class="submenu"
-				*ngIf="selectedCourse && selectedCourse._id == course._id">
+				*ngIf="selectedCourse && selectedCourse.id == course.id">
 
 				<li class = "nav-link">
-					<a routerLink="/courses/{{ course._id }}">
+					<a routerLink="/courses/{{ course.id }}">
 						Home
 					</a>
 				</li>
 
 				<li class = "nav-link">
-					<a routerLink="/courses/{{ course._id }}/sections">
+					<a routerLink="/courses/{{ course.id }}/sections">
 						Sections
 					</a>
 				</li>

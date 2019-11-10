@@ -41,12 +41,14 @@ export class SectionEditComponent implements OnInit {
 			name: 'index',
 			value: (this.section) ? this.section.professor : null,
 			label: 'Professor',
-		}, {
-			type: 'text',
-			name: 'meetingTimes',
-			value: (this.section) ? this.section.meetingTimes : null,
-			label: 'Meeting Times',
-		}]
+		}
+		// , {
+		// 	type: 'text',
+		// 	name: 'meetingTimes',
+		// 	value: (this.section) ? this.section.meetingTimes : null,
+		// 	label: 'Meeting Times',
+		// }
+		]
 	}
 
 	formSubmitted(data){

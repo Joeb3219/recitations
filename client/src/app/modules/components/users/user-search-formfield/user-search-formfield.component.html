@@ -1,1 +1,10 @@
-<p>user-search-formfield works!</p>
+<input 
+	type="text" 
+	name="{{ name }}"
+	value="{{ formatter(user) }}"
+	class="form-control" 
+	[ngbTypeahead]="search" 
+	[resultFormatter]="formatter" 
+	[inputFormatter]="formatter" 
+	(selectItem)="handleUserSelected($event)"
+>

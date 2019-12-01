@@ -1,8 +1,8 @@
 import { CourseInterface } from '@interfaces/course.interface'
 import { UserInterface } from '@interfaces/user.interface'
-import { MeetingTimeInterface } from '@interfaces/meetingTime.interface'
+import { MeetableInterface } from '@interfaces/meetable.interface'
 
-export interface SectionInterface {
+export interface SectionInterface extends MeetableInterface {
 
 	id: string;			// the document id
 
@@ -16,7 +16,5 @@ export interface SectionInterface {
 	ta?: UserInterface; 	// the TA for the section
 	professor?: UserInterface;		// the professor for the section
 	students?: UserInterface[];		// the students for the section
-
-	meetingTimes?: MeetingTimeInterface[];
 
 }

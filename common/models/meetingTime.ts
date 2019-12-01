@@ -1,4 +1,4 @@
-import { Entity, Column, BaseEntity, PrimaryGeneratedColumn } from 'typeorm'
+import { Entity, Column, BaseEntity, OneToOne, JoinColumn, PrimaryGeneratedColumn } from 'typeorm'
 
 import { MeetingTimeInterface } from '@interfaces/meetingTime.interface'
 import { User } from '@models/user'
@@ -10,16 +10,28 @@ export class MeetingTime extends BaseEntity implements MeetingTimeInterface {
 	@PrimaryGeneratedColumn("uuid")
 	public id: string
 
-	@Column()
-	public startTime: Date
+	@Column({
+		type: "time"
+	})
+	public startTime: string
 
-	@Column()
-	public endTime: Date
+	@Column({
+		type: "time"
+	})
+	public endTime: string
 
 	@Column()
 	public weekday: string
 
-	@Column()
+	@OneToOne(type => User, { eager: true })
+    @JoinColumn()
+	public leader?: User
+
+	@Column({
+		type: "enum",
+		enum: MeetingType,
+		default: MeetingType.RECITATION
+	})
 	public type: MeetingType
 
 	@Column()
@@ -27,8 +39,8 @@ export class MeetingTime extends BaseEntity implements MeetingTimeInterface {
 
 	constructor(args: {
 			id?: string,
-			startTime?: Date,
-			endTime?: Date,
+			startTime?: string,
+			endTime?: string,
 			weekday?: string,
 			type?: MeetingType,
 			frequency?: number

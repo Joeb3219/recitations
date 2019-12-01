@@ -4,9 +4,10 @@ import { SectionInterface } from '@interfaces/section.interface'
 import { User } from '@models/user'
 import { Course } from '@models/course'
 import { MeetingTime } from '@models/meetingTime'
+import { Meetable } from '@models/meetable'
 
 @Entity()
-export class Section extends BaseEntity implements SectionInterface {
+export class Section extends Meetable implements SectionInterface {
 
 	@PrimaryGeneratedColumn("uuid")
 	public id: string
@@ -32,10 +33,6 @@ export class Section extends BaseEntity implements SectionInterface {
 	@ManyToMany(type => User)
     @JoinTable()
 	public students?: User[]
-
-	@ManyToMany(type => MeetingTime, { eager: true })
-    @JoinTable()
-	public meetingTimes?: MeetingTime[]
 	
 	constructor(args: {
 		id?: string,

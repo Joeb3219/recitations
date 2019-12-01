@@ -20,7 +20,7 @@ export class User extends BaseEntity implements UserInterface {
 	@Column()
 	public email: string
 
-	@Column()
+	@Column({ select: false })
 	public passwordHash: string
 
 	constructor(args: {

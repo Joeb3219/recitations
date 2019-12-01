@@ -1,0 +1,19 @@
+<app-modal
+	*ngIf="showModal"
+	(onClose)="handleOnClose()"
+>
+	<span title>{{ title }}</span>
+	<div body>
+		<app-form
+			[form]="form"
+			(onSubmit)="handleOnSubmit($event)"
+			(onFieldChange)="handleOnFieldChange($event)"
+		>
+		</app-form>
+	</div>
+	<div footer>
+		<button>
+			{{ submitText }}
+		</button>
+	</div>
+</app-modal>

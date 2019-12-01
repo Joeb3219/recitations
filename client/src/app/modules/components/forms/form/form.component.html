@@ -35,7 +35,8 @@
 							*ngIf="input.group == group.name || (group.name == '' && !input.group)"
 						>
 
-							<label>
+							<label
+								style="width: 100%">
 								{{ input.label }}:
 								<input
 									*ngIf="input.type == 'text'"
@@ -46,6 +47,18 @@
 									(change)="fieldUpdated(input.name, $event)"
 								>
 
+								<app-user-search-formfield
+									*ngIf="input.type == 'user'"
+									[user]="input.value"
+									[name]="input.name"
+									(change)="fieldUpdated(input.name, $event)"
+								></app-user-search-formfield>
+
+								<app-meeting-times-formfield
+									*ngIf="input.type == 'meetingTimes'"
+									[meetable]="input.meetable"
+									(change)="fieldUpdated(input.name, $event)"
+								></app-meeting-times-formfield>
 
 								<input
 									*ngIf="input.type == 'password'"

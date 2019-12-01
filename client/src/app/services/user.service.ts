@@ -46,6 +46,18 @@ export class UserService {
 		const url = `${environment.apiURL}/user/me`
 		return this.http.get(url, { headers: this.getHeaders() })
 	}
+	
+	public async getUsers() : Promise<User[]>{
+		const url = `${environment.apiURL}/user`
+		return new Promise((resolve, reject) => {
+			this.http.get(url, { headers: this.getHeaders() }).subscribe((result: { data: User[] }) => {
+				if(result) resolve(result.data)
+				else reject(new Error("No result returned"))
+			}, (err) => {
+				reject(err)
+			})
+		})
+	}
 
 	public signin(username: string, password: string){
 		const url = `${environment.apiURL}/user/signin`

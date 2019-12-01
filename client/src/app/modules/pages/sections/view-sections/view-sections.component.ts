@@ -19,7 +19,9 @@ export class ViewSectionsComponent implements OnInit {
   	sections: Section[]
   	isLoading: boolean = true
 
-  	isNewSectionModalOpen: boolean = false
+  	selectedEditSection: Section = null
+
+  	isEditSectionModalOpen: boolean = false
 
 	constructor(
 		private _courseService: CourseService,
@@ -32,18 +34,25 @@ export class ViewSectionsComponent implements OnInit {
 			if(params['courseID']) {
 				this.course = await this._courseService.getCourse(params['courseID'])
 				this.sections = await this._sectionService.getCourseSections(this.course)
-				console.log(this.sections)
 				this.isLoading = false
 			}
 		});
 	}
 
-	handleCloseNewSectionModal() {
-		this.isNewSectionModalOpen = false
+	handleOpenNewSectionModal() {
+		this.isEditSectionModalOpen = true
+
+		this.selectedEditSection = new Section()
+		this.selectedEditSection.course = this.course;
+	}
+	
+	handleCloseEditSectionModal() {
+		this.isEditSectionModalOpen = false
 	}
 
-	handleOpenNewSectionModal() {
-		this.isNewSectionModalOpen = true
+	handleOpenEditSectionModal(section: Section) {
+		this.isEditSectionModalOpen = true
+		this.selectedEditSection = section
 	}
 
 }

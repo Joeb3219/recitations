@@ -1,4 +1,8 @@
-<app-form
+<app-form-modal
+	*ngIf="isVisible"
+	[showModal]="isVisible"
 	[form]="form"
-	(onSubmit)="formSubmitted($event)">
-</app-form>
+	[title]="(section && section.id) ? 'Edit Section' : 'New Section'"
+	(onSubmit)="formSubmitted($event)"
+	(onClose)="handleClose()">
+</app-form-modal>

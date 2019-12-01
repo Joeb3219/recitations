@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
 
 import { Section } from '@models/section'
 import { Form } from '@models/forms/form'
@@ -10,12 +10,18 @@ import { Form } from '@models/forms/form'
 })
 export class SectionEditComponent implements OnInit {
 
+	@Input() isVisible: boolean
 	@Input() section: Section
+	@Output() onClose: EventEmitter<{}> = new EventEmitter();
 	form: Form
 
-	constructor() { }
+	constructor() {}
 
 	ngOnInit() {
+		this.generateForm()
+	}
+
+	ngOnChanges(changes: SimpleChanges){
 		this.generateForm()
 	}
 
@@ -41,25 +47,20 @@ export class SectionEditComponent implements OnInit {
 			name: 'index',
 			value: (this.section) ? this.section.professor : null,
 			label: 'Professor',
-		}
-		// , {
-		// 	type: 'text',
-		// 	name: 'meetingTimes',
-		// 	value: (this.section) ? this.section.meetingTimes : null,
-		// 	label: 'Meeting Times',
-		// }
-		]
+		}, {
+			type: 'meetingTimes',
+			name: 'meetingTimes',
+			meetable: this.section,
+			label: 'Meeting Times',
+		}]
+	}
+
+	handleClose(){
+		this.onClose.emit(null)
 	}
 
 	formSubmitted(data){
-		// var { username, password } = data;
-		// this._userService.signin(username, password).subscribe((result: any) => {
-		// 	if(result && result.data){
-		// 		this.onSuccessfulLogin.emit(result.data)
-		// 	}
-		// }, (err) => {
-		// 	console.error(err)
-		// });
+
 	}
 
 }

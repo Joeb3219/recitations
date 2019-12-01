@@ -1,16 +1,3 @@
-<app-modal 
-	*ngIf="isNewSectionModalOpen"
-	(onClose)="handleCloseNewSectionModal()"
->
-	<span title>Testing</span>
-	<div body>
-		<app-section-edit
-			[section]="null"
-		>
-		</app-section-edit>
-	</div>
-</app-modal>
-
 <div class = "page">
 	<ng-container
 		*ngIf="!isLoading && !course">
@@ -42,13 +29,27 @@
 					*ngFor="let section of sections">
 					<td>{{ section.sectionNumber }}</td>
 					<td>{{ section.index }}</td>
-					<td>{{ section.ta }}</td>
-					<td>{{ section.professor }}</td>
+					<td>
+						<app-user-badge
+							[user]="section.ta">
+						</app-user-badge>
+					</td>
+					<td>
+						<app-user-badge
+							[user]="section.professor">
+						</app-user-badge>
+					</td>
 					<td>{{ section.meetingTimes.length }}</td>
-					<td>Modify</td>
+					<td (click)="handleOpenEditSectionModal(section)">Modify</td>
 				</tr>
 			</tbody>
 		</table>
 
 	</ng-container>
 </div>
+
+<app-section-edit
+	[isVisible]="isEditSectionModalOpen"
+	[section]="selectedEditSection"
+	(onClose)="handleCloseEditSectionModal()"
+>

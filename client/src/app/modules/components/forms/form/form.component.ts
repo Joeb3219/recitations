@@ -11,7 +11,7 @@ export class FormComponent implements OnInit {
 
 	@Input() form: Form
 	@Output() onSubmit: EventEmitter<{}> = new EventEmitter();
-	@Output() onFieldchange: EventEmitter<{ name: string, value: any }> = new EventEmitter();
+	@Output() onFieldChange: EventEmitter<{ name: string, value: any }> = new EventEmitter();
 	internalStore = {};
 
 	pageNumber: number = 0 // which page number of the form are we currently executing?
@@ -33,7 +33,7 @@ export class FormComponent implements OnInit {
 		const value = data.target.value
 		this.internalStore[name] = value
 
-		this.onFieldchange.emit({
+		this.onFieldChange.emit({
 			name,
 			value
 		})

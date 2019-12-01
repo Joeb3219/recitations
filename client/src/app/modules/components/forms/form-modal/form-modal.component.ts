@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Subject } from 'rxjs';
 
 import { Form } from '@models/forms/form'
 
@@ -17,6 +18,8 @@ export class FormModalComponent implements OnInit {
 	@Output() onClose: EventEmitter<{}> = new EventEmitter();
 	@Output() onFieldChange: EventEmitter<{ name: string, value: any }> = new EventEmitter();
 
+	forceFormSubmit: Subject<any> = new Subject<any>()
+
 
 	constructor(){}
 
@@ -32,6 +35,10 @@ export class FormModalComponent implements OnInit {
 
 	handleOnFieldChange(val) {
 		this.onFieldChange.emit(val)
+	}
+
+	handleModalSubmit(){
+		this.forceFormSubmit.next()
 	}
 
 

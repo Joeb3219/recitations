@@ -1,5 +1,6 @@
 <app-form-modal
 	*ngIf="isVisible"
+	[submitText]="(section && section.id) ? 'Save Section' : 'Create Section'"
 	[showModal]="isVisible"
 	[form]="form"
 	[title]="(section && section.id) ? 'Edit Section' : 'New Section'"

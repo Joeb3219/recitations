@@ -90,6 +90,8 @@
 
 
 			<button 
+				#submitButton
+				[hidden]="!showSubmit"
 				type="button"
 				class="btn btn-primary"
 				(click)="nextPage()"

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 
 import { Form } from '@models/forms/form'
 
@@ -14,6 +14,7 @@ export class FormModalComponent implements OnInit {
 	@Input() title: string
 	@Input() submitText: string
 	@Input() showModal: boolean
+	@Input() forceClose: Observable<{}> = new Observable();
 	@Output() onSubmit: EventEmitter<{}> = new EventEmitter();
 	@Output() onClose: EventEmitter<{}> = new EventEmitter();
 	@Output() onFieldChange: EventEmitter<{ name: string, value: any }> = new EventEmitter();

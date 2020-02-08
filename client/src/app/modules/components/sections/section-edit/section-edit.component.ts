@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
 import { SectionService } from '@services/section.service';
@@ -16,6 +17,7 @@ export class SectionEditComponent implements OnInit {
 	@Input() isVisible: boolean
 	@Input() section: Section
 	@Output() onClose: EventEmitter<{}> = new EventEmitter();
+	forceClose: Subject<any> = new Subject<any>()
 	form: Form
 
 	constructor(
@@ -66,19 +68,19 @@ export class SectionEditComponent implements OnInit {
 	}
 
 	async formSubmitted(section: Section){
+		// We apply any fields from the object, and then any from the overwritten data
+		// This allows us to submit a new object with the changes between this.section and section, without
+		// having to commit them to the real copy before we've sent to the database
 		const updatedSection = Object.assign({}, this.section, section)
-
-		console.log(updatedSection)
-
 		try{
+			// send state to the db, and obtain back the ground truth that the db produces
 			let result = await this._sectionService.upsertSection(updatedSection)
 
-			console.log(result)
-
-			// this.section = result
+			// and now we store the ground truth back in our real object
+			this.section = result
 
 			this.toastr.success('Successfully edited section')
-			this.handleClose();
+			this.forceClose.next();
 		}catch(err){
 			console.error(err)
 			this.toastr.error('Failed to edit section')

@@ -5,5 +5,6 @@
 	[form]="form"
 	[title]="(section && section.id) ? 'Edit Section' : 'New Section'"
 	(onSubmit)="formSubmitted($event)"
-	(onClose)="handleClose()">
+	(onClose)="handleClose()"
+	[forceClose]="forceClose">
 </app-form-modal>

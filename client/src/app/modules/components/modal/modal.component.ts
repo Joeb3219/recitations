@@ -1,4 +1,5 @@
 import { ViewChild, Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Observable } from 'rxjs';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -14,11 +15,19 @@ export class ModalComponent implements OnInit {
 	@Output() onClose: EventEmitter<any> = new EventEmitter<any>()
 	isModalOpen: boolean = false
 
+	@Input() forceClose: Observable<any> = new Observable()
+
 	constructor(
 		private modalService: NgbModal,
 	) { }
 
-	ngOnInit() {}
+	ngOnInit() {
+		this.forceClose.subscribe({
+			next: () => {
+				this.closeModal();
+			}
+		})
+	}
 
 	// We presently activate our modal via an *ngIf
 	// when that ngIf is activated, ngAfterViewInit will be called

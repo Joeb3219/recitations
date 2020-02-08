@@ -1,4 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
+
+import { SectionService } from '@services/section.service';
 
 import { Section } from '@models/section'
 import { Form } from '@models/forms/form'
@@ -15,7 +18,10 @@ export class SectionEditComponent implements OnInit {
 	@Output() onClose: EventEmitter<{}> = new EventEmitter();
 	form: Form
 
-	constructor() {}
+	constructor(
+		private _sectionService: SectionService,
+		private toastr: ToastrService,
+	) {}
 
 	ngOnInit() {
 		this.generateForm()
@@ -44,7 +50,7 @@ export class SectionEditComponent implements OnInit {
 			label: 'TA',
 		}, {
 			type: 'user',
-			name: 'index',
+			name: 'professor',
 			value: (this.section) ? this.section.professor : null,
 			label: 'Professor',
 		}, {
@@ -59,8 +65,24 @@ export class SectionEditComponent implements OnInit {
 		this.onClose.emit(null)
 	}
 
-	formSubmitted(data){
+	async formSubmitted(section: Section){
+		const updatedSection = Object.assign({}, this.section, section)
 
+		console.log(updatedSection)
+
+		try{
+			let result = await this._sectionService.upsertSection(updatedSection)
+
+			console.log(result)
+
+			// this.section = result
+
+			this.toastr.success('Successfully edited section')
+			this.handleClose();
+		}catch(err){
+			console.error(err)
+			this.toastr.error('Failed to edit section')
+		}
 	}
 
 }

@@ -25,6 +25,7 @@ export class Form{
 		public inputs: {
 			group?: string,
 			name?: string,
+			options?: {}[]
 			label?: string,
 			type?: string,
 			value?: any,

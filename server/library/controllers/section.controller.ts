@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { OK, NOT_FOUND, BAD_REQUEST } from 'http-status-codes'
+import { pickBy } from 'lodash'
 
 import { User } from '@models/user'
 import { Course } from '@models/course'
@@ -12,45 +13,85 @@ export class SectionController{
 
 	getCourseSections = async (req: Request, res: Response) => {
 		try{
-			// first, we fetch the course
-			// this course will contain an array of all section IDs
+			// we simply can query for all sections that have the given course id set as their course column
 			let sections = await res.locals.repo(Section).find({ course: req.params.courseID })
-			// let sections = []
-			// if(!sections.length){
-			// 	// const meetingTime = new MeetingTime({
-			// 	// 	startTime: new Date(0, 0, 0, 8, 0, 0),
-			// 	// 	endTime: new Date(0, 0, 0, 9, 30, 0),
-			// 	// 	weekday: 'Monday',
-			// 	// 	type: MeetingType.RECITATION,
-			// 	// 	frequency: 1
-			// 	// })
-
-			// 	// console.log(meetingTime)
-			// 	// const sv = await res.locals.repo(MeetingTime).save(meetingTime)
-			// 	// console.log(sv)
-
-			// 	const meetingTime = await res.locals.repo(MeetingTime).findOne({})
-
-			// 	const section = new Section({ 
-			// 		index: '11111',
-			// 		sectionNumber: '01',
-			// 		course: await res.locals.repo(Course).findOne({}),
-			// 		students: [],
-			// 		ta: await res.locals.repo(User).findOne({}),
-			// 		professor: await res.locals.repo(User).findOne({}),
-			// 		meetingTimes: [ meetingTime ]
-			// 	})
-
-			// 	console.log(section)
-
-			// 	const result = await res.locals.repo(Section).save(section)
-			// 	console.log(result)
-			// }
 
 			return res.status(OK).json({ data: sections, message: `Successfully fetched sections in course.` })
 		}catch(err){
 			console.error(err);
 			return res.status(BAD_REQUEST).json({ error: err, message: `Failed to fetch sections in course.` })
+		}
+	}
+
+	createSection = async (req: Request, res: Response) => {
+		try{
+			let {
+				index,
+				sectionNumber,
+				ta,
+				professor,
+				meetingTimes,
+				course
+			} = req.body
+
+			let section = pickBy({
+				index,
+				sectionNumber,
+				ta,
+				professor,
+				meetingTimes,
+				course
+			}, (item) => { return item != 'undefined' && item != undefined })
+
+			// and now we can update the section
+			section = (await res.locals.repo(Section).save(section))[0]
+
+			return res.status(OK).json({ data: section, message: `Successfully updated section.` })
+		}catch(err){
+			console.error(err);
+			return res.status(BAD_REQUEST).json({ error: err, message: `Failed updated section.` })
+		}
+	}
+
+	updateSection = async (req: Request, res: Response) => {
+		try{
+			const { sectionID } = req.params
+
+			let {
+				index,
+				sectionNumber,
+				ta,
+				professor,
+				meetingTimes,
+				course
+			} = req.body
+
+			const updateableData = pickBy({
+				index,
+				sectionNumber,
+				ta,
+				professor,
+				meetingTimes,
+				course
+			}, (item) => { return item != 'undefined' && item != undefined })
+
+			// first, we find the section that is referenced by the given ID
+			let section = await res.locals.repo(Section).find({ id: sectionID })
+
+			// no section found, 404 it out
+			if(!section){
+				return res.status(NOT_FOUND).json('Failed to find specified section.')
+			}
+
+			section = Object.assign(section, updateableData)
+			
+			// and now we can update the section
+			section = (await res.locals.repo(Section).save(section))[0]
+
+			return res.status(OK).json({ data: section, message: `Successfully updated section.` })
+		}catch(err){
+			console.error(err);
+			return res.status(BAD_REQUEST).json({ error: err, message: `Failed updated section.` })
 		}
 	}
 

@@ -1,7 +1,8 @@
-import { Entity, Column, BaseEntity, OneToOne, JoinColumn, PrimaryGeneratedColumn } from 'typeorm'
+import { Entity, Column, BaseEntity, ManyToOne, JoinTable, PrimaryGeneratedColumn } from 'typeorm'
 
 import { MeetingTimeInterface } from '@interfaces/meetingTime.interface'
 import { User } from '@models/user'
+import { Meetable } from '@models/meetable'
 import { MeetingType } from '@enums/meetingType.enum'
 
 @Entity()
@@ -23,8 +24,8 @@ export class MeetingTime extends BaseEntity implements MeetingTimeInterface {
 	@Column()
 	public weekday: string
 
-	@OneToOne(type => User, { eager: true })
-    @JoinColumn()
+	@ManyToOne(type => User, { eager: true })
+	@JoinTable()
 	public leader?: User
 
 	@Column({
@@ -37,13 +38,19 @@ export class MeetingTime extends BaseEntity implements MeetingTimeInterface {
 	@Column()
 	public frequency: number
 
+	@ManyToOne(type => Meetable, meetable => meetable.meetingTimes)
+	@JoinTable()
+	public meetable: Meetable
+
 	constructor(args: {
 			id?: string,
 			startTime?: string,
 			endTime?: string,
 			weekday?: string,
 			type?: MeetingType,
-			frequency?: number
+			frequency?: number,
+			leader?: User,
+			meetable?: Meetable,
 	} = {}){
 		super()
 		if(args) {
@@ -53,6 +60,8 @@ export class MeetingTime extends BaseEntity implements MeetingTimeInterface {
 			this.weekday = args.weekday
 			this.type = args.type
 			this.frequency = args.frequency
+			this.leader = args.leader
+			this.meetable = args.meetable
 		}
 	}
 }

@@ -8,6 +8,7 @@ import * as jwt from 'jsonwebtoken'
 import { registerUserRoutes } from '@routes/user.routes'
 import { registerCourseRoutes } from '@routes/course.routes'
 import { registerSectionRoutes } from '@routes/section.routes'
+import { registerMeetingTimeRoutes } from '@routes/meetingTime.routes'
 
 import { createConnection, getRepository, getConnection } from 'typeorm';
 
@@ -53,6 +54,7 @@ class AppWrapper {
 		registerUserRoutes(this.app)
 		registerCourseRoutes(this.app)
 		registerSectionRoutes(this.app)
+		registerMeetingTimeRoutes(this.app)
 	}
 
 	async initJWTParser() {

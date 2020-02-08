@@ -1,5 +1,6 @@
 import { MeetingType } from '@enums/meetingType.enum'
 import { UserInterface } from '@interfaces/user.interface'
+import { MeetableInterface } from '@interfaces/meetable.interface'
 
 export interface MeetingTimeInterface {
 
@@ -10,5 +11,6 @@ export interface MeetingTimeInterface {
 	type: MeetingType;
 	frequency: number;
 	leader?: UserInterface;
+	meetable: MeetableInterface;
 
 }

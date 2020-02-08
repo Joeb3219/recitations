@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs'
 
 import { Form } from '@models/forms/form'
@@ -32,6 +32,20 @@ export class FormComponent implements OnInit {
 				}
 			})
 		}
+
+		this.loadDefaultFormData()
+	}
+
+	ngOnChanges(changes: SimpleChanges){
+		this.loadDefaultFormData()
+	}
+
+	loadDefaultFormData(){
+		if(!this.form) return
+
+		this.form.inputs.forEach((input) => {
+			this.internalStore[input.name] = input.value
+		})
 	}
 
 	nextPage(){
@@ -44,8 +58,10 @@ export class FormComponent implements OnInit {
 	}
 
 	fieldUpdated(name, data){
-		const value = data.target.value
+		console.log({name, data})
+		const value = (data.target ? data.target.value : data)
 		this.internalStore[name] = value
+
 
 		this.onFieldChange.emit({
 			name,

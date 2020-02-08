@@ -16,7 +16,7 @@ export class UserSearchFormfieldComponent implements OnInit {
 
 	@Input() user: User = null
 	@Input() name: string = null
-	@Output() change: EventEmitter<User> = new EventEmitter<User>()
+	@Output() onChange: EventEmitter<User> = new EventEmitter<User>()
 
 	users: User[]
 
@@ -33,8 +33,8 @@ export class UserSearchFormfieldComponent implements OnInit {
 		else return ``
 	}
 
-	handleUserSelected (user: User) {
-		this.change.emit(user)
+	handleUserSelected (data) {
+		this.onChange.emit(data.item)
 	}
 
 	search = (text$: Observable<string>) =>
@@ -51,10 +51,5 @@ export class UserSearchFormfieldComponent implements OnInit {
 						}
 				).slice(0, 10))
 	)
-
-
-	handleUpdate(data) {
-		console.log(data)
-	}
 
 }

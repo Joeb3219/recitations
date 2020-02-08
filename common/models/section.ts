@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToMany, OneToOne, JoinTable, JoinColumn } from 'typeorm'
+import { ChildEntity, PrimaryGeneratedColumn, Column, BaseEntity, ManyToMany, OneToOne, JoinTable, JoinColumn, OneToMany, ManyToOne } from 'typeorm'
 
 import { SectionInterface } from '@interfaces/section.interface'
 import { User } from '@models/user'
@@ -6,11 +6,8 @@ import { Course } from '@models/course'
 import { MeetingTime } from '@models/meetingTime'
 import { Meetable } from '@models/meetable'
 
-@Entity()
+@ChildEntity()
 export class Section extends Meetable implements SectionInterface {
-
-	@PrimaryGeneratedColumn("uuid")
-	public id: string
 	
 	@Column()
 	public index: string
@@ -18,15 +15,15 @@ export class Section extends Meetable implements SectionInterface {
 	@Column()
 	public sectionNumber: string
 
-	@OneToOne(type => Course)
+	@ManyToOne(type => Course, course => course.sections)
 	@JoinColumn()
 	public course: Course
 
-	@OneToOne(type => User, { eager: true })
+	@ManyToOne(type => User, { eager: true, cascade: true })
     @JoinColumn()
 	public ta?: User
 	
-	@OneToOne(type => User, { eager: true })
+	@ManyToOne(type => User, { eager: true, cascade: true })
     @JoinColumn()
 	public professor?: User
 
@@ -41,19 +38,9 @@ export class Section extends Meetable implements SectionInterface {
 		course?: Course,
 		students?: User[],
 		ta?: User,
-		professor?: User,
-		meetingTimes?: MeetingTime[],
+		professor?: User
 	} = {}){
 		super()
-		if(args){
-			this.index = args.index
-			this.sectionNumber = args.sectionNumber
-			this.ta = args.ta
-			this.course = args.course
-			this.students = args.students
-			this.professor = args.professor
-			this.id = args.id		
-			this.meetingTimes = args.meetingTimes	
-		}
+		Object.assign(this, args)
 	}
 }

@@ -11,4 +11,16 @@ export function registerSectionRoutes(app){
 			controller.getCourseSections
 		)
 
+	app.route('/section/:sectionID')
+		.put(
+			isAuthenticated,
+			controller.updateSection
+		)
+
+	app.route('/section')
+		.post(
+			isAuthenticated,
+			controller.createSection
+		)
+
 }

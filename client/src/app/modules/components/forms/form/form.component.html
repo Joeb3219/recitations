@@ -35,20 +35,57 @@
 							*ngIf="input.group == group.name || (group.name == '' && !input.group)"
 						>
 
-							<label>
+							<label
+								style="width: 100%">
 								{{ input.label }}:
 								<input
 									*ngIf="input.type == 'text'"
 									type="text"
+									value="{{ input.value }}"
 									class="form-control"
 									name="{{ input.name }}"
 									(change)="fieldUpdated(input.name, $event)"
 								>
 
+								<app-user-search-formfield
+									*ngIf="input.type == 'user'"
+									[user]="input.value"
+									[name]="input.name"
+									(onChange)="fieldUpdated(input.name, $event)"
+								></app-user-search-formfield>
+
+								<app-meeting-times-formfield
+									*ngIf="input.type == 'meetingTimes'"
+									[meetable]="input.meetable"
+									(onChange)="fieldUpdated(input.name, $event)"
+								></app-meeting-times-formfield>
+
+								<select
+									*ngIf="input.type == 'select'"
+									name="{{ input.name }}"
+									(change)="fieldUpdated(input.name, $event)"
+									[value]="input.value"
+								>
+									<option
+										*ngFor="let option of input.options"
+										value="{{ option.value }}"
+									>
+										{{ option.label }}
+									</option>
+								</select>
+
+								<input
+									*ngIf="input.type == 'time'"
+									value="{{ input.value }}"
+									type="time"
+									name="{{ input.name }}"
+									(change)="fieldUpdated(input.name, $event)"
+								>
 
 								<input
 									*ngIf="input.type == 'password'"
 									type="password"
+									value="{{ input.value }}"
 									class="form-control"
 									name="{{ input.name }}"
 									(change)="fieldUpdated(input.name, $event)"
@@ -75,6 +112,8 @@
 
 
 			<button 
+				#submitButton
+				[hidden]="!showSubmit"
 				type="button"
 				class="btn btn-primary"
 				(click)="nextPage()"

@@ -38,6 +38,7 @@ export class ManualLoginFormComponent implements OnInit {
 	formSubmitted(data){
 		var { username, password } = data;
 		this._userService.signin(username, password).subscribe((result: any) => {
+			console.log(result)
 			if(result && result.data){
 				this.onSuccessfulLogin.emit(result.data)
 			}

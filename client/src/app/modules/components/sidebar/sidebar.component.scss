@@ -1,16 +1,35 @@
 .sidebar {
-	position: fixed;
-	top: 0;
+	position: absolute;
+	top: 40px;
 	bottom: 0;
 	left: 0;
 	z-index: 100;
-	padding: 48px 0 0;
+	padding: 0px;
 	width: 200px;
+	min-height: 100%;
+	display: block !important;
 	box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
 
 	.nav-link {
 		font-weight: 500;
 		color: #333;
+		border-bottom: 1px solid grey;
+		background-color: #dbdbdb;
+		padding: 4px;
+		cursor: pointer;
+	}
+
+	.submenu {
+
+		padding: 0px;
+	    list-style-type: none;
+		margin-right: 1px;
+
+		.nav-link {
+			margin-left: 5px;
+			background-color: #f8f9fa;
+		}
+
 	}
 
 }

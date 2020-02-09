@@ -1,29 +1,20 @@
-import { CourseInterface } from './course.interface'
-import { UserInterface } from './user.interface'
-import { MeetingType } from '../enums/meetingType.enum'
+import { CourseInterface } from '@interfaces/course.interface'
+import { UserInterface } from '@interfaces/user.interface'
+import { MeetableInterface } from '@interfaces/meetable.interface'
 
-export interface SectionInterface {
+export interface SectionInterface extends MeetableInterface {
+
+	id: string;			// the document id
 
 	index: string;			// The index code of this section
 	sectionNumber: string;	// The string numerically identifying this section.
 
-	students: UserInterface[]; 		// All of the students registered to this section
+	// students: UserInterface[]; 		// All of the students registered to this section
+
+	course: CourseInterface; 	// the course that the section belongs to 
 
 	ta?: UserInterface; 	// the TA for the section
 	professor?: UserInterface;		// the professor for the section
-
-	meetingTimes: [{
-		startTime: Date;
-		endTime: Date;
-		weekday: string;
-		type: MeetingType;
-	}]
-
-	createdBy: UserInterface;		// The user who created the section
-
-	// mongo specific
-	_id: string;			// the document id
-	createdAt: Date;		// when the document was created
-	updatedAt: Date;		// when the document was last modified
+	students?: UserInterface[];		// the students for the section
 
 }

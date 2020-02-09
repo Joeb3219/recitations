@@ -1,3 +1,5 @@
+import { Meetable } from '@models/meetable';
+
 export class Form{
 	constructor(
 		public inputGroups: {
@@ -23,8 +25,11 @@ export class Form{
 		public inputs: {
 			group?: string,
 			name?: string,
+			options?: {}[]
 			label?: string,
-			type?: string
+			type?: string,
+			value?: any,
+			meetable?: Meetable,
 		}[] = []
 	){}
 }

@@ -76,7 +76,7 @@ export class SectionController{
 			}, (item) => { return item != 'undefined' && item != undefined })
 
 			// first, we find the section that is referenced by the given ID
-			let section = await res.locals.repo(Section).find({ id: sectionID })
+			let section = await res.locals.repo(Section).findOne({ id: sectionID })
 
 			// no section found, 404 it out
 			if(!section){

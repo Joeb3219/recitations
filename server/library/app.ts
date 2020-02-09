@@ -1,4 +1,5 @@
 import * as reflectMetadata from "reflect-metadata";
+import { OK, NOT_FOUND, BAD_REQUEST } from 'http-status-codes'
 
 import * as express from 'express'
 import * as dotenv from 'dotenv'
@@ -29,6 +30,7 @@ class AppWrapper {
 		await this.initDB()
 		await this.initExpress()
 		await this.initJWTParser()
+		await this.registerResponseFormatters()
 		await this.initAccessControl()
 		await this.registerRoutes()
 		await this.listen()
@@ -55,6 +57,38 @@ class AppWrapper {
 		registerCourseRoutes(this.app)
 		registerSectionRoutes(this.app)
 		registerMeetingTimeRoutes(this.app)
+	}
+
+	async registerResponseFormatters() {
+		this.app.use((req, res, next) => {
+
+			// A generic response handler for AOK responses
+			req.ok = (message, data = null, meta = null) => {
+				return res.status(OK).json({
+					message,
+					data,
+					meta
+				})
+			}
+
+			// A generic 404 error handler
+			req.notFound = (message, error = null) => {
+				return res.status(NOT_FOUND).json({
+					message,
+					error,
+				})
+			}
+
+			// A generic handler for errors
+			req.error = (message, error = null) => {
+				return res.status(BAD_REQUEST).json({
+					message,
+					error,
+				})
+			}
+
+			next()
+		})
 	}
 
 	async initJWTParser() {

@@ -13,19 +13,17 @@ export class UserController{
 		try{
 			const users = await res.locals.repo(User).find({})
 
-			return res.status(OK).json({ data: users, message: `Successfully fetched all users.` })
+			return req.ok(`Successfully fetched all users.`, users)
 		}catch(err){
-			console.error(err)
-			return res.status(BAD_REQUEST).json({ error: err, message: `Failed to fetch all users.` })
+			return req.error(`Failed to fetch all users.`, err)
 		}
 	}
 
 	getCurrentUser = async (req: Request, res: Response) => {
 		try{
-			return res.status(OK).json({ data: res.locals.currentUser, message: `Successfully fetched user from JWT.` })
+			return req.ok(`Successfully fetched user from JWT.`, res.local.currentUser)
 		}catch(err){
-			console.error(err);
-			return res.status(BAD_REQUEST).json({ error: err, message: `Failed to find user provided by JWT.` })
+			return req.error(`Failed to find user provided by JWT.`, err)
 		}
 	}
 
@@ -36,19 +34,18 @@ export class UserController{
 			const user = await res.locals.repo(User).findOne({ where: { username }, select: ["id", "passwordHash", "username"] })
 
 			if(!user){
-				return res.status(NOT_FOUND).json({ message: `Failed to find the user ${username}.`}).end()
+				return req.notFound(`Failed to find the user ${username}.`)
 			}
 
 			// now we attempt to validate the user by password
 			if(await this.userHelper.comparePasswords(password, user.passwordHash)){
 				const jwt = this.userHelper.generateJWT(user.id)
-				return res.status(OK).json({ data: jwt, message: `Successfully authenticated user ${username}.`}).end()
+				return req.ok(`Successfully authenticated user.`, jwt)
 			}else{
-				return res.status(BAD_REQUEST).json({ message: `Failed to sign user ${username} in.` }).end()
+				return req.error(`Failed to sign user in`)
 			}
 		}catch(err){
-			console.error(err);
-			return res.status(BAD_REQUEST).json({ error: err, message: `Failed to sign user ${username} in.` }).end()
+			return req.error(`Failed to sign user in`, err)
 		}
 	}
 

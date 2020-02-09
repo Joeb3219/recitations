@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import { Subject } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 
 import { MeetingTimeService } from '@services/meetingTime.service';
@@ -18,6 +19,7 @@ export class MeetingTimeEditComponent implements OnInit {
 	@Input() meetingTime: MeetingTime
 	@Output() onClose: EventEmitter<{}> = new EventEmitter();
 	@Output() onMeetingTimeEdited: EventEmitter<MeetingTime> = new EventEmitter();
+	forceClose: Subject<any> = new Subject<any>()
 	form: Form
 
 	constructor(
@@ -96,14 +98,13 @@ export class MeetingTimeEditComponent implements OnInit {
 			this.meetingTime[key] = data[key]
 		})
 
-
 		// and now we submit it to the API.
 		try{
 			const result = await this._meetingTimeService.createMeetingTime(this.meetingTime)
-
 			this.onMeetingTimeEdited.emit(result)
-			this.handleClose()
+
 			this.toastr.success('Successfully created meeting time')
+			this.forceClose.next()
 		}catch(err){
 			console.error(err)
 			this.toastr.error('Failed to create meeting time')

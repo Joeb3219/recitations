@@ -77,7 +77,7 @@ export class SectionEditComponent implements OnInit {
 			let result = await this._sectionService.upsertSection(updatedSection)
 
 			// and now we store the ground truth back in our real object
-			this.section = result
+			Object.assign(this.section, result)
 
 			this.toastr.success('Successfully edited section')
 			this.forceClose.next();

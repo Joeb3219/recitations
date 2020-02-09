@@ -48,6 +48,18 @@ export class ViewSectionsComponent implements OnInit {
 	
 	handleCloseEditSectionModal() {
 		this.isEditSectionModalOpen = false
+
+		// And now we add the section if needed
+		// We perform a search for if there is a section with that id already
+		const foundSection = this.sections.find((section) => {
+			if(section.id == this.selectedEditSection.id) return true
+		})
+
+		// if the section was found, we already have it in our array, and the data would be updated via the component
+		// if it wasn't found, we insert it new.
+		if(!foundSection) this.sections.push(this.selectedEditSection)
+
+		this.selectedEditSection = null;
 	}
 
 	handleOpenEditSectionModal(section: Section) {

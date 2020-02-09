@@ -44,7 +44,7 @@ export class SectionController{
 			}, (item) => { return item != 'undefined' && item != undefined })
 
 			// and now we can update the section
-			section = (await res.locals.repo(Section).save(section))[0]
+			section = await res.locals.repo(Section).save(section)
 
 			return res.status(OK).json({ data: section, message: `Successfully updated section.` })
 		}catch(err){
@@ -86,7 +86,7 @@ export class SectionController{
 			section = Object.assign(section, updateableData)
 			
 			// and now we can update the section
-			section = (await res.locals.repo(Section).save(section))[0]
+			section = await res.locals.repo(Section).save(section)
 
 			return res.status(OK).json({ data: section, message: `Successfully updated section.` })
 		}catch(err){

@@ -1,0 +1,55 @@
+<div class = "page">
+	<ng-container
+		*ngIf="!isLoading && !course">
+		<h4>Not Found</h4>
+	</ng-container>
+	<ng-container
+		*ngIf="course">
+		<h4>{{ course.name }} Sections</h4>
+
+		<button 
+			type="button" 
+			class="btn btn-primary"
+			(click)="handleOpenNewSectionModal()"
+		>Add Section</button>
+
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Section Number</th>
+					<th>Index Code</th>
+					<th>TA</th>
+					<th>Professor</th>
+					<th>Meeting Times</th>
+					<th>Modify</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr
+					*ngFor="let section of sections">
+					<td>{{ section.sectionNumber }}</td>
+					<td>{{ section.index }}</td>
+					<td>
+						<app-user-badge
+							[user]="section.ta">
+						</app-user-badge>
+					</td>
+					<td>
+						<app-user-badge
+							[user]="section.professor">
+						</app-user-badge>
+					</td>
+					<td>{{ section.meetingTimes.length }}</td>
+					<td (click)="handleOpenEditSectionModal(section)">Modify</td>
+				</tr>
+			</tbody>
+		</table>
+
+	</ng-container>
+</div>
+
+<app-section-edit
+	[isVisible]="isEditSectionModalOpen"
+	[(section)]="selectedEditSection"
+	(onClose)="handleCloseEditSectionModal()"
+>

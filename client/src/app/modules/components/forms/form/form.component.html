@@ -1,0 +1,127 @@
+<h3 
+	*ngIf="(form && form.pages && form.pages[pageNumber])">
+	{{ form.pages[pageNumber].label }}
+</h3>
+
+<form
+	*ngIf="form"
+	(submit)="submit($event)">
+
+	<!-- Iterate over all of the pages -->
+	<ng-container
+		*ngFor="let page of form.pages; let i = index"
+	>
+		<div 
+			class="form-page"
+			[class.disabled]="i != pageNumber"
+		>
+
+			<!-- now we iterate over each of our groupings of inputs on this page -->
+			<ng-container
+				*ngFor="let group of form.inputGroups"
+			>
+
+				<div
+					*ngIf="group.page == i"
+				>
+					
+					<!-- now we go through all inputs of the group and actually render them -->
+					<ng-container
+						*ngFor="let input of form.inputs"
+					>
+
+						<div
+							class="form-group"
+							*ngIf="input.group == group.name || (group.name == '' && !input.group)"
+						>
+
+							<label
+								style="width: 100%">
+								{{ input.label }}:
+								<input
+									*ngIf="input.type == 'text'"
+									type="text"
+									value="{{ input.value }}"
+									class="form-control"
+									name="{{ input.name }}"
+									(change)="fieldUpdated(input.name, $event)"
+								>
+
+								<app-user-search-formfield
+									*ngIf="input.type == 'user'"
+									[user]="input.value"
+									[name]="input.name"
+									(onChange)="fieldUpdated(input.name, $event)"
+								></app-user-search-formfield>
+
+								<app-meeting-times-formfield
+									*ngIf="input.type == 'meetingTimes'"
+									[meetable]="input.meetable"
+									(onChange)="fieldUpdated(input.name, $event)"
+								></app-meeting-times-formfield>
+
+								<select
+									*ngIf="input.type == 'select'"
+									name="{{ input.name }}"
+									(change)="fieldUpdated(input.name, $event)"
+									[value]="input.value"
+								>
+									<option
+										*ngFor="let option of input.options"
+										value="{{ option.value }}"
+									>
+										{{ option.label }}
+									</option>
+								</select>
+
+								<input
+									*ngIf="input.type == 'time'"
+									value="{{ input.value }}"
+									type="time"
+									name="{{ input.name }}"
+									(change)="fieldUpdated(input.name, $event)"
+								>
+
+								<input
+									*ngIf="input.type == 'password'"
+									type="password"
+									value="{{ input.value }}"
+									class="form-control"
+									name="{{ input.name }}"
+									(change)="fieldUpdated(input.name, $event)"
+								>
+							</label>
+
+						</div>
+
+					</ng-container>
+
+				</div>
+
+			</ng-container>
+
+
+			<!-- This will navigate use through the form pages -->
+			<button 
+				type="button"
+				class="btn btn-primary"
+				(click)="prevPage()"
+				*ngIf="pageNumber != 0"
+			>{{ page.previousButton || "Back" }}</button>
+
+
+
+			<button 
+				#submitButton
+				[hidden]="!showSubmit"
+				type="button"
+				class="btn btn-primary"
+				(click)="nextPage()"
+			>{{ page.continueButton || "Submit" }}</button>
+
+		</div>
+	
+	</ng-container>
+
+
+</form>

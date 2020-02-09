@@ -14,9 +14,13 @@
         }
       },
       "architect": {
+        "options": {
+          "showCircularDependencies": false
+        },
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "showCircularDependencies": false,
             "outputPath": "dist/client",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -27,8 +31,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css"
+              "src/styles.scss"
             ],
             "scripts": []
           },

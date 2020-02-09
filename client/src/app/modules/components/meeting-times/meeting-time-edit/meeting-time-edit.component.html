@@ -1,0 +1,10 @@
+<app-form-modal
+	*ngIf="isVisible"
+	[submitText]="(meetingTime && meetingTime.id) ? 'Save Meeting Time' : 'Create Meeting Time'"
+	[showModal]="isVisible"
+	[form]="form"
+	[title]="(meetingTime && meetingTime.id) ? 'Edit Meeting Time' : 'New Meeting Time'"
+	(onSubmit)="formSubmitted($event)"
+	(onClose)="handleClose()"
+	[forceClose]="forceClose">
+</app-form-modal>

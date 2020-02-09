@@ -22,10 +22,9 @@ export class CourseController{
 
 			course = await res.locals.repo(Course).save(course)
 
-			return res.status(OK).json({ data: res.locals.currentUser, message: `Successfully created course.` })
+			return req.ok(`Successfully created course.`, course)
 		}catch(err){
-			console.error(err);
-			return res.status(BAD_REQUEST).json({ error: err, message: `Failed to create course.` })
+			return req.error(`Failed to create course.`, err)
 		}
 	}
 
@@ -34,10 +33,9 @@ export class CourseController{
 			// First, we collect all of the submitted data
 			let courses = await res.locals.repo(Course).find({ })
 
-			return res.status(OK).json({ data: courses, message: `Successfully fetched courses.` })
+			return req.ok(`Successfully fetched courses.`, courses)
 		}catch(err){
-			console.error(err);
-			return res.status(BAD_REQUEST).json({ error: err, message: `Failed to fetch courses.` })
+			return req.error(`Failed to fetch courses.`, err)
 		}
 	}
 
@@ -49,11 +47,10 @@ export class CourseController{
 
 			const course = await res.locals.repo(Course).findOne({ id: courseID })
 
-			if(course) return res.status(OK).json({ data: course, message: `Successfully fetched course.` })
-			else res.status(NOT_FOUND).json({ message: 'Failed to find specified course.' })
+			if(course) return req.ok(`Successfully fetched course.`, course)
+			else return req.notFound(`Failed to find specified course.`)
 		}catch(err){
-			console.error(err);
-			return res.status(BAD_REQUEST).json({ error: err, message: `Failed to fetch courses.` })
+			return req.error(`Failed to fetch course.`, err)
 		}
 	}
 

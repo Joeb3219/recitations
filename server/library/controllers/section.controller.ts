@@ -16,10 +16,9 @@ export class SectionController{
 			// we simply can query for all sections that have the given course id set as their course column
 			let sections = await res.locals.repo(Section).find({ course: req.params.courseID })
 
-			return res.status(OK).json({ data: sections, message: `Successfully fetched sections in course.` })
+			return req.ok(`Successfully fetched sections in course.`, sections)
 		}catch(err){
-			console.error(err);
-			return res.status(BAD_REQUEST).json({ error: err, message: `Failed to fetch sections in course.` })
+			return req.error(`Failed to fetch sections in course.`, err)
 		}
 	}
 
@@ -46,10 +45,9 @@ export class SectionController{
 			// and now we can update the section
 			section = await res.locals.repo(Section).save(section)
 
-			return res.status(OK).json({ data: section, message: `Successfully updated section.` })
+			return req.ok(`Successfully updated section.`, section)
 		}catch(err){
-			console.error(err);
-			return res.status(BAD_REQUEST).json({ error: err, message: `Failed updated section.` })
+			return req.error(`Failed updated section.`, err)
 		}
 	}
 
@@ -88,10 +86,9 @@ export class SectionController{
 			// and now we can update the section
 			section = await res.locals.repo(Section).save(section)
 
-			return res.status(OK).json({ data: section, message: `Successfully updated section.` })
+			return req.ok(`Successfully updated section.`, section)
 		}catch(err){
-			console.error(err);
-			return res.status(BAD_REQUEST).json({ error: err, message: `Failed updated section.` })
+			return req.error(`Failed to update section.`, err)
 		}
 	}
 
@@ -103,11 +100,10 @@ export class SectionController{
 
 			const course = await Course.findOne({ id: courseID })
 
-			if(course) return res.status(OK).json({ data: course, message: `Successfully fetched course.` })
-			else res.status(NOT_FOUND).json({ message: 'Failed to find specified course.' })
+			if(course) return req.ok(`Successfully fetched course.`, course)
+			else req.notFound('Failed to find specified course.')
 		}catch(err){
-			console.error(err);
-			return res.status(BAD_REQUEST).json({ error: err, message: `Failed to fetch courses.` })
+			return req.error(`Failed to fetch courses.`, err)
 		}
 	}
 

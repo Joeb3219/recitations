@@ -28,10 +28,9 @@ export class MeetingTimeController{
 
 			meetingTime = await res.locals.repo(MeetingTime).save(meetingTime)
 
-			return res.status(OK).json({ data: meetingTime, message: `Successfully created meeting time.` })
+			return req.ok(`Successfully created meeting time.`, meetingTime)
 		}catch(err){
-			console.error(err);
-			return res.status(BAD_REQUEST).json({ error: err, message: `Failed to create meeting time.` })
+			return req.error(`Failed to create meeting time.`, err)
 		}
 	}
 

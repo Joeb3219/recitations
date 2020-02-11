@@ -1,6 +1,7 @@
 <app-modal
 	*ngIf="showModal"
 	(onClose)="handleOnClose()"
+	[modalSize]="modalSize"
 	[forceClose]="forceClose"
 >
 	<span title>{{ title }}</span>

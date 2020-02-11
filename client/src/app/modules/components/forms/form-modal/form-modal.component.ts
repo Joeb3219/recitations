@@ -15,6 +15,7 @@ export class FormModalComponent implements OnInit {
 	@Input() submitText: string
 	@Input() showModal: boolean
 	@Input() forceClose: Observable<{}> = new Observable();
+	@Input() modalSize: string = 'lg'
 	@Output() onSubmit: EventEmitter<{}> = new EventEmitter();
 	@Output() onClose: EventEmitter<{}> = new EventEmitter();
 	@Output() onFieldChange: EventEmitter<{ name: string, value: any }> = new EventEmitter();

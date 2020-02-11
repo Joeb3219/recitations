@@ -21,7 +21,7 @@ export class UserController{
 
 	getCurrentUser = async (req: Request, res: Response) => {
 		try{
-			return req.ok(`Successfully fetched user from JWT.`, res.local.currentUser)
+			return req.ok(`Successfully fetched user from JWT.`, res.locals.currentUser)
 		}catch(err){
 			return req.error(`Failed to find user provided by JWT.`, err)
 		}

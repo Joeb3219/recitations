@@ -5,6 +5,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule, ReactiveFormsModule } from "@angular/forms"
+import { QuillModule } from 'ngx-quill'
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -23,11 +25,13 @@ import { UserBadgeComponent } from './modules/components/users/user-badge/user-b
 import { MeetingTimesFormfieldComponent } from './modules/components/meeting-times/meeting-times-formfield/meeting-times-formfield.component';
 import { FormModalComponent } from './modules/components/forms/form-modal/form-modal.component';
 import { MeetingTimeEditComponent } from './modules/components/meeting-times/meeting-time-edit/meeting-time-edit.component';
+import { ProblemEditComponent } from './modules/components/problems/problem-edit/problem-edit.component';
 
 import { UserService } from './services/user.service';
 import { CourseService } from './services/course.service';
 import { SectionService } from './services/section.service';
 import { MeetingTimeService } from './services/meetingTime.service';
+import { ViewProblemsComponent } from './modules/pages/problems/view-problems/view-problems.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +50,9 @@ import { MeetingTimeService } from './services/meetingTime.service';
     UserBadgeComponent,
     MeetingTimesFormfieldComponent,
     FormModalComponent,
-    MeetingTimeEditComponent
+    MeetingTimeEditComponent,
+    ProblemEditComponent,
+    ViewProblemsComponent,
   ],
   imports: [
     HttpClientModule,
@@ -56,6 +62,9 @@ import { MeetingTimeService } from './services/meetingTime.service';
     FontAwesomeModule,
     ToastrModule.forRoot(),
     BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule,
+    QuillModule.forRoot(),
   ],
   providers: [
     UserService,

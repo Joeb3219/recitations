@@ -10,6 +10,7 @@ import { registerUserRoutes } from '@routes/user.routes'
 import { registerCourseRoutes } from '@routes/course.routes'
 import { registerSectionRoutes } from '@routes/section.routes'
 import { registerMeetingTimeRoutes } from '@routes/meetingTime.routes'
+import { registerProblemRoutes } from '@routes/problem.routes'
 
 import { createConnection, getRepository, getConnection } from 'typeorm';
 
@@ -57,6 +58,7 @@ class AppWrapper {
 		registerCourseRoutes(this.app)
 		registerSectionRoutes(this.app)
 		registerMeetingTimeRoutes(this.app)
+		registerProblemRoutes(this.app)
 	}
 
 	async registerResponseFormatters() {
@@ -106,10 +108,17 @@ class AppWrapper {
 
 				if(parts.length == 2){
 					const token = parts[1]
-					// now we decode the token!
-					const decoded = jwt.verify(token, process.env.JWT_SECRET)
-					if(decoded && decoded.userid){
-						res.locals.currentUser = await res.locals.repo(User).findOne({ id: decoded.userid })
+					
+					if(token) {
+						try{
+							// now we decode the token!
+							const decoded = jwt.verify(token, process.env.JWT_SECRET)
+							if(decoded && decoded.userid){
+								res.locals.currentUser = await res.locals.repo(User).findOne({ id: decoded.userid })
+							}
+						}catch(err) {
+							console.error(err)
+						}
 					}
 				}
 			}

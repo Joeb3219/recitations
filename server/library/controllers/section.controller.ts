@@ -92,20 +92,4 @@ export class SectionController{
 		}
 	}
 
-	getCourse = async (req: Request, res: Response) => {
-		try{
-			const courseID = req.params.courseID
-
-			if(!courseID) return res.status(NOT_FOUND).json({ message: 'No courseID specified.' }).end()
-
-			const course = await Course.findOne({ id: courseID })
-
-			if(course) return req.ok(`Successfully fetched course.`, course)
-			else req.notFound('Failed to find specified course.')
-		}catch(err){
-			return req.error(`Failed to fetch courses.`, err)
-		}
-	}
-
-
 }

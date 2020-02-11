@@ -27,7 +27,6 @@ export class ProblemController{
 				question,
 				solution,
 				estimatedDuration,
-				creator,
 				course
 			} = req.body
 
@@ -37,7 +36,7 @@ export class ProblemController{
 				question,
 				solution,
 				estimatedDuration,
-				creator,
+				creator: res.locals.currentUser,
 				course
 			}, (item) => { return item != 'undefined' && item != undefined })
 

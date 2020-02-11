@@ -19,8 +19,25 @@ export class FormComponent implements OnInit {
 	@Output() onFieldChange: EventEmitter<{ name: string, value: any }> = new EventEmitter();
 	internalStore = {};
 
-
 	pageNumber: number = 0 // which page number of the form are we currently executing?
+
+	defaultWYSIWYGModules = {
+		formula: true,
+		toolbar: [
+			['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+			['blockquote', 'code-block'],
+
+			[{ 'list': 'ordered'}, { 'list': 'bullet' }],
+			[{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+			[{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+
+			[{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+
+			[{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+
+			['formula', 'link', 'image', 'video']                         // link and image, video
+		]
+	};
 
 	constructor(){}
 
@@ -48,6 +65,15 @@ export class FormComponent implements OnInit {
 		})
 	}
 
+	// When an editor is created, we pass back the value we wish to save into it in addition to the editor
+	// we then can format the content and then set the contents
+	// Why not do this beforehand? It seems they don't support it very well.
+	// This approach is documented here: https://github.com/KillerCodeMonkey/ngx-quill/issues/77
+	wysiwygCreated(value, editor) {
+		const contents = editor.clipboard.convert(value);
+		editor.setContents(contents)
+	}
+
 	nextPage(){
 		if(this.form.pages.length > (this.pageNumber + 1)) this.pageNumber ++
 		else this.submit()
@@ -57,8 +83,18 @@ export class FormComponent implements OnInit {
 		if(this.form.pages.length && this.pageNumber > 0) this.pageNumber --
 	}
 
+	fieldUpdatedWysiwyg(name, data) {
+		const value = (data.target ? data.target.value : data).html
+		this.internalStore[name] = value
+
+
+		this.onFieldChange.emit({
+			name,
+			value
+		})		
+	}
+
 	fieldUpdated(name, data){
-		console.log({name, data})
 		const value = (data.target ? data.target.value : data)
 		this.internalStore[name] = value
 

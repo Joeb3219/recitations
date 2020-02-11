@@ -1,0 +1,11 @@
+<app-form-modal
+	*ngIf="isVisible"
+	[submitText]="(problem && problem.id) ? 'Save Problem' : 'Create Problem'"
+	[showModal]="isVisible"
+	[form]="form"
+	[modalSize]="'xl'"
+	[title]="(problem && problem.id) ? 'Edit Problem' : 'New Problem'"
+	(onSubmit)="formSubmitted($event)"
+	(onClose)="handleClose()"
+	[forceClose]="forceClose">
+</app-form-modal>

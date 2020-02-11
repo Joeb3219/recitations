@@ -60,6 +60,15 @@
 									(onChange)="fieldUpdated(input.name, $event)"
 								></app-meeting-times-formfield>
 
+								<quill-editor
+									*ngIf="input.type == 'wysiwyg'"
+									name="input.name"
+									[ngModel]="input.formatted"
+									[modules]="defaultWYSIWYGModules"
+									(onContentChanged)="fieldUpdatedWysiwyg(input.name, $event)"
+									(onEditorCreated)="wysiwygCreated(input.value, $event)"
+								></quill-editor>
+
 								<select
 									*ngIf="input.type == 'select'"
 									name="{{ input.name }}"
@@ -78,6 +87,14 @@
 									*ngIf="input.type == 'time'"
 									value="{{ input.value }}"
 									type="time"
+									name="{{ input.name }}"
+									(change)="fieldUpdated(input.name, $event)"
+								>
+
+								<input
+									*ngIf="input.type == 'number'"
+									value="{{ input.value }}"
+									type="number"
 									name="{{ input.name }}"
 									(change)="fieldUpdated(input.name, $event)"
 								>

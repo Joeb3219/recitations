@@ -1,17 +1,14 @@
-import * as reflectMetadata from "reflect-metadata";
-import { OK, NOT_FOUND, BAD_REQUEST } from 'http-status-codes'
+import "reflect-metadata";
 
 import * as express from 'express'
 import * as dotenv from 'dotenv'
 import * as bodyParser from 'body-parser'
 import * as jwt from 'jsonwebtoken'
 
-import { registerUserRoutes } from '@routes/user.routes'
-import { registerCourseRoutes } from '@routes/course.routes'
-import { registerSectionRoutes } from '@routes/section.routes'
-import { registerMeetingTimeRoutes } from '@routes/meetingTime.routes'
-import { registerProblemRoutes } from '@routes/problem.routes'
+import * as fs from 'fs';
+import { promisify } from 'util';
 
+import { generateRoute } from '@helpers/route.helper';
 import { createConnection, getRepository, getConnection } from 'typeorm';
 
 import { User } from '@models/user';
@@ -31,9 +28,8 @@ class AppWrapper {
 		await this.initDB()
 		await this.initExpress()
 		await this.initJWTParser()
-		await this.registerResponseFormatters()
 		await this.initAccessControl()
-		await this.registerRoutes()
+		await this.registerControllers()
 		await this.listen()
 	}
 
@@ -51,45 +47,35 @@ class AppWrapper {
 		});
 	}
 
-	async registerRoutes() {
+	async registerControllers() {
 		this.app.get("/", (req, res) => res.send("Hello World"))
 
-		registerUserRoutes(this.app)
-		registerCourseRoutes(this.app)
-		registerSectionRoutes(this.app)
-		registerMeetingTimeRoutes(this.app)
-		registerProblemRoutes(this.app)
-	}
+		// Now we go through all of the controllers in our system, and register any routes they may have
+		const readDir = promisify(fs.readdir);
+		const potentialControllers = await readDir('./library/controllers/');
+		const allowedAffixes = ['.ts', '.js'];
 
-	async registerResponseFormatters() {
-		this.app.use((req, res, next) => {
+		potentialControllers.forEach((fileName) => {
+			const affix = allowedAffixes.find(affix => fileName.endsWith(affix)); // we find which affix this controller ends with
+			if(!affix) return; // this file doesn't end with one of the approved affixes, and thus is ignored
 
-			// A generic response handler for AOK responses
-			req.ok = (message, data = null, meta = null) => {
-				return res.status(OK).json({
-					message,
-					data,
-					meta
+			// First we require the file
+			// controllerFile will now contain a list of every exported module from the file
+			const controllerFile = require('./controllers/' + fileName.replace(affix, ''));
+			// We now can iterate through the exports and see which are actually classes
+			const controllers = Object.keys(controllerFile).map((name) => {
+				// Grab the variable itself being exported
+				const exportedVariable = controllerFile[name];
+				return (Reflect.getMetadata("controllers", exportedVariable)) ? exportedVariable : undefined;
+			}).filter((controller) => controller); // Ensure only items that are non-null exist
+
+			// And now we can go through and register any functions declared within these controllers
+			controllers.forEach((controller) => {
+				const routes = Reflect.getMetadata("routes", new controller()) || [];
+				routes.forEach((data) => {
+					generateRoute(this.app, data);
 				})
-			}
-
-			// A generic 404 error handler
-			req.notFound = (message, error = null) => {
-				return res.status(NOT_FOUND).json({
-					message,
-					error,
-				})
-			}
-
-			// A generic handler for errors
-			req.error = (message, error = null) => {
-				return res.status(BAD_REQUEST).json({
-					message,
-					error,
-				})
-			}
-
-			next()
+			})
 		})
 	}
 

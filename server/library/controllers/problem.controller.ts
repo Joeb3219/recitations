@@ -1,95 +1,79 @@
-import { Request, Response } from 'express'
-import { OK, NOT_FOUND, BAD_REQUEST } from 'http-status-codes'
+import { Controller, GetRequest, PostRequest, PutRequest } from '../decorators';
 import { pickBy } from 'lodash'
+import * as Boom from '@hapi/boom';
 
 import { User } from '@models/user'
 import { Course } from '@models/course'
 import { Problem } from '@models/problem'
 
+@Controller
 export class ProblemController{
 
-	getCourseProblems = async (req: Request, res: Response) => {
-		try{
-			// we simply can query for all sections that have the given course id set as their course column
-			let problems = await res.locals.repo(Problem).find({ course: req.params.courseID })
-
-			return req.ok(`Successfully fetched problems in course.`, problems)
-		}catch(err){
-			return req.error(`Failed to fetch problems in course.`, err)
-		}
+	@GetRequest('/course/:courseID/problems')
+	async getCourseProblems({ params, repo }) {
+		// we simply can query for all sections that have the given course id set as their course column
+		return await repo(Problem).find({ course: params.courseID })
 	}
 
-	createProblem = async (req: Request, res: Response) => {
-		try{
-			let {
-				difficulty,
-				name,
-				question,
-				solution,
-				estimatedDuration,
-				course
-			} = req.body
+	@PostRequest('/problem')
+	async createProblem({ body, currentUser, repo }) {
+		let {
+			difficulty,
+			name,
+			question,
+			solution,
+			estimatedDuration,
+			course
+		} = body
 
-			let problem = pickBy({
-				difficulty,
-				name,
-				question,
-				solution,
-				estimatedDuration,
-				creator: res.locals.currentUser,
-				course
-			}, (item) => { return item != 'undefined' && item != undefined })
+		let problem = pickBy({
+			difficulty,
+			name,
+			question,
+			solution,
+			estimatedDuration,
+			creator: currentUser,
+			course
+		}, (item) => { return item != 'undefined' && item != undefined })
 
-			// and now we can update the section
-			problem = await res.locals.repo(Problem).save(problem)
-
-			return req.ok(`Successfully updated problem.`, problem)
-		}catch(err){
-			return req.error(`Failed updated problem.`, err)
-		}
+		// and now we can update the section
+		return await repo(Problem).save(problem)
 	}
 
-	updateProblem = async (req: Request, res: Response) => {
-		try{
-			const { problemID } = req.params
+	@PutRequest('/problem/:problemID')
+	async updateProblem({ params, repo, body }) {
+		const { problemID } = params
 
-			let {
-				difficulty,
-				name,
-				question,
-				solution,
-				estimatedDuration,
-				creator,
-				course
-			} = req.body
+		let {
+			difficulty,
+			name,
+			question,
+			solution,
+			estimatedDuration,
+			creator,
+			course
+		} = body
 
-			const updateableData = pickBy({
-				difficulty,
-				name,
-				question,
-				solution,
-				estimatedDuration,
-				creator,
-				course
-			}, (item) => { return item != 'undefined' && item != undefined })
+		const updateableData = pickBy({
+			difficulty,
+			name,
+			question,
+			solution,
+			estimatedDuration,
+			creator,
+			course
+		}, (item) => { return item != 'undefined' && item != undefined })
 
-			// first, we find the problem that is referenced by the given ID
-			let problem = await res.locals.repo(Problem).findOne({ id: problemID })
+		// first, we find the problem that is referenced by the given ID
+		let problem = await repo(Problem).findOne({ id: problemID })
 
-			// no problem found, 404 it out
-			if(!problem){
-				return res.status(NOT_FOUND).json('Failed to find specified problem.')
-			}
+		// no problem found, 404 it out
+		if(!problem) throw Boom.notFound('Problem not found')
 
-			problem = Object.assign(problem, updateableData)
-			
-			// and now we can update the problem
-			problem = await res.locals.repo(Problem).save(problem)
-
-			return req.ok(`Successfully updated problem.`, problem)
-		}catch(err){
-			return req.error(`Failed to update problem.`, err)
-		}
+		problem = Object.assign(problem, updateableData)
+		
+		// and now we can update the problem
+		return await repo(Problem).save(problem)
 	}
 
 }

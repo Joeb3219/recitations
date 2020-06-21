@@ -6,7 +6,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms"
-import { QuillModule } from 'ngx-quill'
+import { QuillModule } from 'ngx-quill' 
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';

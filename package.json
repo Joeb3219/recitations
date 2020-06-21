@@ -1,4 +1,5 @@
 {
 	"private": true,
-	"workspaces": ["server", "client", "common"]
+	"workspaces": ["server", "client", "common"],
+	"nohoist": ["**/typeorm**/", "**/typeorm"]
 }

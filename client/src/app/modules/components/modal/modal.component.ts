@@ -16,7 +16,7 @@ export class ModalComponent implements OnInit {
 	isModalOpen: boolean = false
 
 	@Input() forceClose: Observable<any> = new Observable()
-	@Input() modalSize: string = 'lg'
+	@Input() modalSize = "lg";
 
 	constructor(
 		private modalService: NgbModal,
@@ -37,7 +37,7 @@ export class ModalComponent implements OnInit {
 		setTimeout(() => {
 			this.openedModal = this.modalService.open(this.modal, {
 				backdrop: 'static',
-				size: this.modalSize
+				size: 'lg'
 			})
 
 			this.openedModal.result.then(() => {

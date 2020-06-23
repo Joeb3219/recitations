@@ -34,6 +34,10 @@ import { MeetingTimeService } from './services/meetingTime.service';
 import { ListProblemsComponent } from '@pages/problems/list-problems/list-problems.component';
 import { ViewProblemComponent } from '@pages/problems/view-problem/view-problem.component';
 import { ProblemViewComponent } from './modules/components/problems/problem-view/problem-view.component';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatIconModule} from "@angular/material/icon";
+import {MatListModule} from "@angular/material/list";
+import {MatButtonModule} from "@angular/material/button";
 
 @NgModule({
   declarations: [
@@ -69,6 +73,10 @@ import { ProblemViewComponent } from './modules/components/problems/problem-view
     FormsModule,
     ReactiveFormsModule,
     QuillModule.forRoot(),
+    MatExpansionModule,
+    MatIconModule,
+    MatListModule,
+    MatButtonModule
   ],
   providers: [
     UserService,

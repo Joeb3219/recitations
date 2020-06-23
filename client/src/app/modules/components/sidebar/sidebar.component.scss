@@ -14,7 +14,7 @@
 		font-weight: 500;
 		color: #333;
 		border-bottom: 1px solid grey;
-		background-color: #dbdbdb;
+		background-color: var(--grey);
 		padding: 4px;
 		cursor: pointer;
 	}
@@ -27,7 +27,7 @@
 
 		.nav-link {
 			margin-left: 5px;
-			background-color: #f8f9fa;
+			background-color: var(--grey);
 		}
 
 	}
@@ -37,4 +37,46 @@
 .feather {
 	height: 16px;
 	width: 16px;
+}
+
+.nav-item{
+  background-color: var(--light);
+}
+
+
+.card-header{
+  padding: .1rem;
+}
+
+
+.mat-expansion-panel-header{
+  /* styles that were added to panel before */
+  background: var(--grey);
+}
+
+//.mat-divider {
+//  margin: -.5rem;
+//}
+
+.mat-expansion-panel-header.mat-expanded,
+.mat-expansion-panel-header.mat-expanded:hover,
+.mat-expansion-panel-header.mat-expanded:focus {
+  background-color: var(--grey);
+}
+
+
+
+.link-style{
+  font-size: 1rem;
+  //font-weight: bolder;
+}
+
+//.badge-pill:hover{
+//  color: var(--primary);
+//  font-weight: bold;
+//}
+
+li{
+  margin-bottom: .1rem;
+  margin-top: .1rem;
 }

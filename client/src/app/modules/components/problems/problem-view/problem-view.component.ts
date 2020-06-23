@@ -13,25 +13,30 @@ export class ProblemViewComponent implements OnInit {
   constructor() {
   }
 
-  isEditProblemModalOpen=false;
+  isEditProblemModalOpen = false;
   @Input() problem: Problem;
   creator: string;
-  showSolution =false;
+  showSolution = false;
   solutionButtonText = "Show Solution";
 
   // creator: User = this.problem.creator;
 
   ngOnInit() {
     this.creator = this.problem.creator.firstName + " " + this.problem.creator.lastName;
+
   }
+
+  // pillColor(){
+  //   document.getElementById("difficulty").style.background='#000000';
+  // }
 
   get problemDifficulty() {
     return ProblemDifficulty;
   }
 
   handleSolutionButton() {
-    this.showSolution=!this.showSolution;
-    this.showSolution? this.solutionButtonText="Hide Solution" :  this.solutionButtonText="Show Solution";
+    this.showSolution = !this.showSolution;
+    this.showSolution ? this.solutionButtonText = "Hide Solution" : this.solutionButtonText = "Show Solution";
   }
 
   handleOpenEditProblemModal() {
@@ -41,4 +46,8 @@ export class ProblemViewComponent implements OnInit {
   handleCloseEditProblemModal() {
     this.isEditProblemModalOpen = false
   }
+
+
+
+
 }

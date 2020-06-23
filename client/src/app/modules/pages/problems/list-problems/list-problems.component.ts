@@ -69,4 +69,8 @@ export class ListProblemsComponent implements OnInit {
   get problemDifficulty() {
     return ProblemDifficulty;
   }
+
+  deleteProblem(problem: Problem) {
+    //TODO
+  }
 }

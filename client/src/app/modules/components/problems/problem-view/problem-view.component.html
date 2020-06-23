@@ -1,18 +1,21 @@
 <ng-container>
 
-
   <h4 style="margin-left: .2rem"><b> {{problem.name}}</b></h4>
-  <span class="badge-pill badge-primary">
-    <b>Difficulty:</b> {{problemDifficulty[problem.difficulty]}}
+  <span [ngClass]="{
+    'pill-success':problem.difficulty == problemDifficulty.Easy,
+    'pill-warning':problem.difficulty == problemDifficulty.Medium,
+    'pill-danger':problem.difficulty == problemDifficulty.Hard
+  }" class="badge-pill pill-success" id="difficulty">
+    <b>Difficulty: </b>{{problemDifficulty[problem.difficulty]}}
       </span> &nbsp;
-  <span class="badge-pill badge-primary">
-    <b>Est.time to complete:</b> {{problem.estimatedDuration}} minutes
+  <span class="badge-pill badge-secondary">
+    <b>Time to complete:</b> {{problem.estimatedDuration}} minutes
       </span> &nbsp;
-  <span class="badge-pill badge-primary">
+  <span class="badge-pill badge-secondary">
     <b>Created by:</b> {{creator}}
       </span>
 
-  <button style="float: right" class="btn btn-secondary" (click)="handleSolutionButton()">{{solutionButtonText}}</button>
+  <button style="float: right" class="btn btn-primary" (click)="handleSolutionButton()">{{solutionButtonText}}</button>
   <button style="float: right; margin-right: .5rem" class="btn btn-light" (click)="handleOpenEditProblemModal()">Edit Problem</button>
 
 
@@ -39,3 +42,5 @@
   [problem]="problem"
   (onClose)="handleCloseEditProblemModal()"
 ></app-problem-edit>
+
+

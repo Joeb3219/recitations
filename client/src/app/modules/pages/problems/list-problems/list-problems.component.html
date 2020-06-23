@@ -9,7 +9,7 @@
     <div class="container">
       <div class="row">
         <div style="float: left" class="col">
-          <h4>{{ course.name }} Problems</h4>
+          <h4>{{course.name}} Problems</h4>
         </div>
         <div style="float: right; text-align: right" class="col">
           <button
@@ -37,7 +37,15 @@
       <tr
         *ngFor="let problem of problems">
         <td>{{ problem.name }}</td>
-        <td>{{problemDifficulty[problem.difficulty]}}</td>
+        <td>
+<!--          {{problemDifficulty[problem.difficulty]}}-->
+          <span [ngClass]="{
+          'pill-success':problem.difficulty == problemDifficulty.Easy,
+          'pill-warning':problem.difficulty == problemDifficulty.Medium,
+          'pill-danger':problem.difficulty == problemDifficulty.Hard}" class="badge-pill pill-success" id="difficulty">
+          {{problemDifficulty[problem.difficulty]}}
+            </span>
+        </td>
         <td>{{ problem.estimatedDuration }} minutes</td>
         <td>
           <app-user-badge
@@ -45,16 +53,13 @@
           </app-user-badge>
         </td>
         <td>
-          <div class="btn-group btn-group" data-toggle="buttons">
+          <div class="btn-group btn-group-sm" data-toggle="buttons">
             <a class="btn btn-outline-secondary"
                routerLink="/courses/{{ course.id }}/problems/{{problem.id}}">View</a>
             <a class="btn btn-outline-secondary" [routerLink]=""
                (click)="handleOpenEditProblemModal(problem)">Modify</a>
-            <a class="btn btn-outline-secondary" [routerLink]="">Delete</a>
+            <a (click)="deleteProblem(problem)" class="btn btn-outline-secondary" [routerLink]="">Delete</a>
           </div>
-          <!--          <a class="btn btn-dark" routerLink="/courses/{{ course.id }}/problems/{{problem.id}}">View</a>-->
-          <!--          <a class="btn btn-dark" [routerLink]="" (click)="handleOpenEditProblemModal(problem)">Modify</a>-->
-          <!--          <a class="btn btn-dark" [routerLink]="" >Delete</a>-->
         </td>
       </tr>
       </tbody>
@@ -68,3 +73,5 @@
   [problem]="selectedEditProblem"
   (onClose)="handleCloseEditProblemModal()"
 ></app-problem-edit>
+
+

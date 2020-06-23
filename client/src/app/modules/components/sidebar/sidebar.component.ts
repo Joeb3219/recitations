@@ -41,7 +41,7 @@ export class SidebarComponent implements OnInit {
 				// ensure this event describes a URL change
 				if(event && event["url"]){
 					this.setActiveCourseFromRouter()
-				}				
+				}
 			}
 		})
 	}
@@ -51,8 +51,8 @@ export class SidebarComponent implements OnInit {
 	setActiveCourseFromRouter(){
 		const url = this.router.url
 		this.userCourses.forEach((course) => {
-			// this slug is the prefix to the URL that would indicate that this course is 
-			// currently active/being worked in. 
+			// this slug is the prefix to the URL that would indicate that this course is
+			// currently active/being worked in.
 			const slug = `/courses/${course.id}`
 			if(url.indexOf(slug) == 0){
 				this.selectedCourse = course
@@ -61,10 +61,24 @@ export class SidebarComponent implements OnInit {
 	}
 
 	// toggles what the currently selected course is
-	// this function is triggered by the UI element. 
+	// this function is triggered by the UI element.
 	handleToggleActiveCourse(course: Course){
 		if(this.selectedCourse && this.selectedCourse.id == course.id) this.selectedCourse = null
 		else this.selectedCourse = course
 	}
+
+  step = 0;
+
+  setStep(index: number) {
+    this.step = index;
+  }
+
+  nextStep() {
+    this.step++;
+  }
+
+  prevStep() {
+    this.step--;
+  }
 
 }

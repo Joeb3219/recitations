@@ -1,13 +1,13 @@
 <ng-template #header>
-	<ng-content select="[title]">		
+	<ng-content select="[title]">
 	</ng-content>
 </ng-template>
 <ng-template #body>
-	<ng-content select="[body]">		
+	<ng-content select="[body]">
 	</ng-content>
 </ng-template>
 <ng-template #footer>
-	<ng-content select="[footer]">		
+	<ng-content select="[footer]">
 	</ng-content>
 </ng-template>
 
@@ -23,7 +23,7 @@
 		</ng-container>
 	</div>
 	<div class="modal-footer">
-		<button type="button" class="btn btn-outline-dark" (click)="closeModal()">Close</button>
+		<button type="button" class="btn btn-outline-dark" (click)="closeModal()">Cancel</button>
 		<ng-container *ngTemplateOutlet="footer">
 		</ng-container>
 	</div>

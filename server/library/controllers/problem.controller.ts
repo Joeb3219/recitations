@@ -15,6 +15,13 @@ export class ProblemController{
 		return await repo(Problem).find({ course: params.courseID })
 	}
 
+	@GetRequest('/problem/:problemID')
+	async getProblem({ params, repo }) {
+		const problemID = params.problemID;
+		return await repo(Problem).findOne({ id: problemID })
+	}
+
+
 	@PostRequest('/problem')
 	async createProblem({ body, currentUser, repo }) {
 		let {

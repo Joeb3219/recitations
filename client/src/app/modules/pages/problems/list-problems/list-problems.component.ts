@@ -7,13 +7,14 @@ import { ProblemService } from '@services/problem.service';
 
 import { Course } from '@models/course'
 import { Problem } from '@models/problem'
+import {ProblemDifficulty} from "@enums/problemDifficulty.enum";
 
 @Component({
-  selector: 'app-view-problems',
-  templateUrl: './view-problems.component.html',
-  styleUrls: ['./view-problems.component.scss']
+  selector: 'app-list-problems',
+  templateUrl: './list-problems.component.html',
+  styleUrls: ['./list-problems.component.scss']
 })
-export class ViewProblemsComponent implements OnInit {
+export class ListProblemsComponent implements OnInit {
   	course: Course
   	problems: Problem[]
   	isLoading: boolean = true
@@ -43,7 +44,7 @@ export class ViewProblemsComponent implements OnInit {
 		this.selectedEditProblem = new Problem()
 		this.selectedEditProblem.course = this.course;
 	}
-	
+
 	handleCloseEditProblemModal() {
 		this.isEditProblemModalOpen = false
 
@@ -64,4 +65,8 @@ export class ViewProblemsComponent implements OnInit {
 		this.isEditProblemModalOpen = true
 		this.selectedEditProblem = problem
 	}
+
+  get problemDifficulty() {
+    return ProblemDifficulty;
+  }
 }

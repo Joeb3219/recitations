@@ -3,8 +3,35 @@
 @import '~ngx-toastr/toastr';
 @import '~quill/dist/quill.bubble.css';
 @import '~quill/dist/quill.snow.css';
+
+
 // @import '~ngx-toastr/toastr-bs4-alert';
 
 fa-icon {
-	cursor: pointer;
+  cursor: pointer;
 }
+
+
+.divider-sm {
+  height: 1rem;
+}
+
+.divider-md {
+  height: 2rem;
+}
+
+.rounded-container {
+  border-radius: 1.25rem;
+  background-color: #ebebeb;
+  padding: 0.75rem;
+}
+
+$theme-colors: (
+  "primary": #CC0033,
+  "danger": #ff4444,
+  "secondary": #5f6a72,
+  "light": #ebebeb
+);
+
+
+@import "../node_modules/bootstrap/scss/bootstrap";

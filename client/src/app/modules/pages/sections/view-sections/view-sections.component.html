@@ -33,7 +33,7 @@
         <th>TA</th>
         <th>Professor</th>
         <th>Meeting Times</th>
-        <th>Modify</th>
+        <th>Actions</th>
       </tr>
       </thead>
       <tbody>
@@ -52,7 +52,12 @@
           </app-user-badge>
         </td>
         <td>{{ section.meetingTimes.length }}</td>
-        <td><a [routerLink]="" (click)="handleOpenEditSectionModal(section)">Modify </a></td>
+        <td>
+          <div class="btn-group btn-group-sm" data-toggle="buttons">
+            <a class="btn btn-outline-secondary" [routerLink]="" (click)="handleOpenEditSectionModal(section)">Modify</a>
+            <a class="btn btn-outline-secondary" (click)="handleOpenDeleteSectionModal(section)" [routerLink]="">Delete</a>
+          </div>
+        </td>
       </tr>
       </tbody>
     </table>
@@ -62,6 +67,13 @@
 
 <app-section-edit
   [isVisible]="isEditSectionModalOpen"
-  [(section)]="selectedEditSection"
+  [section]="selectedEditSection"
   (onClose)="handleCloseEditSectionModal()"
->
+></app-section-edit>
+
+
+<app-section-delete
+  [isVisible]="isDeleteSectionModalOpen"
+  [section]="selectedDeleteSection"
+  (onClose)="handleCloseDeleteSectionModal($event)"
+></app-section-delete>

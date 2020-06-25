@@ -1,62 +1,61 @@
 .sidebar {
-	position: absolute;
-	top: 40px;
-	bottom: 0;
-	left: 0;
-	z-index: 100;
-	padding: 0px;
-	width: 200px;
-	min-height: 100%;
-	display: block !important;
-	box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+  position: absolute;
+  top: 2.5rem;
+  bottom: 0;
+  left: 0;
+  z-index: 100;
+  padding: 0;
+  width: 12rem;
+  min-height: 100%;
+  display: block !important;
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
 
-	.nav-link {
-		font-weight: 500;
-		color: #333;
-		border-bottom: 1px solid grey;
-		background-color: var(--grey);
-		padding: 4px;
-		cursor: pointer;
-	}
+  .nav-link {
+    font-weight: 500;
+    color: #333;
+    border-bottom: 1px solid grey;
+    background-color: var(--grey);
+    padding: 4px;
+    //cursor: pointer;
+  }
 
-	.submenu {
+  .submenu {
 
-		padding: 0px;
-	    list-style-type: none;
-		margin-right: 1px;
+    padding: 0;
+    list-style-type: none;
+    margin-right: 1px;
 
-		.nav-link {
-			margin-left: 5px;
-			background-color: var(--grey);
-		}
+    .nav-link {
+      margin-left: 5px;
+      background-color: var(--grey);
+    }
 
-	}
+  }
 
 }
 
 .feather {
-	height: 16px;
-	width: 16px;
+  height: 16px;
+  width: 16px;
 }
 
-.nav-item{
+.nav-item {
   background-color: var(--light);
 }
 
 
-.card-header{
+.card-header {
   padding: .1rem;
 }
 
 
-.mat-expansion-panel-header{
+.mat-expansion-panel-header {
   /* styles that were added to panel before */
   background: var(--grey);
+  font-size: 1.09rem;
 }
 
-//.mat-divider {
-//  margin: -.5rem;
-//}
+
 
 .mat-expansion-panel-header.mat-expanded,
 .mat-expansion-panel-header.mat-expanded:hover,
@@ -65,18 +64,15 @@
 }
 
 
-
-.link-style{
-  font-size: 1rem;
-  //font-weight: bolder;
+.link-style {
+  font-size: 1.1rem;
+  font-weight: normal;
+  margin-left: -0.7rem;
 }
 
-//.badge-pill:hover{
-//  color: var(--primary);
-//  font-weight: bold;
-//}
 
-li{
+
+li {
   margin-bottom: .1rem;
   margin-top: .1rem;
 }

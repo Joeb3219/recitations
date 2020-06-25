@@ -1,4 +1,4 @@
-import { Controller, GetRequest, PostRequest, PutRequest } from '../decorators';
+import {Controller, DeleteRequest, GetRequest, PostRequest, PutRequest} from '../decorators';
 import { pickBy } from 'lodash'
 import * as Boom from '@hapi/boom';
 
@@ -20,6 +20,14 @@ export class ProblemController{
 		const problemID = params.problemID;
 		return await repo(Problem).findOne({ id: problemID })
 	}
+
+
+	@DeleteRequest('/problem/:problemID')
+	async deleteProblem({ params, repo }) {
+		const problemID = params.problemID;
+		return await repo(Problem).delete({ id: problemID })
+	}
+
 
 
 	@PostRequest('/problem')

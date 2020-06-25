@@ -1,6 +1,7 @@
 <ng-container>
 
   <h4 style="margin-left: .2rem"><b> {{problem.name}}</b></h4>
+  <div class="divider-xs"></div>
   <span [ngClass]="{
     'pill-success':problem.difficulty == problemDifficulty.Easy,
     'pill-warning':problem.difficulty == problemDifficulty.Medium,
@@ -9,10 +10,10 @@
     <b>Difficulty: </b>{{problemDifficulty[problem.difficulty]}}
       </span> &nbsp;
   <span class="badge-pill badge-secondary">
-    <b>Time to complete:</b> {{problem.estimatedDuration}} minutes
+    <b>Time to complete:</b> {{problem.estimatedDuration}} {{getMinuteUnit(problem.estimatedDuration)}}
       </span> &nbsp;
   <span class="badge-pill badge-secondary">
-    <b>Created by:</b> {{creator}}
+    <b>Created by:</b> {{userFullName}}
       </span>
 
   <button style="float: right" class="btn btn-primary" (click)="handleSolutionButton()">{{solutionButtonText}}</button>
@@ -26,7 +27,7 @@
   </div>
 
 
-  <div *ngIf="showSolution">
+  <div class="solution" *ngIf="showSolution"  [@inOutAnimation] >
     <div class="divider-sm"></div>
     <div class="rounded-container">
       <h5>Solution</h5>

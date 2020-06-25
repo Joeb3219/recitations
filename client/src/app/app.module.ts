@@ -38,6 +38,10 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import {MatIconModule} from "@angular/material/icon";
 import {MatListModule} from "@angular/material/list";
 import {MatButtonModule} from "@angular/material/button";
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { ProblemDeleteComponent } from './modules/components/problems/problem-delete/problem-delete.component';
+import { SectionDeleteComponent } from './modules/components/sections/section-delete/section-delete.component';
+
 
 @NgModule({
   declarations: [
@@ -61,6 +65,8 @@ import {MatButtonModule} from "@angular/material/button";
     ListProblemsComponent,
     ViewProblemComponent,
     ProblemViewComponent,
+    ProblemDeleteComponent,
+    SectionDeleteComponent,
   ],
   imports: [
     HttpClientModule,
@@ -76,7 +82,8 @@ import {MatButtonModule} from "@angular/material/button";
     MatExpansionModule,
     MatIconModule,
     MatListModule,
-    MatButtonModule
+    MatButtonModule,
+    ModalModule.forRoot()
   ],
   providers: [
     UserService,

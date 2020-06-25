@@ -75,6 +75,19 @@ export class ProblemService {
 
   }
 
+  public async deleteProblem(problemID: string): Promise<{}>{
+    const url = `${environment.apiURL}/problem/${problemID}`;
+
+    return new Promise((resolve, reject) => {
+      this.http.delete(url, { headers: this.getHeaders() }).subscribe((result: { data: Problem }) => {
+        if(result) resolve(result.data)
+        else reject(new Error("No result returned"))
+      }, (err) => {
+        reject(err)
+      })
+    })
+  }
+
 
 
 

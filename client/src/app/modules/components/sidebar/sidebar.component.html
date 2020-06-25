@@ -1,66 +1,15 @@
 <nav class="col-md-2 d-none d-md-block bg-light sidebar position-fixed">
 
-  <!--  <ul class="nav flex-column ">-->
-  <!--    <li class="nav-item" *ngFor="let course of userCourses">-->
-  <!--      <div class="nav-link" (click)="handleToggleActiveCourse(course)">-->
-  <!--        &lt;!&ndash;        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"&ndash;&gt;-->
-  <!--        &lt;!&ndash;             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"&ndash;&gt;-->
-  <!--        &lt;!&ndash;             class="feather feather-home">&ndash;&gt;-->
-  <!--        &lt;!&ndash;          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>&ndash;&gt;-->
-  <!--        &lt;!&ndash;          <polyline points="9 22 9 12 15 12 15 22"></polyline>&ndash;&gt;-->
-  <!--        &lt;!&ndash;        </svg>&ndash;&gt;-->
-  <!--        <b>{{ course.name }}</b>-->
-  <!--      </div>-->
-
-  <!--      <ul-->
-  <!--        class="nav flex-column"-->
-  <!--        *ngIf="selectedCourse && selectedCourse.id == course.id">-->
-
-  <!--        <li class="nav-item nav-link">-->
-  <!--          <a routerLink="/courses/{{ course.id }}">-->
-  <!--            Home-->
-  <!--          </a>-->
-  <!--        </li>-->
-
-  <!--        <li class=" nav-item nav-link ">-->
-  <!--          <a routerLink="/courses/{{ course.id }}/sections">-->
-  <!--            Sections-->
-  <!--          </a>-->
-  <!--        </li>-->
-
-  <!--        <li class="nav-item nav-link">-->
-  <!--          <a routerLink="/courses/{{ course.id }}/problems">-->
-  <!--            Problems-->
-  <!--          </a>-->
-  <!--        </li>-->
-
-  <!--      </ul>-->
-
-  <!--    </li>-->
-  <!--  </ul>-->
-
 
   <mat-accordion *ngFor="let course of userCourses; let i = index" class="example-headers-align">
     <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)" hideToggle
                          class="mat-expansion-panel mat-elevation-z1">
       <mat-expansion-panel-header [collapsedHeight]="'2.25rem'" [expandedHeight]="'2.75rem'"
-                                  (click)="handleToggleActiveCourse(course)" routerLink="/courses/{{ course.id }}">
+                                  (click)="handleToggleActiveCourse(course)" >
         <mat-panel-title>
           <strong>{{userCourses[i].name}}</strong>
         </mat-panel-title>
-        <!--        <mat-panel-description>-->
-        <!--          <mat-icon aria-hidden="false" aria-label="Example home icon">home</mat-icon>-->
-        <!--        </mat-panel-description>-->
       </mat-expansion-panel-header>
-
-<!--      <mat-list>-->
-<!--        <mat-list-item><a routerLink="/courses/{{ course.id }}">Home</a></mat-list-item>-->
-<!--        &lt;!&ndash;        <mat-divider></mat-divider>&ndash;&gt;-->
-<!--        <mat-list-item><a routerLink="/courses/{{ course.id }}/sections">Sections</a></mat-list-item>-->
-<!--        &lt;!&ndash;        <mat-divider></mat-divider>&ndash;&gt;-->
-<!--        <mat-list-item><a routerLink="/courses/{{ course.id }}/problems">Problems</a></mat-list-item>-->
-<!--      </mat-list>-->
-
 
       <ul class = "nav flex-column">
         <li><a class = "badge badge-pill link-style" routerLink="/courses/{{ course.id }}">Home</a>

@@ -39,6 +39,10 @@ fa-icon {
   cursor: pointer;
 }
 
+.divider-xs{
+  height: 0.5rem;
+}
+
 .divider-sm {
   height: 1rem;
 }
@@ -121,16 +125,22 @@ $colors: (
 
 .mat-expansion-panel-content > .mat-expansion-panel-body {   padding-bottom: 0; }
 
-//.mat-expansion-panel-header.mat-expanded {margin-bottom: -1rem;}
-
-//.mat-expansion-panel-body {
-//  padding: 0 0 0;
-//  margin: 0 0 0;
-//  overflow: auto;
-//}
 
 
 @import "../node_modules/bootstrap/scss/bootstrap";
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: Lato, "Helvetica Neue", sans-serif; }
+
+
+//MODAL STYLES
+.modal-holder{
+  animation-name: example;
+  animation-duration: 0.3s;
+}
+
+@keyframes example {
+  0%   {transform: scale(0.6)}
+  75%  {transform: scale(1.03)}
+  100% {transform: scale(1)}
+}

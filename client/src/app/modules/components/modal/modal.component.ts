@@ -1,6 +1,7 @@
 import { ViewChild, Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
-import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import {animate, style, transition, trigger} from "@angular/animations";
 
 @Component({
   selector: 'app-modal',
@@ -37,7 +38,8 @@ export class ModalComponent implements OnInit {
 		setTimeout(() => {
 			this.openedModal = this.modalService.open(this.modal, {
 				backdrop: 'static',
-				size: 'lg'
+				size: this.modalSize,
+        windowClass: 'modal-holder'
 			})
 
 			this.openedModal.result.then(() => {

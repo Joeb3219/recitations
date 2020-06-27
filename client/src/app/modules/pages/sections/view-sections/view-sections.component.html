@@ -6,7 +6,7 @@
   <ng-container *ngIf="course">
 
     <div class="divider-sm"></div>
-    <div class="container">
+    <div class="container-margin">
       <div class="row">
         <div style="float: left" class="col">
           <h4>{{ course.name }} Sections</h4>
@@ -21,46 +21,47 @@
         </div>
       </div>
     </div>
-    <div class="divider-sm"></div>
+<!--    <div class="divider-sm"></div>-->
 
 
-
-    <table class="table table-striped">
-      <thead>
-      <tr>
-        <th>Section Number</th>
-        <th>Index Code</th>
-        <th>TA</th>
-        <th>Professor</th>
-        <th>Meeting Times</th>
-        <th>Actions</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr
-        *ngFor="let section of sections">
-        <td>{{ section.sectionNumber }}</td>
-        <td>{{ section.index }}</td>
-        <td>
-          <app-user-badge
-            [user]="section.ta">
-          </app-user-badge>
-        </td>
-        <td>
-          <app-user-badge
-            [user]="section.professor">
-          </app-user-badge>
-        </td>
-        <td>{{ section.meetingTimes.length }}</td>
-        <td>
-          <div class="btn-group btn-group-sm" data-toggle="buttons">
-            <a class="btn btn-outline-secondary" [routerLink]="" (click)="handleOpenEditSectionModal(section)">Modify</a>
-            <a class="btn btn-outline-secondary" (click)="handleOpenDeleteSectionModal(section)" [routerLink]="">Delete</a>
-          </div>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+    <div class="container-margin">
+      <table class="table table-striped">
+        <thead>
+        <tr>
+          <th>Section Number</th>
+          <th>Index Code</th>
+          <th>TA</th>
+          <th>Professor</th>
+          <th>Meeting Times</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr
+          *ngFor="let section of sections">
+          <td>{{ section.sectionNumber }}</td>
+          <td>{{ section.index }}</td>
+          <td>
+            <app-user-badge
+              [user]="section.ta">
+            </app-user-badge>
+          </td>
+          <td>
+            <app-user-badge
+              [user]="section.professor">
+            </app-user-badge>
+          </td>
+          <td>{{ section.meetingTimes.length }}</td>
+          <td>
+            <div class="btn-group btn-group-sm" data-toggle="buttons">
+              <a class="btn btn-outline-secondary" [routerLink]="" (click)="handleOpenEditSectionModal(section)">Modify</a>
+              <a class="btn btn-outline-secondary" (click)="handleOpenDeleteSectionModal(section)" [routerLink]="">Delete</a>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
 
   </ng-container>
 </div>

@@ -85,7 +85,7 @@ export class ListProblemsComponent implements OnInit {
   }
 
   getMinuteUnit(estimatedDuration: number) {
-    return helperMethods.getMinuteUnitHelper(estimatedDuration);
+    return helperMethods.getMinuteUnit(estimatedDuration);
   }
 
   get problemDifficulty() {

@@ -41,6 +41,8 @@ import {MatButtonModule} from "@angular/material/button";
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ProblemDeleteComponent } from './modules/components/problems/problem-delete/problem-delete.component';
 import { SectionDeleteComponent } from './modules/components/sections/section-delete/section-delete.component';
+import { CourseSettingsComponent } from '@pages/course-settings/course-settings.component';
+import {MatTabsModule} from "@angular/material/tabs";
 
 
 @NgModule({
@@ -67,6 +69,7 @@ import { SectionDeleteComponent } from './modules/components/sections/section-de
     ProblemViewComponent,
     ProblemDeleteComponent,
     SectionDeleteComponent,
+    CourseSettingsComponent,
   ],
   imports: [
     HttpClientModule,
@@ -83,7 +86,8 @@ import { SectionDeleteComponent } from './modules/components/sections/section-de
     MatIconModule,
     MatListModule,
     MatButtonModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    MatTabsModule
   ],
   providers: [
     UserService,

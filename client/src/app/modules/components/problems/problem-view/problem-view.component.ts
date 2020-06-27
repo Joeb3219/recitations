@@ -47,8 +47,6 @@ export class ProblemViewComponent implements OnInit {
 
   ngOnInit() {
     this.userFullName = helperMethods.getUserFullName(this.problem.creator);
-      // this.problem.creator.firstName + " " + this.problem.creator.lastName;
-
   }
 
 
@@ -72,6 +70,6 @@ export class ProblemViewComponent implements OnInit {
 
 
   getMinuteUnit(estimatedDuration: number) {
-    return helperMethods.getMinuteUnitHelper(estimatedDuration);
+    return helperMethods.getMinuteUnit(estimatedDuration);
   }
 }

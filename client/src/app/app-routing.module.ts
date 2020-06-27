@@ -6,6 +6,7 @@ import { ViewCourseComponent } from '@pages/courses/view-course/view-course.comp
 import { ViewSectionsComponent } from '@pages/sections/view-sections/view-sections.component'
 import { ListProblemsComponent } from '@pages/problems/list-problems/list-problems.component'
 import {ViewProblemComponent} from "@pages/problems/view-problem/view-problem.component";
+import {CourseSettingsComponent} from "@pages/course-settings/course-settings.component";
 
 const routes: Routes = [
 
@@ -15,6 +16,8 @@ const routes: Routes = [
 	{ path: 'courses/:courseID/sections', component: ViewSectionsComponent },
 	{ path: 'courses/:courseID/problems', component: ListProblemsComponent },
   { path: 'courses/:courseID/problems/:problemID', component: ViewProblemComponent },
+  { path: 'courses/:courseID/settings', component: CourseSettingsComponent },
+
 
 ];
 

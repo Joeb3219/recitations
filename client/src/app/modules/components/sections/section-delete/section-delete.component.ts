@@ -4,7 +4,6 @@ import {Section} from "@models/section";
 import {SectionService} from "@services/section.service";
 import {ToastrService} from "ngx-toastr";
 import {User} from "@models/user";
-import {helperMethods} from "../../../../../../../common/helpers/helperMethods";
 
 @Component({
   selector: 'app-section-delete',
@@ -36,13 +35,12 @@ export class SectionDeleteComponent implements OnInit {
       this.onClose.emit(true);
       this.forceClose.next();
     } catch (err) {
-      console.error(err)
       this.toastr.error('Failed to delete section')
     }
   }
 
-  getUserFullName(user){
-    return helperMethods.getUserFullName(user);
+  getUserFullName(user: User){
+    return User.getFullName(user);
   }
 
 

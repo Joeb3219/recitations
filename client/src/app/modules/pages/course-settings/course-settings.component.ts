@@ -25,9 +25,6 @@ export class CourseSettingsComponent implements OnInit {
 
   isActiveTabDirty: boolean = false;
 
-  // activeTabIndex = new FormControl(0);
-  // activeTabCopy = new FormControl(0);
-
   isChangesModalVisible: boolean = false;
   forceClose: Subject<any> = new Subject<any>();
 
@@ -45,16 +42,11 @@ export class CourseSettingsComponent implements OnInit {
   }
 
   tabChanged(tabChangeEvent: MatTabChangeEvent) {
-    // console.log('tabChangeEvent => ', tabChangeEvent);
-    // console.log('index => ', tabChangeEvent.index);
-
     //TODO - check if active tab is dirty/has changes.
     // If so, then the following will prompt a modal to confirm the tab switch without saving
     // Maybe add an option to save the changes too?
     if (this.isActiveTabDirty) {
       this.tabToChangeToIndex = tabChangeEvent.index;
-      console.log("current tab: " + this.tabs[this.activeTabCopy]);
-      console.log("tab to go to is: " + this.tabs[this.tabToChangeToIndex]);
 
       if (this.activeTabCopy != this.tabToChangeToIndex) {
         this.isChangesModalVisible = true;
@@ -73,8 +65,7 @@ export class CourseSettingsComponent implements OnInit {
   }
 
   handleChangesModalAgree() {
-    console.log("agree change tab");
-    console.log("changing from " + this.tabs[this.activeTabIndex] + " to " + this.tabs[this.tabToChangeToCopy]);
+    //change tab from activeTabIndex to tabToChangeToCopy
     this.activeTabIndex = this.tabToChangeToCopy;
     this.activeTabCopy = this.activeTabIndex;
     this.forceClose.next();

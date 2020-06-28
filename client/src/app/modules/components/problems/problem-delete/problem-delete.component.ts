@@ -35,7 +35,6 @@ export class ProblemDeleteComponent implements OnInit {
       this.onClose.emit(true);
       this.forceClose.next();
     }catch(err){
-      console.error(err)
       this.toastr.error('Failed to delete problem')
     }
   }

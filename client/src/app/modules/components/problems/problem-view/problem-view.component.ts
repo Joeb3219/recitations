@@ -3,7 +3,6 @@ import {Problem} from "@models/problem";
 import {ProblemDifficulty} from "@enums/problemDifficulty.enum";
 import {User} from '@models/user'
 import {animate, style, transition, trigger} from "@angular/animations";
-import {helperMethods} from "../../../../../../../common/helpers/helperMethods";
 
 @Component({
   selector: 'app-problem-view',
@@ -46,7 +45,7 @@ export class ProblemViewComponent implements OnInit {
 
 
   ngOnInit() {
-    this.userFullName = helperMethods.getUserFullName(this.problem.creator);
+    this.userFullName = User.getFullName(this.problem.creator);
   }
 
 
@@ -68,8 +67,7 @@ export class ProblemViewComponent implements OnInit {
     this.isEditProblemModalOpen = false
   }
 
-
   getMinuteUnit(estimatedDuration: number) {
-    return helperMethods.getMinuteUnit(estimatedDuration);
+    return Problem.getMinuteUnit(estimatedDuration);
   }
 }

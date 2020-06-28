@@ -4,8 +4,7 @@
   <mat-accordion *ngFor="let course of userCourses; let i = index" class="example-headers-align">
     <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)"
                          class="mat-expansion-panel mat-elevation-z0">
-      <mat-expansion-panel-header [collapsedHeight]="'max-content'" [expandedHeight]="'max-content'"
-                                  (click)="handleToggleActiveCourse(course)">
+      <mat-expansion-panel-header [collapsedHeight]="'max-content'" [expandedHeight]="'max-content'">
         <mat-panel-title>
           <strong>{{userCourses[i].name}}</strong>
         </mat-panel-title>

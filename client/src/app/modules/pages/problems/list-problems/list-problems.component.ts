@@ -8,7 +8,6 @@ import {ProblemService} from '@services/problem.service';
 import {Course} from '@models/course'
 import {Problem} from '@models/problem'
 import {ProblemDifficulty} from "@enums/problemDifficulty.enum";
-import {helperMethods} from "../../../../../../../common/helpers/helperMethods";
 
 @Component({
   selector: 'app-list-problems',
@@ -86,7 +85,7 @@ export class ListProblemsComponent implements OnInit {
   }
 
   getMinuteUnit(estimatedDuration: number) {
-    return helperMethods.getMinuteUnit(estimatedDuration);
+    return Problem.getMinuteUnit(estimatedDuration);
   }
 
   get problemDifficulty() {

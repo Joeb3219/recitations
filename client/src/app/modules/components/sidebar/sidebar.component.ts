@@ -88,13 +88,6 @@ export class SidebarComponent implements OnInit {
     }
   }
 
-  // toggles what the currently selected course is
-  // this function is triggered by the UI element.
-  handleToggleActiveCourse(course: Course) {
-    // if (this.selectedCourse && this.selectedCourse.id == course.id) this.selectedCourse = null
-    // else this.selectedCourse = course
-  }
-
   step = 0;
 
   setStep(index: number) {

@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {BehaviorSubject} from 'rxjs';
 
@@ -13,6 +13,7 @@ import {helperMethods} from "../../../../../../../common/helpers/helperMethods";
 @Component({
   selector: 'app-list-problems',
   templateUrl: './list-problems.component.html',
+  encapsulation: ViewEncapsulation.None,
   styleUrls: ['./list-problems.component.scss']
 })
 export class ListProblemsComponent implements OnInit {

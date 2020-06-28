@@ -17,7 +17,7 @@ export class CourseSettingsComponent implements OnInit {
 
   course: Course;
   isLoading: boolean = true;
-  tabs = ["Configurations", "Gradebook", "Weeks", "LAs", "Instructors", "Learning Goals", "Reports", "Quizzes"];
+  tabs = ["Configurations", "Gradebook", "Weeks", "LAs", "Instructors", "Learning Goals", "Reports", "Quizzes", "Roster"];
   activeTabIndex: number = 0;
   activeTabCopy: number = 0;
   tabToChangeToCopy: number;

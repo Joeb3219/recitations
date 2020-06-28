@@ -17,7 +17,7 @@ export class SidebarComponent implements OnInit {
   userCourses: Course[] = []
   selectedCourse: Course = null
   activeLink: number;
-  links=["home", "sections", "problems", "settings"];
+  links = ["home", "recitations", "sections", "problems", "coverage-requests", "settings"];
 
   constructor(
     private _userService: UserService,
@@ -70,15 +70,21 @@ export class SidebarComponent implements OnInit {
   setActiveNavLinkFromRouter() {
     const url = this.router.url;
     if (this.selectedCourse) {
+
       const slug = `/courses/${this.selectedCourse.id}`;
-      const page = url.substr(slug.length+1);
 
-      this.activeLink=this.links.indexOf(page);
-      if(page==""){
-        this.activeLink=0;
+      //cut off the base url to see what page the user is on
+      let page = url.substr(slug.length + 1);
+
+      //if the route contains anything after the active page, chop it off
+      if(page.indexOf("/")!=-1){
+        page=page.substr(0,page.indexOf("/"));
       }
-      // console.log('page: ' + this.links[this.activeLink]);
 
+      this.activeLink = this.links.indexOf(page);
+      if (page == "") {
+        this.activeLink = 0;
+      }
     }
   }
 

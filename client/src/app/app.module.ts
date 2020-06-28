@@ -43,6 +43,8 @@ import { ProblemDeleteComponent } from './modules/components/problems/problem-de
 import { SectionDeleteComponent } from './modules/components/sections/section-delete/section-delete.component';
 import { CourseSettingsComponent } from '@pages/course-settings/course-settings.component';
 import {MatTabsModule} from "@angular/material/tabs";
+import { CoverageRequestsComponent } from './modules/pages/coverage-requests/coverage-requests.component';
+import { RecitationsComponent } from './modules/pages/recitations/recitations.component';
 
 
 @NgModule({
@@ -70,6 +72,8 @@ import {MatTabsModule} from "@angular/material/tabs";
     ProblemDeleteComponent,
     SectionDeleteComponent,
     CourseSettingsComponent,
+    CoverageRequestsComponent,
+    RecitationsComponent,
   ],
   imports: [
     HttpClientModule,

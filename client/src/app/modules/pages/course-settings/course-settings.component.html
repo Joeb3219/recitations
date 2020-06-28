@@ -48,6 +48,11 @@
           {{tabs[7]}}
         </div>
       </mat-tab>
+      <mat-tab label="{{tabs[8]}}" [ngStyle]="{'display': activeTabIndex === 8 ? 'block' : 'none'}">
+        <div class="container-margin">
+          {{tabs[8]}}
+        </div>
+      </mat-tab>
     </mat-tab-group>
 
     <h6>Active Tab: {{tabs[activeTabIndex]}}</h6>

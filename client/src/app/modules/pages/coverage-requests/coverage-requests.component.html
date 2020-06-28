@@ -1,0 +1,9 @@
+<div class="page" style="padding: 1rem">
+  <ng-container
+    *ngIf="!isLoading && !course">
+    <h4>Not Found</h4>
+  </ng-container>
+  <ng-container *ngIf="course">
+    <h4>{{course.name}} - Coverage Requests</h4>
+  </ng-container>
+</div>

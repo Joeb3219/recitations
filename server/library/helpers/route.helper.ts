@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import { Response, Request } from 'express';
 import * as Boom from '@hapi/boom';
 import { get } from 'lodash';
@@ -8,6 +9,7 @@ import { isAuthenticated } from '@helpers/auth/auth.helper'
 function httpMiddleware(target, method, route) {
 	return async function (req: Request, res: Response) {
 		try{
+			console.log({ method, route })
 			const result = await target({
 				body: req.body,
 				repo: res.locals.repo,
@@ -35,12 +37,14 @@ function httpMiddleware(target, method, route) {
 	}
 }
 
-export function generateRoute(app, data) {
+export function generateRoute(app, data, controller) {
 	const { target, method, route, propertyKey } = data;
 	const middlewares = [];
 	const providedFunction = target[propertyKey].bind(target);
 
-	middlewares.push(isAuthenticated);
+	const isUnauthenticated = Reflect.getMetadata("unauthenticated", controller) || false;
+
+	if(!isUnauthenticated) middlewares.push(isAuthenticated);
 	middlewares.push(httpMiddleware(providedFunction, method, route));
 
 	app.route(route)[method](...middlewares);

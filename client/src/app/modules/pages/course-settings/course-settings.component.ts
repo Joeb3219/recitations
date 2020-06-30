@@ -17,9 +17,11 @@ export class CourseSettingsComponent implements OnInit {
 
   course: Course;
   isLoading: boolean = true;
-  tabs = ["Configurations", "Gradebook", "Weeks", "LAs", "Instructors", "Learning Goals", "Reports", "Quizzes", "Roster"];
+  tabs = ["Configurations","Roles", "Gradebook", "Weeks", "LAs", "Instructors", "Learning Goals", "Reports", "Quizzes", "Roster"];
+
   activeTabIndex: number = 0;
   activeTabCopy: number = 0;
+
   tabToChangeToCopy: number;
   tabToChangeToIndex: number;
 
@@ -70,5 +72,6 @@ export class CourseSettingsComponent implements OnInit {
     this.activeTabCopy = this.activeTabIndex;
     this.forceClose.next();
   }
+
 
 }

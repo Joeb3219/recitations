@@ -8,7 +8,10 @@ import { Meetable } from '@models/meetable'
 
 @ChildEntity()
 export class Section extends Meetable implements SectionInterface {
-	
+
+	@PrimaryGeneratedColumn("uuid")
+	public id: string
+
 	@Column()
 	public index: string
 

@@ -65,7 +65,7 @@ export class ProblemEditComponent implements OnInit {
 			type: 'number',
 			name: 'estimatedDuration',
 			value: get(this, 'problem.estimatedDuration'),
-			label: 'Estimated Duration (minutes)',
+			label: 'Estimated Duration (minutes)'
 		}]
 
 		console.log(get(this, 'problem'))

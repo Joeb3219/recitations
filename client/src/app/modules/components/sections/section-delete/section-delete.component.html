@@ -1,0 +1,27 @@
+<app-modal
+  *ngIf="isVisible"
+  (onClose)="handleClose()"
+  [modalSize]="'md'"
+  [forceClose]="forceClose">
+
+  <span title>Delete Section</span>
+  <div body>
+    Are you sure you want to delete the following section:
+    <br>
+    <div class="section-style">
+      <div class="lead "><b>Section: {{section.sectionNumber}}</b></div>
+      <div class="lead "><b>Index: {{section.index}}</b></div>
+      <div class="lead "><b>Professor: {{getUserFullName(section.professor)}}</b></div>
+      <div class="lead "><b>TA: {{getUserFullName(section.ta)}}</b></div>
+    </div>
+  </div>
+  <div footer>
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="handleModalSubmit()">
+      Yes
+    </button>
+  </div>
+
+</app-modal>

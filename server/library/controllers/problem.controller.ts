@@ -1,4 +1,4 @@
-import { Controller, GetRequest, PostRequest, PutRequest } from '../decorators';
+import {Controller, DeleteRequest, GetRequest, PostRequest, PutRequest} from '../decorators';
 import { pickBy } from 'lodash'
 import * as Boom from '@hapi/boom';
 
@@ -14,6 +14,21 @@ export class ProblemController{
 		// we simply can query for all sections that have the given course id set as their course column
 		return await repo(Problem).find({ course: params.courseID })
 	}
+
+	@GetRequest('/problem/:problemID')
+	async getProblem({ params, repo }) {
+		const problemID = params.problemID;
+		return await repo(Problem).findOne({ id: problemID })
+	}
+
+
+	@DeleteRequest('/problem/:problemID')
+	async deleteProblem({ params, repo }) {
+		const problemID = params.problemID;
+		return await repo(Problem).delete({ id: problemID })
+	}
+
+
 
 	@PostRequest('/problem')
 	async createProblem({ body, currentUser, repo }) {

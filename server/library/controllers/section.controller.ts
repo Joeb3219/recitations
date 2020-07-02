@@ -32,7 +32,7 @@ export class SectionController{
 			index,
 			sectionNumber,
 			ta,
-			professor,
+			instructor,
 			meetingTimes,
 			course,
 		} = body
@@ -41,7 +41,7 @@ export class SectionController{
 			index,
 			sectionNumber,
 			ta,
-			professor,
+			instructor,
 			meetingTimes,
 			course,
 		}, (item) => { return item != 'undefined' && item != undefined })
@@ -58,7 +58,7 @@ export class SectionController{
 			index,
 			sectionNumber,
 			ta,
-			professor,
+			instructor,
 			meetingTimes,
 			course
 		} = body
@@ -67,7 +67,7 @@ export class SectionController{
 			index,
 			sectionNumber,
 			ta,
-			professor,
+			instructor,
 			meetingTimes,
 			course
 		}, (item) => { return item != 'undefined' && item != undefined })

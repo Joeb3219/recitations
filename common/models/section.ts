@@ -28,7 +28,7 @@ export class Section extends Meetable implements SectionInterface {
 	
 	@ManyToOne(type => User, { eager: true, cascade: true })
     @JoinColumn()
-	public professor?: User
+	public instructor?: User
 
 	@ManyToMany(type => User)
     @JoinTable()
@@ -41,7 +41,7 @@ export class Section extends Meetable implements SectionInterface {
 		course?: Course,
 		students?: User[],
 		ta?: User,
-		professor?: User
+		instructor?: User
 	} = {}){
 		super()
 		Object.assign(this, args)

@@ -52,7 +52,7 @@
             </app-user-badge>
           </td>
           <td>
-            <div class="btn-group btn-group-sm" data-toggle="buttons">
+            <div class="btn-group btn-group-sm" >
               <a class="btn btn-outline-secondary"  routerLink="/courses/{{ course.id }}/problems/{{problem.id}}" aria-label="view">View</a>
               <a class="btn btn-outline-secondary"  href="#" [routerLink]="" (click)="handleOpenEditProblemModal(problem)" aria-label="modify">Modify</a>
               <a class="btn btn-outline-secondary"  href="#"  (click)="handleOpenDeleteProblemModal(problem)"  [routerLink]="" aria-label="delete">Delete</a>

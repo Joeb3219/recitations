@@ -3,64 +3,72 @@
     *ngIf="!isLoading && !course">
     <h4>Not Found</h4>
   </ng-container>
-  <ng-container *ngIf="course">
+  <ng-container *ngIf="course&&sections">
     <h4>{{course.name}} Settings</h4>
 
-    <mat-tab-group animationDuration="0ms" mat-stretch-tabs [disableRipple]="true" #tabGroup
+    <mat-tab-group  animationDuration="0ms" mat-stretch-tabs [disableRipple]="true" #tabGroup
                    (selectedTabChange)="tabChanged($event)" [(selectedIndex)]="activeTabIndex">
+<!--      <mat-tab *ngFor="let tab of tabs; let i = index" label="{{tab.name}}">-->
+<!--        <div class="container-margin" [ngStyle]="{'display': activeTabIndex === i ? 'block' : 'none'}">-->
+<!--          <ng-container *ngComponentOutlet="tab.component; injector:tab.injector" ></ng-container>-->
+<!--        </div>-->
+<!--      </mat-tab>-->
+
       <mat-tab label="{{tabs[0]}}">
         <div class="container-margin" [ngStyle]="{'display': activeTabIndex === 0 ? 'block' : 'none'}">
-          {{tabs[0]}}
+          <app-configurations></app-configurations>
         </div>
       </mat-tab>
       <mat-tab label="{{tabs[1]}}" [ngStyle]="{'display': activeTabIndex === 1 ? 'block' : 'none'}">
         <div class="container-margin">
-          {{tabs[1]}}
+          <app-roles></app-roles>
         </div>
       </mat-tab>
       <mat-tab label="{{tabs[2]}}" [ngStyle]="{'display': activeTabIndex === 2 ? 'block' : 'none'}">
         <div class="container-margin">
-          {{tabs[2]}}
+          <app-gradebook></app-gradebook>
         </div>
       </mat-tab>
       <mat-tab label="{{tabs[3]}}" [ngStyle]="{'display': activeTabIndex === 3 ? 'block' : 'none'}">
         <div class="container-margin">
-          {{tabs[3]}}
+          <app-weeks></app-weeks>
         </div>
       </mat-tab>
       <mat-tab label="{{tabs[4]}}" [ngStyle]="{'display': activeTabIndex=== 4 ? 'block' : 'none'}">
         <div class="container-margin">
-          {{tabs[4]}}
+          <app-las [sections]="sections"></app-las>
         </div>
       </mat-tab>
       <mat-tab label="{{tabs[5]}}" [ngStyle]="{'display': activeTabIndex === 5 ? 'block' : 'none'}">
         <div class="container-margin">
-          {{tabs[5]}}
+          <app-instructors [sections]="sections"></app-instructors>
         </div>
       </mat-tab>
       <mat-tab label="{{tabs[6]}}" [ngStyle]="{'display': activeTabIndex === 6 ? 'block' : 'none'}">
         <div class="container-margin">
-          {{tabs[6]}}
+          <app-learning-goals></app-learning-goals>
         </div>
       </mat-tab>
       <mat-tab label="{{tabs[7]}}" [ngStyle]="{'display': activeTabIndex === 7 ? 'block' : 'none'}">
         <div class="container-margin">
-          {{tabs[7]}}
+          <app-reports></app-reports>
         </div>
       </mat-tab>
       <mat-tab label="{{tabs[8]}}" [ngStyle]="{'display': activeTabIndex === 8 ? 'block' : 'none'}">
         <div class="container-margin">
-          {{tabs[8]}}
+          <app-quizzes></app-quizzes>
         </div>
       </mat-tab>
       <mat-tab label="{{tabs[9]}}" [ngStyle]="{'display': activeTabIndex === 9 ? 'block' : 'none'}">
         <div class="container-margin">
-          {{tabs[9]}}
+          <app-roster></app-roster>
         </div>
       </mat-tab>
     </mat-tab-group>
 
-    <h6>Active Tab: {{tabs[activeTabIndex]}}</h6>
+
+    <div class="divider-md"></div><hr>
+    <h6  style="color: #b11a17; font-weight: bold">Active Tab: {{tabs[activeTabIndex] }}</h6>
   </ng-container>
 
 
@@ -75,7 +83,7 @@
 
   <span title>Unsaved Changes</span>
   <div body>
-    There are unsaved changes in the {{tabs[activeTabCopy]}} tab. Are you sure you want to switch tabs?
+    There are unsaved changes in the {{tabs[activeTabCopy].name}} tab. Are you sure you want to switch tabs?
   </div>
   <div footer>
     <button

@@ -1,16 +1,29 @@
-<div class = "header">
-	<nav class = "navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-		<span class = "navbar-brand col-sm-3 col-md-2 mr-0">Dynamic Recitation</span>
+<div class="header">
+  <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+<!--    <span class="navbar-brand col-sm-3 col-md-2 mr-0">Dynamic Recitation</span>-->
+    <a class="navbar-brand">Dynamic Recitation</a>
+<!--    <ul class="nav flex-column">-->
+<!--      <li-->
+<!--        *ngIf="user">-->
+<!--        Hello, {{ user.firstName }} {{ user.lastName }}. <a [routerLink]="['/login']">Sign Out?</a>-->
+<!--      </li>-->
+<!--      <li-->
+<!--        *ngIf="!user">-->
+<!--        <a [routerLink]="['/login']">Sign In</a>-->
+<!--      </li>-->
+<!--    </ul>-->
 
-		<ul class = "nav flex-column">
-			<li
-				*ngIf="user">
-				Hello, {{ user.firstName }} {{ user.lastName }}. <a [routerLink]="['/login']">Sign Out?</a>
-			</li>
-			<li
-				*ngIf="!user">
-				<a [routerLink]="['/login']">Sign In</a>
-			</li>
-		</ul>
-	</nav>
+    <form class="form-inline">
+      <span
+        *ngIf="user">
+        Hello, {{ user.firstName }} {{ user.lastName }}. <a [routerLink]="['/login']">Sign Out?</a>
+      </span>
+      <span
+        *ngIf="!user">
+        <a [routerLink]="['/login']">Sign In</a>
+      </span>
+    </form>
+
+
+  </nav>
 </div>

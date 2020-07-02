@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Injectable, Injector, OnInit, ReflectiveInjector} from '@angular/core';
 import {CourseService} from "@services/course.service";
 import {ProblemService} from "@services/problem.service";
 import {ActivatedRoute} from "@angular/router";
@@ -6,7 +6,30 @@ import {Course} from "@models/course";
 import {MatTabChangeEvent} from "@angular/material/tabs";
 import {Subject} from "rxjs";
 import {FormControl} from "@angular/forms";
+import {ConfigurationsComponent} from "@components/configurations/configurations.component";
+import {RolesComponent} from "@components/roles/roles.component";
+import {GradebookComponent} from "@components/gradebook/gradebook.component";
+import {WeeksComponent} from "@components/weeks/weeks.component";
+import {LasComponent} from "@components/las/las.component";
+import {InstructorsComponent} from "@components/instructors/instructors.component";
+import {LearningGoalsComponent} from "@components/learning-goals/learning-goals.component";
+import {ReportsComponent} from "@components/reports/reports.component";
+import {QuizzesComponent} from "@components/quizzes/quizzes.component";
+import {RosterComponent} from "@components/roster/roster.component";
+import {User} from "@models/user";
+import {Section} from "@models/section";
+import {SectionService} from "@services/section.service";
 
+@Injectable({
+  providedIn: 'root',
+})
+export class Item {
+  public content: any;
+
+  constructor(content) {
+    this.content = content;
+  }
+}
 
 @Component({
   selector: 'app-course-settings',
@@ -16,8 +39,9 @@ import {FormControl} from "@angular/forms";
 export class CourseSettingsComponent implements OnInit {
 
   course: Course;
+  sections: Section[];
   isLoading: boolean = true;
-  tabs = ["Configurations","Roles", "Gradebook", "Weeks", "LAs", "Instructors", "Learning Goals", "Reports", "Quizzes", "Roster"];
+  tabs: Array<any>;
 
   activeTabIndex: number = 0;
   activeTabCopy: number = 0;
@@ -30,17 +54,65 @@ export class CourseSettingsComponent implements OnInit {
   isChangesModalVisible: boolean = false;
   forceClose: Subject<any> = new Subject<any>();
 
-  constructor(private _courseService: CourseService,
-              private route: ActivatedRoute) {
+  constructor(private _courseService: CourseService, private _sectionService: SectionService,
+              private route: ActivatedRoute, private inj: Injector) {
   }
 
   ngOnInit() {
     this.route.params.subscribe(async (params) => {
       if (params['courseID']) {
         this.course = await this._courseService.getCourse(params['courseID']);
+        this.sections = await this._sectionService.getCourseSections(this.course);
+
+        this.tabs = ["Configurations", "Roles", "Gradebook", "Weeks", "LAs", "Instructors", "Learning Goals", "Reports", "Quizzes", "Roster"];
+        // this.tabs = [
+        //   {
+        //     name: "Configurations",
+        //     component: ConfigurationsComponent
+        //   },
+        //   {
+        //     name: "Roles",
+        //     component: RolesComponent
+        //   },
+        //   {
+        //     name: "Gradebook",
+        //     component: GradebookComponent
+        //   },
+        //   {
+        //     name: "Weeks",
+        //     component: WeeksComponent
+        //   },
+        //   {
+        //     name: "LAs",
+        //     component: LasComponent
+        //   },
+        //   {
+        //     name: "Instructors",
+        //     component: InstructorsComponent
+        //   },
+        //   {
+        //     name: "Learning Goals",
+        //     component: LearningGoalsComponent
+        //   },
+        //   {
+        //     name: "Reports",
+        //     component: ReportsComponent
+        //   },
+        //   {
+        //     name: "Quizzes",
+        //     component: QuizzesComponent
+        //   },
+        //   {
+        //     name: "Roster",
+        //     component: RosterComponent
+        //   }];
+
         this.isLoading = false;
       }
     });
+
+
+
   }
 
   tabChanged(tabChangeEvent: MatTabChangeEvent) {
@@ -74,4 +146,7 @@ export class CourseSettingsComponent implements OnInit {
   }
 
 
+  createInjector(tab: any) {
+
+  }
 }

@@ -14,7 +14,7 @@ export interface SectionInterface extends MeetableInterface {
 	course: CourseInterface; 	// the course that the section belongs to 
 
 	ta?: UserInterface; 	// the TA for the section
-	professor?: UserInterface;		// the professor for the section
+	instructor?: UserInterface;		// the instructor for the section
 	students?: UserInterface[];		// the students for the section
 
 }

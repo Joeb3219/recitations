@@ -1,0 +1,91 @@
+<div class="page" style="padding: 1rem">
+  <ng-container
+    *ngIf="!isLoading && !course">
+    <h4>Not Found</h4>
+  </ng-container>
+  <ng-container *ngIf="course">
+    <h4>{{course.name}} Settings</h4>
+
+    <mat-tab-group animationDuration="0ms" mat-stretch-tabs [disableRipple]="true" #tabGroup
+                   (selectedTabChange)="tabChanged($event)" [(selectedIndex)]="activeTabIndex">
+      <mat-tab label="{{tabs[0]}}">
+        <div class="container-margin" [ngStyle]="{'display': activeTabIndex === 0 ? 'block' : 'none'}">
+          {{tabs[0]}}
+        </div>
+      </mat-tab>
+      <mat-tab label="{{tabs[1]}}" [ngStyle]="{'display': activeTabIndex === 1 ? 'block' : 'none'}">
+        <div class="container-margin">
+          {{tabs[1]}}
+        </div>
+      </mat-tab>
+      <mat-tab label="{{tabs[2]}}" [ngStyle]="{'display': activeTabIndex === 2 ? 'block' : 'none'}">
+        <div class="container-margin">
+          {{tabs[2]}}
+        </div>
+      </mat-tab>
+      <mat-tab label="{{tabs[3]}}" [ngStyle]="{'display': activeTabIndex === 3 ? 'block' : 'none'}">
+        <div class="container-margin">
+          {{tabs[3]}}
+        </div>
+      </mat-tab>
+      <mat-tab label="{{tabs[4]}}" [ngStyle]="{'display': activeTabIndex=== 4 ? 'block' : 'none'}">
+        <div class="container-margin">
+          {{tabs[4]}}
+        </div>
+      </mat-tab>
+      <mat-tab label="{{tabs[5]}}" [ngStyle]="{'display': activeTabIndex === 5 ? 'block' : 'none'}">
+        <div class="container-margin">
+          {{tabs[5]}}
+        </div>
+      </mat-tab>
+      <mat-tab label="{{tabs[6]}}" [ngStyle]="{'display': activeTabIndex === 6 ? 'block' : 'none'}">
+        <div class="container-margin">
+          {{tabs[6]}}
+        </div>
+      </mat-tab>
+      <mat-tab label="{{tabs[7]}}" [ngStyle]="{'display': activeTabIndex === 7 ? 'block' : 'none'}">
+        <div class="container-margin">
+          {{tabs[7]}}
+        </div>
+      </mat-tab>
+      <mat-tab label="{{tabs[8]}}" [ngStyle]="{'display': activeTabIndex === 8 ? 'block' : 'none'}">
+        <div class="container-margin">
+          {{tabs[8]}}
+        </div>
+      </mat-tab>
+      <mat-tab label="{{tabs[9]}}" [ngStyle]="{'display': activeTabIndex === 9 ? 'block' : 'none'}">
+        <div class="container-margin">
+          {{tabs[9]}}
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+
+    <h6>Active Tab: {{tabs[activeTabIndex]}}</h6>
+  </ng-container>
+
+
+</div>
+
+
+<app-modal
+  *ngIf="isChangesModalVisible"
+  (onClose)="handleClose()"
+  [modalSize]="'md'"
+  [forceClose]="forceClose">
+
+  <span title>Unsaved Changes</span>
+  <div body>
+    There are unsaved changes in the {{tabs[activeTabCopy]}} tab. Are you sure you want to switch tabs?
+  </div>
+  <div footer>
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="handleChangesModalAgree()">
+      Yes
+    </button>
+  </div>
+
+</app-modal>
+
+

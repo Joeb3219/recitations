@@ -1,10 +1,186 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@import '~@angular/material/theming';
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$client-primary: mat-palette($mat-indigo);
+$client-accent: mat-palette($mat-pink, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$client-warn: mat-palette($mat-red);
+
+// Create the theme object (a Sass map containing all of the palettes).
+$client-theme: mat-light-theme($client-primary, $client-accent, $client-warn);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($client-theme);
+
 /* You can add global styles to this file, and also import other style files */
 @import '~bootstrap/dist/css/bootstrap.min.css';
 @import '~ngx-toastr/toastr';
 @import '~quill/dist/quill.bubble.css';
 @import '~quill/dist/quill.snow.css';
+
+
 // @import '~ngx-toastr/toastr-bs4-alert';
 
 fa-icon {
-	cursor: pointer;
+  cursor: pointer;
 }
+
+.divider-xs {
+  height: 0.5rem;
+}
+
+.divider-sm {
+  height: 1rem;
+}
+
+.divider-md {
+  height: 2rem;
+}
+
+.rounded-container {
+  border-radius: 1.25rem;
+  background-color: #ebebeb;
+  padding: 1rem;
+}
+
+$theme-colors: (
+  "primary": #CC0033,
+  "secondary": #5f6a72,
+  "light": #ebebeb,
+  "danger": #ff4444
+);
+
+
+$colors: (
+  "success": #5cb85c,
+  "danger": #ff4444
+);
+
+
+:root {
+  --success: #5cb85c
+}
+
+:root {
+  --danger: #ff3737
+}
+
+:root {
+  --warning: #f0ad4e
+}
+
+
+:root {
+  --primary: #CC0033
+}
+
+:root {
+  --secondary: #5f6a72
+}
+
+:root {
+  --grey: #d6d6d6
+}
+
+:root {
+  --light: #ebebeb
+}
+
+:root {
+  --light-grey: #f7f7f7
+}
+
+.pill-success {
+  background-color: var(--success);
+  color: white;
+}
+
+.pill-warning {
+  background-color: var(--warning);
+  color: white;
+}
+
+.pill-danger {
+  background-color: var(--danger);
+  color: white;
+}
+
+.badge-pill {
+  padding: .5rem;
+  opacity: 90%;
+  border-radius: .8rem;
+}
+
+.mat-expansion-panel-content > .mat-expansion-panel-body {
+  padding-bottom: 0;
+}
+
+.container-margin {
+  margin: 1rem;
+}
+
+.mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar {
+  background: var(--primary);
+}
+
+/* Styles for the active tab label */
+.mat-tab-label.mat-tab-label-active {
+  color: var(--primary);
+  font-weight: bold;
+}
+
+/* Styles for tab labels */
+.mat-tab-label {
+  min-width: 5rem !important;
+  width: content-box !important;
+  background-color: transparent;
+}
+
+.mat-tab-group{
+  width: inherit ;
+}
+
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Lato, "Helvetica Neue", sans-serif;
+}
+
+
+//MODAL STYLES
+.modal-holder {
+  animation-name: example;
+  animation-duration: 0.3s;
+}
+
+@keyframes example {
+  0% {
+    transform: scale(0.6)
+  }
+  75% {
+    transform: scale(1.03)
+  }
+  100% {
+    transform: scale(1)
+  }
+}
+
+

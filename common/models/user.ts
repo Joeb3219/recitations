@@ -42,4 +42,8 @@ export class User extends BaseEntity implements UserInterface {
 		}
 	}
 
+	public static getFullName(user: User): string{
+		return user.firstName + " " + user.lastName;
+	}
+
 }

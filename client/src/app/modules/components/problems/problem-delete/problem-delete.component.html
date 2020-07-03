@@ -1,0 +1,22 @@
+<app-modal
+  *ngIf="isVisible"
+  (onClose)="handleClose()"
+  [modalSize]="'md'"
+  [forceClose]="forceClose">
+
+  <span title>Delete Problem</span>
+  <div body>
+    Are you sure you want to delete the following problem:
+    <br>
+    <div class="lead problem-style"><b>{{problem.name}}</b></div>
+  </div>
+  <div footer>
+    <button
+      type="button"
+      class="btn btn-secondary"
+      (click)="handleModalSubmit()">
+      Yes
+    </button>
+  </div>
+
+</app-modal>

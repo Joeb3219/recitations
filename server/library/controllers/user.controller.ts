@@ -1,4 +1,4 @@
-import { Controller, GetRequest, PostRequest } from '../decorators';
+import { Controller, GetRequest, PostRequest, Unauthenticated } from '../decorators';
 import * as Boom from '@hapi/boom';
 
 import { User } from '@models/user'
@@ -18,6 +18,7 @@ export class UserController{
 	}
 
 	@PostRequest('/user/signin')
+	@Unauthenticated()
 	async signin( { body, repo }) {
 		var { username, password } = body;
 

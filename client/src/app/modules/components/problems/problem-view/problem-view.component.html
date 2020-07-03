@@ -1,0 +1,47 @@
+<ng-container>
+
+  <h4 style="margin-left: .2rem"><b> {{problem.name}}</b></h4>
+  <div class="divider-xs"></div>
+  <span [ngClass]="{
+    'pill-success':problem.difficulty == problemDifficulty.Easy,
+    'pill-warning':problem.difficulty == problemDifficulty.Medium,
+    'pill-danger':problem.difficulty == problemDifficulty.Hard
+  }" class="badge-pill pill-success" id="difficulty">
+    <b>Difficulty: </b>{{problemDifficulty[problem.difficulty]}}
+      </span> &nbsp;
+  <span class="badge-pill badge-secondary">
+    <b>Time to complete:</b> {{problem.estimatedDuration}} {{getMinuteUnit(problem.estimatedDuration)}}
+      </span> &nbsp;
+  <span class="badge-pill badge-secondary">
+    <b>Created by:</b> {{userFullName}}
+      </span>
+
+  <button style="float: right" class="btn btn-primary" (click)="handleSolutionButton()">{{solutionButtonText}}</button>
+  <button style="float: right; margin-right: .5rem" class="btn btn-light" (click)="handleOpenEditProblemModal()">Edit Problem</button>
+
+
+  <div class="divider-md"></div>
+  <div class="rounded-container">
+    <h5>Question</h5>
+    <div [innerHTML]="problem.question"></div>
+  </div>
+
+
+  <div class="solution" *ngIf="showSolution"  [@inOutAnimation] >
+    <div class="divider-sm"></div>
+    <div class="rounded-container">
+      <h5>Solution</h5>
+      <div [innerHTML]="problem.solution"></div>
+    </div>
+  </div>
+
+
+</ng-container>
+
+<app-problem-edit
+  [isVisible]="isEditProblemModalOpen"
+  [problem]="problem"
+  (onClose)="handleCloseEditProblemModal()"
+></app-problem-edit>
+
+

@@ -3,13 +3,13 @@
 		<span class = "navbar-brand col-sm-3 col-md-2 mr-0">Dynamic Recitation</span>
 
 		<ul class = "nav flex-column">
-			<li 
+			<li
 				*ngIf="user">
-				Hello, {{ user.firstName }} {{ user.lastName }}. <a [routerLink]="['/login']">Sign Out?</a>				
+				Hello, {{ user.firstName }} {{ user.lastName }}. <a [routerLink]="['/login']">Sign Out?</a>
 			</li>
-			<li 
+			<li
 				*ngIf="!user">
-				<a [routerLink]="['/login']">Sign In</a>				
+				<a [routerLink]="['/login']">Sign In</a>
 			</li>
 		</ul>
 	</nav>

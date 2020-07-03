@@ -7,6 +7,7 @@ import { environment } from '@environment'
 
 import { Course } from '@models/course'
 import { Section } from '@models/section'
+import {Problem} from "@models/problem";
 
 @Injectable()
 export class SectionService {
@@ -56,5 +57,19 @@ export class SectionService {
 			})
 		})
 	}
+
+	public async deleteSection(sectionID: string){
+    const url = `${environment.apiURL}/section/${sectionID}`;
+
+    return new Promise((resolve, reject) => {
+      this.http.delete(url, { headers: this.getHeaders() }).subscribe((result: { data: Section }) => {
+        if(result) resolve(result.data)
+        else reject(new Error("No result returned"))
+      }, (err) => {
+        reject(err)
+      })
+    })
+  }
+
 
 }

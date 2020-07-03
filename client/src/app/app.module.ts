@@ -1,12 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { HttpClientModule } from '@angular/common/http'; 
+import { HttpClientModule } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms"
-import { QuillModule } from 'ngx-quill' 
+import { QuillModule } from 'ngx-quill'
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -31,7 +31,21 @@ import { UserService } from './services/user.service';
 import { CourseService } from './services/course.service';
 import { SectionService } from './services/section.service';
 import { MeetingTimeService } from './services/meetingTime.service';
-import { ViewProblemsComponent } from './modules/pages/problems/view-problems/view-problems.component';
+import { ListProblemsComponent } from '@pages/problems/list-problems/list-problems.component';
+import { ViewProblemComponent } from '@pages/problems/view-problem/view-problem.component';
+import { ProblemViewComponent } from './modules/components/problems/problem-view/problem-view.component';
+import {MatExpansionModule} from '@angular/material/expansion';
+import {MatIconModule} from "@angular/material/icon";
+import {MatListModule} from "@angular/material/list";
+import {MatButtonModule} from "@angular/material/button";
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { ProblemDeleteComponent } from './modules/components/problems/problem-delete/problem-delete.component';
+import { SectionDeleteComponent } from './modules/components/sections/section-delete/section-delete.component';
+import { CourseSettingsComponent } from '@pages/course-settings/course-settings.component';
+import {MatTabsModule} from "@angular/material/tabs";
+import { CoverageRequestsComponent } from './modules/pages/coverage-requests/coverage-requests.component';
+import { RecitationsComponent } from './modules/pages/recitations/recitations.component';
+
 
 @NgModule({
   declarations: [
@@ -52,7 +66,14 @@ import { ViewProblemsComponent } from './modules/pages/problems/view-problems/vi
     FormModalComponent,
     MeetingTimeEditComponent,
     ProblemEditComponent,
-    ViewProblemsComponent,
+    ListProblemsComponent,
+    ViewProblemComponent,
+    ProblemViewComponent,
+    ProblemDeleteComponent,
+    SectionDeleteComponent,
+    CourseSettingsComponent,
+    CoverageRequestsComponent,
+    RecitationsComponent,
   ],
   imports: [
     HttpClientModule,
@@ -65,6 +86,12 @@ import { ViewProblemsComponent } from './modules/pages/problems/view-problems/vi
     FormsModule,
     ReactiveFormsModule,
     QuillModule.forRoot(),
+    MatExpansionModule,
+    MatIconModule,
+    MatListModule,
+    MatButtonModule,
+    ModalModule.forRoot(),
+    MatTabsModule
   ],
   providers: [
     UserService,

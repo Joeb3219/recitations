@@ -71,9 +71,10 @@ class AppWrapper {
 
 			// And now we can go through and register any functions declared within these controllers
 			controllers.forEach((controller) => {
-				const routes = Reflect.getMetadata("routes", new controller()) || [];
+				const controllerInstance = new controller()
+				const routes = Reflect.getMetadata("routes", controllerInstance) || [];
 				routes.forEach((data) => {
-					generateRoute(this.app, data);
+					generateRoute(this.app, data, controllerInstance);
 				})
 			})
 		})

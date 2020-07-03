@@ -1,4 +1,4 @@
-import { Controller, GetRequest, PostRequest, PutRequest } from '../decorators'
+import {Controller, DeleteRequest, GetRequest, PostRequest, PutRequest} from '../decorators'
 import * as Boom from '@hapi/boom';
 import { pickBy } from 'lodash'
 
@@ -8,6 +8,7 @@ import { Section } from '@models/section'
 
 import { MeetingTime } from '@models/meetingTime'
 import { MeetingType } from '@enums/meetingType.enum';
+import {Problem} from "@models/problem";
 
 @Controller
 export class SectionController{
@@ -17,6 +18,13 @@ export class SectionController{
 		// we simply can query for all sections that have the given course id set as their course column
 		return await repo(Section).find({ course: params.courseID })
 	}
+
+	@DeleteRequest('/section/:sectionID')
+	async deleteSection({ params, repo }){
+		const sectionID = params.sectionID;
+		return await repo(Section).delete({ id: sectionID })
+	}
+
 
 	@PostRequest('/section')
 	async createSection({ body, repo }) {

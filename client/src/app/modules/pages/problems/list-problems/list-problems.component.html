@@ -20,7 +20,6 @@
         </div>
       </div>
     </div>
-    <!--    <div class="divider-sm"></div>-->
 
     <div class="container-margin">
       <table class="table table-striped">
@@ -39,9 +38,9 @@
           <td>{{ problem.name }}</td>
           <td>
           <span [ngClass]="{
-          'pill-success':problem.difficulty == problemDifficulty.Easy,
-          'pill-warning':problem.difficulty == problemDifficulty.Medium,
-          'pill-danger':problem.difficulty == problemDifficulty.Hard}" class="badge-pill pill-success" id="difficulty">
+           'badge-pill pill-success':problem.difficulty == problemDifficulty.Easy,
+          'badge-pill pill-warning':problem.difficulty == problemDifficulty.Medium,
+          'badge-pill pill-danger':problem.difficulty == problemDifficulty.Hard}"  id="difficulty">
           {{problemDifficulty[problem.difficulty]}}
             </span>
           </td>
@@ -62,6 +61,14 @@
         </tbody>
       </table>
     </div>
+
+
+    <app-table [rows]="tableRows"
+               [columns]="tableColumns"
+    (onView)="handleOnView($event)"
+    (onModify)="handleOnModify($event)"
+    (onDelete)="handleOnDelete($event)">
+    </app-table>
 
 
   </ng-container>

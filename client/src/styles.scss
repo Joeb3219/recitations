@@ -92,6 +92,12 @@ $colors: (
   --greyRGB: 214, 214, 214;
 }
 
+.badge-pill {
+  padding: .5rem;
+  opacity: 90%;
+  border-radius: .8rem;
+}
+
 .pill-success {
   background-color: var(--success);
   color: white;
@@ -107,11 +113,6 @@ $colors: (
   color: white;
 }
 
-.badge-pill {
-  padding: .5rem;
-  opacity: 90%;
-  border-radius: .8rem;
-}
 
 .mat-expansion-panel-content > .mat-expansion-panel-body {
   padding-bottom: 0;
@@ -194,3 +195,8 @@ body {
 //  border-color: #28a745;
 //  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
 //}
+
+
+.pill{
+  color: green;
+}

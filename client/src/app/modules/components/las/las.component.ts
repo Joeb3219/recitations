@@ -25,11 +25,6 @@ export class LasComponent implements OnInit {
     {
       prop: 'ta',
       name: "LA"
-    },
-    {
-      prop: 'id',
-      name: 'Actions',
-      actions: ["modify", "delete", "view"]
     }
   ];
 

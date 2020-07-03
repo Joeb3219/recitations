@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {BehaviorSubject} from 'rxjs';
 
 import {CourseService} from '@services/course.service';
@@ -8,6 +8,7 @@ import {ProblemService} from '@services/problem.service';
 import {Course} from '@models/course'
 import {Problem} from '@models/problem'
 import {ProblemDifficulty} from "@enums/problemDifficulty.enum";
+import {User} from "@models/user";
 
 @Component({
   selector: 'app-list-problems',
@@ -16,6 +17,32 @@ import {ProblemDifficulty} from "@enums/problemDifficulty.enum";
   styleUrls: ['./list-problems.component.scss']
 })
 export class ListProblemsComponent implements OnInit {
+
+  tableRows : Array<any>;
+  tableColumns: Array<any> = [
+    {
+      prop: 'problemName',
+      name: 'Problem Name'
+    },
+    {
+      prop: 'difficulty',
+      name: "Difficulty"
+    },
+    {
+      prop: 'duration',
+      name: "Est. Duration (min)"
+    },
+    {
+      prop: 'creator',
+      name: "Creator"
+    },
+    {
+      prop: 'id',
+      name: 'Actions',
+      actions: ["modify", "delete", "view"]
+    }
+  ];
+
   course: Course;
   problems: Problem[];
   isLoading: boolean = true;
@@ -29,6 +56,7 @@ export class ListProblemsComponent implements OnInit {
     private _courseService: CourseService,
     private _problemService: ProblemService,
     private route: ActivatedRoute,
+    private router: Router
   ) {
   }
 
@@ -37,9 +65,21 @@ export class ListProblemsComponent implements OnInit {
       if (params['courseID']) {
         this.course = await this._courseService.getCourse(params['courseID'])
         this.problems = await this._problemService.getCourseProblems(this.course)
-        this.isLoading = false
+        this.isLoading = false;
+
+        this.tableRows = this.getTableRows();
       }
     });
+  }
+
+  getTableRows(){
+    return this.problems.map(problem => ({
+      problemName: problem.name,
+      difficulty: ProblemDifficulty[problem.difficulty],
+      duration: problem.estimatedDuration,
+      creator: User.getFullName(problem.creator),
+      id: problem.id
+    }));
   }
 
   handleOpenNewProblemModal() {
@@ -60,8 +100,9 @@ export class ListProblemsComponent implements OnInit {
 
     // if the problem was found, we already have it in our array, and the data would be updated via the component
     // if it wasn't found, we insert it new.
-    if (!foundProblem) this.problems.push(this.selectedEditProblem)
+    if (!foundProblem) this.problems.push(this.selectedEditProblem);
 
+    this.tableRows=this.getTableRows();
     this.selectedEditProblem = null;
   }
 
@@ -81,6 +122,7 @@ export class ListProblemsComponent implements OnInit {
     if($event){
       this.problems.splice(this.problems.indexOf(this.selectedDeleteProblem), 1);
     }
+    this.tableRows=this.getTableRows();
 
   }
 
@@ -90,5 +132,24 @@ export class ListProblemsComponent implements OnInit {
 
   get problemDifficulty() {
     return ProblemDifficulty;
+  }
+
+  handleOnDelete($event: any) {
+    let problemID = $event;
+    let problem = this.problems.find(problem=>problem.id==problemID);
+    this.handleOpenDeleteProblemModal(problem);
+  }
+
+  handleOnModify($event: any) {
+    let problemID = $event;
+    let problem = this.problems.find(problem=>problem.id==problemID);
+    this.handleOpenEditProblemModal(problem);
+  }
+
+  handleOnView($event: any) {
+    let problemID = $event;
+    let problem = this.problems.find(problem=>problem.id==problemID);
+    let courseID = this.course.id
+    this.router.navigateByUrl(`/courses/${courseID}/problems/${problemID}`);
   }
 }

@@ -26,7 +26,7 @@ export class TableComponent implements OnInit, AfterViewInit {
   @Input() rows: Array<any>;
   @Input() columns: Array<any>;
 
-  temp: Array<any> = [];
+  temp: Array<any>;
   hasActionsColumn: boolean = false;
   actions: Array<any>;
 
@@ -36,23 +36,17 @@ export class TableComponent implements OnInit, AfterViewInit {
   @Output() onModify: EventEmitter<any> = new EventEmitter<any>();
 
 
-
   constructor() {
   }
 
   ngOnInit() {
-    this.temp = this.rows;
-    if (this.rows) {
-      this.hasActionsColumn = !!this.columns.find(column => column.prop === "id");
-      this.actions = this.columns.find(column => column.prop === "id");
-      this.columns=this.columns.filter(column=>column!=this.actions)
-      // console.log("COLUMNS");
-      // console.log(this.columns)
-      // console.log("ACTIONS")
-      // console.log(this.actions)
 
-      // console.log(this.hasActionsColumn);
-    }
+    this.temp = this.rows;
+    // console.log("temp: " + this.temp);
+    this.hasActionsColumn = !!this.columns.find(column => column.prop === "id");
+    console.log("has actions column? " + this.hasActionsColumn);
+    this.actions = this.columns.find(column => column.prop === "id");
+    this.columns = this.columns.filter(column => column != this.actions)
 
   }
 
@@ -107,7 +101,7 @@ export class TableComponent implements OnInit, AfterViewInit {
 
   edit(row) {
     console.log("edit\n" + row.id)
-    this.onModify.emit()
+    this.onModify.emit(row.id)
   }
 
   delete(row) {
@@ -116,6 +110,8 @@ export class TableComponent implements OnInit, AfterViewInit {
   }
 
   hasAction(act: string) {
-    return (this.actions['actions'].indexOf(act)!=-1)
+    return (this.actions['actions'].indexOf(act) != -1)
   }
+
+
 }

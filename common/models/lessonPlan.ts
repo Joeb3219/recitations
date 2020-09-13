@@ -37,4 +37,10 @@ export class LessonPlan extends BaseEntity implements LessonPlanInterface {
 		super()
 		Object.assign(this, args)
 	}
+
+	public getDuration(): number {
+		return (this.steps || []).reduce((total, curr) => {
+			return total;
+		}, 0);
+	}
 }

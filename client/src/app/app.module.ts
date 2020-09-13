@@ -46,6 +46,12 @@ import { CourseSettingsComponent } from '@pages/course-settings/course-settings.
 import {MatTabsModule} from "@angular/material/tabs";
 import { CoverageRequestsComponent } from './modules/pages/coverage-requests/coverage-requests.component';
 import { RecitationsComponent } from './modules/pages/recitations/recitations.component';
+import { ListLessonPlansComponent } from './modules/pages/lesson-plans/list-lesson-plans/list-lesson-plans.component';
+import { LessonPlanViewComponent } from './modules/components/lesson-plans/lesson-plan-view/lesson-plan-view.component';
+import { LessonPlanEditComponent } from './modules/components/lesson-plans/lesson-plan-edit/lesson-plan-edit.component';
+import { LessonPlanDeleteComponent } from './modules/components/lesson-plans/lesson-plan-delete/lesson-plan-delete.component';
+import { LessonPlanStepsEditComponent } from './modules/components/lesson-plan-steps/lesson-plan-steps-edit/lesson-plan-steps-edit.component';
+import { LessonPlanStepsFormfieldComponent } from './modules/components/lesson-plan-steps/lesson-plan-steps-formfield/lesson-plan-steps-formfield.component';
 import { TokenInterceptor } from './http/token.interceptor';
 import { DatatableComponent } from './modules/components/datatable/datatable.component';
 
@@ -77,6 +83,12 @@ import { DatatableComponent } from './modules/components/datatable/datatable.com
     CourseSettingsComponent,
     CoverageRequestsComponent,
     RecitationsComponent,
+    ListLessonPlansComponent,
+    LessonPlanViewComponent,
+    LessonPlanEditComponent,
+    LessonPlanDeleteComponent,
+    LessonPlanStepsEditComponent,
+    LessonPlanStepsFormfieldComponent,
     DatatableComponent,
   ],
   imports: [

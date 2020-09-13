@@ -24,7 +24,7 @@ function multiKeySearchIn(object, keys, target) {
 }
 
 function searchResultData(results: any | any[], searchableFields, req: Request) {
-	if(!results || !results.length) return results; // oops, this isn't an array afterall
+	if(!results || !Array.isArray(results) || !results.length) return results; // oops, this isn't an array afterall
 	if(!searchableFields || !searchableFields.length) return results; // oops, no fields were passed in to search by.
 
 	if(!req.query || !req.query.search) return results;
@@ -33,7 +33,7 @@ function searchResultData(results: any | any[], searchableFields, req: Request) 
 }
 
 function sortResultData(results: any | any[], sortableFields, req: Request) {
-	if(!results || !results.length) return results; // oops, this isn't an array afterall
+	if(!results || !Array.isArray(results) || !results.length) return results; // oops, this isn't an array afterall
 	if(!sortableFields || !sortableFields.length) return results; // oops, no fields were passed in to search by.
 
 	let { sort, sortDirection } = req.query;
@@ -57,7 +57,7 @@ function sortResultData(results: any | any[], sortableFields, req: Request) {
 }
 
 function paginateResultData(results: any | any[], req: Request) {
-	if(!results || !results.length) return results; // oops, this isn't an array afterall
+	if(!results || !Array.isArray(results) || !results.length) return results; // oops, this isn't an array afterall
 
 	let { limit, offset } = req.query;
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 import { BehaviorSubject, Observable } from 'rxjs'
 
@@ -16,20 +16,13 @@ export class SectionService {
 		private http: HttpClient
 	){}
 
-	public getHeaders(){
-		return new HttpHeaders({
-			'Content-Type':  'application/json',
-			'Authorization': 'Bearer ' + localStorage.getItem('jwt')
-		})
-	}
-
 	public async upsertSection(section: Section) : Promise<Section>{
 		const sectionID = section.id
 		const url = (sectionID) ? `${environment.apiURL}/section/${sectionID}` : `${environment.apiURL}/section`
 		let action
 
-		if(sectionID) action = this.http.put(url, section, { headers: this.getHeaders() })
-		else action = this.http.post(url, section, { headers: this.getHeaders() })
+		if(sectionID) action = this.http.put(url, section)
+		else action = this.http.post(url, section)
 
 		return new Promise((resolve, reject) => {
 			action.subscribe((result: { data: Section }) => {
@@ -49,7 +42,7 @@ export class SectionService {
 		const url = `${environment.apiURL}/course/${courseID}/sections`
 
 		return new Promise((resolve, reject) => {
-			this.http.get(url, { headers: this.getHeaders() }).subscribe((result: { data: Section[] }) => {
+			this.http.get(url).subscribe((result: { data: Section[] }) => {
 				if(result) resolve(result.data)
 				else reject(new Error("No result returned"))
 			}, (err) => {
@@ -62,7 +55,7 @@ export class SectionService {
     const url = `${environment.apiURL}/section/${sectionID}`;
 
     return new Promise((resolve, reject) => {
-      this.http.delete(url, { headers: this.getHeaders() }).subscribe((result: { data: Section }) => {
+      this.http.delete(url).subscribe((result: { data: Section }) => {
         if(result) resolve(result.data)
         else reject(new Error("No result returned"))
       }, (err) => {

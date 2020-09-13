@@ -25,6 +25,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.25",
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
     "@ng-bootstrap/ng-bootstrap": "^5.1.2",
+    "@swimlane/ngx-datatable": "16.0.3",
     "@types/node": "^12.12.7",
     "angular-popper": "^2.0.1",
     "bootstrap": "^4.3.1",

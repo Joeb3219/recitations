@@ -29,6 +29,7 @@
       "@pages/*": ["./src/app/modules/pages/*"],
       "@interfaces/*": ["../common/interfaces/*"],
       "@enums/*": ["../common/enums/*"],
+      "@http/*": ["./src/app/http/*"],
     }
   },
   "types": ["node"]

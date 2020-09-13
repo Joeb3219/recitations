@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 import { BehaviorSubject, Observable } from 'rxjs'
 
@@ -16,13 +16,6 @@ export class UserService {
 		private http: HttpClient
 	){
 		this.flushCurrentUser()
-	}
-
-	public getHeaders(){
-		return new HttpHeaders({
-			'Content-Type':  'application/json',
-			'Authorization': 'Bearer ' + localStorage.getItem('jwt')
-		})
 	}
 
 	public flushCurrentUser() {
@@ -44,13 +37,13 @@ export class UserService {
 
 	public getMyUserObject(){
 		const url = `${environment.apiURL}/user/me`
-		return this.http.get(url, { headers: this.getHeaders() })
+		return this.http.get(url)
 	}
 	
 	public async getUsers() : Promise<User[]>{
 		const url = `${environment.apiURL}/user`
 		return new Promise((resolve, reject) => {
-			this.http.get(url, { headers: this.getHeaders() }).subscribe((result: { data: User[] }) => {
+			this.http.get(url).subscribe((result: { data: User[] }) => {
 				if(result) resolve(result.data)
 				else reject(new Error("No result returned"))
 			}, (err) => {
@@ -61,12 +54,7 @@ export class UserService {
 
 	public signin(username: string, password: string){
 		const url = `${environment.apiURL}/user/signin`
-		const httpOptions = {
-			headers: new HttpHeaders({
-				'Content-Type':  'application/json'
-			})
-		};
-		return this.http.post(url, { username, password }, {  })
+		return this.http.post(url, { username, password })
 	}
 
 }

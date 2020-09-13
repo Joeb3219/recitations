@@ -1,12 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms"
 import { QuillModule } from 'ngx-quill'
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -45,6 +46,8 @@ import { CourseSettingsComponent } from '@pages/course-settings/course-settings.
 import {MatTabsModule} from "@angular/material/tabs";
 import { CoverageRequestsComponent } from './modules/pages/coverage-requests/coverage-requests.component';
 import { RecitationsComponent } from './modules/pages/recitations/recitations.component';
+import { TokenInterceptor } from './http/token.interceptor';
+import { DatatableComponent } from './modules/components/datatable/datatable.component';
 
 
 @NgModule({
@@ -74,6 +77,7 @@ import { RecitationsComponent } from './modules/pages/recitations/recitations.co
     CourseSettingsComponent,
     CoverageRequestsComponent,
     RecitationsComponent,
+    DatatableComponent,
   ],
   imports: [
     HttpClientModule,
@@ -91,13 +95,15 @@ import { RecitationsComponent } from './modules/pages/recitations/recitations.co
     MatListModule,
     MatButtonModule,
     ModalModule.forRoot(),
-    MatTabsModule
+    MatTabsModule,
+    NgxDatatableModule,
   ],
   providers: [
     UserService,
     CourseService,
     SectionService,
     MeetingTimeService,
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })

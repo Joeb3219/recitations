@@ -183,7 +183,7 @@
   dependencies:
     tslib "^1.9.0"
 
-"@angular/core@^8.2.13":
+"@angular/core@^8.2.14":
   version "8.2.14"
   resolved "https://registry.yarnpkg.com/@angular/core/-/core-8.2.14.tgz#35566f5b19480369229477e7e0e0fde740bd5204"
   integrity sha512-zeePkigi+hPh3rN7yoNENG/YUBUsIvUXdxx+AZq+QPaFeKEA2FBSrKn36ojHFrdJUjKzl0lPMEiGC2b6a6bo6g==
@@ -1040,6 +1040,13 @@
     semver "6.3.0"
     semver-intersect "1.4.0"
 
+"@swimlane/ngx-datatable@16.0.3":
+  version "16.0.3"
+  resolved "https://registry.yarnpkg.com/@swimlane/ngx-datatable/-/ngx-datatable-16.0.3.tgz#95816dbc944679762d102d4a31b3e17674c67af3"
+  integrity sha512-SuVd89CTFhy+21SF8W+qmGoXGFeB7KB5/VwkrgvDRs0GnBC5m9u1nAyN0ypSXMmqilcem6vPmh4yVhjPL1rseg==
+  dependencies:
+    tslib "^1.9.0"
+
 "@types/color-name@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@types/color-name/-/color-name-1.1.1.tgz#1c1261bbeaa10a8055bbc5d8ab84b7b2afc846a0"
@@ -1382,6 +1389,13 @@ amdefine@>=0.0.4:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/amdefine/-/amdefine-1.0.1.tgz#4a5282ac164729e93619bcfd3ad151f817ce91f5"
   integrity sha1-SlKCrBZHKek2Gbz9OtFR+BfOkfU=
+
+angular-popper@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/angular-popper/-/angular-popper-2.0.1.tgz#1c8d3886226aa41a30edf9d074640ddde2091e51"
+  integrity sha512-6eWT+xQ486tbqEsiqytOJDFA2IntifzbdPo4z7QzdmZ7ySrG37eOZipDRKSJwI6S/NwLpwmnfDID4guecukZZg==
+  dependencies:
+    tslib "^1.9.0"
 
 ansi-align@^2.0.0:
   version "2.0.0"
@@ -3929,6 +3943,11 @@ graceful-fs@^4.1.11, graceful-fs@^4.1.15, graceful-fs@^4.1.2:
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.3.tgz#4a12ff1b60376ef09862c2093edd908328be8423"
   integrity sha512-a30VEBm4PEdx1dRB7MFK7BejejvCvBronbLjht+sHuGYj8PHs7M/5Z+rt5lw551vZ7yfTCj4Vuyy3mSJytDWRQ==
 
+hammerjs@^2.0.8:
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/hammerjs/-/hammerjs-2.0.8.tgz#04ef77862cff2bb79d30f7692095930222bf60f1"
+  integrity sha1-BO93hiz/K7edMPdpIJWTAiK/YPE=
+
 handle-thing@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/handle-thing/-/handle-thing-2.0.0.tgz#0e039695ff50c93fc288557d696f3c1dc6776754"
@@ -4819,6 +4838,11 @@ jest-worker@24.9.0:
     merge-stream "^2.0.0"
     supports-color "^6.1.0"
 
+jquery@^3.5.1:
+  version "3.5.1"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.5.1.tgz#d7b4d08e1bfdb86ad2f1a3d039ea17304717abb5"
+  integrity sha512-XwIBPqcMn57FxfT+Go5pzySnm4KWkT1Tv7gjrpT1srtf8Weynl6R273VJ5GjkRb51IzMp5nbaPjJXMWeju2MKg==
+
 "js-tokens@^3.0.0 || ^4.0.0", js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
@@ -5676,6 +5700,11 @@ neo-async@^2.5.0, neo-async@^2.6.1:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.1.tgz#ac27ada66167fa8849a6addd837f6b189ad2081c"
   integrity sha512-iyam8fBuCUpWeKPGpaNMetEocMt364qkCsfL9JuhjXX6dRnguRVOfk2GZaDpPjcOKiiXCPINZC1GczQ7iTq3Zw==
 
+ngx-bootstrap@^5.6.1:
+  version "5.6.1"
+  resolved "https://registry.yarnpkg.com/ngx-bootstrap/-/ngx-bootstrap-5.6.1.tgz#c37643247441f9d421bca2cd7d7de1d0445e903f"
+  integrity sha512-8fDs3VaaWgKpupakPKS0QaUc+1E/JMBGJDxUUODjyIkLtFr1A8vH4cjXiV3AfrPvhK27GH0oyTPyKWKcCjEtVg==
+
 ngx-quill@^8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/ngx-quill/-/ngx-quill-8.0.0.tgz#cb9a7ea57461e7dc4458c2f5fc193c20b3cfd342"
@@ -6453,6 +6482,11 @@ pkg-dir@^4.1.0:
   integrity sha512-HRDzbaKjC+AOWVXxAU/x54COGeIv9eb+6CkDSQoNTt4XyWoIJvuPsXizxu/Fr23EiekbtZwmh1IcIG/l/a10GQ==
   dependencies:
     find-up "^4.0.0"
+
+popper.js@^1.16.1:
+  version "1.16.1"
+  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.16.1.tgz#2a223cb3dc7b6213d740e40372be40de43e65b1b"
+  integrity sha512-Wb4p1J4zyFTbM+u6WuO4XstYx4Ky9Cewe4DWrel7B0w6VVICvPwdOpotjzcf6eD8TsckVnIMNONQyPIUFOUbCQ==
 
 portfinder@^1.0.25:
   version "1.0.25"

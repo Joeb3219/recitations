@@ -29,7 +29,9 @@ export class Form{
 			label?: string,
 			type?: string,
 			value?: any,
-			meetable?: Meetable
+			meetable?: Meetable,
+			row?: number,
+			col?: number,
 		}[] = []
 	){}
 }

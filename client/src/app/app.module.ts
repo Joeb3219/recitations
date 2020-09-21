@@ -49,14 +49,12 @@ import {ConfigurationsComponent} from './modules/components/configurations/confi
 import {RolesComponent} from './modules/components/roles/roles.component';
 import {GradebookComponent} from './modules/components/gradebook/gradebook.component';
 import {WeeksComponent} from './modules/components/weeks/weeks.component';
-import {LasComponent} from './modules/components/las/las.component';
-import {InstructorsComponent} from './modules/components/instructors/instructors.component';
 import {LearningGoalsComponent} from './modules/components/learning-goals/learning-goals.component';
 import {ReportsComponent} from './modules/components/reports/reports.component';
 import {QuizzesComponent} from './modules/components/quizzes/quizzes.component';
 import {RosterComponent} from './modules/components/roster/roster.component';
 import {NgxDatatableModule} from "@swimlane/ngx-datatable";
-import { TableComponent } from './modules/components/table/table.component';
+import {TableComponent} from './modules/components/table/table.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
 
 
@@ -91,8 +89,6 @@ import {MatFormFieldModule} from "@angular/material/form-field";
     RolesComponent,
     GradebookComponent,
     WeeksComponent,
-    LasComponent,
-    InstructorsComponent,
     LearningGoalsComponent,
     ReportsComponent,
     QuizzesComponent,
@@ -125,8 +121,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
     SectionService,
     MeetingTimeService,
   ],
-  entryComponents: [ConfigurationsComponent, RolesComponent, GradebookComponent, WeeksComponent, LasComponent,
-    InstructorsComponent, LearningGoalsComponent, ReportsComponent, QuizzesComponent, RosterComponent],
+  entryComponents: [ConfigurationsComponent, RolesComponent, GradebookComponent, WeeksComponent, LearningGoalsComponent, ReportsComponent, QuizzesComponent, RosterComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {

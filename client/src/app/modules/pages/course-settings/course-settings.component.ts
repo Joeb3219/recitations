@@ -10,8 +10,6 @@ import {ConfigurationsComponent} from "@components/configurations/configurations
 import {RolesComponent} from "@components/roles/roles.component";
 import {GradebookComponent} from "@components/gradebook/gradebook.component";
 import {WeeksComponent} from "@components/weeks/weeks.component";
-import {LasComponent} from "@components/las/las.component";
-import {InstructorsComponent} from "@components/instructors/instructors.component";
 import {LearningGoalsComponent} from "@components/learning-goals/learning-goals.component";
 import {ReportsComponent} from "@components/reports/reports.component";
 import {QuizzesComponent} from "@components/quizzes/quizzes.component";
@@ -64,7 +62,7 @@ export class CourseSettingsComponent implements OnInit {
         this.course = await this._courseService.getCourse(params['courseID']);
         this.sections = await this._sectionService.getCourseSections(this.course);
 
-        this.tabs = ["Configurations", "Roles", "Gradebook", "Weeks", "LAs", "Instructors", "Learning Goals", "Reports", "Quizzes", "Roster"];
+        this.tabs = ["Configurations", "Roles", "Gradebook", "Weeks", "Learning Goals", "Reports", "Quizzes", "Roster"];
         // this.tabs = [
         //   {
         //     name: "Configurations",

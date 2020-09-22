@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-import { OK, NOT_FOUND, BAD_REQUEST } from 'http-status-codes'
 
 import { Controller, GetRequest, PostRequest } from '../decorators';
 

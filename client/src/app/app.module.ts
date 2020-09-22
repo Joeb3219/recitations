@@ -1,13 +1,13 @@
-import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {HttpClientModule} from '@angular/common/http';
-import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
-import {ToastrModule} from 'ngx-toastr';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {FormsModule, ReactiveFormsModule} from "@angular/forms"
-import {QuillModule} from 'ngx-quill'
-
+import { BrowserModule } from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule, ReactiveFormsModule } from "@angular/forms"
+import { QuillModule } from 'ngx-quill'
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HeaderComponent} from './modules/components/header/header.component';
@@ -26,7 +26,6 @@ import {MeetingTimesFormfieldComponent} from './modules/components/meeting-times
 import {FormModalComponent} from './modules/components/forms/form-modal/form-modal.component';
 import {MeetingTimeEditComponent} from './modules/components/meeting-times/meeting-time-edit/meeting-time-edit.component';
 import {ProblemEditComponent} from './modules/components/problems/problem-edit/problem-edit.component';
-
 import {UserService} from './services/user.service';
 import {CourseService} from './services/course.service';
 import {SectionService} from './services/section.service';
@@ -43,8 +42,6 @@ import {ProblemDeleteComponent} from './modules/components/problems/problem-dele
 import {SectionDeleteComponent} from './modules/components/sections/section-delete/section-delete.component';
 import {CourseSettingsComponent} from '@pages/course-settings/course-settings.component';
 import {MatTabsModule} from "@angular/material/tabs";
-import {CoverageRequestsComponent} from './modules/pages/coverage-requests/coverage-requests.component';
-import {RecitationsComponent} from './modules/pages/recitations/recitations.component';
 import {ConfigurationsComponent} from './modules/components/configurations/configurations.component';
 import {RolesComponent} from './modules/components/roles/roles.component';
 import {GradebookComponent} from './modules/components/gradebook/gradebook.component';
@@ -53,9 +50,11 @@ import {LearningGoalsComponent} from './modules/components/learning-goals/learni
 import {ReportsComponent} from './modules/components/reports/reports.component';
 import {QuizzesComponent} from './modules/components/quizzes/quizzes.component';
 import {RosterComponent} from './modules/components/roster/roster.component';
-import {NgxDatatableModule} from "@swimlane/ngx-datatable";
-import {TableComponent} from './modules/components/table/table.component';
 import {MatFormFieldModule} from "@angular/material/form-field";
+import { CoverageRequestsComponent } from './modules/pages/coverage-requests/coverage-requests.component';
+import { RecitationsComponent } from './modules/pages/recitations/recitations.component';
+import { TokenInterceptor } from './http/token.interceptor';
+import { DatatableComponent } from './modules/components/datatable/datatable.component';
 
 
 @NgModule({
@@ -93,7 +92,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
     ReportsComponent,
     QuizzesComponent,
     RosterComponent,
-    TableComponent,
+    DatatableComponent
   ],
   imports: [
     HttpClientModule,
@@ -120,6 +119,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
     CourseService,
     SectionService,
     MeetingTimeService,
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
   ],
   entryComponents: [ConfigurationsComponent, RolesComponent, GradebookComponent, WeeksComponent, LearningGoalsComponent, ReportsComponent, QuizzesComponent, RosterComponent],
   bootstrap: [AppComponent]

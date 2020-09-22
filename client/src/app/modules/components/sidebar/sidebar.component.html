@@ -18,13 +18,13 @@
         <a class="btn btn-light btn-sidebar input-block-level form-control link-style"
            routerLink="/courses/{{ course.id }}/sections" [ngClass]="{'link-bold':activeLink == 2 && course.id==selectedCourse.id}">Sections</a>
         <a class="btn btn-light btn-sidebar input-block-level form-control link-style"
-           routerLink="/courses/{{ course.id }}/lesson-plans">Lesson Plans</a>
-        <a class="btn btn-light btn-sidebar input-block-level form-control link-style"
            routerLink="/courses/{{ course.id }}/problems" [ngClass]="{'link-bold':activeLink == 3 && course.id==selectedCourse.id}">Problems</a>
         <a class="btn btn-light btn-sidebar input-block-level form-control link-style"
            routerLink="/courses/{{ course.id }}/coverage-requests" [ngClass]="{'link-bold':activeLink == 4 && course.id==selectedCourse.id}">Coverage Requests</a>
         <a class="btn btn-light btn-sidebar input-block-level form-control link-style"
            routerLink="/courses/{{ course.id }}/settings" [ngClass]="{'link-bold':activeLink == 5 && course.id==selectedCourse.id}">Settings</a>
+        <a class="btn btn-light btn-sidebar input-block-level form-control link-style"
+           routerLink="/courses/{{ course.id }}/lesson-plans" [ngClass]="{'link-bold':activeLink == 6 && course.id==selectedCourse.id}">Lesson Plans</a>
 
       </div>
 

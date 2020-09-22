@@ -1,0 +1,53 @@
+<div class="row">
+    <div class="col" *ngIf="enableExporting">
+        <span  class="btn btn-secondary" (click)="handleCSVExport()">Export CSV</span>
+    </div>
+    <div class="col" *ngIf="enableSearching">
+        <input class="search" type="text" placeholder="Search..." (input)="handleSearchTextUpdated($event)" [(ngModel)]="search">
+    </div>
+</div>
+<ngx-datatable
+    class="bootstrap"
+    [rows]="rows"
+    [headerHeight]="50"
+    [footerHeight]="50"
+    rowHeight="auto"
+    [columns]="columns"
+    [reorderable]="reorderable"
+    [loadingIndicator]="true"
+    [columnMode]="ColumnMode.force"
+    [externalPaging]="true"
+    [count]="numResults"
+    [offset]="offset"
+    [limit]="pageSize"
+    (page)="handlePageChange($event)"
+    (sort)="handleSort($event)"
+></ngx-datatable>
+
+<ng-template #difficultyCellTemplate let-value="value" let-row="row">
+    <span [ngClass]="
+        {
+            'pill-success': value == ProblemDifficulty.Easy,
+            'pill-warning': value == ProblemDifficulty.Medium,
+            'pill-danger': value == ProblemDifficulty.Hard
+        }" 
+        class="badge-pill pill-success" id="difficulty"
+    >
+        {{ProblemDifficulty[value]}}
+    </span>
+</ng-template>
+
+<ng-template #userCellTemplate let-value="value" let-row="row">
+    <app-user-badge
+        [user]="value">
+    </app-user-badge>
+</ng-template>
+
+<ng-template #actionsCellTemplate let-column="column" let-value="value" let-row="row">
+    <div class="btn-group btn-group-sm" data-toggle="buttons">
+        <ng-container *ngFor="let action of column.actions(row)">
+            <a *ngIf="action.href" class="btn btn-outline-secondary" routerLink="{{action.href}}">{{ action.text }}</a>
+            <span *ngIf="action.click" class="btn btn-outline-secondary" (click)="action.click()">{{ action.text }}</span>
+        </ng-container>
+    </div>
+</ng-template>

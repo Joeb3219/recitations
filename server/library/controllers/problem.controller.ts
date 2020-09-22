@@ -1,5 +1,5 @@
-import {Controller, DeleteRequest, GetRequest, PostRequest, PutRequest} from '../decorators';
-import { pickBy } from 'lodash'
+import { Controller, DeleteRequest, GetRequest, PostRequest, PutRequest, Searchable, Paginated, Sortable } from '../decorators';
+import { get, pickBy } from 'lodash'
 import * as Boom from '@hapi/boom';
 
 import { User } from '@models/user'
@@ -10,6 +10,14 @@ import { Problem } from '@models/problem'
 export class ProblemController{
 
 	@GetRequest('/course/:courseID/problems')
+	@Searchable([
+		'name',
+	])
+	@Sortable({
+		'course': (problem) => get(problem, 'course.name'),
+		'creator': (problem) => get(problem, 'creator.firstName') + ' ' + get(problem, 'creator.lastName')
+	})
+	@Paginated()
 	async getCourseProblems({ params, repo }) {
 		// we simply can query for all sections that have the given course id set as their course column
 		return await repo(Problem).find({ course: params.courseID })

@@ -22,55 +22,14 @@
     </div>
 
     <div class="container-margin">
-      <table class="table table-striped">
-        <thead>
-        <tr>
-          <th>Problem Name</th>
-          <th>Difficulty</th>
-          <th>Estimated Duration</th>
-          <th>Creator</th>
-          <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr
-          *ngFor="let problem of problems">
-          <td>{{ problem.name }}</td>
-          <td>
-          <span [ngClass]="{
-           'badge-pill pill-success':problem.difficulty == problemDifficulty.Easy,
-          'badge-pill pill-warning':problem.difficulty == problemDifficulty.Medium,
-          'badge-pill pill-danger':problem.difficulty == problemDifficulty.Hard}"  id="difficulty">
-          {{problemDifficulty[problem.difficulty]}}
-            </span>
-          </td>
-          <td>{{ problem.estimatedDuration + " " + getMinuteUnit(problem.estimatedDuration)}}</td>
-          <td>
-            <app-user-badge
-              [user]="problem.creator">
-            </app-user-badge>
-          </td>
-          <td>
-            <div class="btn-group btn-group-sm" >
-              <a class="btn btn-outline-secondary"  routerLink="/courses/{{ course.id }}/problems/{{problem.id}}" aria-label="view">View</a>
-              <a class="btn btn-outline-secondary"  href="#" [routerLink]="" (click)="handleOpenEditProblemModal(problem)" aria-label="modify">Modify</a>
-              <a class="btn btn-outline-secondary"  href="#"  (click)="handleOpenDeleteProblemModal(problem)"  [routerLink]="" aria-label="delete">Delete</a>
-            </div>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+
+      <app-datatable
+        [dataFunction]="fetchProblems"
+        [columns]="columns"
+        [reload]="refreshData"
+      ></app-datatable>
+
     </div>
-
-
-    <app-table [rows]="tableRows"
-               [columns]="tableColumns"
-    (onView)="handleOnView($event)"
-    (onModify)="handleOnModify($event)"
-    (onDelete)="handleOnDelete($event)">
-    </app-table>
-
-
   </ng-container>
 </div>
 

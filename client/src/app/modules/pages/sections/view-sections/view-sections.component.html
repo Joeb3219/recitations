@@ -30,7 +30,7 @@
           <th>Section Number</th>
           <th>Index Code</th>
           <th>TA</th>
-          <th>Professor</th>
+          <th>Instructor</th>
           <th>Meeting Times</th>
           <th>Actions</th>
         </tr>
@@ -47,12 +47,12 @@
           </td>
           <td>
             <app-user-badge
-              [user]="section.professor">
+              [user]="section.instructor">
             </app-user-badge>
           </td>
           <td>{{ section.meetingTimes.length }}</td>
           <td>
-            <div class="btn-group btn-group-sm" data-toggle="buttons">
+            <div class="btn-group btn-group-sm">
               <a class="btn btn-outline-secondary" [routerLink]="" (click)="handleOpenEditSectionModal(section)">Modify</a>
               <a class="btn btn-outline-secondary" (click)="handleOpenDeleteSectionModal(section)" [routerLink]="">Delete</a>
             </div>

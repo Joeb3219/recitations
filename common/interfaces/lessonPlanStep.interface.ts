@@ -15,6 +15,8 @@ export interface LessonPlanStepInterface {
 	description?: string;    	// Actual instructions for the step
 	estimatedDuration?: number; // How long will this take, in minutes?
 
+	type?: 'problem' | 'task';
+
 	problem?: ProblemInterface; // What problem is this step referencing?
 
 	creator?: UserInterface; // Who made this problem?

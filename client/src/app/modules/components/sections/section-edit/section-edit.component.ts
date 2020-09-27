@@ -52,9 +52,9 @@ export class SectionEditComponent implements OnInit {
 			label: 'TA',
 		}, {
 			type: 'user',
-			name: 'professor',
-			value: (this.section) ? this.section.professor : null,
-			label: 'Professor',
+			name: 'instructor',
+			value: (this.section) ? this.section.instructor : null,
+			label: 'Instructor',
 		}, {
 			type: 'meetingTimes',
 			name: 'meetingTimes',

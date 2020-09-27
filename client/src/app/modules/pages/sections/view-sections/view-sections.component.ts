@@ -70,6 +70,7 @@ export class ViewSectionsComponent implements OnInit {
   }
 
   handleOpenDeleteSectionModal(section: Section) {
+    // let result = this._sectionService.deleteSection(section.id);
     this.isDeleteSectionModalOpen = true;
     this.selectedDeleteSection = section;
   }

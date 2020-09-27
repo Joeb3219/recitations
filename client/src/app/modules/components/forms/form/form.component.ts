@@ -19,6 +19,9 @@ export class FormComponent implements OnInit {
 	@Output() onFieldChange: EventEmitter<{ name: string, value: any }> = new EventEmitter();
 	internalStore = {};
 
+	Array = Array;
+	rowLayouts = {};
+
 	pageNumber: number = 0 // which page number of the form are we currently executing?
 
 	defaultWYSIWYGModules = {
@@ -35,7 +38,7 @@ export class FormComponent implements OnInit {
 
 			[{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
 
-			['formula', 'link', 'image', 'video']                         // link and image, video
+			['formula', 'link', 'image', 'video']             // link and image, video
 		]
 	};
 
@@ -60,8 +63,37 @@ export class FormComponent implements OnInit {
 	loadDefaultFormData(){
 		if(!this.form) return
 
+		this.recomputeLayout();
+
 		this.form.inputs.forEach((input) => {
 			this.internalStore[input.name] = input.value
+		})
+	}
+
+	// Generates an array where each index is a row, and the value of the index is how many columns that row has
+	recomputeLayout() {
+		this.rowLayouts = {};
+
+		// Each group will have its own layouts per group
+		this.form.inputGroups.forEach((group) => {
+			// Find all inputs on this page
+			const inputs = this.form.inputs.filter((input) => input.group == group.name || (group.name == '' && !input.group));
+
+			this.rowLayouts[group.name] = [1]; // By default, we have a 1x1 grid, and will fill it out more as needed
+
+			inputs.forEach((input) => {
+				// If there isn't a row or col, we assign 0 to the row and col
+				// This will put it into the first grid position
+				input.row = input.row || 0;
+				input.col = input.col || 0;
+
+				// Now we insert the row if needed
+				// This is done by adding an array of (needed length - current length) filled with 1 to the end of the array.
+				if((input.row + 1) > this.rowLayouts[group.name].length) this.rowLayouts[group.name] = [...this.rowLayouts[group.name], ...Array(input.row + 1 - this.rowLayouts[group.name].length).fill(1)];
+
+				// And now we increment the column if needed
+				if((input.col + 1) > this.rowLayouts[group.name][input.row]) this.rowLayouts[group.name][input.row] = input.col + 1;
+			})
 		})
 	}
 

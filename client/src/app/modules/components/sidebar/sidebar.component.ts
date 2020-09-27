@@ -17,7 +17,7 @@ export class SidebarComponent implements OnInit {
   userCourses: Course[] = []
   selectedCourse: Course = null
   activeLink: number;
-  links = ["home", "recitations", "sections", "problems", "coverage-requests", "settings"];
+  links = ["home", "recitations", "sections", "problems", "coverage-requests", "settings", "lesson-plans"];
 
   constructor(
     private _userService: UserService,

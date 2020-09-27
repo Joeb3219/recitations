@@ -7,6 +7,7 @@ import { environment } from '@environment'
 
 import { Course } from '@models/course'
 import { LessonPlan } from '@models/lessonPlan'
+import { LessonPlanStep } from '@models/lessonPlanStep';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class LessonPlanService {
 	public async upsertLessonPlan(lessonPlan: LessonPlan) : Promise<LessonPlan>{
 		const lessonPlanID = lessonPlan.id
 		const url = (lessonPlanID) ? `${environment.apiURL}/lessonplan/${lessonPlanID}` : `${environment.apiURL}/lessonplan`
-		let action
+		let action;
 
 		if(lessonPlanID) action = this.http.put(url, lessonPlan)
 		else action = this.http.post(url, lessonPlan)
@@ -28,6 +29,24 @@ export class LessonPlanService {
 		return new Promise((resolve, reject) => {
 			action.subscribe((result: { data: any }) => {
 				if(result) resolve(new LessonPlan(result.data))
+				else reject(new Error("No result returned"))
+			}, (err) => {
+				reject(err)
+			})
+		})
+	}
+
+	public async upsertLessonPlanStep(lessonPlanStep: LessonPlanStep) : Promise<LessonPlanStep>{
+		const lessonPlanStepID = lessonPlanStep.id
+		const url = (lessonPlanStepID) ? `${environment.apiURL}/lessonplanstep/${lessonPlanStepID}` : `${environment.apiURL}/lessonplanstep`
+		let action
+
+		if(lessonPlanStepID) action = this.http.put(url, lessonPlanStep)
+		else action = this.http.post(url, lessonPlanStep)
+
+		return new Promise((resolve, reject) => {
+			action.subscribe((result: { data: any }) => {
+				if(result) resolve(new LessonPlanStep(result.data))
 				else reject(new Error("No result returned"))
 			}, (err) => {
 				reject(err)

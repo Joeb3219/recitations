@@ -30,6 +30,7 @@ export class UserController{
 		const userHelper = new UserHelper();
 		if(await userHelper.comparePasswords(password, user.passwordHash)){
 			const jwt = userHelper.generateJWT(user.id)
+			console.log(jwt);
 			return jwt;
 		}
 

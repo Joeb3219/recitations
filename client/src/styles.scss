@@ -31,6 +31,12 @@ $client-theme: mat-light-theme($client-primary, $client-accent, $client-warn);
 @import '~quill/dist/quill.bubble.css';
 @import '~quill/dist/quill.snow.css';
 
+@import '~@swimlane/ngx-datatable/index.css';
+@import '~@swimlane/ngx-datatable/themes/bootstrap.scss';
+@import '~@swimlane/ngx-datatable/themes/material.scss';
+@import '~@swimlane/ngx-datatable/themes/dark.scss';
+@import '~@swimlane/ngx-datatable/assets/icons.css';
+
 
 // @import '~ngx-toastr/toastr-bs4-alert';
 
@@ -71,36 +77,25 @@ $colors: (
 
 
 :root {
-  --success: #5cb85c
+  --success: #5cb85c;
+  --danger: #ff3737;
+  --warning: #f0ad4e;
+  --primary: #CC0033;
+  --secondary: #5f6a72;
+  --grey: #d6d6d6;
+  --light: #ebebeb;
+  --light-grey: #f7f7f7;
 }
 
 :root {
-  --danger: #ff3737
+  --secondaryRGB: 95, 106, 114;
+  --greyRGB: 214, 214, 214;
 }
 
-:root {
-  --warning: #f0ad4e
-}
-
-
-:root {
-  --primary: #CC0033
-}
-
-:root {
-  --secondary: #5f6a72
-}
-
-:root {
-  --grey: #d6d6d6
-}
-
-:root {
-  --light: #ebebeb
-}
-
-:root {
-  --light-grey: #f7f7f7
+.badge-pill {
+  padding: .5rem;
+  opacity: 90%;
+  border-radius: .8rem;
 }
 
 .pill-success {
@@ -118,11 +113,6 @@ $colors: (
   color: white;
 }
 
-.badge-pill {
-  padding: .5rem;
-  opacity: 90%;
-  border-radius: .8rem;
-}
 
 .mat-expansion-panel-content > .mat-expansion-panel-body {
   padding-bottom: 0;
@@ -184,3 +174,29 @@ body {
 }
 
 
+.ngx-datatable.material {
+  box-shadow: none;
+}
+
+.ngx-datatable{
+  //width: 100%;
+  //max-width: max-content;
+  //min-width: max-content;
+}
+
+
+.form-control:focus {
+  border-color: rgba(var(--secondaryRGB), 0.3);
+  box-shadow: 0 0 0 0.2rem rgba(var(--secondaryRGB), 0.2);
+
+}
+
+//.form-control:focus {
+//  border-color: #28a745;
+//  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+//}
+
+
+.pill{
+  color: green;
+}

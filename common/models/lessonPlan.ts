@@ -15,7 +15,7 @@ export class LessonPlan extends BaseEntity implements LessonPlanInterface {
 	@Column()
 	public name: string;
 
-	@ManyToOne(type => LessonPlanStep, { eager: true })
+	@OneToMany(type => LessonPlanStep, step => step.lessonPlan, { eager: true })
 	@JoinColumn()
 	public steps: LessonPlanStep[];
 

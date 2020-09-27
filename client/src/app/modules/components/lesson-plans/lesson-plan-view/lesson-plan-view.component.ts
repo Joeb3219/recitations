@@ -9,6 +9,8 @@ import { LessonPlan } from '@models/lessonPlan';
 })
 export class LessonPlanViewComponent implements OnInit {
 
+  @Input() lessonPlan: LessonPlan;
+
   constructor() { }
 
   ngOnInit() {

@@ -10,6 +10,7 @@ import { CourseSettingsComponent } from "@pages/course-settings/course-settings.
 import { CoverageRequestsComponent } from "@pages/coverage-requests/coverage-requests.component";
 import { RecitationsComponent } from "@pages/recitations/recitations.component";
 import { ListLessonPlansComponent } from "@pages/lesson-plans/list-lesson-plans/list-lesson-plans.component";
+import { ViewLessonPlanComponent } from './modules/pages/lesson-plans/view-lesson-plan/view-lesson-plan.component';
 
 const routes: Routes = [
 
@@ -23,6 +24,7 @@ const routes: Routes = [
   { path: 'courses/:courseID/coverage-requests', component: CoverageRequestsComponent },
   { path: 'courses/:courseID/recitations', component: RecitationsComponent },
   { path: 'courses/:courseID/lesson-plans', component: ListLessonPlansComponent },
+  { path: 'courses/:courseID/lesson-plans/:lessonPlanID', component: ViewLessonPlanComponent },
 
 ];
 

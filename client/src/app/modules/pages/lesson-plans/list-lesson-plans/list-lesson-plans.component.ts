@@ -7,6 +7,7 @@ import { LessonPlanService } from '@services/lesson-plan.service';
 
 import { Course } from '@models/course'
 import { LessonPlan } from '@models/lessonPlan'
+import { Problem } from '@models/problem';
 
 @Component({
   selector: 'app-list-lesson-plans',
@@ -42,8 +43,13 @@ export class ListLessonPlansComponent implements OnInit {
   handleOpenNewLessonPlanModal() {
     this.isEditLessonPlanModalOpen = true
 
-    this.selectedLessonPlan = new LessonPlan()
-    this.selectedLessonPlan.course = this.course;
+    this.selectedLessonPlan = new LessonPlan({
+      course: new Course(this.course)
+    })
+  }
+
+  getMinuteUnit(estimatedDuration: number) {
+    return Problem.getMinuteUnit(estimatedDuration);
   }
 
   handleCloseEditLessonPlanModal() {

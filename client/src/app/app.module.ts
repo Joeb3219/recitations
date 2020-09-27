@@ -50,10 +50,13 @@ import { ListLessonPlansComponent } from './modules/pages/lesson-plans/list-less
 import { LessonPlanViewComponent } from './modules/components/lesson-plans/lesson-plan-view/lesson-plan-view.component';
 import { LessonPlanEditComponent } from './modules/components/lesson-plans/lesson-plan-edit/lesson-plan-edit.component';
 import { LessonPlanDeleteComponent } from './modules/components/lesson-plans/lesson-plan-delete/lesson-plan-delete.component';
-import { LessonPlanStepsEditComponent } from './modules/components/lesson-plan-steps/lesson-plan-steps-edit/lesson-plan-steps-edit.component';
-import { LessonPlanStepsFormfieldComponent } from './modules/components/lesson-plan-steps/lesson-plan-steps-formfield/lesson-plan-steps-formfield.component';
 import { TokenInterceptor } from './http/token.interceptor';
 import { DatatableComponent } from './modules/components/datatable/datatable.component';
+import { ProblemSearchFormComponent } from './modules/components/problems/problem-search-form/problem-search-form.component';
+import { LessonPlanStepsFormComponent } from './modules/components/lesson-plans/lesson-plan-steps/lesson-plan-steps-form/lesson-plan-steps-form.component';
+import { LessonPlanStepEditComponent } from './modules/components/lesson-plans/lesson-plan-step-edit/lesson-plan-step-edit.component';
+import { LessonPlanStepViewComponent } from './modules/components/lesson-plans/lesson-plan-step-view/lesson-plan-step-view.component';
+import { ViewLessonPlanComponent } from './modules/pages/lesson-plans/view-lesson-plan/view-lesson-plan.component';
 
 
 @NgModule({
@@ -87,9 +90,12 @@ import { DatatableComponent } from './modules/components/datatable/datatable.com
     LessonPlanViewComponent,
     LessonPlanEditComponent,
     LessonPlanDeleteComponent,
-    LessonPlanStepsEditComponent,
-    LessonPlanStepsFormfieldComponent,
     DatatableComponent,
+    ProblemSearchFormComponent,
+    LessonPlanStepsFormComponent,
+    LessonPlanStepEditComponent,
+    LessonPlanStepViewComponent,
+    ViewLessonPlanComponent,
   ],
   imports: [
     HttpClientModule,

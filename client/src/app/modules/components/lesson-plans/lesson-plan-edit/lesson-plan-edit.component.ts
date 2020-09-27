@@ -43,16 +43,27 @@ export class LessonPlanEditComponent implements OnInit {
 			name: 'name',
 			value: get(this, 'lessonPlan.name'),
 			label: 'Name',
+			row: 0,
+			col: 0,
 		}, {
-			type: 'wysiwyg',
-			name: 'question',
-			value: get(this, 'problem.question'),
-			label: 'Question',
+			type: 'select',
+			name: 'difficulty',
+			options: [
+				{ label: 'Easy', value: '1' },
+				{ label: 'Medium', value: '3' },
+				{ label: 'Hard', value: '5' },
+			],
+			value: get(this, 'lessonPlan.difficulty'),
+			label: 'Difficulty',
+			row: 0,
+			col: 1,
 		}, {
-			type: 'wysiwyg',
-			name: 'solution',
-			value: get(this, 'problem.solution'),
-			label: 'Solution',
+			type: 'lessonPlanSteps',
+			name: 'lessonPlanSteps',
+			lessonPlan: get(this, 'lessonPlan'),
+			label: 'Steps',
+			row: 1,
+			col: 0,
 		}]
 	}
 
@@ -67,10 +78,10 @@ export class LessonPlanEditComponent implements OnInit {
 		const updatedLessonPlan = Object.assign({}, this.lessonPlan, lessonPlan)
 		try{
 			// send state to the db, and obtain back the ground truth that the db produces
-			let result = await this._lessonPlanService.upsertLessonPlan(lessonPlan)
+			let result = await this._lessonPlanService.upsertLessonPlan(updatedLessonPlan);
 
 			// and now we store the ground truth back in our real object
-			Object.assign(this.lessonPlan, result)
+			Object.assign(this.lessonPlan, result);
 
 			this.toastr.success('Successfully edited lesson plan')
 			this.forceClose.next();

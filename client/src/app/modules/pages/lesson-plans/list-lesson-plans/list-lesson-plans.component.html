@@ -35,7 +35,8 @@
         <tr
           *ngFor="let lessonPlan of lessonPlans">
           <td>{{ lessonPlan.name }}</td>
-          <td>{{ lessonPlan.estimatedDuration + " " + getMinuteUnit(lessonPlan.estimatedDuration)}}</td>
+          <td *ngIf="!lessonPlan.getDuration()"></td>
+          <td *ngIf="lessonPlan.getDuration()">{{ lessonPlan.getDuration() + ' ' + getMinuteUnit(lessonPlan.getDuration()) }}</td>
           <td>
             <app-user-badge
               [user]="lessonPlan.creator">

@@ -35,7 +35,7 @@
 
 							<div
 								class="form-group"
-								*ngIf="input.row == row && input.col == col && (input.group == group.name || (group.name == '' && !input.group))"
+								*ngIf="!input.hidden && input.row == row && input.col == col && (input.group == group.name || (group.name == '' && !input.group))"
 							>
 
 								<label
@@ -57,11 +57,25 @@
 										(onChange)="fieldUpdated(input.name, $event)"
 									></app-user-search-formfield>
 
+									<app-problem-search-form
+										*ngIf="input.type == 'problem'"
+										[problem]="input.value"
+										[name]="input.name"
+										[course]="input.course"
+										(onChange)="fieldUpdated(input.name, $event)"
+									></app-problem-search-form>
+
 									<app-meeting-times-formfield
 										*ngIf="input.type == 'meetingTimes'"
 										[meetable]="input.meetable"
 										(onChange)="fieldUpdated(input.name, $event)"
 									></app-meeting-times-formfield>
+
+									<app-lesson-plan-steps-form
+										*ngIf="input.type == 'lessonPlanSteps'"
+										[lessonPlan]="input.lessonPlan"
+										(onChange)="fieldUpdated(input.name, $event)"
+									></app-lesson-plan-steps-form>
 
 									<quill-editor
 										*ngIf="input.type == 'wysiwyg'"
@@ -102,6 +116,7 @@
 										class="form-control"
 										name="{{ input.name }}"
 										(change)="fieldUpdated(input.name, $event)"
+										[disabled]="input.disabled"
 									>
 
 									<input

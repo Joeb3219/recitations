@@ -1,4 +1,6 @@
 import { Meetable } from '@models/meetable';
+import { LessonPlan } from '@models/lessonPlan';
+import { Course } from '@models/course';
 
 export class Form{
 	constructor(
@@ -30,8 +32,13 @@ export class Form{
 			type?: string,
 			value?: any,
 			meetable?: Meetable,
+			lessonPlan?: LessonPlan
+			formatted?: any,
 			row?: number,
 			col?: number,
+			hidden?: boolean,
+			disabled?: boolean,
+			course?: Course,
 		}[] = []
 	){}
 }

@@ -41,16 +41,8 @@ export class ProblemEditComponent implements OnInit {
 			name: 'name',
 			value: get(this, 'problem.name'),
 			label: 'Name',
-		}, {
-			type: 'wysiwyg',
-			name: 'question',
-			value: get(this, 'problem.question'),
-			label: 'Question',
-		}, {
-			type: 'wysiwyg',
-			name: 'solution',
-			value: get(this, 'problem.solution'),
-			label: 'Solution',
+			row: 0,
+			col: 0,
 		}, {
 			type: 'select',
 			name: 'difficulty',
@@ -61,14 +53,28 @@ export class ProblemEditComponent implements OnInit {
 			],
 			value: get(this, 'problem.difficulty'),
 			label: 'Difficulty',
-		}, {
+			row: 1,
+			col: 0,
+		},  {
 			type: 'number',
 			name: 'estimatedDuration',
 			value: get(this, 'problem.estimatedDuration'),
-			label: 'Estimated Duration (minutes)'
+			label: 'Estimated Duration (minutes)',
+			row: 1,
+			col: 1,
+		}, {
+			type: 'wysiwyg',
+			name: 'question',
+			value: get(this, 'problem.question'),
+			label: 'Question',
+			row: 2,
+		}, {
+			type: 'wysiwyg',
+			name: 'solution',
+			value: get(this, 'problem.solution'),
+			label: 'Solution',
+			row: 3,
 		}]
-
-		console.log(get(this, 'problem'))
 	}
 
 	handleClose(){

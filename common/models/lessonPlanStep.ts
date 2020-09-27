@@ -4,12 +4,18 @@ import { LessonPlanStepInterface } from '@interfaces/lessonPlanStep.interface'
 import { User } from '@models/user'
 import { Course } from '@models/course'
 import { Problem } from '@models/problem'
+import { LessonPlan } from './lessonPlan'
+
+export type LessonPlanStepType = 'problem' | 'task';
 
 @Entity()
 export class LessonPlanStep extends BaseEntity implements LessonPlanStepInterface {
 
 	@PrimaryGeneratedColumn("uuid")
 	public id: string
+
+	@Column()
+	public type?: LessonPlanStepType;
 
 	@Column()
 	public title?: string;
@@ -26,7 +32,11 @@ export class LessonPlanStep extends BaseEntity implements LessonPlanStepInterfac
 	@ManyToOne(type => Course, { eager: true })
 	@JoinColumn()
 	public course: Course
-	
+
+	@ManyToOne(type => LessonPlan, lessonPlan => lessonPlan.steps)
+	@JoinTable()
+	public lessonPlan: LessonPlan
+
 	@ManyToOne(type => User, { eager: true, cascade: true })
     @JoinColumn()
 	public creator?: User
@@ -39,6 +49,7 @@ export class LessonPlanStep extends BaseEntity implements LessonPlanStepInterfac
 		problem?: Problem,
 		creator?: User,
 		course?: Course,
+		type?: LessonPlanStepType,
 	} = {}){
 		super()
 		Object.assign(this, args)

@@ -5,9 +5,11 @@ import { isAuthenticated } from '@helpers/auth/auth.helper';
 import { User } from '@models/user';
 import { Request, Response } from 'express';
 import { BAD_REQUEST } from 'http-status-codes';
-import { get, isEqual, sortBy } from 'lodash';
+import { get, isEqual, pickBy, sortBy } from 'lodash';
 import 'reflect-metadata';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
+import { BaseEntity } from '../../../client/shim/typeorm.shim';
+import { ResourceArgs } from '../decorators/controller.decorator';
 
 function searchIn(object, key, target) {
     if (!target || !target.toString()) return true; // Ensure that the search target is actually comparable
@@ -88,6 +90,7 @@ function httpMiddleware(
     route,
     { sortableFields, searchableFields }
 ) {
+    console.log(`Generating ${method} ${route}`);
     return async (req: Request, res: Response) => {
         try {
             const result = await target({
@@ -111,7 +114,11 @@ function httpMiddleware(
             // and now we paginate the data
             const paginatedResult = paginateResultData(sortedResult, req);
 
-            console.log({ method, route, statusCode: 200 });
+            console.log({
+                method,
+                result,
+                statusCode: 200,
+            });
 
             return res.status(200).json({
                 data: paginatedResult,
@@ -136,6 +143,177 @@ function httpMiddleware(
             });
         }
     };
+}
+
+export function generateUpdateResource<T extends BaseEntity>(
+    resourceClass: BaseEntity,
+    resourceName: string,
+    dataFn: (HttpArgs) => unknown
+) {
+    return async (args: HttpArgs): Promise<T> => {
+        const { params, repo } = args;
+        const id = params[`${resourceName}ID`];
+
+        const updateableData = pickBy(await dataFn(args), (item) => {
+            return item !== 'undefined' && item !== undefined;
+        });
+
+        // first, we find the resource that is referenced by the given ID
+        let resource = await repo(resourceClass).findOne({ id });
+
+        // no resource found, 404 it out
+        if (!resource) throw Boom.notFound(`${resourceName} not found`);
+
+        resource = Object.assign(resource, updateableData);
+
+        // and now we can update the resource
+        return repo(resourceClass).save(resource);
+    };
+}
+
+export function generateGetResource<T extends BaseEntity>(
+    resourceClass: BaseEntity,
+    resourceName: string
+) {
+    return async (args: HttpArgs): Promise<T> => {
+        const { params, repo } = args;
+        const id = params[`${resourceName}ID`];
+
+        // first, we find the resource that is referenced by the given ID
+        const resource = await repo(resourceClass).findOne({ id });
+
+        // no resource found, 404 it out
+        if (!resource) throw Boom.notFound(`${resourceName} not found`);
+
+        return resource;
+    };
+}
+
+export function generateDeleteResource(
+    resourceClass: BaseEntity,
+    resourceName: string
+) {
+    return async (args: HttpArgs): Promise<DeleteResult> => {
+        const { params, repo } = args;
+        const id = params[`${resourceName}ID`];
+
+        // first, we find the resource that is referenced by the given ID
+        const resource = await repo(resourceClass).findOne({ id });
+
+        // no resource found, 404 it out
+        if (!resource) throw Boom.notFound(`${resourceName} not found`);
+
+        return repo(resourceClass).delete({ id });
+
+        return resource;
+    };
+}
+
+export function generateCreateResource<T extends BaseEntity>(
+    resourceClass: BaseEntity,
+    dataFn: (HttpArgs) => unknown
+) {
+    return async (args: HttpArgs): Promise<T> => {
+        const { repo } = args;
+
+        const data = pickBy(await dataFn(args), (item) => {
+            return item !== 'undefined' && item !== undefined;
+        });
+
+        return repo(resourceClass).save(data);
+    };
+}
+
+export function generateListResource<T extends BaseEntity>(
+    resourceClass: BaseEntity
+) {
+    return async (args: HttpArgs): Promise<T[]> => {
+        const { repo, params } = args;
+        const { courseID } = params;
+
+        return repo(resourceClass).find({ course: courseID });
+    };
+}
+
+export function generateResource(
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    app: any,
+    data: {
+        target: any;
+        resourceName: string;
+        resourceModel: new () => BaseEntity;
+        args: ResourceArgs;
+    },
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+    controller: any
+): void {
+    const { target, resourceName, resourceModel, args } = data;
+    const { sortable, searchable, dataDict } = args;
+
+    const generateInternalRoute = (
+        controller,
+        app,
+        fn,
+        route,
+        method,
+        args: { searchableFields; sortableFields }
+    ) => {
+        const providedFunction = fn;
+
+        const middlewares = [isAuthenticated];
+        middlewares.push(httpMiddleware(providedFunction, method, route, args));
+
+        app.route(route)[method](...middlewares);
+    };
+
+    generateInternalRoute(
+        controller,
+        app,
+        generateUpdateResource<typeof resourceModel>(
+            resourceModel,
+            resourceName,
+            dataDict
+        ),
+        `/${resourceName}/:${resourceName}ID`,
+        `post`,
+        { searchableFields: undefined, sortableFields: undefined }
+    );
+
+    generateInternalRoute(
+        controller,
+        app,
+        generateGetResource<typeof resourceModel>(resourceModel, resourceName),
+        `/${resourceName}/:${resourceName}ID`,
+        `get`,
+        { searchableFields: undefined, sortableFields: undefined }
+    );
+
+    generateInternalRoute(
+        controller,
+        app,
+        generateDeleteResource(resourceModel, resourceName),
+        `/${resourceName}/:${resourceName}ID`,
+        `delete`,
+        { searchableFields: undefined, sortableFields: undefined }
+    );
+
+    generateInternalRoute(
+        controller,
+        app,
+        generateListResource<typeof resourceModel>(resourceModel),
+        `/course/:courseID/${resourceName}s`,
+        `get`,
+        { searchableFields: searchable, sortableFields: sortable }
+    );
+
+    generateInternalRoute(
+        controller,
+        app,
+        generateCreateResource<typeof resourceModel>(resourceModel, dataDict),
+        `/${resourceName}`,
+        `post`,
+        { searchableFields: undefined, sortableFields: undefined }
+    );
 }
 
 export function generateRoute(

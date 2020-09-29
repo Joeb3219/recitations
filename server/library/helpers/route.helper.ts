@@ -111,6 +111,8 @@ function httpMiddleware(
             // and now we paginate the data
             const paginatedResult = paginateResultData(sortedResult, req);
 
+            console.log({ method, route, statusCode: 200 });
+
             return res.status(200).json({
                 data: paginatedResult,
                 message: `Successfully called ${method} ${route}`,
@@ -119,7 +121,7 @@ function httpMiddleware(
                 },
             });
         } catch (err) {
-            console.error(err);
+            console.log({ method, route, err });
             if (Boom.isBoom(err)) {
                 return res.status(err.output.statusCode).json({
                     message:

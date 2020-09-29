@@ -1,10 +1,23 @@
 {
 	"private": true,
-	"workspaces": ["server", "client", "common"],
-	"nohoist": ["**/typeorm**/", "**/typeorm"],
+	"workspaces": [
+		"server",
+		"client",
+		"common"
+	],
+	"nohoist": [
+		"**/typeorm**/",
+		"**/typeorm"
+	],
 	"scripts": {
 		"lint": "yarn prettier && yarn eslint",
 		"eslint": "eslint . --ext ts --quiet --fix",
 		"prettier": "prettier --write \"**/*.ts\""
-	}
+	},
+	"devDependencies": {
+		"pre-commit": "^1.2.2"
+	},
+	"pre-commit": [
+		"lint"
+	]
 }

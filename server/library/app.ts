@@ -1,4 +1,4 @@
-import { generateRoute } from '@helpers/route.helper';
+import { generateResource, generateRoute } from '@helpers/route.helper';
 import { User } from '@models/user';
 import * as bodyParser from 'body-parser';
 import * as dotenv from 'dotenv';
@@ -91,8 +91,13 @@ class AppWrapper {
                 const controllerInstance = new controller();
                 const routes =
                     Reflect.getMetadata('routes', controllerInstance) || [];
+                const resources =
+                    Reflect.getMetadata('resources', controller) || [];
                 routes.forEach((data) => {
                     generateRoute(this.app, data, controllerInstance);
+                });
+                resources.forEach((data) => {
+                    generateResource(this.app, data, controllerInstance);
                 });
             });
         });

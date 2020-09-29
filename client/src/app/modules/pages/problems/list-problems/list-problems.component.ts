@@ -115,9 +115,8 @@ export class ListProblemsComponent implements OnInit {
         });
     }
 
-    async fetchProblems(args: HttpFilterInterface): Promise<Problem[]> {
-        return (await this.problemService.getCourseProblems(this.course, args))
-            ?.data;
+    async fetchProblems(args: HttpFilterInterface) {
+        return this.problemService.getCourseProblems(this.course, args);
     }
 
     handleOpenNewProblemModal(): void {

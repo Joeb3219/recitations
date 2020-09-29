@@ -1,4 +1,6 @@
 import 'reflect-metadata';
+import { BaseEntity } from 'typeorm';
+import { HttpArgs } from '../helpers/route.helper';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function Controller<T extends { new (...args: unknown[]): {} }>(
@@ -6,4 +8,36 @@ export function Controller<T extends { new (...args: unknown[]): {} }>(
 ): T {
     Reflect.defineMetadata('controllers', true, target);
     return target;
+}
+
+export interface ResourceArgs {
+    sortable: {
+        dataDictionary: any;
+        defaultSortKey?: undefined;
+        defaultSortDir?: string;
+    };
+    searchable: string[];
+    dataDict: (args: HttpArgs) => unknown;
+}
+
+export function Resource(
+    resourceName: string,
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
+    resourceModel: new () => BaseEntity,
+    args: ResourceArgs
+) {
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    return function <T extends { new (...args: unknown[]): {} }>(target: T): T {
+        const metadata = Reflect.getMetadata('resources', target) || [];
+        metadata.push({
+            target,
+            resourceName,
+            resourceModel,
+            args,
+        });
+
+        Reflect.defineMetadata('resources', metadata, target);
+
+        return target;
+    };
 }

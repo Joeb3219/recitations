@@ -1,95 +1,130 @@
-import { Request, Response } from 'express'
-import { OK, NOT_FOUND, BAD_REQUEST } from 'http-status-codes'
-import { pickBy } from 'lodash'
+import * as Boom from '@hapi/boom';
+import { Problem } from '@models/problem';
+import { get, pickBy } from 'lodash';
+import { DeleteResult } from 'typeorm';
+import {
+    Controller,
+    DeleteRequest,
+    GetRequest,
+    Paginated,
+    PostRequest,
+    PutRequest,
+    Searchable,
+    Sortable,
+} from '../decorators';
+import { HttpArgs } from '../helpers/route.helper';
 
-import { User } from '@models/user'
-import { Course } from '@models/course'
-import { Problem } from '@models/problem'
+@Controller
+export class ProblemController {
+    @GetRequest('/course/:courseID/problems')
+    @Searchable(['name'])
+    @Sortable({
+        course: (problem) => get(problem, 'course.name'),
+        creator: (problem) =>
+            get(problem, 'creator.firstName') +
+            ' ' +
+            get(problem, 'creator.lastName'),
+    })
+    @Paginated()
+    static async getCourseProblems({
+        params,
+        repo,
+    }: HttpArgs): Promise<Problem[]> {
+        // we simply can query for all sections that have the given course id set as their course column
+        return repo(Problem).find({ course: params.courseID });
+    }
 
-export class ProblemController{
+    @GetRequest('/problem/:problemID')
+    static async getProblem({ params, repo }: HttpArgs): Promise<Problem> {
+        const problemID = params.problemID;
+        return repo(Problem).findOne({ id: problemID });
+    }
 
-	getCourseProblems = async (req: Request, res: Response) => {
-		try{
-			// we simply can query for all sections that have the given course id set as their course column
-			let problems = await res.locals.repo(Problem).find({ course: req.params.courseID })
+    @DeleteRequest('/problem/:problemID')
+    static async deleteProblem({
+        params,
+        repo,
+    }: HttpArgs): Promise<DeleteResult> {
+        const problemID = params.problemID;
+        return repo(Problem).delete({ id: problemID });
+    }
 
-			return req.ok(`Successfully fetched problems in course.`, problems)
-		}catch(err){
-			return req.error(`Failed to fetch problems in course.`, err)
-		}
-	}
+    @PostRequest('/problem')
+    static async createProblem({
+        body,
+        currentUser,
+        repo,
+    }: HttpArgs): Promise<Problem> {
+        const {
+            difficulty,
+            name,
+            question,
+            solution,
+            estimatedDuration,
+            course,
+        } = body;
 
-	createProblem = async (req: Request, res: Response) => {
-		try{
-			let {
-				difficulty,
-				name,
-				question,
-				solution,
-				estimatedDuration,
-				course
-			} = req.body
+        const problem = pickBy(
+            {
+                difficulty,
+                name,
+                question,
+                solution,
+                estimatedDuration,
+                creator: currentUser,
+                course,
+            },
+            (item) => {
+                return item !== 'undefined' && item !== undefined;
+            }
+        );
 
-			let problem = pickBy({
-				difficulty,
-				name,
-				question,
-				solution,
-				estimatedDuration,
-				creator: res.locals.currentUser,
-				course
-			}, (item) => { return item != 'undefined' && item != undefined })
+        // and now we can update the section
+        return repo(Problem).save(problem);
+    }
 
-			// and now we can update the section
-			problem = await res.locals.repo(Problem).save(problem)
+    @PutRequest('/problem/:problemID')
+    static async updateProblem({
+        params,
+        repo,
+        body,
+    }: HttpArgs): Promise<Problem> {
+        const { problemID } = params;
 
-			return req.ok(`Successfully updated problem.`, problem)
-		}catch(err){
-			return req.error(`Failed updated problem.`, err)
-		}
-	}
+        const {
+            difficulty,
+            name,
+            question,
+            solution,
+            estimatedDuration,
+            creator,
+            course,
+        } = body;
 
-	updateProblem = async (req: Request, res: Response) => {
-		try{
-			const { problemID } = req.params
+        const updateableData = pickBy(
+            {
+                difficulty,
+                name,
+                question,
+                solution,
+                estimatedDuration,
+                creator,
+                course,
+            },
+            (item) => {
+                return item !== 'undefined' && item !== undefined;
+            }
+        );
 
-			let {
-				difficulty,
-				name,
-				question,
-				solution,
-				estimatedDuration,
-				creator,
-				course
-			} = req.body
+        // first, we find the problem that is referenced by the given ID
+        let problem = await repo(Problem).findOne({ id: problemID });
 
-			const updateableData = pickBy({
-				difficulty,
-				name,
-				question,
-				solution,
-				estimatedDuration,
-				creator,
-				course
-			}, (item) => { return item != 'undefined' && item != undefined })
+        // no problem found, 404 it out
+        if (!problem) throw Boom.notFound('Problem not found');
 
-			// first, we find the problem that is referenced by the given ID
-			let problem = await res.locals.repo(Problem).findOne({ id: problemID })
+        problem = Object.assign(problem, updateableData);
 
-			// no problem found, 404 it out
-			if(!problem){
-				return res.status(NOT_FOUND).json('Failed to find specified problem.')
-			}
-
-			problem = Object.assign(problem, updateableData)
-			
-			// and now we can update the problem
-			problem = await res.locals.repo(Problem).save(problem)
-
-			return req.ok(`Successfully updated problem.`, problem)
-		}catch(err){
-			return req.error(`Failed to update problem.`, err)
-		}
-	}
-
+        // and now we can update the problem
+        return repo(Problem).save(problem);
+    }
 }

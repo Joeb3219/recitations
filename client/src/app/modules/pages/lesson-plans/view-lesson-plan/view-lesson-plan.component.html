@@ -1,0 +1,13 @@
+<div class="page" style="padding: 1rem">
+    <ng-container
+      *ngIf="!isLoading && !lessonPlan">
+      <h4>Not Found</h4>
+    </ng-container>
+    <ng-container *ngIf="lessonPlan">
+      <div class="divider-sm"></div>
+  
+      <app-lesson-plan-view [lessonPlan]="lessonPlan">
+      </app-lesson-plan-view>
+  
+    </ng-container>
+  </div>

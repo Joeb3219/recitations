@@ -1,95 +1,105 @@
-import { Request, Response } from 'express'
-import { OK, NOT_FOUND, BAD_REQUEST } from 'http-status-codes'
-import { pickBy } from 'lodash'
+import * as Boom from '@hapi/boom';
+import { Section } from '@models/section';
+import { pickBy } from 'lodash';
+import { DeleteResult } from 'typeorm';
+import {
+    Controller,
+    DeleteRequest,
+    GetRequest,
+    PostRequest,
+    PutRequest,
+} from '../decorators';
+import { HttpArgs } from '../helpers/route.helper';
 
-import { User } from '@models/user'
-import { Course } from '@models/course'
-import { Section } from '@models/section'
+@Controller
+export class SectionController {
+    @GetRequest('/course/:courseID/sections')
+    static async getCourseSections({
+        repo,
+        params,
+    }: HttpArgs): Promise<Section[]> {
+        // we simply can query for all sections that have the given course id set as their course column
+        return repo(Section).find({ course: params.courseID });
+    }
 
-import { MeetingTime } from '@models/meetingTime'
-import { MeetingType } from '@enums/meetingType.enum';
+    @DeleteRequest('/section/:sectionID')
+    static async deleteSection({
+        params,
+        repo,
+    }: HttpArgs): Promise<DeleteResult> {
+        const sectionID = params.sectionID;
+        return repo(Section).delete({ id: sectionID });
+    }
 
-export class SectionController{
+    @PostRequest('/section')
+    static async createSection({ body, repo }: HttpArgs): Promise<Section> {
+        const {
+            index,
+            sectionNumber,
+            ta,
+            instructor,
+            meetingTimes,
+            course,
+        } = body;
 
-	getCourseSections = async (req: Request, res: Response) => {
-		try{
-			// we simply can query for all sections that have the given course id set as their course column
-			let sections = await res.locals.repo(Section).find({ course: req.params.courseID })
+        const section = pickBy(
+            {
+                index,
+                sectionNumber,
+                ta,
+                instructor,
+                meetingTimes,
+                course,
+            },
+            (item) => {
+                return item !== 'undefined' && item !== undefined;
+            }
+        );
 
-			return req.ok(`Successfully fetched sections in course.`, sections)
-		}catch(err){
-			return req.error(`Failed to fetch sections in course.`, err)
-		}
-	}
+        // and now we can update the section
+        return repo(Section).save(section);
+    }
 
-	createSection = async (req: Request, res: Response) => {
-		try{
-			let {
-				index,
-				sectionNumber,
-				ta,
-				professor,
-				meetingTimes,
-				course
-			} = req.body
+    @PutRequest('/section/:sectionID')
+    static async updateSection({
+        params,
+        body,
+        repo,
+    }: HttpArgs): Promise<Section> {
+        const { sectionID } = params;
 
-			let section = pickBy({
-				index,
-				sectionNumber,
-				ta,
-				professor,
-				meetingTimes,
-				course
-			}, (item) => { return item != 'undefined' && item != undefined })
+        const {
+            index,
+            sectionNumber,
+            ta,
+            instructor,
+            meetingTimes,
+            course,
+        } = body;
 
-			// and now we can update the section
-			section = await res.locals.repo(Section).save(section)
+        const updateableData = pickBy(
+            {
+                index,
+                sectionNumber,
+                ta,
+                instructor,
+                meetingTimes,
+                course,
+            },
+            (item) => {
+                return item !== 'undefined' && item !== undefined;
+            }
+        );
 
-			return req.ok(`Successfully updated section.`, section)
-		}catch(err){
-			return req.error(`Failed updated section.`, err)
-		}
-	}
+        // first, we find the section that is referenced by the given ID
+        let section = await repo(Section).findOne({ id: sectionID });
 
-	updateSection = async (req: Request, res: Response) => {
-		try{
-			const { sectionID } = req.params
+        // no section found, 404 it out
+        if (!section) throw Boom.notFound('Failed to find specified section.');
 
-			let {
-				index,
-				sectionNumber,
-				ta,
-				professor,
-				meetingTimes,
-				course
-			} = req.body
+        section = Object.assign(section, updateableData);
 
-			const updateableData = pickBy({
-				index,
-				sectionNumber,
-				ta,
-				professor,
-				meetingTimes,
-				course
-			}, (item) => { return item != 'undefined' && item != undefined })
-
-			// first, we find the section that is referenced by the given ID
-			let section = await res.locals.repo(Section).findOne({ id: sectionID })
-
-			// no section found, 404 it out
-			if(!section){
-				return res.status(NOT_FOUND).json('Failed to find specified section.')
-			}
-
-			section = Object.assign(section, updateableData)
-			
-			// and now we can update the section
-			section = await res.locals.repo(Section).save(section)
-
-			return req.ok(`Successfully updated section.`, section)
-		}catch(err){
-			return req.error(`Failed to update section.`, err)
-		}
-	}
-
+        // and now we can update the section
+        return repo(Section).save(section);
+    }
 }

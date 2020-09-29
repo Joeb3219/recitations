@@ -1,9 +1,5 @@
 {
-  "watch": [
-    "library/app.ts",
-    "library/*",
-    "../common/*"
-  ],
-  "ext": "ts",
-  "exec": "ts-node -r tsconfig-paths/register ./library/app.ts"
+    "watch": ["library/app.ts", "library/*", "../common/*"],
+    "ext": "ts",
+    "exec": "ts-node -r tsconfig-paths/register ./library/app.ts"
 }

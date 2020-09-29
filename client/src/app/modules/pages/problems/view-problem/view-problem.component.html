@@ -1,0 +1,17 @@
+<div class="page" style="padding: 1rem">
+  <ng-container
+    *ngIf="!isLoading && !problem">
+    <h4>Not Found</h4>
+  </ng-container>
+  <ng-container *ngIf="problem">
+    <div class="divider-sm"></div>
+
+    <app-problem-view [problem]="problem">
+    </app-problem-view>
+
+  </ng-container>
+
+
+</div>
+
+

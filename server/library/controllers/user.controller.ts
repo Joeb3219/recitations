@@ -1,52 +1,43 @@
-import { Request, Response } from 'express'
-import { getConnection, getRepository } from 'typeorm';
-import { OK, NOT_FOUND, BAD_REQUEST } from 'http-status-codes'
+import * as Boom from '@hapi/boom';
+import { UserHelper } from '@helpers/user.helper';
+import { User } from '@models/user';
+import {
+    Controller,
+    GetRequest,
+    PostRequest,
+    Unauthenticated,
+} from '../decorators';
+import { HttpArgs } from '../helpers/route.helper';
 
-import { User } from '@models/user'
+@Controller
+export class UserController {
+    @GetRequest('/user')
+    static async getUsers({ repo }: HttpArgs): Promise<User[]> {
+        return repo(User).find({});
+    }
 
-import { UserHelper } from '@helpers/user.helper'
+    @GetRequest('/user/me')
+    static async getCurrentUser({ currentUser }: HttpArgs): Promise<User> {
+        return currentUser;
+    }
 
-export class UserController{
-	userHelper: UserHelper = new UserHelper()
+    @PostRequest('/user/signin')
+    @Unauthenticated()
+    static async signin({ body, repo }: HttpArgs): Promise<string> {
+        const { username, password } = body;
 
-	getUsers = async (req: Request, res: Response) => {
-		try{
-			const users = await res.locals.repo(User).find({})
+        const user = await repo(User).findOne({
+            where: { username },
+            select: ['id', 'passwordHash', 'username'],
+        });
 
-			return req.ok(`Successfully fetched all users.`, users)
-		}catch(err){
-			return req.error(`Failed to fetch all users.`, err)
-		}
-	}
+        if (!user) throw Boom.notFound('User not found');
 
-	getCurrentUser = async (req: Request, res: Response) => {
-		try{
-			return req.ok(`Successfully fetched user from JWT.`, res.locals.currentUser)
-		}catch(err){
-			return req.error(`Failed to find user provided by JWT.`, err)
-		}
-	}
+        if (await UserHelper.comparePasswords(password, user.passwordHash)) {
+            const jwt = UserHelper.generateJWT(user.id);
+            return jwt;
+        }
 
-	signin = async (req: Request, res: Response) => {
-		try{
-			var { username, password } = req.body;
-
-			const user = await res.locals.repo(User).findOne({ where: { username }, select: ["id", "passwordHash", "username"] })
-
-			if(!user){
-				return req.notFound(`Failed to find the user ${username}.`)
-			}
-
-			// now we attempt to validate the user by password
-			if(await this.userHelper.comparePasswords(password, user.passwordHash)){
-				const jwt = this.userHelper.generateJWT(user.id)
-				return req.ok(`Successfully authenticated user.`, jwt)
-			}else{
-				return req.error(`Failed to sign user in`)
-			}
-		}catch(err){
-			return req.error(`Failed to sign user in`, err)
-		}
-	}
-
+        throw Boom.unauthorized('Failed to sign in as user');
+    }
 }

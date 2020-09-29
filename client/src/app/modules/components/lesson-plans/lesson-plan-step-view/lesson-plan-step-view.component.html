@@ -1,0 +1,9 @@
+<div class="task">
+    <span class="task__header">
+        {{ lessonPlanStep.title }} -- {{ lessonPlanStep.estimatedDuration ? lessonPlanStep.estimatedDuration : lessonPlanStep.problem.estimatedDuration }}
+    </span>
+    <div class="task__body">
+        <app-problem-view *ngIf="lessonPlanStep.problem" [problem]="lessonPlanStep.problem"></app-problem-view>
+        <span>{{ lessonPlanStep.description }}</span>
+    </div>
+</div>

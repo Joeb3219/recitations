@@ -1,58 +1,34 @@
-import { Request, Response } from 'express'
-import { OK, NOT_FOUND, BAD_REQUEST } from 'http-status-codes'
+import { Course } from '@models/course';
+import { Controller, GetRequest, PostRequest } from '../decorators';
+import { HttpArgs } from '../helpers/route.helper';
 
-import { Course } from '@models/course'
+@Controller
+export class CourseController {
+    @PostRequest('/course')
+    static async createCourse({ body, repo }: HttpArgs): Promise<Course> {
+        // First, we collect all of the submitted data
+        const { name, department, courseCode } = body;
 
-export class CourseController{
+        const course = {
+            name,
+            department,
+            courseCode,
+        };
 
-	createCourse = async (req: Request, res: Response) => {
-		try{
-			// First, we collect all of the submitted data
-			let { 
-				name,
-				department,
-				courseCode,
-			} = req.body
+        return repo(Course).save(course);
+    }
 
-			let course = new Course({
-				name,
-				department,
-				courseCode,
-			})
+    @GetRequest('/course')
+    static async getCourses({ repo }: HttpArgs): Promise<Course[]> {
+        return repo(Course).find({});
+    }
 
-			course = await res.locals.repo(Course).save(course)
+    @GetRequest('/course/:courseID')
+    static async getCourse({ repo, params }: HttpArgs): Promise<Course[]> {
+        const courseID = params.courseID;
 
-			return req.ok(`Successfully created course.`, course)
-		}catch(err){
-			return req.error(`Failed to create course.`, err)
-		}
-	}
+        // if(!courseID) return res.status(NOT_FOUND).json({ message: 'No courseID specified.' }).end()
 
-	getCourses = async (req: Request, res: Response) => {
-		try{
-			// First, we collect all of the submitted data
-			let courses = await res.locals.repo(Course).find({ })
-
-			return req.ok(`Successfully fetched courses.`, courses)
-		}catch(err){
-			return req.error(`Failed to fetch courses.`, err)
-		}
-	}
-
-	getCourse = async (req: Request, res: Response) => {
-		try{
-			const courseID = req.params.courseID
-
-			if(!courseID) return res.status(NOT_FOUND).json({ message: 'No courseID specified.' }).end()
-
-			const course = await res.locals.repo(Course).findOne({ id: courseID })
-
-			if(course) return req.ok(`Successfully fetched course.`, course)
-			else return req.notFound(`Failed to find specified course.`)
-		}catch(err){
-			return req.error(`Failed to fetch course.`, err)
-		}
-	}
-
-
+        return repo(Course).findOne({ id: courseID });
+    }
 }

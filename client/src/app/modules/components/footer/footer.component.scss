@@ -1,10 +1,12 @@
 .footer{
 	position: absolute;
 	top: 100%;
-	height: auto;
+	height: 50px;
+  bottom: 0;
 
 	.text{
 		color: white;
-		padding: 8px;
+		padding-bottom: 0.1rem;
 	}
 }
+

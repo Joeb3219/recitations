@@ -1,47 +1,49 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { Subject, Observable } from 'rxjs';
-
-import { Form } from '@models/forms/form'
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Form, FormFieldUpdated } from '@models/forms/form';
+import { Observable, Subject } from 'rxjs';
 
 @Component({
-  selector: 'app-form-modal',
-  templateUrl: './form-modal.component.html',
-  styleUrls: ['./form-modal.component.scss']
+    selector: 'app-form-modal',
+    templateUrl: './form-modal.component.html',
+    styleUrls: ['./form-modal.component.scss'],
 })
-export class FormModalComponent implements OnInit {
+export class FormModalComponent {
+    @Input() form: Form;
 
-	@Input() form: Form
-	@Input() title: string
-	@Input() submitText: string
-	@Input() showModal: boolean
-	@Input() forceClose: Observable<{}> = new Observable();
-	@Input() modalSize: string = 'lg'
-	@Output() onSubmit: EventEmitter<{}> = new EventEmitter();
-	@Output() onClose: EventEmitter<{}> = new EventEmitter();
-	@Output() onFieldChange: EventEmitter<{ name: string, value: any }> = new EventEmitter();
+    @Input() title: string;
 
-	forceFormSubmit: Subject<any> = new Subject<any>()
+    @Input() submitText: string;
 
+    @Input() showModal: boolean;
 
-	constructor(){}
+    @Input() forceClose: Observable<void> = new Observable();
 
-	ngOnInit(){}
+    @Input() modalSize = 'lg';
 
-	handleOnSubmit(val) {
-		this.onSubmit.emit(val)
-	}
+    @Output() onSubmit: EventEmitter<any> = new EventEmitter();
 
-	handleOnClose() {
-		this.onClose.emit(null)
-	}
+    @Output() onClose: EventEmitter<void> = new EventEmitter();
 
-	handleOnFieldChange(val) {
-		this.onFieldChange.emit(val)
-	}
+    @Output() onFieldChange: EventEmitter<{
+        name: string;
+        value: any;
+    }> = new EventEmitter();
 
-	handleModalSubmit(){
-		this.forceFormSubmit.next()
-	}
+    forceFormSubmit: Subject<any> = new Subject<any>();
 
+    handleOnSubmit(val): void {
+        this.onSubmit.emit(val);
+    }
 
+    handleOnClose(): void {
+        this.onClose.emit(null);
+    }
+
+    handleOnFieldChange(val: FormFieldUpdated): void {
+        this.onFieldChange.emit(val);
+    }
+
+    handleModalSubmit(): void {
+        this.forceFormSubmit.next();
+    }
 }

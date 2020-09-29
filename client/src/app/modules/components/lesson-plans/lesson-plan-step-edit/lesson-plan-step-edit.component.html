@@ -1,0 +1,11 @@
+<app-form-modal
+	*ngIf="isVisible"
+	[submitText]="(lessonPlanStep && lessonPlanStep.id) ? 'Save Step' : 'Create Step'"
+	[showModal]="isVisible"
+	[form]="form"
+	[title]="(lessonPlanStep && lessonPlanStep.id) ? 'Edit Step' : 'New Step'"
+	(onSubmit)="formSubmitted($event)"
+    (onClose)="handleClose()"
+    (onFieldChange)="handleFieldChange($event)"
+	[forceClose]="forceClose">
+</app-form-modal>

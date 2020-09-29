@@ -1,8 +1,6 @@
-import { MeetingTimeInterface } from './meetingTime.interface'
+import { MeetingTimeInterface } from './meetingTime.interface';
 
 export interface MeetableInterface {
-
-	id: String
-	meetingTimes?: MeetingTimeInterface[]
-
+    id: string;
+    meetingTimes?: MeetingTimeInterface[];
 }

@@ -1,0 +1,53 @@
+<app-lesson-plan-step-edit
+	[isVisible]="isEditingStep"
+	[lessonPlanStep]="selectedEditedStep"
+	(onClose)="handleEditStepClosed()"
+	(onStepEdited)="handleStepEdited($event)">
+</app-lesson-plan-step-edit>
+
+<span 
+    (click)="handleAddNewStep('task')">
+    <fa-icon 
+        [icon]="icons.add"
+    ></fa-icon> Add New Task
+</span>
+<span 
+    (click)="handleAddNewStep('problem')">
+    <fa-icon 
+        [icon]="icons.add"
+    ></fa-icon> Add New Problem
+</span>
+
+<table class="table">
+	<thead>
+		<tr>
+			<th>Title</th>
+			<th>Duration</th>
+			<th>Problem</th>
+			<th></th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr
+			*ngFor="let step of lessonPlan.steps"
+		>
+			<td>{{ step.title }}</td>
+			<td>{{ step.estimatedDuration }}</td>
+			<td>{{ step.problem ? step.problem.name : '' }}</td>
+			<td>
+				<div 
+					ngbDropdown 
+				>
+					<fa-icon 
+						ngbDropdownToggle
+						[icon]="icons.modify"
+					></fa-icon>
+					<div class="dropdown-menu" ngbDropdownMenu>
+						<span ngbDropdownItem>Edit</span>
+						<span ngbDropdownItem>Delete</span>
+					</div>
+				</div>
+			</td>
+		</tr>
+	</tbody>
+</table>

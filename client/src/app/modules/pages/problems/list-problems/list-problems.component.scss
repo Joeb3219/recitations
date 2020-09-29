@@ -1,0 +1,17 @@
+
+
+button:focus, button:active:focus, button.active:focus {
+  outline: none !important;
+}
+
+/* make sure we have a visible focus ring */
+.btn:focus {
+  outline: none;
+  box-shadow: rgba(17,204,12,0);
+}
+
+
+/* hide focus style if not from keyboard navigation */
+.js-focus-visible .btn:focus:not(.focus-visible) {
+  box-shadow: none;
+}

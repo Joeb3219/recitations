@@ -1,13 +1,13 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { HttpClientModule } from '@angular/common/http'; 
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule, ReactiveFormsModule } from "@angular/forms"
-import { QuillModule } from 'ngx-quill'
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { QuillModule } from 'ngx-quill';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './modules/components/header/header.component';
@@ -26,52 +26,129 @@ import { MeetingTimesFormfieldComponent } from './modules/components/meeting-tim
 import { FormModalComponent } from './modules/components/forms/form-modal/form-modal.component';
 import { MeetingTimeEditComponent } from './modules/components/meeting-times/meeting-time-edit/meeting-time-edit.component';
 import { ProblemEditComponent } from './modules/components/problems/problem-edit/problem-edit.component';
-
 import { UserService } from './services/user.service';
 import { CourseService } from './services/course.service';
 import { SectionService } from './services/section.service';
 import { MeetingTimeService } from './services/meetingTime.service';
-import { ViewProblemsComponent } from './modules/pages/problems/view-problems/view-problems.component';
+import { ListProblemsComponent } from '@pages/problems/list-problems/list-problems.component';
+import { ViewProblemComponent } from '@pages/problems/view-problem/view-problem.component';
+import { ProblemViewComponent } from './modules/components/problems/problem-view/problem-view.component';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatButtonModule } from '@angular/material/button';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { ProblemDeleteComponent } from './modules/components/problems/problem-delete/problem-delete.component';
+import { SectionDeleteComponent } from './modules/components/sections/section-delete/section-delete.component';
+import { CourseSettingsComponent } from '@pages/course-settings/course-settings.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { ConfigurationsComponent } from './modules/components/configurations/configurations.component';
+import { RolesComponent } from './modules/components/roles/roles.component';
+import { GradebookComponent } from './modules/components/gradebook/gradebook.component';
+import { WeeksComponent } from './modules/components/weeks/weeks.component';
+import { LearningGoalsComponent } from './modules/components/learning-goals/learning-goals.component';
+import { ReportsComponent } from './modules/components/reports/reports.component';
+import { QuizzesComponent } from './modules/components/quizzes/quizzes.component';
+import { RosterComponent } from './modules/components/roster/roster.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { CoverageRequestsComponent } from './modules/pages/coverage-requests/coverage-requests.component';
+import { RecitationsComponent } from './modules/pages/recitations/recitations.component';
+import { ListLessonPlansComponent } from './modules/pages/lesson-plans/list-lesson-plans/list-lesson-plans.component';
+import { LessonPlanViewComponent } from './modules/components/lesson-plans/lesson-plan-view/lesson-plan-view.component';
+import { LessonPlanEditComponent } from './modules/components/lesson-plans/lesson-plan-edit/lesson-plan-edit.component';
+import { LessonPlanDeleteComponent } from './modules/components/lesson-plans/lesson-plan-delete/lesson-plan-delete.component';
+import { TokenInterceptor } from './http/token.interceptor';
+import { DatatableComponent } from './modules/components/datatable/datatable.component';
+import { ProblemSearchFormComponent } from './modules/components/problems/problem-search-form/problem-search-form.component';
+import { LessonPlanStepsFormComponent } from './modules/components/lesson-plans/lesson-plan-steps/lesson-plan-steps-form/lesson-plan-steps-form.component';
+import { LessonPlanStepEditComponent } from './modules/components/lesson-plans/lesson-plan-step-edit/lesson-plan-step-edit.component';
+import { LessonPlanStepViewComponent } from './modules/components/lesson-plans/lesson-plan-step-view/lesson-plan-step-view.component';
+import { ViewLessonPlanComponent } from './modules/pages/lesson-plans/view-lesson-plan/view-lesson-plan.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HeaderComponent,
-    SidebarComponent,
-    FooterComponent,
-    LoginComponent,
-    ManualLoginFormComponent,
-    FormComponent,
-    ViewCourseComponent,
-    ViewSectionsComponent,
-    ModalComponent,
-    SectionEditComponent,
-    UserSearchFormfieldComponent,
-    UserBadgeComponent,
-    MeetingTimesFormfieldComponent,
-    FormModalComponent,
-    MeetingTimeEditComponent,
-    ProblemEditComponent,
-    ViewProblemsComponent,
-  ],
-  imports: [
-    HttpClientModule,
-    BrowserModule,
-    AppRoutingModule,
-    NgbModule,
-    FontAwesomeModule,
-    ToastrModule.forRoot(),
-    BrowserAnimationsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    QuillModule.forRoot(),
-  ],
-  providers: [
-    UserService,
-    CourseService,
-    SectionService,
-    MeetingTimeService,
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        HeaderComponent,
+        SidebarComponent,
+        FooterComponent,
+        LoginComponent,
+        ManualLoginFormComponent,
+        FormComponent,
+        ViewCourseComponent,
+        ViewSectionsComponent,
+        ModalComponent,
+        SectionEditComponent,
+        UserSearchFormfieldComponent,
+        UserBadgeComponent,
+        MeetingTimesFormfieldComponent,
+        FormModalComponent,
+        MeetingTimeEditComponent,
+        ProblemEditComponent,
+        ListProblemsComponent,
+        ViewProblemComponent,
+        ProblemViewComponent,
+        ProblemDeleteComponent,
+        SectionDeleteComponent,
+        CourseSettingsComponent,
+        CoverageRequestsComponent,
+        RecitationsComponent,
+        ConfigurationsComponent,
+        RolesComponent,
+        GradebookComponent,
+        WeeksComponent,
+        LearningGoalsComponent,
+        ReportsComponent,
+        QuizzesComponent,
+        RosterComponent,
+        DatatableComponent,
+        ListLessonPlansComponent,
+        LessonPlanViewComponent,
+        LessonPlanEditComponent,
+        LessonPlanDeleteComponent,
+        DatatableComponent,
+        ProblemSearchFormComponent,
+        LessonPlanStepsFormComponent,
+        LessonPlanStepEditComponent,
+        LessonPlanStepViewComponent,
+        ViewLessonPlanComponent,
+    ],
+    imports: [
+        HttpClientModule,
+        BrowserModule,
+        AppRoutingModule,
+        NgbModule,
+        FontAwesomeModule,
+        ToastrModule.forRoot(),
+        BrowserAnimationsModule,
+        FormsModule,
+        ReactiveFormsModule,
+        QuillModule.forRoot(),
+        MatExpansionModule,
+        MatIconModule,
+        MatListModule,
+        MatButtonModule,
+        ModalModule.forRoot(),
+        MatTabsModule,
+        NgxDatatableModule,
+        MatFormFieldModule,
+    ],
+    providers: [
+        UserService,
+        CourseService,
+        SectionService,
+        MeetingTimeService,
+        { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    ],
+    entryComponents: [
+        ConfigurationsComponent,
+        RolesComponent,
+        GradebookComponent,
+        WeeksComponent,
+        LearningGoalsComponent,
+        ReportsComponent,
+        QuizzesComponent,
+        RosterComponent,
+    ],
+    bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

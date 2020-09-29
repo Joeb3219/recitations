@@ -14,25 +14,19 @@ import { HttpArgs } from '../helpers/route.helper';
 @Controller
 export class SectionController {
     @GetRequest('/course/:courseID/sections')
-    static async getCourseSections({
-        repo,
-        params,
-    }: HttpArgs): Promise<Section[]> {
+    async getCourseSections({ repo, params }: HttpArgs): Promise<Section[]> {
         // we simply can query for all sections that have the given course id set as their course column
         return repo(Section).find({ course: params.courseID });
     }
 
     @DeleteRequest('/section/:sectionID')
-    static async deleteSection({
-        params,
-        repo,
-    }: HttpArgs): Promise<DeleteResult> {
+    async deleteSection({ params, repo }: HttpArgs): Promise<DeleteResult> {
         const sectionID = params.sectionID;
         return repo(Section).delete({ id: sectionID });
     }
 
     @PostRequest('/section')
-    static async createSection({ body, repo }: HttpArgs): Promise<Section> {
+    async createSection({ body, repo }: HttpArgs): Promise<Section> {
         const {
             index,
             sectionNumber,
@@ -61,11 +55,7 @@ export class SectionController {
     }
 
     @PutRequest('/section/:sectionID')
-    static async updateSection({
-        params,
-        body,
-        repo,
-    }: HttpArgs): Promise<Section> {
+    async updateSection({ params, body, repo }: HttpArgs): Promise<Section> {
         const { sectionID } = params;
 
         const {

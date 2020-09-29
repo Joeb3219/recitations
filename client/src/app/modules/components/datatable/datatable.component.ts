@@ -238,7 +238,7 @@ export class DatatableComponent implements OnInit {
         });
     }
 
-    async loadData(): void {
+    async loadData(): Promise<void> {
         // First, we update columns to have correct data
         this.updateColumnDefs();
 

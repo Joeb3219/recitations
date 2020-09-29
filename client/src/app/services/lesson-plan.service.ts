@@ -1,8 +1,6 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
+import { Injectable } from '@angular/core';
 import { environment } from '@environment';
-
 import { Course } from '@models/course';
 import { LessonPlan } from '@models/lessonPlan';
 import { LessonPlanStep } from '@models/lessonPlanStep';
@@ -66,7 +64,7 @@ export class LessonPlanService {
     ): Promise<LessonPlan[]> {
         // if course is an object, we will grab its id
         // otherwise, we assume course is a string representing the id
-        const courseID = course instanceof String ? course : course.id;
+        const courseID = typeof course === 'string' ? course : course.id;
 
         const url = `${environment.apiURL}/course/${courseID}/lessonplans`;
 

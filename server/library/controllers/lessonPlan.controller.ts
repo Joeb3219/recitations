@@ -8,7 +8,7 @@ import { HttpArgs } from '../helpers/route.helper';
 @Controller
 export class LessonPlanController {
     @GetRequest('/course/:courseID/lessonplans')
-    static async getCourseLessonPlans({
+    async getCourseLessonPlans({
         params,
         repo,
     }: HttpArgs): Promise<LessonPlan[]> {
@@ -16,16 +16,13 @@ export class LessonPlanController {
     }
 
     @GetRequest('/lessonplan/:lessonPlanID')
-    static async getLessonPlan({
-        params,
-        repo,
-    }: HttpArgs): Promise<LessonPlan> {
+    async getLessonPlan({ params, repo }: HttpArgs): Promise<LessonPlan> {
         const { lessonPlanID } = params;
         return repo(LessonPlan).findOne({ id: lessonPlanID });
     }
 
     @PostRequest('/lessonplan')
-    static async createLessonPlan({
+    async createLessonPlan({
         body,
         currentUser,
         repo,
@@ -50,7 +47,7 @@ export class LessonPlanController {
     }
 
     @PutRequest('/lessonplan/:lessonplanID')
-    static async updateLessonPlan({
+    async updateLessonPlan({
         params,
         repo,
         body,
@@ -85,7 +82,7 @@ export class LessonPlanController {
     }
 
     @PostRequest('/lessonplanstep')
-    static async createLessonPlanStep({
+    async createLessonPlanStep({
         body,
         currentUser,
         repo,
@@ -119,7 +116,7 @@ export class LessonPlanController {
     }
 
     @PutRequest('/lessonplanstep/:lessonplanstepID')
-    static async updateLessonPlanStepStep({
+    async updateLessonPlanStepStep({
         params,
         repo,
         body,

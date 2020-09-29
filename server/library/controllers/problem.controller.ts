@@ -26,31 +26,25 @@ export class ProblemController {
             get(problem, 'creator.lastName'),
     })
     @Paginated()
-    static async getCourseProblems({
-        params,
-        repo,
-    }: HttpArgs): Promise<Problem[]> {
+    async getCourseProblems({ params, repo }: HttpArgs): Promise<Problem[]> {
         // we simply can query for all sections that have the given course id set as their course column
         return repo(Problem).find({ course: params.courseID });
     }
 
     @GetRequest('/problem/:problemID')
-    static async getProblem({ params, repo }: HttpArgs): Promise<Problem> {
+    async getProblem({ params, repo }: HttpArgs): Promise<Problem> {
         const problemID = params.problemID;
         return repo(Problem).findOne({ id: problemID });
     }
 
     @DeleteRequest('/problem/:problemID')
-    static async deleteProblem({
-        params,
-        repo,
-    }: HttpArgs): Promise<DeleteResult> {
+    async deleteProblem({ params, repo }: HttpArgs): Promise<DeleteResult> {
         const problemID = params.problemID;
         return repo(Problem).delete({ id: problemID });
     }
 
     @PostRequest('/problem')
-    static async createProblem({
+    async createProblem({
         body,
         currentUser,
         repo,
@@ -84,11 +78,7 @@ export class ProblemController {
     }
 
     @PutRequest('/problem/:problemID')
-    static async updateProblem({
-        params,
-        repo,
-        body,
-    }: HttpArgs): Promise<Problem> {
+    async updateProblem({ params, repo, body }: HttpArgs): Promise<Problem> {
         const { problemID } = params;
 
         const {

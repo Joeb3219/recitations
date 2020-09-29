@@ -1,171 +1,178 @@
-import {ActivatedRoute, Router} from '@angular/router';
-import { Component, OnInit, ViewEncapsulation, EventEmitter } from '@angular/core';
-import {BehaviorSubject} from 'rxjs';
-
-import {CourseService} from '@services/course.service';
-import {ProblemService} from '@services/problem.service';
-
-import {Course} from '@models/course'
-import {Problem} from '@models/problem'
-import {ProblemDifficulty} from "@enums/problemDifficulty.enum";
-import {User} from "@models/user";
+import {
+    Component,
+    EventEmitter,
+    OnInit,
+    ViewEncapsulation,
+} from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Course } from '@models/course';
+import { Problem } from '@models/problem';
+import { CourseService } from '@services/course.service';
+import { ProblemService } from '@services/problem.service';
 import { HttpFilterInterface } from '../../../../http/httpFilter.interface';
 
 @Component({
-  selector: 'app-list-problems',
-  templateUrl: './list-problems.component.html',
-  encapsulation: ViewEncapsulation.None,
-  styleUrls: ['./list-problems.component.scss']
+    selector: 'app-list-problems',
+    templateUrl: './list-problems.component.html',
+    encapsulation: ViewEncapsulation.None,
+    styleUrls: ['./list-problems.component.scss'],
 })
 export class ListProblemsComponent implements OnInit {
+    tableRows: Array<any>;
 
-  tableRows : Array<any>;
-  tableColumns: Array<any> = [
-    {
-      prop: 'problemName',
-      name: 'Problem Name'
-    },
-    {
-      prop: 'difficulty',
-      name: "Difficulty"
-    },
-    {
-      prop: 'duration',
-      name: "Est. Duration (min)"
-    },
-    {
-      prop: 'creator',
-      name: "Creator"
-    },
-    {
-      prop: 'id',
-      name: 'Actions',
-      actions: ["modify", "delete", "view"]
-    }
-  ];
-
-  course: Course;
-  problems: Problem[];
-  isLoading: boolean = true;
-
-  refreshData: EventEmitter<any> = new EventEmitter();
-
-  columns = [
-    {
-      name: 'Name',
-      prop: 'name',
-    },
-    {
-      name: 'Difficulty',
-      prop: 'difficulty',
-      cellTemplate: 'difficultyCell',
-    },
-    {
-      name: 'Creator',
-      prop: 'creator',
-      cellTemplate: 'userCell',
-    },
-    {
-      name: 'Actions',
-      cellTemplate: 'actionsCell',
-      actions: (row) => ([
+    tableColumns: Array<any> = [
         {
-          text: 'View',
-          href: `/courses/${ row.course.id }/problems/${ row.id }`
+            prop: 'problemName',
+            name: 'Problem Name',
         },
         {
-          text: 'Modify',
-          click: () => this.handleOpenEditProblemModal(row),
+            prop: 'difficulty',
+            name: 'Difficulty',
         },
         {
-          text: 'Delete',
-          click: () => this.handleOpenDeleteProblemModal(row),
-        }
-      ]),
+            prop: 'duration',
+            name: 'Est. Duration (min)',
+        },
+        {
+            prop: 'creator',
+            name: 'Creator',
+        },
+        {
+            prop: 'id',
+            name: 'Actions',
+            actions: ['modify', 'delete', 'view'],
+        },
+    ];
+
+    course: Course;
+
+    problems: Problem[];
+
+    isLoading = true;
+
+    refreshData: EventEmitter<any> = new EventEmitter();
+
+    columns = [
+        {
+            name: 'Name',
+            prop: 'name',
+        },
+        {
+            name: 'Difficulty',
+            prop: 'difficulty',
+            cellTemplate: 'difficultyCell',
+        },
+        {
+            name: 'Creator',
+            prop: 'creator',
+            cellTemplate: 'userCell',
+        },
+        {
+            name: 'Actions',
+            cellTemplate: 'actionsCell',
+            actions: (row) => [
+                {
+                    text: 'View',
+                    href: `/courses/${row.course.id}/problems/${row.id}`,
+                },
+                {
+                    text: 'Modify',
+                    click: () => this.handleOpenEditProblemModal(row),
+                },
+                {
+                    text: 'Delete',
+                    click: () => this.handleOpenDeleteProblemModal(row),
+                },
+            ],
+        },
+    ];
+
+    selectedEditProblem: Problem = null;
+
+    selectedDeleteProblem: Problem = null;
+
+    isEditProblemModalOpen = false;
+
+    isDeleteProblemModalOpen = false;
+
+    constructor(
+        private courseService: CourseService,
+        private problemService: ProblemService,
+        private route: ActivatedRoute,
+        private router: Router
+    ) {
+        this.fetchProblems = this.fetchProblems.bind(this);
     }
-  ]
 
-  selectedEditProblem: Problem = null;
-  selectedDeleteProblem: Problem = null;
-  isEditProblemModalOpen: boolean = false;
-  isDeleteProblemModalOpen: boolean = false;
+    ngOnInit() {
+        this.route.params.subscribe(async (params) => {
+            if (params.courseID) {
+                this.course = await this.courseService.getCourse(
+                    params.courseID
+                );
+                this.isLoading = false;
+            }
+        });
+    }
 
-  constructor(
-    private _courseService: CourseService,
-    private _problemService: ProblemService,
-    private route: ActivatedRoute,
-    private router: Router
-  ) {
-    this.fetchProblems = this.fetchProblems.bind(this);
-  }
+    async fetchProblems(args: HttpFilterInterface): Promise<Problem[]> {
+        return (await this.problemService.getCourseProblems(this.course, args))
+            ?.data;
+    }
 
-  ngOnInit() {
-    this.route.params.subscribe(async (params) => {
-      if (params['courseID']) {
-        this.course = await this._courseService.getCourse(params['courseID'])
-        this.isLoading = false
-      }
-    });
-  }
+    handleOpenNewProblemModal(): void {
+        this.isEditProblemModalOpen = true;
 
-  async fetchProblems(args: HttpFilterInterface) {
-    return await this._problemService.getCourseProblems(this.course, args);
-  }
+        this.selectedEditProblem = new Problem();
+        this.selectedEditProblem.course = this.course;
+    }
 
-  handleOpenNewProblemModal() {
-    this.isEditProblemModalOpen = true
+    handleCloseEditProblemModal(): void {
+        this.isEditProblemModalOpen = false;
 
-    this.selectedEditProblem = new Problem()
-    this.selectedEditProblem.course = this.course;
-  }
+        this.selectedEditProblem = null;
 
-  handleCloseEditProblemModal() {
-    this.isEditProblemModalOpen = false
+        this.refreshData.emit();
+    }
 
-    this.selectedEditProblem = null;
+    handleOpenEditProblemModal(problem: Problem): void {
+        this.isEditProblemModalOpen = true;
+        this.selectedEditProblem = problem;
+    }
 
-    this.refreshData.emit();
-  }
+    handleOpenDeleteProblemModal(problem: Problem): void {
+        this.isDeleteProblemModalOpen = true;
+        this.selectedDeleteProblem = problem;
+    }
 
-  handleOpenEditProblemModal(problem: Problem) {
-    this.isEditProblemModalOpen = true;
-    this.selectedEditProblem = problem
-  }
+    handleCloseDeleteProblemModal($event): void {
+        this.isDeleteProblemModalOpen = false;
+        this.refreshData.emit();
+    }
 
-  handleOpenDeleteProblemModal(problem: Problem) {
-    this.isDeleteProblemModalOpen=true;
-    this.selectedDeleteProblem=problem;
-  }
+    getMinuteUnit(estimatedDuration: number): string {
+        return Problem.getMinuteUnit(estimatedDuration);
+    }
 
-  handleCloseDeleteProblemModal($event){
-    this.isDeleteProblemModalOpen=false;
-    this.refreshData.emit();
-  }
+    handleOnDelete($event: any): void {
+        const problemID = $event;
+        const problem = this.problems.find(
+            (problem) => problem.id === problemID
+        );
+        this.handleOpenDeleteProblemModal(problem);
+    }
 
-  getMinuteUnit(estimatedDuration: number) {
-    return Problem.getMinuteUnit(estimatedDuration);
-  }
+    handleOnModify($event: any): void {
+        const problemID = $event;
+        const problem = this.problems.find(
+            (problem) => problem.id === problemID
+        );
+        this.handleOpenEditProblemModal(problem);
+    }
 
-  get problemDifficulty() {
-    return ProblemDifficulty;
-  }
-
-  handleOnDelete($event: any) {
-    let problemID = $event;
-    let problem = this.problems.find(problem=>problem.id==problemID);
-    this.handleOpenDeleteProblemModal(problem);
-  }
-
-  handleOnModify($event: any) {
-    let problemID = $event;
-    let problem = this.problems.find(problem=>problem.id==problemID);
-    this.handleOpenEditProblemModal(problem);
-  }
-
-  handleOnView($event: any) {
-    let problemID = $event;
-    let problem = this.problems.find(problem=>problem.id==problemID);
-    let courseID = this.course.id
-    this.router.navigateByUrl(`/courses/${courseID}/problems/${problemID}`);
-  }
+    handleOnView($event: any): void {
+        const problemID = $event;
+        const courseID = this.course.id;
+        this.router.navigateByUrl(`/courses/${courseID}/problems/${problemID}`);
+    }
 }

@@ -1,47 +1,46 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Subject} from "rxjs";
-import {Section} from "@models/section";
-import {SectionService} from "@services/section.service";
-import {ToastrService} from "ngx-toastr";
-import {User} from "@models/user";
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Section } from '@models/section';
+import { User } from '@models/user';
+import { SectionService } from '@services/section.service';
+import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
 
 @Component({
-  selector: 'app-section-delete',
-  templateUrl: './section-delete.component.html',
-  styleUrls: ['./section-delete.component.scss']
+    selector: 'app-section-delete',
+    templateUrl: './section-delete.component.html',
+    styleUrls: ['./section-delete.component.scss'],
 })
-export class SectionDeleteComponent implements OnInit {
+export class SectionDeleteComponent {
+    @Input() isVisible: boolean;
 
-  @Input() isVisible: boolean;
-  @Input() section: Section;
-  @Output() onClose: EventEmitter<{}> = new EventEmitter();
-  forceClose: Subject<any> = new Subject<any>();
+    @Input() section: Section;
 
-  constructor(private _sectionService: SectionService, private toastr: ToastrService) {
-  }
+    @Output() onClose: EventEmitter<boolean> = new EventEmitter();
 
-  ngOnInit() {
-  }
+    forceClose: Subject<void> = new Subject<void>();
 
-  handleClose() {
-    this.onClose.emit(false);
-  }
+    constructor(
+        private sectionService: SectionService,
+        private toastr: ToastrService
+    ) {}
 
-  handleModalSubmit() {
-    try {
-      // send state to the db, and obtain back the ground truth that the db produces
-      let result = this._sectionService.deleteSection(this.section.id);
-      this.toastr.success('Successfully deleted section');
-      this.onClose.emit(true);
-      this.forceClose.next();
-    } catch (err) {
-      this.toastr.error('Failed to delete section')
+    handleClose(): void {
+        this.onClose.emit(false);
     }
-  }
 
-  getUserFullName(user: User){
-    return User.getFullName(user);
-  }
+    async handleModalSubmit(): Promise<void> {
+        try {
+            // send state to the db, and obtain back the ground truth that the db produces
+            await this.sectionService.deleteSection(this.section.id);
+            this.toastr.success('Successfully deleted section');
+            this.onClose.emit(true);
+            this.forceClose.next();
+        } catch (err) {
+            this.toastr.error('Failed to delete section');
+        }
+    }
 
-
+    getUserFullName(user: User): string {
+        return User.getFullName(user);
+    }
 }

@@ -1,6 +1,9 @@
-import "reflect-metadata";
+import 'reflect-metadata';
 
-export function Controller <T extends { new (...args: any[]): {} }> (target: T) {
-	Reflect.defineMetadata("controllers", true, target);
-	return target;
+// eslint-disable-next-line @typescript-eslint/ban-types
+export function Controller<T extends { new (...args: unknown[]): {} }>(
+    target: T
+): T {
+    Reflect.defineMetadata('controllers', true, target);
+    return target;
 }

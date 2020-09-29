@@ -1,43 +1,34 @@
-import { Request, Response } from 'express'
-
+import { Course } from '@models/course';
 import { Controller, GetRequest, PostRequest } from '../decorators';
-
-import { Course } from '@models/course'
+import { HttpArgs } from '../helpers/route.helper';
 
 @Controller
-export class CourseController{
+export class CourseController {
+    @PostRequest('/course')
+    static async createCourse({ body, repo }: HttpArgs): Promise<Course> {
+        // First, we collect all of the submitted data
+        const { name, department, courseCode } = body;
 
-	@PostRequest('/course')
-	async createCourse({ body, repo }) {
-		// First, we collect all of the submitted data
-		let { 
-			name,
-			department,
-			courseCode,
-		} = body
+        const course = {
+            name,
+            department,
+            courseCode,
+        };
 
-		let course = new Course({
-			name,
-			department,
-			courseCode,
-		})
+        return repo(Course).save(course);
+    }
 
-		return await repo(Course).save(course);
-	}
+    @GetRequest('/course')
+    static async getCourses({ repo }: HttpArgs): Promise<Course[]> {
+        return repo(Course).find({});
+    }
 
-	@GetRequest('/course')
-	async getCourses({ repo }) {
-		return  await repo(Course).find({ })
-	}
+    @GetRequest('/course/:courseID')
+    static async getCourse({ repo, params }: HttpArgs): Promise<Course[]> {
+        const courseID = params.courseID;
 
-	@GetRequest('/course/:courseID')
-	async getCourse({ repo, params }) {
-		const courseID = params.courseID
+        // if(!courseID) return res.status(NOT_FOUND).json({ message: 'No courseID specified.' }).end()
 
-		// if(!courseID) return res.status(NOT_FOUND).json({ message: 'No courseID specified.' }).end()
-
-		return await repo(Course).findOne({ id: courseID })
-	}
-
-
+        return repo(Course).findOne({ id: courseID });
+    }
 }

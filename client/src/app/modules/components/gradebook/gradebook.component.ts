@@ -1,15 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-gradebook',
-  templateUrl: './gradebook.component.html',
-  styleUrls: ['./gradebook.component.scss']
+    selector: 'app-gradebook',
+    templateUrl: './gradebook.component.html',
+    styleUrls: ['./gradebook.component.scss'],
 })
-export class GradebookComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
-}
+export class GradebookComponent {}

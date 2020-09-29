@@ -1,42 +1,41 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Problem} from "@models/problem";
-import {Subject} from "rxjs";
-import {ProblemService} from "@services/problem.service";
-import {ToastrService} from "ngx-toastr";
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Problem } from '@models/problem';
+import { ProblemService } from '@services/problem.service';
+import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
 
 @Component({
-  selector: 'app-problem-delete',
-  templateUrl: './problem-delete.component.html',
-  styleUrls: ['./problem-delete.component.scss']
+    selector: 'app-problem-delete',
+    templateUrl: './problem-delete.component.html',
+    styleUrls: ['./problem-delete.component.scss'],
 })
-export class ProblemDeleteComponent implements OnInit {
+export class ProblemDeleteComponent {
+    @Input() isVisible: boolean;
 
-  @Input() isVisible: boolean;
-  @Input() problem: Problem;
-  @Output() onClose: EventEmitter<{}> = new EventEmitter();
-  forceClose: Subject<any> = new Subject<any>();
+    @Input() problem: Problem;
 
-  constructor(private _problemService: ProblemService,
-              private toastr: ToastrService) {
-  }
+    @Output() onClose: EventEmitter<boolean> = new EventEmitter();
 
-  ngOnInit() {
-  }
+    forceClose: Subject<void> = new Subject<void>();
 
-  handleClose() {
-    this.onClose.emit(false);
-  }
+    constructor(
+        private problemService: ProblemService,
+        private toastr: ToastrService
+    ) {}
 
-  handleModalSubmit() {
-    try{
-      // send state to the db, and obtain back the ground truth that the db produces
-      let result =  this._problemService.deleteProblem(this.problem.id);
-      this.toastr.success('Successfully deleted problem');
-      this.onClose.emit(true);
-      this.forceClose.next();
-    }catch(err){
-      this.toastr.error('Failed to delete problem')
+    handleClose(): void {
+        this.onClose.emit(false);
     }
-  }
 
+    async handleModalSubmit(): Promise<void> {
+        try {
+            // send state to the db, and obtain back the ground truth that the db produces
+            await this.problemService.deleteProblem(this.problem.id);
+            this.toastr.success('Successfully deleted problem');
+            this.onClose.emit(true);
+            this.forceClose.next();
+        } catch (err) {
+            this.toastr.error('Failed to delete problem');
+        }
+    }
 }

@@ -1,138 +1,167 @@
-import { Controller, GetRequest, PostRequest, PutRequest } from '../decorators';
-import { pickBy } from 'lodash'
 import * as Boom from '@hapi/boom';
-
-import { User } from '@models/user'
-import { Course } from '@models/course'
-import { LessonPlan } from '@models/lessonPlan'
-import { LessonPlanStep } from '@models/lessonPlanStep';
+import { LessonPlan } from '@models/lessonPlan';
+import { LessonPlanStep, LessonPlanStepType } from '@models/lessonPlanStep';
+import { pickBy } from 'lodash';
+import { Controller, GetRequest, PostRequest, PutRequest } from '../decorators';
+import { HttpArgs } from '../helpers/route.helper';
 
 @Controller
-export class LessonPlanController{
+export class LessonPlanController {
+    @GetRequest('/course/:courseID/lessonplans')
+    static async getCourseLessonPlans({
+        params,
+        repo,
+    }: HttpArgs): Promise<LessonPlan[]> {
+        return repo(LessonPlan).find({ course: params.courseID });
+    }
 
-	@GetRequest('/course/:courseID/lessonplans')
-	async getCourseLessonPlans({ params, repo }) {
-		return await repo(LessonPlan).find({ course: params.courseID })
-	}
+    @GetRequest('/lessonplan/:lessonPlanID')
+    static async getLessonPlan({
+        params,
+        repo,
+    }: HttpArgs): Promise<LessonPlan> {
+        const { lessonPlanID } = params;
+        return repo(LessonPlan).findOne({ id: lessonPlanID });
+    }
 
-	@GetRequest('/lessonplan/:lessonPlanID')
-	async getLessonPlan({ params, repo }) {
-		const { lessonPlanID } = params;
-		return await repo(LessonPlan).findOne({ id: lessonPlanID })
-	}
+    @PostRequest('/lessonplan')
+    static async createLessonPlan({
+        body,
+        currentUser,
+        repo,
+    }: HttpArgs): Promise<LessonPlan> {
+        const { name, steps, course, difficulty } = body;
 
-	@PostRequest('/lessonplan')
-	async createLessonPlan({ body, currentUser, repo }) {
-		let {
-			name,
-			steps,
-			course,
-			difficulty,
-		} = body
+        const lessonPlan = pickBy(
+            {
+                name,
+                steps,
+                creator: currentUser,
+                course,
+                difficulty,
+            },
+            (item) => {
+                return item !== 'undefined' && item !== undefined;
+            }
+        );
 
-		let lessonPlan = pickBy({
-			name,
-			steps,
-			creator: currentUser,
-			course,
-			difficulty
-		}, (item) => { return item != 'undefined' && item != undefined })
+        // and now we can update the section
+        return repo(LessonPlan).save({ ...lessonPlan });
+    }
 
-		// and now we can update the section
-		return await repo(LessonPlan).save({ ...lessonPlan })
-	}
+    @PutRequest('/lessonplan/:lessonplanID')
+    static async updateLessonPlan({
+        params,
+        repo,
+        body,
+    }: HttpArgs): Promise<LessonPlan> {
+        const { lessonplanID } = params;
 
-	@PutRequest('/lessonplan/:lessonplanID')
-	async updateLessonPlan({ params, repo, body }) {
-		const { lessonplanID } = params
+        const { name, steps, creator, course, difficulty } = body;
 
-		let {
-			name,
-			steps,
-			creator,
-			course,
-			difficulty,
-		} = body
+        const updateableData = pickBy(
+            {
+                name,
+                steps,
+                creator,
+                course,
+                difficulty,
+            },
+            (item) => {
+                return item !== 'undefined' && item !== undefined;
+            }
+        );
 
-		const updateableData = pickBy({
-			name,
-			steps,
-			creator,
-			course,
-			difficulty
-		}, (item) => { return item != 'undefined' && item != undefined })
+        // first, we find the Lesson Plan that is referenced by the given ID
+        let lessonPlan = await repo(LessonPlan).findOne({ id: lessonplanID });
 
-		// first, we find the Lesson Plan that is referenced by the given ID
-		let lessonPlan = await repo(LessonPlan).findOne({ id: lessonplanID })
+        // no Lesson Plan found, 404 it out
+        if (!lessonPlan) throw Boom.notFound('Lesson Plan not found');
 
-		// no Lesson Plan found, 404 it out
-		if(!lessonPlan) throw Boom.notFound('Lesson Plan not found')
+        lessonPlan = Object.assign(lessonPlan, updateableData);
 
-		lessonPlan = Object.assign(lessonPlan, updateableData)
-		
-		// and now we can update the Lesson Plan
-		return await repo(LessonPlan).save(lessonPlan)
-	}
+        // and now we can update the Lesson Plan
+        return repo(LessonPlan).save(lessonPlan);
+    }
 
-	@PostRequest('/lessonplanstep')
-	async createLessonPlanStep({ body, currentUser, repo }) {
-		let {
-			type,
-			title,
-			description,		
-			estimatedDuration,
-			problem,
-			course,
-		} = body
+    @PostRequest('/lessonplanstep')
+    static async createLessonPlanStep({
+        body,
+        currentUser,
+        repo,
+    }: HttpArgs): Promise<LessonPlanStepType> {
+        const {
+            type,
+            title,
+            description,
+            estimatedDuration,
+            problem,
+            course,
+        } = body;
 
-		let lessonPlanStep = pickBy({
-			type,
-			title,
-			description,		
-			estimatedDuration,
-			problem,
-			course,
-			creator: currentUser,
-		}, (item) => { return item != 'undefined' && item != undefined })
+        const lessonPlanStep = pickBy(
+            {
+                type,
+                title,
+                description,
+                estimatedDuration,
+                problem,
+                course,
+                creator: currentUser,
+            },
+            (item) => {
+                return item !== 'undefined' && item !== undefined;
+            }
+        );
 
-		// and now we can update the section
-		return await repo(LessonPlanStep).save(lessonPlanStep);
-	}
+        // and now we can update the section
+        return repo(LessonPlanStep).save(lessonPlanStep);
+    }
 
-	@PutRequest('/lessonplanstep/:lessonplanstepID')
-	async updateLessonPlanStepStep({ params, repo, body }) {
-		const { lessonplanstepID } = params
+    @PutRequest('/lessonplanstep/:lessonplanstepID')
+    static async updateLessonPlanStepStep({
+        params,
+        repo,
+        body,
+    }: HttpArgs): Promise<LessonPlanStep> {
+        const { lessonplanstepID } = params;
 
-		let {
-			type,
-			title,
-			description,		
-			estimatedDuration,
-			problem,
-			course,
-			creator
-		} = body
+        const {
+            type,
+            title,
+            description,
+            estimatedDuration,
+            problem,
+            course,
+            creator,
+        } = body;
 
-		const updateableData = pickBy({
-			type,
-			title,
-			description,		
-			estimatedDuration,
-			problem,
-			course,
-			creator
-		}, (item) => { return item != 'undefined' && item != undefined })
+        const updateableData = pickBy(
+            {
+                type,
+                title,
+                description,
+                estimatedDuration,
+                problem,
+                course,
+                creator,
+            },
+            (item) => {
+                return item !== 'undefined' && item !== undefined;
+            }
+        );
 
-		// first, we find the step that is referenced by the given ID
-		let lessonPlanStep = await repo(LessonPlan).findOne({ id: lessonplanstepID })
+        // first, we find the step that is referenced by the given ID
+        let lessonPlanStep = await repo(LessonPlan).findOne({
+            id: lessonplanstepID,
+        });
 
-		// no step found, 404 it out
-		if(!lessonPlanStep) throw Boom.notFound('Lesson Plan Step not found')
+        // no step found, 404 it out
+        if (!lessonPlanStep) throw Boom.notFound('Lesson Plan Step not found');
 
-		lessonPlanStep = Object.assign(lessonPlanStep, updateableData)
-		
-		// and now we can update the step
-		return await repo(LessonPlanStep).save(lessonPlanStep)
-	}
+        lessonPlanStep = Object.assign(lessonPlanStep, updateableData);
 
+        // and now we can update the step
+        return repo(LessonPlanStep).save(lessonPlanStep);
+    }
 }

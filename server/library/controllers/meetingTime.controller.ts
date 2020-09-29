@@ -1,33 +1,26 @@
+import { MeetingTime } from '@models/meetingTime';
 import { Controller, PostRequest } from '../decorators';
-
-import { MeetingTime } from '@models/meetingTime'
+import { HttpArgs } from '../helpers/route.helper';
 
 @Controller
-export class MeetingTimeController{
+export class MeetingTimeController {
+    @PostRequest('/meetingTime')
+    static async createMeetingTime({
+        body,
+        repo,
+    }: HttpArgs): Promise<MeetingTime> {
+        // First, we collect all of the submitted data
+        const { startTime, endTime, weekday, type, frequency, leader } = body;
 
-	@PostRequest('/meetingTime')
-	async createMeetingTime({ body, repo }) {
-		// First, we collect all of the submitted data
-		let { 
-			startTime,
-			endTime,
-			weekday,
-			type,
-			frequency,
-			leader
-		} = body
+        const meetingTime = {
+            startTime,
+            endTime,
+            weekday,
+            type,
+            frequency,
+            leader,
+        };
 
-		let meetingTime = new MeetingTime({
-			startTime,
-			endTime,
-			weekday,
-			type,
-			frequency,
-			leader
-		})
-
-		return await repo(MeetingTime).save(meetingTime)
-	}
-
-
+        return repo(MeetingTime).save(meetingTime);
+    }
 }

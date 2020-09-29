@@ -1,41 +1,41 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
-import { BehaviorSubject, Observable } from 'rxjs'
+import { environment } from '@environment';
 
-import { environment } from '@environment'
-
-import { Course } from '@models/course'
+import { Course } from '@models/course';
 
 @Injectable()
 export class CourseService {
+    constructor(private http: HttpClient) {}
 
-	constructor(
-		private http: HttpClient
-	){}
+    public async getCourses(): Promise<Course[]> {
+        const url = `${environment.apiURL}/course`;
+        return new Promise((resolve, reject) => {
+            this.http.get(url).subscribe(
+                (result: { data: Course[] }) => {
+                    if (result) resolve(result.data);
+                    else reject(new Error('No result returned'));
+                },
+                (err) => {
+                    reject(err);
+                }
+            );
+        });
+    }
 
-	public async getCourses() : Promise<Course[]>{
-		const url = `${environment.apiURL}/course`
-		return new Promise((resolve, reject) => {
-			this.http.get(url).subscribe((result: { data: Course[] }) => {
-				if(result) resolve(result.data)
-				else reject(new Error("No result returned"))
-			}, (err) => {
-				reject(err)
-			})
-		})
-	}
-
-	public async getCourse(courseID: string) : Promise<Course>{
-		const url = `${environment.apiURL}/course/${courseID}`
-		return new Promise((resolve, reject) => {
-			this.http.get(url).subscribe((result: { data: Course }) => {
-				if(result) resolve(result.data)
-				else reject(new Error("No result returned"))
-			}, (err) => {
-				reject(err)
-			})
-		})
-	}
-
+    public async getCourse(courseID: string): Promise<Course> {
+        const url = `${environment.apiURL}/course/${courseID}`;
+        return new Promise((resolve, reject) => {
+            this.http.get(url).subscribe(
+                (result: { data: Course }) => {
+                    if (result) resolve(result.data);
+                    else reject(new Error('No result returned'));
+                },
+                (err) => {
+                    reject(err);
+                }
+            );
+        });
+    }
 }

@@ -1,57 +1,65 @@
-import { ViewChild, Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {
+    ViewChild,
+    Component,
+    OnInit,
+    Input,
+    Output,
+    EventEmitter,
+} from '@angular/core';
 import { Observable } from 'rxjs';
-import { NgbActiveModal, NgbModal, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
-import {animate, style, transition, trigger} from "@angular/animations";
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-modal',
-  templateUrl: './modal.component.html',
-  styleUrls: ['./modal.component.scss']
+    selector: 'app-modal',
+    templateUrl: './modal.component.html',
+    styleUrls: ['./modal.component.scss'],
 })
 export class ModalComponent implements OnInit {
+    @ViewChild('modal', { static: false }) modal;
 
-	@ViewChild("modal", { static: false }) modal
-	openedModal
+    openedModal;
 
-	@Output() onClose: EventEmitter<any> = new EventEmitter<any>()
-	isModalOpen: boolean = false
+    @Output() onClose: EventEmitter<any> = new EventEmitter<any>();
 
-	@Input() forceClose: Observable<any> = new Observable()
-	@Input() modalSize = "lg";
+    isModalOpen = false;
 
-	constructor(
-		private modalService: NgbModal,
-	) { }
+    @Input() forceClose: Observable<any> = new Observable();
 
-	ngOnInit() {
-		this.forceClose.subscribe({
-			next: () => {
-				this.closeModal();
-			}
-		})
-	}
+    @Input() modalSize = 'lg';
 
-	// We presently activate our modal via an *ngIf
-	// when that ngIf is activated, ngAfterViewInit will be called
-	// then, we can start the activation
-	ngAfterViewInit() {
-		setTimeout(() => {
-			this.openedModal = this.modalService.open(this.modal, {
-				backdrop: 'static',
-				size: this.modalSize,
-        windowClass: 'modal-holder'
-			})
+    constructor(private modalService: NgbModal) {}
 
-			this.openedModal.result.then(() => {
-				this.onClose.emit();
-			}, () => {
-				this.onClose.emit();
-			});
-		})
-	}
+    ngOnInit() {
+        this.forceClose.subscribe({
+            next: () => {
+                this.closeModal();
+            },
+        });
+    }
 
-	closeModal() {
-		if(this.openedModal) this.openedModal.dismiss('cancel click')
-	}
+    // We presently activate our modal via an *ngIf
+    // when that ngIf is activated, ngAfterViewInit will be called
+    // then, we can start the activation
+    ngAfterViewInit() {
+        setTimeout(() => {
+            this.openedModal = this.modalService.open(this.modal, {
+                backdrop: 'static',
+                size: this.modalSize,
+                windowClass: 'modal-holder',
+            });
 
+            this.openedModal.result.then(
+                () => {
+                    this.onClose.emit();
+                },
+                () => {
+                    this.onClose.emit();
+                }
+            );
+        });
+    }
+
+    closeModal() {
+        if (this.openedModal) this.openedModal.dismiss('cancel click');
+    }
 }

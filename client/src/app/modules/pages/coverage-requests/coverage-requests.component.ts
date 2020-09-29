@@ -1,29 +1,31 @@
 import { Component, OnInit } from '@angular/core';
-import {CourseService} from "@services/course.service";
-import {ProblemService} from "@services/problem.service";
-import {ActivatedRoute} from "@angular/router";
-import {Course} from "@models/course";
-import {Problem} from "@models/problem";
+import { ActivatedRoute } from '@angular/router';
+import { Course } from '@models/course';
+import { CourseService } from '@services/course.service';
 
 @Component({
-  selector: 'app-coverage-requests',
-  templateUrl: './coverage-requests.component.html',
-  styleUrls: ['./coverage-requests.component.scss']
+    selector: 'app-coverage-requests',
+    templateUrl: './coverage-requests.component.html',
+    styleUrls: ['./coverage-requests.component.scss'],
 })
 export class CoverageRequestsComponent implements OnInit {
-  course: Course;
-  isLoading: boolean = true;
+    course: Course;
 
-  constructor( private _courseService: CourseService,
-               private route: ActivatedRoute) { }
+    isLoading = true;
 
-  ngOnInit() {
-    this.route.params.subscribe(async (params) => {
-      if (params['courseID']) {
-        this.course = await this._courseService.getCourse(params['courseID']);
-        this.isLoading = false;
-      }
-    });
-  }
+    constructor(
+        private courseService: CourseService,
+        private route: ActivatedRoute
+    ) {}
 
+    ngOnInit(): void {
+        this.route.params.subscribe(async (params) => {
+            if (params.courseID) {
+                this.course = await this.courseService.getCourse(
+                    params.courseID
+                );
+                this.isLoading = false;
+            }
+        });
+    }
 }

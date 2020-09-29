@@ -1,5 +1,10 @@
 {
 	"private": true,
 	"workspaces": ["server", "client", "common"],
-	"nohoist": ["**/typeorm**/", "**/typeorm"]
+	"nohoist": ["**/typeorm**/", "**/typeorm"],
+	"scripts": {
+		"lint": "yarn prettier && yarn eslint",
+		"eslint": "eslint . --ext ts --quiet --fix",
+		"prettier": "prettier --write \"**/*.ts\""
+	}
 }

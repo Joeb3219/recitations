@@ -1,32 +1,31 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from "@angular/router";
-
+import { ActivatedRoute } from '@angular/router';
+import { Course } from '@models/course';
 import { CourseService } from '@services/course.service';
 
-import { Course } from '@models/course';
-
 @Component({
-  selector: 'app-view-course',
-  templateUrl: './view-course.component.html',
-  styleUrls: ['./view-course.component.scss']
+    selector: 'app-view-course',
+    templateUrl: './view-course.component.html',
+    styleUrls: ['./view-course.component.scss'],
 })
 export class ViewCourseComponent implements OnInit {
+    course: Course = null;
 
-	course: Course = null
-	isLoading: boolean = true
+    isLoading = true;
 
-	constructor(
-		private _courseService: CourseService,
-		private route: ActivatedRoute,
-	) { }
+    constructor(
+        private courseService: CourseService,
+        private route: ActivatedRoute
+    ) {}
 
-	ngOnInit() {
-		this.route.params.subscribe(async (params) => {
-			if(params['courseID']) {
-				this.course = await this._courseService.getCourse(params['courseID'])
-				this.isLoading = false
-			}
-		});
-	}
-
+    ngOnInit(): void {
+        this.route.params.subscribe(async (params) => {
+            if (params.courseID) {
+                this.course = await this.courseService.getCourse(
+                    params.courseID
+                );
+                this.isLoading = false;
+            }
+        });
+    }
 }

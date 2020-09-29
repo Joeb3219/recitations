@@ -1,55 +1,64 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-
-import { UserService } from '@services/user.service'
-
-import {Observable} from 'rxjs';
-import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
-
-import { User } from '@models/user'
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { User } from '@models/user';
+import { UserService } from '@services/user.service';
+import { Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-user-search-formfield',
-  templateUrl: './user-search-formfield.component.html',
-  styleUrls: ['./user-search-formfield.component.scss']
+    selector: 'app-user-search-formfield',
+    templateUrl: './user-search-formfield.component.html',
+    styleUrls: ['./user-search-formfield.component.scss'],
 })
 export class UserSearchFormfieldComponent implements OnInit {
+    @Input() user: User = null;
 
-	@Input() user: User = null
-	@Input() name: string = null
-	@Output() onChange: EventEmitter<User> = new EventEmitter<User>()
+    @Input() name: string = null;
 
-	users: User[]
+    @Output() onChange: EventEmitter<User> = new EventEmitter<User>();
 
-	constructor(
-		private _userService: UserService,
-	) { }
+    users: User[];
 
-	async ngOnInit() {
-		this.users = await this._userService.getUsers()
-	}
+    constructor(private userService: UserService) {}
 
-	formatter = (user: User) => {
-		if(user) return `${user.firstName} ${user.lastName} (${user.username}, ${user.email})`
-		else return ``
-	}
+    async ngOnInit(): Promise<void> {
+        this.users = await this.userService.getUsers();
+    }
 
-	handleUserSelected (data) {
-		this.onChange.emit(data.item)
-	}
+    formatter = (user: User): string => {
+        if (user)
+            return `${user.firstName} ${user.lastName} (${user.username}, ${user.email})`;
+        return ``;
+    };
 
-	search = (text$: Observable<string>) =>
-		text$.pipe(
-			debounceTime(200),
-			distinctUntilChanged(),
-			map(term => term === '' ? []
-				: this.users.filter(
-					user => {
-						return user.firstName.toLowerCase().indexOf(term.toLowerCase()) > -1 ||
-							user.lastName.toLowerCase().indexOf(term.toLowerCase()) > -1 ||
-							user.email.toLowerCase().indexOf(term.toLowerCase()) > -1  ||
-							user.username.toLowerCase().indexOf(term.toLowerCase()) > -1 
-						}
-				).slice(0, 10))
-	)
+    handleUserSelected(data): void {
+        this.onChange.emit(data.item);
+    }
 
+    search = (text$: Observable<string>): Observable<User[]> =>
+        text$.pipe(
+            debounceTime(200),
+            distinctUntilChanged(),
+            map((term) =>
+                term === ''
+                    ? []
+                    : this.users
+                          .filter((user) => {
+                              return (
+                                  user.firstName
+                                      .toLowerCase()
+                                      .indexOf(term.toLowerCase()) > -1 ||
+                                  user.lastName
+                                      .toLowerCase()
+                                      .indexOf(term.toLowerCase()) > -1 ||
+                                  user.email
+                                      .toLowerCase()
+                                      .indexOf(term.toLowerCase()) > -1 ||
+                                  user.username
+                                      .toLowerCase()
+                                      .indexOf(term.toLowerCase()) > -1
+                              );
+                          })
+                          .slice(0, 10)
+            )
+        );
 }

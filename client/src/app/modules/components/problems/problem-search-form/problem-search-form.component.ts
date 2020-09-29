@@ -1,67 +1,87 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-
-import { ProblemService } from '@services/problem.service'
-
-import {Observable} from 'rxjs';
-import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
-
-import { Problem } from '@models/problem'
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnChanges,
+    OnInit,
+    Output,
+    SimpleChanges,
+} from '@angular/core';
 import { Course } from '@models/course';
+import { Problem } from '@models/problem';
+import { ProblemService } from '@services/problem.service';
+import { Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-problem-search-form',
-  templateUrl: './problem-search-form.component.html',
-  styleUrls: ['./problem-search-form.component.scss']
+    selector: 'app-problem-search-form',
+    templateUrl: './problem-search-form.component.html',
+    styleUrls: ['./problem-search-form.component.scss'],
 })
 export class ProblemSearchFormComponent implements OnInit, OnChanges {
+    @Input() problem: Problem = null;
 
-	@Input() problem: Problem = null
-	@Input() name: string = null
-	@Input() course: Course;
-	@Output() onChange: EventEmitter<Problem> = new EventEmitter<Problem>()
+    @Input() name: string = null;
 
-	problems: Problem[]
+    @Input() course: Course;
 
-	constructor(
-		private _problemService: ProblemService,
-	) { }
+    @Output() onChange: EventEmitter<Problem> = new EventEmitter<Problem>();
 
-	ngOnInit() {
-		this.loadProblems();
-	}
+    problems: Problem[];
 
-	ngOnChanges(changes: SimpleChanges): void {
-		if(changes) {
-			this.loadProblems();
-		}
-	}
+    constructor(private problemService: ProblemService) {}
 
-	async loadProblems() {
-		if(!this.course) this.problems = [];
-		else this.problems = await (await this._problemService.getCourseProblems(this.course)).data;
-	}
+    ngOnInit(): void {
+        this.loadProblems();
+    }
 
-	formatter = (problem: Problem) => {
-		if(problem) return `${problem.name} ${problem.creator ? `(${problem.creator.firstName} ${problem.creator.lastName})`: ``}`
-		else return ``
-	}
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes) {
+            this.loadProblems();
+        }
+    }
 
-	handleProblemSelected (data) {
-		this.onChange.emit(data.item)
-	}
+    async loadProblems(): Promise<void> {
+        if (!this.course) this.problems = [];
+        else
+            this.problems = (
+                await this.problemService.getCourseProblems(this.course)
+            ).data;
+    }
 
-	search = (text$: Observable<string>) =>
-		text$.pipe(
-			debounceTime(200),
-			distinctUntilChanged(),
-			map(term => term === '' ? []
-				: this.problems.filter(
-					problem => {
-						return problem.name.toLowerCase().indexOf(term.toLowerCase()) > -1  ||
-							problem.creator.username.toLowerCase().indexOf(term.toLowerCase()) > -1 
-						}
-				).slice(0, 10))
-	)
+    formatter = (problem: Problem): string => {
+        if (problem)
+            return `${problem.name} ${
+                problem.creator
+                    ? `(${problem.creator.firstName} ${problem.creator.lastName})`
+                    : ``
+            }`;
+        return ``;
+    };
 
+    handleProblemSelected(data): void {
+        this.onChange.emit(data.item);
+    }
 
+    search = (text$: Observable<string>): Observable<Problem[]> =>
+        text$.pipe(
+            debounceTime(200),
+            distinctUntilChanged(),
+            map((term) =>
+                term === ''
+                    ? []
+                    : this.problems
+                          .filter((problem) => {
+                              return (
+                                  problem.name
+                                      .toLowerCase()
+                                      .indexOf(term.toLowerCase()) > -1 ||
+                                  problem.creator.username
+                                      .toLowerCase()
+                                      .indexOf(term.toLowerCase()) > -1
+                              );
+                          })
+                          .slice(0, 10)
+            )
+        );
 }

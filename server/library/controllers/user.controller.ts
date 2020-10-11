@@ -12,18 +12,21 @@ import { HttpArgs } from '../helpers/route.helper';
 @Controller
 export class UserController {
     @GetRequest('/user')
-    async getUsers({ repo }: HttpArgs): Promise<User[]> {
+    async getUsers({ repo }: HttpArgs<User>): Promise<User[]> {
         return repo(User).find({});
     }
 
     @GetRequest('/user/me')
-    async getCurrentUser({ currentUser }: HttpArgs): Promise<User> {
+    async getCurrentUser({ currentUser }: HttpArgs<User>): Promise<User> {
         return currentUser;
     }
 
     @PostRequest('/user/signin')
     @Unauthenticated()
-    async signin({ body, repo }: HttpArgs): Promise<string> {
+    async signin({
+        body,
+        repo,
+    }: HttpArgs<{ username: string; password: string }>): Promise<string> {
         const { username, password } = body;
 
         const user = await repo(User).findOne({

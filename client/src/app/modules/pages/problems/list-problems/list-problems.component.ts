@@ -1,15 +1,12 @@
-import {
-    Component,
-    EventEmitter,
-    OnInit,
-    ViewEncapsulation,
-} from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { Course } from '@models/course';
 import { Problem } from '@models/problem';
 import { CourseService } from '@services/course.service';
 import { ProblemService } from '@services/problem.service';
+import { LoadedArg } from 'src/app/decorators';
+import { StandardResponseInterface } from '../../../../../../../common/interfaces/http/standardResponse.interface';
 import { HttpFilterInterface } from '../../../../http/httpFilter.interface';
+import { DatatableColumn } from '../../../components/datatable/datatable.component';
 
 @Component({
     selector: 'app-list-problems',
@@ -17,42 +14,13 @@ import { HttpFilterInterface } from '../../../../http/httpFilter.interface';
     encapsulation: ViewEncapsulation.None,
     styleUrls: ['./list-problems.component.scss'],
 })
-export class ListProblemsComponent implements OnInit {
-    tableRows: Array<any>;
-
-    tableColumns: Array<any> = [
-        {
-            prop: 'problemName',
-            name: 'Problem Name',
-        },
-        {
-            prop: 'difficulty',
-            name: 'Difficulty',
-        },
-        {
-            prop: 'duration',
-            name: 'Est. Duration (min)',
-        },
-        {
-            prop: 'creator',
-            name: 'Creator',
-        },
-        {
-            prop: 'id',
-            name: 'Actions',
-            actions: ['modify', 'delete', 'view'],
-        },
-    ];
-
+export class ListProblemsComponent {
+    @LoadedArg(CourseService, Course, 'courseID')
     course: Course;
 
-    problems: Problem[];
+    refreshData: EventEmitter<void> = new EventEmitter();
 
-    isLoading = true;
-
-    refreshData: EventEmitter<any> = new EventEmitter();
-
-    columns = [
+    columns: DatatableColumn<Problem>[] = [
         {
             name: 'Name',
             prop: 'name',
@@ -70,7 +38,7 @@ export class ListProblemsComponent implements OnInit {
         {
             name: 'Actions',
             cellTemplate: 'actionsCell',
-            actions: (row) => [
+            actions: (row: Problem) => [
                 {
                     text: 'View',
                     href: `/courses/${row.course.id}/problems/${row.id}`,
@@ -95,27 +63,13 @@ export class ListProblemsComponent implements OnInit {
 
     isDeleteProblemModalOpen = false;
 
-    constructor(
-        private courseService: CourseService,
-        private problemService: ProblemService,
-        private route: ActivatedRoute,
-        private router: Router
-    ) {
+    constructor(private problemService: ProblemService) {
         this.fetchProblems = this.fetchProblems.bind(this);
     }
 
-    ngOnInit() {
-        this.route.params.subscribe(async (params) => {
-            if (params.courseID) {
-                this.course = await this.courseService.getCourse(
-                    params.courseID
-                );
-                this.isLoading = false;
-            }
-        });
-    }
-
-    async fetchProblems(args: HttpFilterInterface) {
+    async fetchProblems(
+        args: HttpFilterInterface
+    ): Promise<StandardResponseInterface<Problem[]>> {
         return this.problemService.getCourseProblems(this.course, args);
     }
 
@@ -144,34 +98,8 @@ export class ListProblemsComponent implements OnInit {
         this.selectedDeleteProblem = problem;
     }
 
-    handleCloseDeleteProblemModal($event): void {
+    handleCloseDeleteProblemModal(): void {
         this.isDeleteProblemModalOpen = false;
         this.refreshData.emit();
-    }
-
-    getMinuteUnit(estimatedDuration: number): string {
-        return Problem.getMinuteUnit(estimatedDuration);
-    }
-
-    handleOnDelete($event: any): void {
-        const problemID = $event;
-        const problem = this.problems.find(
-            (problem) => problem.id === problemID
-        );
-        this.handleOpenDeleteProblemModal(problem);
-    }
-
-    handleOnModify($event: any): void {
-        const problemID = $event;
-        const problem = this.problems.find(
-            (problem) => problem.id === problemID
-        );
-        this.handleOpenEditProblemModal(problem);
-    }
-
-    handleOnView($event: any): void {
-        const problemID = $event;
-        const courseID = this.course.id;
-        this.router.navigateByUrl(`/courses/${courseID}/problems/${problemID}`);
     }
 }

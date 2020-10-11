@@ -10,30 +10,39 @@ export function Controller<T extends { new (...args: unknown[]): {} }>(
     return target;
 }
 
-export interface ResourceArgs {
-    sortable: {
+export interface ResourceArgs<ResourceModel extends BaseEntity = any> {
+    sortable?: {
         dataDictionary: any;
         defaultSortKey?: undefined;
         defaultSortDir?: string;
     };
-    searchable: string[];
-    dataDict: (args: HttpArgs) => unknown;
+    searchable?: string[];
+    dataDict: (args: HttpArgs<ResourceModel>) => Partial<ResourceModel>;
 }
 
-export function Resource(
-    resourceName: string,
+export type ResourceAction = 'create' | 'update' | 'delete' | 'get' | 'list';
+
+export function Resource<ResourceModel extends BaseEntity>(
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
-    resourceModel: new () => BaseEntity,
-    args: ResourceArgs
+    resourceModel: new () => ResourceModel,
+    args: ResourceArgs<ResourceModel>,
+    generatedFunctions: ResourceAction[] = [
+        'create',
+        'update',
+        'delete',
+        'get',
+        'list',
+    ]
 ) {
     // eslint-disable-next-line @typescript-eslint/ban-types
     return function <T extends { new (...args: unknown[]): {} }>(target: T): T {
         const metadata = Reflect.getMetadata('resources', target) || [];
         metadata.push({
             target,
-            resourceName,
+            resourceName: resourceModel.name.toLowerCase(),
             resourceModel,
             args,
+            generatedFunctions,
         });
 
         Reflect.defineMetadata('resources', metadata, target);

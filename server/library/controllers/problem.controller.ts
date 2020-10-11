@@ -4,7 +4,7 @@ import { Controller, Resource } from '../decorators';
 import { HttpArgs } from '../helpers/route.helper';
 
 @Controller
-@Resource('problem', Problem, {
+@Resource(Problem, {
     sortable: {
         dataDictionary: {
             course: (problem) => get(problem, 'course.name'),
@@ -15,6 +15,17 @@ import { HttpArgs } from '../helpers/route.helper';
         },
     },
     searchable: ['name'],
-    dataDict: (args: HttpArgs) => ({}),
+    dataDict: (args: HttpArgs<Problem>) => {
+        const { body, currentUser } = args;
+        return {
+            difficulty: body.difficulty,
+            name: body.name,
+            question: body.question,
+            solution: body.solution,
+            estimatedDuration: body.estimatedDuration,
+            course: body.course,
+            creator: body.creator || currentUser,
+        };
+    },
 })
 export class ProblemController {}

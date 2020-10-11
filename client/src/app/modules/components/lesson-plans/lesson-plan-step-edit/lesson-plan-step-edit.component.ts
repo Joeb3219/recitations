@@ -109,9 +109,11 @@ export class LessonPlanStepEditComponent implements OnInit {
 
         // and now we submit it to the API.
         try {
-            const result = await this.lessonPlanService.upsertLessonPlanStep(
-                this.lessonPlanStep
-            );
+            const result = await (
+                await this.lessonPlanService.upsertLessonPlanStep(
+                    this.lessonPlanStep
+                )
+            ).data;
             this.onStepEdited.emit(result);
 
             this.toastr.success('Successfully created lesson plan step');

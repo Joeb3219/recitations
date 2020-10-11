@@ -9,7 +9,10 @@ import { get, isEqual, pickBy, sortBy } from 'lodash';
 import 'reflect-metadata';
 import { DeleteResult, Repository } from 'typeorm';
 import { BaseEntity } from '../../../client/shim/typeorm.shim';
-import { ResourceArgs } from '../decorators/controller.decorator';
+import {
+    ResourceAction,
+    ResourceArgs,
+} from '../decorators/controller.decorator';
 
 function searchIn(object, key, target) {
     if (!target || !target.toString()) return true; // Ensure that the search target is actually comparable
@@ -77,8 +80,8 @@ function paginateResultData(results: any | any[], req: Request) {
     return limit < 0 ? results : results.slice(offset, offset + limit + 1);
 }
 
-export interface HttpArgs {
-    body: any;
+export interface HttpArgs<ResourceModel extends BaseEntity> {
+    body: Partial<ResourceModel>;
     repo: (T) => Repository<typeof T>;
     currentUser: User;
     params: any;
@@ -98,7 +101,7 @@ function httpMiddleware(
                 repo: res.locals.repo,
                 currentUser: res.locals.currentUser,
                 params: req.params,
-            } as HttpArgs);
+            } as HttpArgs<unknown>);
 
             const searchedResult = searchResultData(
                 result,
@@ -150,7 +153,7 @@ export function generateUpdateResource<T extends BaseEntity>(
     resourceName: string,
     dataFn: (HttpArgs) => unknown
 ) {
-    return async (args: HttpArgs): Promise<T> => {
+    return async (args: HttpArgs<T>): Promise<T> => {
         const { params, repo } = args;
         const id = params[`${resourceName}ID`];
 
@@ -175,7 +178,7 @@ export function generateGetResource<T extends BaseEntity>(
     resourceClass: BaseEntity,
     resourceName: string
 ) {
-    return async (args: HttpArgs): Promise<T> => {
+    return async (args: HttpArgs<T>): Promise<T> => {
         const { params, repo } = args;
         const id = params[`${resourceName}ID`];
 
@@ -189,11 +192,11 @@ export function generateGetResource<T extends BaseEntity>(
     };
 }
 
-export function generateDeleteResource(
+export function generateDeleteResource<T extends BaseEntity>(
     resourceClass: BaseEntity,
     resourceName: string
 ) {
-    return async (args: HttpArgs): Promise<DeleteResult> => {
+    return async (args: HttpArgs<T>): Promise<DeleteResult> => {
         const { params, repo } = args;
         const id = params[`${resourceName}ID`];
 
@@ -213,7 +216,7 @@ export function generateCreateResource<T extends BaseEntity>(
     resourceClass: BaseEntity,
     dataFn: (HttpArgs) => unknown
 ) {
-    return async (args: HttpArgs): Promise<T> => {
+    return async (args: HttpArgs<T>): Promise<T> => {
         const { repo } = args;
 
         const data = pickBy(await dataFn(args), (item) => {
@@ -227,7 +230,7 @@ export function generateCreateResource<T extends BaseEntity>(
 export function generateListResource<T extends BaseEntity>(
     resourceClass: BaseEntity
 ) {
-    return async (args: HttpArgs): Promise<T[]> => {
+    return async (args: HttpArgs<T>): Promise<T[]> => {
         const { repo, params } = args;
         const { courseID } = params;
 
@@ -243,11 +246,12 @@ export function generateResource(
         resourceName: string;
         resourceModel: new () => BaseEntity;
         args: ResourceArgs;
+        generatedFunctions: ResourceAction[];
     },
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     controller: any
 ): void {
-    const { target, resourceName, resourceModel, args } = data;
+    const { resourceName, resourceModel, args, generatedFunctions } = data;
     const { sortable, searchable, dataDict } = args;
 
     const generateInternalRoute = (
@@ -266,54 +270,70 @@ export function generateResource(
         app.route(route)[method](...middlewares);
     };
 
-    generateInternalRoute(
-        controller,
-        app,
-        generateUpdateResource<typeof resourceModel>(
-            resourceModel,
-            resourceName,
-            dataDict
-        ),
-        `/${resourceName}/:${resourceName}ID`,
-        `post`,
-        { searchableFields: undefined, sortableFields: undefined }
-    );
+    if (generatedFunctions.includes('update')) {
+        generateInternalRoute(
+            controller,
+            app,
+            generateUpdateResource<typeof resourceModel>(
+                resourceModel,
+                resourceName,
+                dataDict
+            ),
+            `/${resourceName}/:${resourceName}ID`,
+            `put`,
+            { searchableFields: undefined, sortableFields: undefined }
+        );
+    }
 
-    generateInternalRoute(
-        controller,
-        app,
-        generateGetResource<typeof resourceModel>(resourceModel, resourceName),
-        `/${resourceName}/:${resourceName}ID`,
-        `get`,
-        { searchableFields: undefined, sortableFields: undefined }
-    );
+    if (generatedFunctions.includes('get')) {
+        generateInternalRoute(
+            controller,
+            app,
+            generateGetResource<typeof resourceModel>(
+                resourceModel,
+                resourceName
+            ),
+            `/${resourceName}/:${resourceName}ID`,
+            `get`,
+            { searchableFields: undefined, sortableFields: undefined }
+        );
+    }
 
-    generateInternalRoute(
-        controller,
-        app,
-        generateDeleteResource(resourceModel, resourceName),
-        `/${resourceName}/:${resourceName}ID`,
-        `delete`,
-        { searchableFields: undefined, sortableFields: undefined }
-    );
+    if (generatedFunctions.includes('delete')) {
+        generateInternalRoute(
+            controller,
+            app,
+            generateDeleteResource(resourceModel, resourceName),
+            `/${resourceName}/:${resourceName}ID`,
+            `delete`,
+            { searchableFields: undefined, sortableFields: undefined }
+        );
+    }
 
-    generateInternalRoute(
-        controller,
-        app,
-        generateListResource<typeof resourceModel>(resourceModel),
-        `/course/:courseID/${resourceName}s`,
-        `get`,
-        { searchableFields: searchable, sortableFields: sortable }
-    );
+    if (generatedFunctions.includes('list')) {
+        generateInternalRoute(
+            controller,
+            app,
+            generateListResource<typeof resourceModel>(resourceModel),
+            `/course/:courseID/${resourceName}s`,
+            `get`,
+            { searchableFields: searchable, sortableFields: sortable }
+        );
+    }
 
-    generateInternalRoute(
-        controller,
-        app,
-        generateCreateResource<typeof resourceModel>(resourceModel, dataDict),
-        `/${resourceName}`,
-        `post`,
-        { searchableFields: undefined, sortableFields: undefined }
-    );
+    if (generatedFunctions.includes('create')) {
+        generateInternalRoute(
+            controller,
+            app,
+            generateCreateResource<typeof resourceModel>(
+                resourceModel,
+                dataDict
+            ),
+            `/${resourceName}`,
+            `post`,
+            { searchableFields: undefined, sortableFields: undefined }
+        );
+    }
 }
 
 export function generateRoute(

@@ -85,9 +85,9 @@ export class LessonPlanEditComponent implements OnInit {
         );
         try {
             // send state to the db, and obtain back the ground truth that the db produces
-            const result = await this.lessonPlanService.upsertLessonPlan(
-                updatedLessonPlan
-            );
+            const result = await (
+                await this.lessonPlanService.upsertLessonPlan(updatedLessonPlan)
+            ).data;
 
             // and now we store the ground truth back in our real object
             Object.assign(this.lessonPlan, result);

@@ -1,10 +1,12 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { DatatableColumn } from '@components/datatable/datatable.component';
+import { HttpFilterInterface } from '@http/httpFilter.interface';
+import { StandardResponseInterface } from '@interfaces/http/standardResponse.interface';
 import { Course } from '@models/course';
 import { LessonPlan } from '@models/lessonPlan';
-import { Problem } from '@models/problem';
 import { CourseService } from '@services/course.service';
 import { LessonPlanService } from '@services/lesson-plan.service';
+import { LoadedArg } from 'src/app/decorators';
 
 @Component({
     selector: 'app-list-lesson-plans',
@@ -12,37 +14,56 @@ import { LessonPlanService } from '@services/lesson-plan.service';
     encapsulation: ViewEncapsulation.None,
     styleUrls: ['./list-lesson-plans.component.scss'],
 })
-export class ListLessonPlansComponent implements OnInit {
+export class ListLessonPlansComponent {
+    @LoadedArg<Course>(CourseService, Course, 'courseID')
     course: Course;
 
-    lessonPlans: LessonPlan[];
+    columns: DatatableColumn<LessonPlan>[] = [
+        {
+            name: 'Name',
+            prop: 'name',
+        },
+        {
+            name: 'Creator',
+            prop: 'creator',
+            cellTemplate: 'userCell',
+        },
+        {
+            name: 'Actions',
+            cellTemplate: 'actionsCell',
+            actions: (row: LessonPlan) => [
+                {
+                    text: 'View',
+                    href: `/courses/${row.course.id}/lesson-plans/${row.id}`,
+                },
+                {
+                    text: 'Modify',
+                    click: () => this.handleOpenEditLessonPlanModal(row),
+                },
+                {
+                    text: 'Delete',
+                    click: () => this.handleOpenDeleteLessonPlanModal(row),
+                },
+            ],
+        },
+    ];
 
-    isLoading = true;
+    selectedLessonPlan: LessonPlan = undefined;
 
-    selectedLessonPlan: LessonPlan = null;
+    refreshData: EventEmitter<void> = new EventEmitter();
 
     isEditLessonPlanModalOpen = false;
 
     isDeleteLessonPlanModalOpen = false;
 
-    constructor(
-        private courseService: CourseService,
-        private lessonPlanService: LessonPlanService,
-        private route: ActivatedRoute
-    ) {}
+    constructor(private lessonPlanService: LessonPlanService) {
+        this.fetchLessonPlans = this.fetchLessonPlans.bind(this);
+    }
 
-    ngOnInit(): void {
-        this.route.params.subscribe(async (params) => {
-            if (params.courseID) {
-                this.course = await this.courseService.getCourse(
-                    params.courseID
-                );
-                this.lessonPlans = await this.lessonPlanService.getCourseLessonPlans(
-                    this.course
-                );
-                this.isLoading = false;
-            }
-        });
+    async fetchLessonPlans(
+        args: HttpFilterInterface
+    ): Promise<StandardResponseInterface<LessonPlan[]>> {
+        return this.lessonPlanService.getCourseLessonPlans(this.course, args);
     }
 
     handleOpenNewLessonPlanModal(): void {
@@ -53,24 +74,9 @@ export class ListLessonPlansComponent implements OnInit {
         });
     }
 
-    getMinuteUnit(estimatedDuration: number): string {
-        return Problem.getMinuteUnit(estimatedDuration);
-    }
-
     handleCloseEditLessonPlanModal(): void {
         this.isEditLessonPlanModalOpen = false;
-
-        // And now we add the lesson plan if needed
-        // We perform a search for if there is a lesson plan with that id already
-        const foundLessonPlan = this.lessonPlans.find((lp) => {
-            return lp.id === this.selectedLessonPlan.id;
-        });
-
-        // if the lesson plan was found, we already have it in our array, and the data would be updated via the component
-        // if it wasn't found, we insert it new.
-        if (!foundLessonPlan) this.lessonPlans.push(this.selectedLessonPlan);
-
-        this.selectedLessonPlan = null;
+        this.refreshData.next();
     }
 
     handleOpenEditLessonPlanModal(lessonPlan: LessonPlan): void {
@@ -83,14 +89,8 @@ export class ListLessonPlansComponent implements OnInit {
         this.selectedLessonPlan = lessonPlan;
     }
 
-    handleCloseDeleteLessonPlanModal($event): void {
+    handleCloseDeleteLessonPlanModal(): void {
         this.isDeleteLessonPlanModalOpen = false;
-
-        if ($event) {
-            this.lessonPlans.splice(
-                this.lessonPlans.indexOf(this.selectedLessonPlan),
-                1
-            );
-        }
+        this.refreshData.emit();
     }
 }

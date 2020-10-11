@@ -1,9 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter } from '@angular/core';
+import { DatatableColumn } from '@components/datatable/datatable.component';
+import { HttpFilterInterface } from '@http/httpFilter.interface';
+import { StandardResponseInterface } from '@interfaces/http/standardResponse.interface';
 import { Course } from '@models/course';
 import { Section } from '@models/section';
 import { CourseService } from '@services/course.service';
-import { SectionService } from '@services/section.service';
 import { LoadedArg } from 'src/app/decorators';
+import { SectionService } from '../../../../services/section.service';
 
 @Component({
     selector: 'app-view-sections',
@@ -14,62 +17,93 @@ export class ViewSectionsComponent {
     @LoadedArg(CourseService, Course, 'courseID')
     course: Course;
 
-    sections: Section[];
-
-    isLoading = true;
-
-    selectedEditSection: Section = null;
-
-    selectedDeleteSection: Section = null;
+    selectedSection: Section = null;
 
     isEditSectionModalOpen = false;
 
     isDeleteSectionModalOpen = false;
 
-    constructor(private sectionService: SectionService) {}
+    refreshData: EventEmitter<void> = new EventEmitter();
+
+    columns: DatatableColumn<Section>[] = [
+        {
+            name: 'Section Number',
+            prop: 'sectionNumber',
+        },
+        {
+            name: 'Index',
+            prop: 'index',
+        },
+        {
+            name: 'TA',
+            prop: 'ta',
+            cellTemplate: 'userCell',
+        },
+        {
+            name: 'Instructor',
+            prop: 'instructor',
+            cellTemplate: 'userCell',
+        },
+        {
+            name: 'Instructor',
+            prop: 'instructor',
+            cellTemplate: 'userCell',
+        },
+        {
+            name: 'Actions',
+            cellTemplate: 'actionsCell',
+            actions: (row: Section) => [
+                {
+                    text: 'View',
+                    href: `/courses/${row.course.id}/section/${row.id}`,
+                },
+                {
+                    text: 'Modify',
+                    click: () => this.handleOpenEditSectionModal(row),
+                },
+                {
+                    text: 'Delete',
+                    click: () => this.handleOpenDeleteSectionModal(row),
+                },
+            ],
+        },
+    ];
+
+    constructor(private SectionService: SectionService) {
+        this.fetchSections = this.fetchSections.bind(this);
+    }
+
+    async fetchSections(
+        args: HttpFilterInterface
+    ): Promise<StandardResponseInterface<Section[]>> {
+        return this.SectionService.getCourseSections(this.course, args);
+    }
 
     handleOpenNewSectionModal(): void {
         this.isEditSectionModalOpen = true;
 
-        this.selectedEditSection = new Section();
-        this.selectedEditSection.course = this.course;
+        this.selectedSection = new Section();
+        this.selectedSection.course = this.course;
     }
 
     handleCloseEditSectionModal(): void {
         this.isEditSectionModalOpen = false;
-
-        // And now we add the section if needed
-        // We perform a search for if there is a section with that id already
-        const foundSection = this.sections.find((section) => {
-            return section.id === this.selectedEditSection.id;
-        });
-
-        // if the section was found, we already have it in our array, and the data would be updated via the component
-        // if it wasn't found, we insert it new.
-        if (!foundSection) this.sections.push(this.selectedEditSection);
-
-        this.selectedEditSection = null;
+        this.selectedSection = null;
+        this.refreshData.next();
     }
 
     handleOpenEditSectionModal(section: Section): void {
         this.isEditSectionModalOpen = true;
-        this.selectedEditSection = section;
+        this.selectedSection = section;
     }
 
     handleOpenDeleteSectionModal(section: Section): void {
-        // let result = this.sectionService.deleteSection(section.id);
         this.isDeleteSectionModalOpen = true;
-        this.selectedDeleteSection = section;
+        this.selectedSection = section;
     }
 
-    handleCloseDeleteSectionModal($event): void {
+    handleCloseDeleteSectionModal(): void {
         this.isDeleteSectionModalOpen = false;
-
-        if ($event) {
-            this.sections.splice(
-                this.sections.indexOf(this.selectedDeleteSection),
-                1
-            );
-        }
+        this.refreshData.next();
     }
 }

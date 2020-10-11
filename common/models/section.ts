@@ -1,18 +1,16 @@
+import { SectionInterface } from '@interfaces/section.interface';
+import { Course } from '@models/course';
+import { Meetable } from '@models/meetable';
+import { User } from '@models/user';
 import {
     ChildEntity,
-    PrimaryGeneratedColumn,
     Column,
-    ManyToMany,
-    JoinTable,
     JoinColumn,
+    JoinTable,
+    ManyToMany,
     ManyToOne,
+    PrimaryGeneratedColumn,
 } from 'typeorm';
-
-import { SectionInterface } from '@interfaces/section.interface';
-import { User } from '@models/user';
-import { Course } from '@models/course';
-
-import { Meetable } from '@models/meetable';
 
 @ChildEntity()
 export class Section extends Meetable implements SectionInterface {
@@ -25,7 +23,7 @@ export class Section extends Meetable implements SectionInterface {
     @Column()
     public sectionNumber: string;
 
-    @ManyToOne((type) => Course, (course) => course.sections)
+    @ManyToOne((type) => Course, (course) => course.sections, { eager: true })
     @JoinColumn()
     public course: Course;
 

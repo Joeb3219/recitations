@@ -23,6 +23,8 @@ export class AppComponent implements OnInit {
 
     currentParams: { [paramName: string]: string } = {};
 
+    isLoadingArgs = false;
+
     ngOnInit(): void {
         this.router.events.subscribe((event) => {
             if (event instanceof ChildActivationEnd) {
@@ -36,6 +38,7 @@ export class AppComponent implements OnInit {
     }
 
     handleOnActivate(data) {
+        this.isLoadingArgs = true;
         setTimeout(async () => {
             const loadedArgs: {
                 service: Provider;
@@ -43,6 +46,7 @@ export class AppComponent implements OnInit {
                 resource: new () => unknown;
                 stub: string;
             }[] = Reflect.getMetadata('loadedArgs', data) || [];
+
             await Promise.all(
                 loadedArgs.map(async (arg) => {
                     // This will contain the metadata of what resource this service providers for, and the function to call for a Getter.
@@ -72,6 +76,8 @@ export class AppComponent implements OnInit {
                     });
                 })
             );
+
+            this.isLoadingArgs = false;
         });
     }
 }

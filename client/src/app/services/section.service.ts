@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { StandardResponseInterface } from '@interfaces/http/standardResponse.interface';
 import { Course } from '@models/course';
 import { Section } from '@models/section';
-import { DeleteRequest, GetRequest, UpsertRequest } from '../decorators';
+import { DeleteRequest, ListRequest, UpsertRequest } from '../decorators';
+import { HttpFilterInterface } from '../http/httpFilter.interface';
 
 @Injectable()
 export class SectionService {
@@ -16,9 +17,10 @@ export class SectionService {
         return undefined;
     }
 
-    @GetRequest<Section>(Section)
+    @ListRequest<Section>(Section)
     public async getCourseSections(
-        course: Course | string
+        course: Course,
+        args?: HttpFilterInterface
     ): Promise<StandardResponseInterface<Section[]>> {
         return undefined;
     }

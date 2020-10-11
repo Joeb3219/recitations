@@ -11,13 +11,18 @@
         <app-sidebar></app-sidebar>
 
         <div class="content">
+          <div *ngIf="isLoadingArgs" class="d-flex justify-content-center">
+            <div class="spinner-border text-primary" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
           <router-outlet (activate)='handleOnActivate($event)'></router-outlet>
         </div>
 
       </div>
 
       <div class="row ">
-        <!--      <app-footer class="footer"></app-footer>-->
+        <app-footer class="footer"></app-footer>
       </div>
 
     </div>

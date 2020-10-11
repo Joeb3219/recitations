@@ -1,18 +1,17 @@
 <div class="page" style="padding: 1rem">
-  <ng-container
-    *ngIf="!isLoading && !course">
+  <ng-container *ngIf="!course">
     <h4>Not Found</h4>
   </ng-container>
   <ng-container *ngIf="course&&sections">
     <h4>{{course.name}} Settings</h4>
 
-    <mat-tab-group  animationDuration="0ms" mat-stretch-tabs [disableRipple]="true" #tabGroup
-                   (selectedTabChange)="tabChanged($event)" [(selectedIndex)]="activeTabIndex">
-<!--      <mat-tab *ngFor="let tab of tabs; let i = index" label="{{tab.name}}">-->
-<!--        <div class="container-margin" [ngStyle]="{'display': activeTabIndex === i ? 'block' : 'none'}">-->
-<!--          <ng-container *ngComponentOutlet="tab.component; injector:tab.injector" ></ng-container>-->
-<!--        </div>-->
-<!--      </mat-tab>-->
+    <mat-tab-group animationDuration="0ms" mat-stretch-tabs [disableRipple]="true" #tabGroup
+      (selectedTabChange)="tabChanged($event)" [(selectedIndex)]="activeTabIndex">
+      <!--      <mat-tab *ngFor="let tab of tabs; let i = index" label="{{tab.name}}">-->
+      <!--        <div class="container-margin" [ngStyle]="{'display': activeTabIndex === i ? 'block' : 'none'}">-->
+      <!--          <ng-container *ngComponentOutlet="tab.component; injector:tab.injector" ></ng-container>-->
+      <!--        </div>-->
+      <!--      </mat-tab>-->
 
       <mat-tab label="{{tabs[0]}}">
         <div class="container-margin" [ngStyle]="{'display': activeTabIndex === 0 ? 'block' : 'none'}">
@@ -57,33 +56,25 @@
     </mat-tab-group>
 
 
-    <div class="divider-md"></div><hr>
-    <h6  style="color: #b11a17; font-weight: bold">Active Tab: {{tabs[activeTabIndex] }}</h6>
+    <div class="divider-md"></div>
+    <hr>
+    <h6 style="color: #b11a17; font-weight: bold">Active Tab: {{tabs[activeTabIndex] }}</h6>
   </ng-container>
 
 
 </div>
 
 
-<app-modal
-  *ngIf="isChangesModalVisible"
-  (onClose)="handleClose()"
-  [modalSize]="'md'"
-  [forceClose]="forceClose">
+<app-modal *ngIf="isChangesModalVisible" (onClose)="handleClose()" [modalSize]="'md'" [forceClose]="forceClose">
 
   <span title>Unsaved Changes</span>
   <div body>
     There are unsaved changes in the {{tabs[activeTabCopy].name}} tab. Are you sure you want to switch tabs?
   </div>
   <div footer>
-    <button
-      type="button"
-      class="btn btn-secondary"
-      (click)="handleChangesModalAgree()">
+    <button type="button" class="btn btn-secondary" (click)="handleChangesModalAgree()">
       Yes
     </button>
   </div>
 
 </app-modal>
-
-

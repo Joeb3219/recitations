@@ -1,16 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component } from '@angular/core';
 import { Course } from '@models/course';
 import { Section } from '@models/section';
 import { CourseService } from '@services/course.service';
 import { SectionService } from '@services/section.service';
+import { LoadedArg } from 'src/app/decorators';
 
 @Component({
     selector: 'app-view-sections',
     templateUrl: './view-sections.component.html',
     styleUrls: ['./view-sections.component.scss'],
 })
-export class ViewSectionsComponent implements OnInit {
+export class ViewSectionsComponent {
+    @LoadedArg(CourseService, Course, 'courseID')
     course: Course;
 
     sections: Section[];
@@ -25,25 +26,7 @@ export class ViewSectionsComponent implements OnInit {
 
     isDeleteSectionModalOpen = false;
 
-    constructor(
-        private courseService: CourseService,
-        private sectionService: SectionService,
-        private route: ActivatedRoute
-    ) {}
-
-    ngOnInit(): void {
-        this.route.params.subscribe(async (params) => {
-            if (params.courseID) {
-                this.course = await this.courseService.getCourse(
-                    params.courseID
-                );
-                this.sections = await this.sectionService.getCourseSections(
-                    this.course
-                );
-                this.isLoading = false;
-            }
-        });
-    }
+    constructor(private sectionService: SectionService) {}
 
     handleOpenNewSectionModal(): void {
         this.isEditSectionModalOpen = true;

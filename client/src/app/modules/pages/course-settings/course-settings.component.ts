@@ -1,25 +1,35 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, SimpleChanges } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { ActivatedRoute } from '@angular/router';
 import { Course } from '@models/course';
 import { Section } from '@models/section';
 import { CourseService } from '@services/course.service';
 import { SectionService } from '@services/section.service';
 import { Subject } from 'rxjs';
+import { LoadedArg } from '../../../decorators/input.decorator';
 
 @Component({
     selector: 'app-course-settings',
     templateUrl: './course-settings.component.html',
     styleUrls: ['./course-settings.component.scss'],
 })
-export class CourseSettingsComponent implements OnInit {
+export class CourseSettingsComponent implements OnChanges {
+    @LoadedArg(CourseService, Course, 'courseID')
     course: Course;
 
     sections: Section[];
 
     isLoading = true;
 
-    tabs: Array<string>;
+    tabs: string[] = [
+        'Configurations',
+        'Roles',
+        'Gradebook',
+        'Weeks',
+        'Learning Goals',
+        'Reports',
+        'Quizzes',
+        'Roster',
+    ];
 
     activeTabIndex = 0;
 
@@ -35,35 +45,18 @@ export class CourseSettingsComponent implements OnInit {
 
     forceClose: Subject<void> = new Subject<void>();
 
-    constructor(
-        private courseService: CourseService,
-        private sectionService: SectionService,
-        private route: ActivatedRoute
-    ) {}
+    constructor(private sectionService: SectionService) {}
 
-    ngOnInit(): void {
-        this.route.params.subscribe(async (params) => {
-            if (params.courseID) {
-                this.course = await this.courseService.getCourse(
-                    params.courseID
-                );
-                this.sections = await this.sectionService.getCourseSections(
-                    this.course
-                );
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes && changes.course) {
+            this.loadSections();
+        }
+    }
 
-                this.tabs = [
-                    'Configurations',
-                    'Roles',
-                    'Gradebook',
-                    'Weeks',
-                    'Learning Goals',
-                    'Reports',
-                    'Quizzes',
-                    'Roster',
-                ];
-                this.isLoading = false;
-            }
-        });
+    async loadSections(): Promise<void> {
+        this.sections = await (
+            await this.sectionService.getCourseSections(this.course)
+        ).data;
     }
 
     tabChanged(tabChangeEvent: MatTabChangeEvent): void {

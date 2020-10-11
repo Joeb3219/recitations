@@ -1,71 +1,32 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '@environment';
+import { StandardResponseInterface } from '@interfaces/http/standardResponse.interface';
 import { Course } from '@models/course';
 import { Section } from '@models/section';
+import { DeleteRequest, GetRequest, UpsertRequest } from '../decorators';
 
 @Injectable()
 export class SectionService {
     constructor(private http: HttpClient) {}
 
-    public async upsertSection(section: Section): Promise<Section> {
-        const sectionID = section.id;
-        const url = sectionID
-            ? `${environment.apiURL}/section/${sectionID}`
-            : `${environment.apiURL}/section`;
-        let action;
-
-        if (sectionID) action = this.http.put(url, section);
-        else action = this.http.post(url, section);
-
-        return new Promise((resolve, reject) => {
-            action.subscribe(
-                (result: { data: Section }) => {
-                    if (result) resolve(result.data);
-                    else reject(new Error('No result returned'));
-                },
-                (err) => {
-                    reject(err);
-                }
-            );
-        });
+    @UpsertRequest<Section>(Section)
+    public async upsertSection(
+        section: Section
+    ): Promise<StandardResponseInterface<Section>> {
+        return undefined;
     }
 
+    @GetRequest<Section>(Section)
     public async getCourseSections(
         course: Course | string
-    ): Promise<Section[]> {
-        // if course is an object, we will grab its id
-        // otherwise, we assume course is a string representing the id
-        const courseID = typeof course === 'string' ? course : course.id;
-
-        const url = `${environment.apiURL}/course/${courseID}/sections`;
-
-        return new Promise((resolve, reject) => {
-            this.http.get(url).subscribe(
-                (result: { data: Section[] }) => {
-                    if (result) resolve(result.data);
-                    else reject(new Error('No result returned'));
-                },
-                (err) => {
-                    reject(err);
-                }
-            );
-        });
+    ): Promise<StandardResponseInterface<Section[]>> {
+        return undefined;
     }
 
-    public async deleteSection(sectionID: string) {
-        const url = `${environment.apiURL}/section/${sectionID}`;
-
-        return new Promise((resolve, reject) => {
-            this.http.delete(url).subscribe(
-                (result: { data: Section }) => {
-                    if (result) resolve(result.data);
-                    else reject(new Error('No result returned'));
-                },
-                (err) => {
-                    reject(err);
-                }
-            );
-        });
+    @DeleteRequest<Section>(Section)
+    public async deleteSection(
+        sectionID: string
+    ): Promise<StandardResponseInterface<void>> {
+        return undefined;
     }
 }

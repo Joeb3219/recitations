@@ -1,6 +1,5 @@
 <div class="page">
-  <ng-container
-    *ngIf="!isLoading && !course">
+  <ng-container *ngIf="!course">
     <h4>Not Found</h4>
   </ng-container>
   <ng-container *ngIf="course">
@@ -11,62 +10,22 @@
           <h4>{{course.name}} Lesson Plans</h4>
         </div>
         <div style="float: right; text-align: right" class="col">
-          <button
-            type="button"
-            class="btn btn-primary"
-            (click)="handleOpenNewLessonPlanModal()"
-          >Add Lesson Plan
+          <button type="button" class="btn btn-primary" (click)="handleOpenNewLessonPlanModal()">Add Lesson Plan
           </button>
         </div>
       </div>
     </div>
 
     <div class="container-margin">
-      <table class="table table-striped">
-        <thead>
-        <tr>
-          <th>Lesson Plan Name</th>
-          <th>Estimated Duration</th>
-          <th>Creator</th>
-          <th>Actions</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr
-          *ngFor="let lessonPlan of lessonPlans">
-          <td>{{ lessonPlan.name }}</td>
-          <td *ngIf="!lessonPlan.getDuration()"></td>
-          <td *ngIf="lessonPlan.getDuration()">{{ lessonPlan.getDuration() + ' ' + getMinuteUnit(lessonPlan.getDuration()) }}</td>
-          <td>
-            <app-user-badge
-              [user]="lessonPlan.creator">
-            </app-user-badge>
-          </td>
-          <td>
-            <div class="btn-group btn-group-sm" data-toggle="buttons">
-              <a class="btn btn-outline-secondary"  routerLink="/courses/{{ course.id }}/lesson-plans/{{lessonPlan.id}}" aria-label="view">View</a>
-              <a class="btn btn-outline-secondary"  href="#" [routerLink]="" (click)="handleOpenEditLessonPlanModal(lessonPlan)" aria-label="modify">Modify</a>
-              <a class="btn btn-outline-secondary"  href="#"  (click)="handleOpenDeleteLessonPlanModal(lessonPlan)"  [routerLink]="" aria-label="delete">Delete</a>
-            </div>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+      <app-datatable [dataFunction]="fetchLessonPlans" [columns]="columns" [reload]="refreshData"></app-datatable>
     </div>
 
 
   </ng-container>
 </div>
 
-<app-lesson-plan-edit
-  [isVisible]="isEditLessonPlanModalOpen"
-  [lessonPlan]="selectedLessonPlan"
-  (onClose)="handleCloseEditLessonPlanModal()"
-></app-lesson-plan-edit>
+<app-lesson-plan-edit [isVisible]="isEditLessonPlanModalOpen" [lessonPlan]="selectedLessonPlan"
+  (onClose)="handleCloseEditLessonPlanModal()"></app-lesson-plan-edit>
 
-<app-lesson-plan-delete
-  [isVisible]="isDeleteLessonPlanModalOpen"
-  [lessonPlan]="selectedLessonPlan"
-  (onClose)="handleCloseDeleteLessonPlanModal($event)"
-></app-lesson-plan-delete>
-
+<app-lesson-plan-delete [isVisible]="isDeleteLessonPlanModalOpen" [lessonPlan]="selectedLessonPlan"
+  (onClose)="handleCloseDeleteLessonPlanModal($event)"></app-lesson-plan-delete>

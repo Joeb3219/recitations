@@ -81,9 +81,9 @@ export class SectionEditComponent implements OnInit {
         const updatedSection = Object.assign({}, this.section, section);
         try {
             // send state to the db, and obtain back the ground truth that the db produces
-            const result = await this.sectionService.upsertSection(
-                updatedSection
-            );
+            const result = await (
+                await this.sectionService.upsertSection(updatedSection)
+            ).data;
 
             // and now we store the ground truth back in our real object
             Object.assign(this.section, result);

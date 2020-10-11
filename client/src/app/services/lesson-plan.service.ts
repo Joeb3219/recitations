@@ -1,9 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '@environment';
+import { StandardResponseInterface } from '@interfaces/http/standardResponse.interface';
 import { Course } from '@models/course';
 import { LessonPlan } from '@models/lessonPlan';
 import { LessonPlanStep } from '@models/lessonPlanStep';
+import {
+    DeleteRequest,
+    GetRequest,
+    ListRequest,
+    UpsertRequest,
+} from '../decorators';
+import { HttpFilterInterface } from '../http/httpFilter.interface';
 
 @Injectable({
     providedIn: 'root',
@@ -11,110 +18,39 @@ import { LessonPlanStep } from '@models/lessonPlanStep';
 export class LessonPlanService {
     constructor(private http: HttpClient) {}
 
-    public async upsertLessonPlan(lessonPlan: LessonPlan): Promise<LessonPlan> {
-        const lessonPlanID = lessonPlan.id;
-        const url = lessonPlanID
-            ? `${environment.apiURL}/lessonplan/${lessonPlanID}`
-            : `${environment.apiURL}/lessonplan`;
-        let action;
-
-        if (lessonPlanID) action = this.http.put(url, lessonPlan);
-        else action = this.http.post(url, lessonPlan);
-
-        return new Promise((resolve, reject) => {
-            action.subscribe(
-                (result: { data: any }) => {
-                    if (result) resolve(new LessonPlan(result.data));
-                    else reject(new Error('No result returned'));
-                },
-                (err) => {
-                    reject(err);
-                }
-            );
-        });
+    @UpsertRequest<LessonPlan>(LessonPlan)
+    public async upsertLessonPlan(
+        lessonPlan: LessonPlan
+    ): Promise<StandardResponseInterface<LessonPlan>> {
+        return undefined;
     }
 
+    @UpsertRequest<LessonPlanStep>(LessonPlanStep)
     public async upsertLessonPlanStep(
         lessonPlanStep: LessonPlanStep
-    ): Promise<LessonPlanStep> {
-        const lessonPlanStepID = lessonPlanStep.id;
-        const url = lessonPlanStepID
-            ? `${environment.apiURL}/lessonplanstep/${lessonPlanStepID}`
-            : `${environment.apiURL}/lessonplanstep`;
-        let action;
-
-        if (lessonPlanStepID) action = this.http.put(url, lessonPlanStep);
-        else action = this.http.post(url, lessonPlanStep);
-
-        return new Promise((resolve, reject) => {
-            action.subscribe(
-                (result: { data: any }) => {
-                    if (result) resolve(new LessonPlanStep(result.data));
-                    else reject(new Error('No result returned'));
-                },
-                (err) => {
-                    reject(err);
-                }
-            );
-        });
+    ): Promise<StandardResponseInterface<LessonPlanStep>> {
+        return undefined;
     }
 
+    @ListRequest<LessonPlan>(LessonPlan)
     public async getCourseLessonPlans(
-        course: Course | string
-    ): Promise<LessonPlan[]> {
-        // if course is an object, we will grab its id
-        // otherwise, we assume course is a string representing the id
-        const courseID = typeof course === 'string' ? course : course.id;
-
-        const url = `${environment.apiURL}/course/${courseID}/lessonplans`;
-
-        return new Promise((resolve, reject) => {
-            this.http.get(url).subscribe(
-                (result: { data: any[] }) => {
-                    if (result)
-                        resolve(
-                            (result.data || []).map(
-                                (data) => new LessonPlan(data)
-                            )
-                        );
-                    else reject(new Error('No result returned'));
-                },
-                (err) => {
-                    reject(err);
-                }
-            );
-        });
+        course: Course,
+        args: HttpFilterInterface
+    ): Promise<StandardResponseInterface<LessonPlan[]>> {
+        return undefined;
     }
 
-    public async getLessonPlan(lessonPlanID: string): Promise<LessonPlan> {
-        const url = `${environment.apiURL}/lessonplan/${lessonPlanID}`;
-
-        return new Promise((resolve, reject) => {
-            this.http.get(url).subscribe(
-                (result: { data: any }) => {
-                    if (result) resolve(new LessonPlan(result.data));
-                    else reject(new Error('No result returned'));
-                },
-                (err) => {
-                    reject(err);
-                }
-            );
-        });
+    @GetRequest<LessonPlan>(LessonPlan)
+    public async getLessonPlan(
+        lessonPlanID: string
+    ): Promise<StandardResponseInterface<LessonPlan>> {
+        return undefined;
     }
 
-    public async deleteLessonPlan(lessonPlanID: string): Promise<LessonPlan> {
-        const url = `${environment.apiURL}/lessonplan/${lessonPlanID}`;
-
-        return new Promise((resolve, reject) => {
-            this.http.delete(url).subscribe(
-                (result: { data: any }) => {
-                    if (result) resolve(new LessonPlan(result.data));
-                    else reject(new Error('No result returned'));
-                },
-                (err) => {
-                    reject(err);
-                }
-            );
-        });
+    @DeleteRequest<LessonPlan>(LessonPlan)
+    public async deleteLessonPlan(
+        lessonPlanID: string
+    ): Promise<StandardResponseInterface<LessonPlan>> {
+        return undefined;
     }
 }

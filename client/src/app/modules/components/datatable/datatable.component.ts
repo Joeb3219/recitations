@@ -1,4 +1,5 @@
 import {
+    ApplicationRef,
     Component,
     EventEmitter,
     Input,
@@ -15,6 +16,23 @@ import { get } from 'lodash';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
+export type DatatableColumnCellTemplateName =
+    | 'difficultyCell'
+    | 'userCell'
+    | 'actionsCell';
+
+export interface DatatableAction {
+    text: string;
+    click?: () => unknown;
+    href?: string;
+}
+
+export interface DatatableColumn<ResourceModel> {
+    name: string;
+    cellTemplate?: DatatableColumnCellTemplateName | TemplateRef<unknown>;
+    prop?: string;
+    actions?: (row: ResourceModel) => DatatableAction[];
+}
 @Component({
     selector: 'app-datatable',
     templateUrl: './datatable.component.html',
@@ -23,13 +41,13 @@ import { debounceTime } from 'rxjs/operators';
 })
 export class DatatableComponent implements OnInit {
     @ViewChild('difficultyCellTemplate', { static: true })
-    difficultyCellTemplate: TemplateRef<any>;
+    difficultyCellTemplate: TemplateRef<unknown>;
 
     @ViewChild('userCellTemplate', { static: true })
-    userCellTemplate: TemplateRef<any>;
+    userCellTemplate: TemplateRef<unknown>;
 
     @ViewChild('actionsCellTemplate', { static: true })
-    actionsCellTemplate: TemplateRef<any>;
+    actionsCellTemplate: TemplateRef<unknown>;
 
     @Input() dataFunction: (
         args: HttpFilterInterface
@@ -71,6 +89,8 @@ export class DatatableComponent implements OnInit {
     ColumnMode = ColumnMode;
 
     ProblemDifficulty = ProblemDifficulty;
+
+    constructor(private applicationRef: ApplicationRef) {}
 
     ngAfterViewInit(): void {
         this.updateColumnDefs();
@@ -252,5 +272,7 @@ export class DatatableComponent implements OnInit {
 
         this.rows = data;
         this.numResults = metadata.total || 0;
+
+        this.applicationRef.tick();
     }
 }

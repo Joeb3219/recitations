@@ -1,6 +1,5 @@
 <div class="page">
-  <ng-container
-    *ngIf="!isLoading && !course">
+  <ng-container *ngIf="!course">
     <h4>Not Found</h4>
   </ng-container>
   <ng-container *ngIf="course">
@@ -11,11 +10,7 @@
           <h4>{{course.name}} Problems</h4>
         </div>
         <div style="float: right; text-align: right" class="col">
-          <button
-            type="button"
-            class="btn btn-primary"
-            (click)="handleOpenNewProblemModal()"
-          >Add Problem
+          <button type="button" class="btn btn-primary" (click)="handleOpenNewProblemModal()">Add Problem
           </button>
         </div>
       </div>
@@ -23,25 +18,14 @@
 
     <div class="container-margin">
 
-      <app-datatable
-        [dataFunction]="fetchProblems"
-        [columns]="columns"
-        [reload]="refreshData"
-      ></app-datatable>
+      <app-datatable [dataFunction]="fetchProblems" [columns]="columns" [reload]="refreshData"></app-datatable>
 
     </div>
   </ng-container>
 </div>
 
-<app-problem-edit
-  [isVisible]="isEditProblemModalOpen"
-  [problem]="selectedEditProblem"
-  (onClose)="handleCloseEditProblemModal()"
-></app-problem-edit>
+<app-problem-edit [isVisible]="isEditProblemModalOpen" [problem]="selectedEditProblem"
+  (onClose)="handleCloseEditProblemModal()"></app-problem-edit>
 
-<app-problem-delete
-  [isVisible]="isDeleteProblemModalOpen"
-  [problem]="selectedDeleteProblem"
-  (onClose)="handleCloseDeleteProblemModal($event)"
-></app-problem-delete>
-
+<app-problem-delete [isVisible]="isDeleteProblemModalOpen" [problem]="selectedDeleteProblem"
+  (onClose)="handleCloseDeleteProblemModal($event)"></app-problem-delete>

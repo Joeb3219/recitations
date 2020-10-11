@@ -39,17 +39,7 @@ export class Section extends Meetable implements SectionInterface {
     @JoinTable()
     public students?: User[];
 
-    constructor(
-        args: {
-            id?: string;
-            index?: string;
-            sectionNumber?: string;
-            course?: Course;
-            students?: User[];
-            ta?: User;
-            instructor?: User;
-        } = {}
-    ) {
+    constructor(args: Partial<Section> = {}) {
         super();
         Object.assign(this, args);
     }

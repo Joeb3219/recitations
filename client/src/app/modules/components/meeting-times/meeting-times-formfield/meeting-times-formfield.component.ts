@@ -43,6 +43,11 @@ export class MeetingTimesFormfieldComponent implements OnInit {
         this.onChange.emit(this.meetable.meetingTimes);
     }
 
+    handleEditMeetingTime(meetingTime: MeetingTime): void {
+        this.selectedEditedMeetingTime = meetingTime;
+        this.isEditingMeetingTime = true;
+    }
+
     handleMeetingTimeEdited(meetingTime: MeetingTime): void {
         if (!meetingTime) return; // Check that the meeting time was actually returned by the calling form, indicating that a successful meeting time was created
 
@@ -50,12 +55,12 @@ export class MeetingTimesFormfieldComponent implements OnInit {
         // if so, we will simply update the list to include this one at the given index
         // we keep track of the found index that the given id already exists at, so that we can overwrite
         // if none is found, the foundIndex will stillb e null, and thus we push instead
-        let foundIndex = null;
-        this.meetable.meetingTimes.forEach((item, index) => {
-            if (item.id === meetingTime.id) foundIndex = index;
-        });
+        const foundIndex = this.meetable.meetingTimes.findIndex(
+            (item) => item.id === meetingTime.id
+        );
 
-        if (foundIndex) this.meetable.meetingTimes[foundIndex] = meetingTime;
+        if (foundIndex !== -1)
+            this.meetable.meetingTimes[foundIndex] = meetingTime;
         else this.meetable.meetingTimes.push(meetingTime);
 
         this.handleEditMeetingTimeClosed();

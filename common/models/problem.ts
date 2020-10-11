@@ -38,18 +38,7 @@ export class Problem extends BaseEntity implements ProblemInterface {
     @JoinColumn()
     public creator?: User;
 
-    constructor(
-        args: {
-            id?: string;
-            difficulty?: number;
-            name?: string;
-            question?: string;
-            solution?: string;
-            estimatedDuration?: number;
-            creator?: User;
-            course?: Course;
-        } = {}
-    ) {
+    constructor(args: Partial<Problem> = {}) {
         super();
         Object.assign(this, args);
     }

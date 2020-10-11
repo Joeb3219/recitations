@@ -29,15 +29,7 @@ export class Course extends BaseEntity implements CourseInterface {
     @JoinTable()
     public sections?: Section[];
 
-    constructor(
-        args: {
-            id?: string;
-            name?: string;
-            department?: string;
-            courseCode?: string;
-            sections?: Section[];
-        } = {}
-    ) {
+    constructor(args: Partial<Course> = {}) {
         super();
         Object.assign(this, args);
     }

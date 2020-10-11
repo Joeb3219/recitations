@@ -30,7 +30,7 @@ export interface DatatableAction {
 export interface DatatableColumn<ResourceModel> {
     name: string;
     cellTemplate?: DatatableColumnCellTemplateName | TemplateRef<unknown>;
-    prop?: string;
+    prop?: keyof ResourceModel;
     actions?: (row: ResourceModel) => DatatableAction[];
 }
 @Component({

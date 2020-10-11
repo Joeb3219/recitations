@@ -1,18 +1,16 @@
-import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    BaseEntity,
-    JoinColumn,
-    OneToMany,
-    ManyToOne,
-} from 'typeorm';
-
 import { LessonPlanInterface } from '@interfaces/lessonPlan.interface';
-import { User } from '@models/user';
 import { Course } from '@models/course';
-
 import { LessonPlanStep } from '@models/lessonPlanStep';
+import { User } from '@models/user';
+import {
+    BaseEntity,
+    Column,
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    OneToMany,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class LessonPlan extends BaseEntity implements LessonPlanInterface {
@@ -36,15 +34,7 @@ export class LessonPlan extends BaseEntity implements LessonPlanInterface {
     @JoinColumn()
     public creator?: User;
 
-    constructor(
-        args: {
-            id?: string;
-            name?: number;
-            steps?: LessonPlanStep[];
-            creator?: User;
-            course?: Course;
-        } = {}
-    ) {
+    constructor(args: Partial<LessonPlan> = {}) {
         super();
         Object.assign(this, args);
     }

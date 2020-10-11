@@ -1,17 +1,16 @@
-import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    BaseEntity,
-    JoinTable,
-    JoinColumn,
-    ManyToOne,
-} from 'typeorm';
-
 import { LessonPlanStepInterface } from '@interfaces/lessonPlanStep.interface';
-import { User } from '@models/user';
 import { Course } from '@models/course';
 import { Problem } from '@models/problem';
+import { User } from '@models/user';
+import {
+    BaseEntity,
+    Column,
+    Entity,
+    JoinColumn,
+    JoinTable,
+    ManyToOne,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
 import { LessonPlan } from './lessonPlan';
 
 export type LessonPlanStepType = 'problem' | 'task';
@@ -50,18 +49,7 @@ export class LessonPlanStep
     @JoinColumn()
     public creator?: User;
 
-    constructor(
-        args: {
-            id?: string;
-            title?: number;
-            description?: string;
-            estimatedDuration?: number;
-            problem?: Problem;
-            creator?: User;
-            course?: Course;
-            type?: LessonPlanStepType;
-        } = {}
-    ) {
+    constructor(args: Partial<LessonPlanStep> = {}) {
         super();
         Object.assign(this, args);
     }

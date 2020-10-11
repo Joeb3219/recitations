@@ -1,6 +1,5 @@
 <div class="page">
-  <ng-container
-    *ngIf="!isLoading && !course">
+  <ng-container *ngIf="!course">
     <h4>Not Found</h4>
   </ng-container>
   <ng-container *ngIf="course">
@@ -11,53 +10,47 @@
           <h4>{{ course.name }} Sections</h4>
         </div>
         <div style="float: right; text-align: right" class="col">
-          <button
-            type="button"
-            class="btn btn-primary"
-            (click)="handleOpenNewSectionModal()"
-          >Add Section
+          <button type="button" class="btn btn-primary" (click)="handleOpenNewSectionModal()">Add Section
           </button>
         </div>
       </div>
     </div>
-<!--    <div class="divider-sm"></div>-->
 
 
     <div class="container-margin">
       <table class="table table-striped">
         <thead>
-        <tr>
-          <th>Section Number</th>
-          <th>Index Code</th>
-          <th>TA</th>
-          <th>Instructor</th>
-          <th>Meeting Times</th>
-          <th>Actions</th>
-        </tr>
+          <tr>
+            <th>Section Number</th>
+            <th>Index Code</th>
+            <th>TA</th>
+            <th>Instructor</th>
+            <th>Meeting Times</th>
+            <th>Actions</th>
+          </tr>
         </thead>
         <tbody>
-        <tr
-          *ngFor="let section of sections">
-          <td>{{ section.sectionNumber }}</td>
-          <td>{{ section.index }}</td>
-          <td>
-            <app-user-badge
-              [user]="section.ta">
-            </app-user-badge>
-          </td>
-          <td>
-            <app-user-badge
-              [user]="section.instructor">
-            </app-user-badge>
-          </td>
-          <td>{{ section.meetingTimes.length }}</td>
-          <td>
-            <div class="btn-group btn-group-sm">
-              <a class="btn btn-outline-secondary" [routerLink]="" (click)="handleOpenEditSectionModal(section)">Modify</a>
-              <a class="btn btn-outline-secondary" (click)="handleOpenDeleteSectionModal(section)" [routerLink]="">Delete</a>
-            </div>
-          </td>
-        </tr>
+          <tr *ngFor="let section of sections">
+            <td>{{ section.sectionNumber }}</td>
+            <td>{{ section.index }}</td>
+            <td>
+              <app-user-badge [user]="section.ta">
+              </app-user-badge>
+            </td>
+            <td>
+              <app-user-badge [user]="section.instructor">
+              </app-user-badge>
+            </td>
+            <td>{{ section.meetingTimes.length }}</td>
+            <td>
+              <div class="btn-group btn-group-sm">
+                <a class="btn btn-outline-secondary" [routerLink]=""
+                  (click)="handleOpenEditSectionModal(section)">Modify</a>
+                <a class="btn btn-outline-secondary" (click)="handleOpenDeleteSectionModal(section)"
+                  [routerLink]="">Delete</a>
+              </div>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -65,15 +58,9 @@
   </ng-container>
 </div>
 
-<app-section-edit
-  [isVisible]="isEditSectionModalOpen"
-  [section]="selectedEditSection"
-  (onClose)="handleCloseEditSectionModal()"
-></app-section-edit>
+<app-section-edit [isVisible]="isEditSectionModalOpen" [section]="selectedEditSection"
+  (onClose)="handleCloseEditSectionModal()"></app-section-edit>
 
 
-<app-section-delete
-  [isVisible]="isDeleteSectionModalOpen"
-  [section]="selectedDeleteSection"
-  (onClose)="handleCloseDeleteSectionModal($event)"
-></app-section-delete>
+<app-section-delete [isVisible]="isDeleteSectionModalOpen" [section]="selectedDeleteSection"
+  (onClose)="handleCloseDeleteSectionModal($event)"></app-section-delete>

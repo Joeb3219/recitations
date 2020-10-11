@@ -107,7 +107,7 @@ class AppWrapper {
         this.app.use(async function (req, res, next) {
             const headers = req.headers;
 
-            if (headers && headers.authorization) {
+            if (headers?.authorization) {
                 const auth = headers.authorization;
 
                 // The user passed us authorization headers
@@ -126,7 +126,7 @@ class AppWrapper {
                                 token,
                                 process.env.JWT_SECRET
                             );
-                            if (decoded && decoded.userid) {
+                            if (decoded?.userid) {
                                 res.locals.currentUser = await res.locals
                                     .repo(User)
                                     .findOne({ id: decoded.userid });

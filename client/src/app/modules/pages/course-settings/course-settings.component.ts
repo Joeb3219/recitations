@@ -48,7 +48,7 @@ export class CourseSettingsComponent implements OnChanges {
     constructor(private sectionService: SectionService) {}
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes && changes.course) {
+        if (changes?.course) {
             this.loadSections();
         }
     }

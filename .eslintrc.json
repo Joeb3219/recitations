@@ -1,6 +1,7 @@
 {
     "parser": "@typescript-eslint/parser", // Specifies the ESLint parser
     "extends": [
+	"eslint:recommended",
         "airbnb-base/legacy",
         "plugin:@typescript-eslint/recommended",
         "prettier/@typescript-eslint",
@@ -19,6 +20,7 @@
         "unused-imports/no-unused-imports-ts": 2,
 	"class-methods-use-this": 0,
 	"no-console": 2,
-	"prefer-optional-chain": 2
+	"@typescript-eslint/prefer-optional-chain": 2,
+	"@typescript-eslint/no-non-null-asserted-optional-chain": 2
     }
 }

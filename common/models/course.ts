@@ -1,15 +1,13 @@
-import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    BaseEntity,
-    OneToMany,
-    JoinTable,
-} from 'typeorm';
-
 import { CourseInterface } from '@interfaces/course.interface';
-
 import { Section } from '@models/section';
+import {
+    BaseEntity,
+    Column,
+    Entity,
+    JoinTable,
+    OneToMany,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Course extends BaseEntity implements CourseInterface {
@@ -26,7 +24,6 @@ export class Course extends BaseEntity implements CourseInterface {
     public courseCode: string;
 
     @OneToMany((type) => Section, (section) => section.course, {
-        eager: true,
         cascade: true,
     })
     @JoinTable()

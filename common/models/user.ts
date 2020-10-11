@@ -1,6 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from 'typeorm';
-
 import { UserInterface } from '@interfaces/user.interface';
+import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class User extends BaseEntity implements UserInterface {
@@ -22,25 +21,9 @@ export class User extends BaseEntity implements UserInterface {
     @Column({ select: false })
     public passwordHash: string;
 
-    constructor(
-        args: {
-            id?: string;
-            firstName?: string;
-            lastName?: string;
-            username?: string;
-            email?: string;
-            passwordHash?: string;
-        } = {}
-    ) {
+    constructor(args: Partial<User> = {}) {
         super();
-        if (args) {
-            this.id = args.id;
-            this.firstName = args.firstName;
-            this.lastName = args.lastName;
-            this.username = args.username;
-            this.email = args.email;
-            this.passwordHash = args.passwordHash;
-        }
+        Object.assign(this, args);
     }
 
     public static getFullName(user: User): string {

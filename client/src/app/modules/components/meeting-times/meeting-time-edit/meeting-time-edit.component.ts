@@ -14,7 +14,7 @@ import { Subject } from 'rxjs';
 export class MeetingTimeEditComponent implements OnInit {
     @Input() isVisible: boolean;
 
-    @Input() meetingTime: MeetingTime;
+    @Input() meetingTime?: MeetingTime;
 
     @Output() onClose: EventEmitter<boolean> = new EventEmitter();
 
@@ -51,7 +51,7 @@ export class MeetingTimeEditComponent implements OnInit {
                     { value: MeetingType.OFFICE_HOUR, label: 'Office Hour' },
                     { value: MeetingType.STUDY_GROUP, label: 'Study Group' },
                 ],
-                value: this.meetingTime.type,
+                value: this.meetingTime?.type,
                 label: 'Meeting Type',
             },
             {
@@ -66,32 +66,32 @@ export class MeetingTimeEditComponent implements OnInit {
                     { value: 'saturday', label: 'Saturday' },
                     { value: 'sunday', label: 'Sunday' },
                 ],
-                value: this.meetingTime.weekday,
+                value: this.meetingTime?.weekday,
                 label: 'Weekday',
             },
             {
                 type: 'user',
                 name: 'leader',
-                value: this.meetingTime.leader,
+                value: this.meetingTime?.leader,
                 label: 'Leader',
             },
             {
                 type: 'time',
                 name: 'startTime',
-                value: this.meetingTime.startTime,
+                value: this.meetingTime?.startTime,
                 label: 'Start Time',
             },
             {
                 type: 'time',
                 name: 'endTime',
-                value: this.meetingTime.endTime,
+                value: this.meetingTime?.endTime,
                 label: 'End Time',
             },
             {
                 type: 'select',
                 name: 'frequency',
                 options: [{ value: 1, label: 'Once a week' }],
-                value: this.meetingTime.frequency,
+                value: this.meetingTime?.frequency,
                 label: 'Frequency',
             },
         ];
@@ -101,18 +101,15 @@ export class MeetingTimeEditComponent implements OnInit {
         this.onClose.emit(null);
     }
 
-    async formSubmitted(data): Promise<void> {
+    async formSubmitted(data: MeetingTime): Promise<void> {
         // first we update the data in the model
-        Object.keys(data).forEach((key) => {
-            this.meetingTime[key] = data[key];
-        });
 
         // and now we submit it to the API.
         try {
-            const result = await this.meetingTimeService.createMeetingTime(
-                this.meetingTime
+            const result = await this.meetingTimeService.upsertMeetingTime(
+                Object.assign({}, this.meetingTime, data)
             );
-            this.onMeetingTimeEdited.emit(result);
+            this.onMeetingTimeEdited.emit(result.data);
 
             this.toastr.success('Successfully created meeting time');
             this.forceClose.next();

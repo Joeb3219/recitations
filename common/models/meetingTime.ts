@@ -1,16 +1,15 @@
+import { MeetingType } from '@enums/meetingType.enum';
+import { MeetingTimeInterface } from '@interfaces/meetingTime.interface';
+import { Meetable } from '@models/meetable';
+import { User } from '@models/user';
 import {
-    Entity,
-    Column,
     BaseEntity,
-    ManyToOne,
+    Column,
+    Entity,
     JoinTable,
+    ManyToOne,
     PrimaryGeneratedColumn,
 } from 'typeorm';
-
-import { MeetingTimeInterface } from '@interfaces/meetingTime.interface';
-import { User } from '@models/user';
-import { Meetable } from '@models/meetable';
-import { MeetingType } from '@enums/meetingType.enum';
 
 @Entity()
 export class MeetingTime extends BaseEntity implements MeetingTimeInterface {
@@ -48,28 +47,8 @@ export class MeetingTime extends BaseEntity implements MeetingTimeInterface {
     @JoinTable()
     public meetable: Meetable;
 
-    constructor(
-        args: {
-            id?: string;
-            startTime?: string;
-            endTime?: string;
-            weekday?: string;
-            type?: MeetingType;
-            frequency?: number;
-            leader?: User;
-            meetable?: Meetable;
-        } = {}
-    ) {
+    constructor(args: Partial<MeetingTime> = {}) {
         super();
-        if (args) {
-            this.id = args.id;
-            this.startTime = args.startTime;
-            this.endTime = args.endTime;
-            this.weekday = args.weekday;
-            this.type = args.type;
-            this.frequency = args.frequency;
-            this.leader = args.leader;
-            this.meetable = args.meetable;
-        }
+        Object.assign(this, args);
     }
 }

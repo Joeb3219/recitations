@@ -127,7 +127,7 @@ function httpMiddleware(
                 data: paginatedResult,
                 message: `Successfully called ${method} ${route}`,
                 metadata: {
-                    total: result && result.length ? result.length : 0,
+                    total: result?.length ?? 0,
                 },
             });
         } catch (err) {

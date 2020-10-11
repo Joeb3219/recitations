@@ -1,56 +1,41 @@
-<app-meeting-time-edit
-	[isVisible]="isEditingMeetingTime"
-	[meetingTime]="selectedEditedMeetingTime"
-	(onClose)="handleEditMeetingTimeClosed()"
-	(onMeetingTimeEdited)="handleMeetingTimeEdited($event)">
+<app-meeting-time-edit [isVisible]="isEditingMeetingTime" [meetingTime]="selectedEditedMeetingTime"
+  (onClose)="handleEditMeetingTimeClosed()" (onMeetingTimeEdited)="handleMeetingTimeEdited($event)">
 </app-meeting-time-edit>
 
-<fa-icon 
-	[icon]="icons.add"
-	(click)="handleAddNewMeetingTime()"
-></fa-icon>
+<fa-icon [icon]="icons.add" (click)="handleAddNewMeetingTime()"></fa-icon>
 
 <table class="table">
-	<thead>
-		<tr>
-			<th>Type</th>
-			<th>Start</th>
-			<th>End</th>
-			<th>Weekday</th>
-			<th>Frequency</th>
-			<th>Leader</th>
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr
-			*ngFor="let meeting of meetable.meetingTimes"
-		>
-			<td>{{ meeting.type }}</td>
-			<td>{{ meeting.startTime }}</td>
-			<td>{{ meeting.endTime }}</td>
-			<td>{{ meeting.weekday }}</td>
-			<td>{{ meeting.frequency }}</td>
-			<td>
-				<app-user-badge
-					[user]="meeting.leader">
-				</app-user-badge>
-			</td>
-			<td>
-				<div 
-					ngbDropdown 
-				>
-					<fa-icon 
-						ngbDropdownToggle
-						[icon]="icons.modify"
-					></fa-icon>
-					<div class="dropdown-menu" ngbDropdownMenu>
-						<span ngbDropdownItem>One</span>
-						<span ngbDropdownItem>Two</span>
-						<span ngbDropdownItem>Four!</span>
-					</div>
-				</div>
-			</td>
-		</tr>
-	</tbody>
+  <thead>
+    <tr>
+      <th>Type</th>
+      <th>Start</th>
+      <th>End</th>
+      <th>Weekday</th>
+      <th>Frequency</th>
+      <th>Leader</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let meeting of meetable.meetingTimes">
+      <td>{{ meeting.type }}</td>
+      <td>{{ meeting.startTime }}</td>
+      <td>{{ meeting.endTime }}</td>
+      <td>{{ meeting.weekday }}</td>
+      <td>{{ meeting.frequency }}</td>
+      <td>
+        <app-user-badge [user]="meeting.leader">
+        </app-user-badge>
+      </td>
+      <td>
+        <div ngbDropdown>
+          <fa-icon ngbDropdownToggle [icon]="icons.modify"></fa-icon>
+          <div class="dropdown-menu" ngbDropdownMenu>
+            <span ngbDropdownItem (click)="handleEditMeetingTime(meeting)">Edit</span>
+            <span ngbDropdownItem (click)="handleDeleteMeetingTime(meeting)">Delete</span>
+          </div>
+        </div>
+      </td>
+    </tr>
+  </tbody>
 </table>

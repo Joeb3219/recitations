@@ -10,6 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "@types/node": "^12.7.5",
+    "eslint-plugin-extra-rules": "^0.0.0-development",
     "pg": "^7.12.1",
     "reflect-metadata": "^0.1.13",
     "typeorm": "^0.2.20",

@@ -44,8 +44,8 @@ export class FormComponent implements OnInit {
             ['blockquote', 'code-block'],
 
             [{ list: 'ordered' }, { list: 'bullet' }],
-            [{ script: 'sub' }, { script: 'super' }], // superscript/subscript
-            [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
+            [{ script: 'sub' }, { script: 'super' }], // superscript and subscript
+            [{ indent: '-1' }, { indent: '+1' }], // outdent and indent
 
             [{ size: ['small', false, 'large', 'huge'] }], // custom dropdown
 

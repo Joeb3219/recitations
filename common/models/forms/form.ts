@@ -2,6 +2,36 @@ import { Course } from '@models/course';
 import { LessonPlan } from '@models/lessonPlan';
 import { Meetable } from '@models/meetable';
 
+export type FormInputType =
+    | 'text'
+    | 'user'
+    | 'problem'
+    | 'meetingTimes'
+    | 'lessonPlanSteps'
+    | 'wysiwyg'
+    | 'select'
+    | 'time'
+    | 'number'
+    | 'password'
+    | 'date';
+
+export interface FormInput {
+    group?: string;
+    name?: string;
+    options?: { label: string; value: any }[];
+    label?: string;
+    type?: FormInputType;
+    value?: any;
+    meetable?: Meetable;
+    lessonPlan?: LessonPlan;
+    formatted?: any;
+    row?: number;
+    col?: number;
+    hidden?: boolean;
+    disabled?: boolean;
+    course?: Course;
+}
+
 export interface FormFieldUpdated {
     name: string;
     value: any;
@@ -33,21 +63,6 @@ export class Form {
                 previousButton: '',
             },
         ],
-        public inputs: {
-            group?: string;
-            name?: string;
-            options?: { label: string; value: any }[];
-            label?: string;
-            type?: string;
-            value?: any;
-            meetable?: Meetable;
-            lessonPlan?: LessonPlan;
-            formatted?: any;
-            row?: number;
-            col?: number;
-            hidden?: boolean;
-            disabled?: boolean;
-            course?: Course;
-        }[] = []
+        public inputs: FormInput[] = []
     ) {}
 }

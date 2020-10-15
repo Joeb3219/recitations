@@ -9,9 +9,4 @@ export interface LocationInterface {
     };
 
     roomNumber: string; // the identifier of the actual room
-
-    // mongo specific
-    _id: string; // the document id
-    createdAt: Date; // when the document was created
-    updatedAt: Date; // when the document was last modified
 }

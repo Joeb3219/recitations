@@ -12,6 +12,7 @@ import { HttpArgs } from '../helpers/route.helper';
                 name: body.name,
                 department: body.department,
                 courseCode: body.courseCode,
+                settings: body.settings,
             };
         },
     },

@@ -1,13 +1,18 @@
 import { CourseInterface } from '@interfaces/course.interface';
 import { Section } from '@models/section';
 import {
-    BaseEntity,
     Column,
     Entity,
     JoinTable,
     OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm';
+import { BaseEntity } from '../../client/shim/typeorm.shim';
+import { DefaultCourseSettings } from '../constants/courseSettings.constant';
+import {
+    CourseSettingKey,
+    CourseSettings,
+} from '../interfaces/courseSetting.interface';
 
 @Entity()
 export class Course extends BaseEntity implements CourseInterface {
@@ -28,6 +33,25 @@ export class Course extends BaseEntity implements CourseInterface {
     })
     @JoinTable()
     public sections?: Section[];
+
+    @Column({ type: 'jsonb', nullable: true })
+    public settings?: CourseSettings;
+
+    getMergedSettings(): CourseSettings {
+        return Object.assign(
+            {},
+            ...Object.keys(DefaultCourseSettings).map(
+                (key: CourseSettingKey) => ({
+                    [key]: {
+                        ...DefaultCourseSettings[key],
+                        value:
+                            this.settings?.[key].value ??
+                            DefaultCourseSettings[key].value,
+                    },
+                })
+            )
+        );
+    }
 
     constructor(args: Partial<Course> = {}) {
         super();

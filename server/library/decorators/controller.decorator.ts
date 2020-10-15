@@ -10,7 +10,7 @@ export function Controller<T extends { new (...args: unknown[]): {} }>(
     return target;
 }
 
-export interface ResourceArgs<ResourceModel extends BaseEntity = any> {
+export interface ResourceArgs<ResourceModel extends BaseEntity | any = any> {
     sortable?: {
         dataDictionary: any;
         defaultSortKey?: undefined;
@@ -22,7 +22,7 @@ export interface ResourceArgs<ResourceModel extends BaseEntity = any> {
 
 export type ResourceAction = 'create' | 'update' | 'delete' | 'get' | 'list';
 
-export function Resource<ResourceModel extends BaseEntity>(
+export function Resource<ResourceModel extends BaseEntity | any>(
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
     resourceModel: new () => ResourceModel,
     args: ResourceArgs<ResourceModel>,

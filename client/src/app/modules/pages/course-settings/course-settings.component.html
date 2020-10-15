@@ -2,20 +2,15 @@
   <ng-container *ngIf="!course">
     <h4>Not Found</h4>
   </ng-container>
-  <ng-container *ngIf="course&&sections">
+  <ng-container *ngIf="course">
     <h4>{{course.name}} Settings</h4>
 
     <mat-tab-group animationDuration="0ms" mat-stretch-tabs [disableRipple]="true" #tabGroup
       (selectedTabChange)="tabChanged($event)" [(selectedIndex)]="activeTabIndex">
-      <!--      <mat-tab *ngFor="let tab of tabs; let i = index" label="{{tab.name}}">-->
-      <!--        <div class="container-margin" [ngStyle]="{'display': activeTabIndex === i ? 'block' : 'none'}">-->
-      <!--          <ng-container *ngComponentOutlet="tab.component; injector:tab.injector" ></ng-container>-->
-      <!--        </div>-->
-      <!--      </mat-tab>-->
 
       <mat-tab label="{{tabs[0]}}">
         <div class="container-margin" [ngStyle]="{'display': activeTabIndex === 0 ? 'block' : 'none'}">
-          <app-configurations></app-configurations>
+          <app-configurations [course]="course"></app-configurations>
         </div>
       </mat-tab>
       <mat-tab label="{{tabs[1]}}" [ngStyle]="{'display': activeTabIndex === 1 ? 'block' : 'none'}">

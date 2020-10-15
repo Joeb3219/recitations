@@ -1,9 +1,8 @@
-import { Component, OnChanges, SimpleChanges } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Course } from '@models/course';
 import { Section } from '@models/section';
 import { CourseService } from '@services/course.service';
-import { SectionService } from '@services/section.service';
 import { Subject } from 'rxjs';
 import { LoadedArg } from '../../../decorators/input.decorator';
 
@@ -12,7 +11,7 @@ import { LoadedArg } from '../../../decorators/input.decorator';
     templateUrl: './course-settings.component.html',
     styleUrls: ['./course-settings.component.scss'],
 })
-export class CourseSettingsComponent implements OnChanges {
+export class CourseSettingsComponent {
     @LoadedArg(CourseService, Course, 'courseID')
     course: Course;
 
@@ -44,20 +43,6 @@ export class CourseSettingsComponent implements OnChanges {
     isChangesModalVisible = false;
 
     forceClose: Subject<void> = new Subject<void>();
-
-    constructor(private sectionService: SectionService) {}
-
-    ngOnChanges(changes: SimpleChanges): void {
-        if (changes?.course) {
-            this.loadSections();
-        }
-    }
-
-    async loadSections(): Promise<void> {
-        this.sections = await (
-            await this.sectionService.getCourseSections(this.course)
-        ).data;
-    }
 
     tabChanged(tabChangeEvent: MatTabChangeEvent): void {
         // TODO - check if active tab is dirty/has changes.

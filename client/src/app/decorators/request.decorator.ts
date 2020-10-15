@@ -27,7 +27,7 @@ function getResolvedRoute(route, mappings) {
 }
 
 export function ListRequest<ResourceModel>(
-    baseEntity: new () => ResourceModel,
+    BaseEntity: new (data: Partial<ResourceModel>) => ResourceModel,
     route?: string
 ): any {
     return function (
@@ -35,7 +35,7 @@ export function ListRequest<ResourceModel>(
         propertyKey: string,
         descriptor: PropertyDescriptor
     ): any {
-        const resourceName = baseEntity.name.toLowerCase();
+        const resourceName = BaseEntity.name.toLowerCase();
         const realRoute = route || `course/:courseid/${resourceName}s`;
 
         // eslint-disable-next-line no-param-reassign, func-names
@@ -52,8 +52,13 @@ export function ListRequest<ResourceModel>(
             return new Promise((resolve, reject) => {
                 this.http.get(url, { params }).subscribe(
                     (result: StandardResponseInterface<ResourceModel[]>) => {
-                        if (result) resolve(result);
-                        else reject(new Error('No result returned'));
+                        if (result) {
+                            // eslint-disable-next-line no-param-reassign
+                            result.data = result.data.map(
+                                (item) => new BaseEntity(item)
+                            );
+                            resolve(result);
+                        } else reject(new Error('No result returned'));
                     },
                     (err) => {
                         reject(err);
@@ -67,7 +72,7 @@ export function ListRequest<ResourceModel>(
 }
 
 export function GetRequest<ResourceModel>(
-    baseEntity: new () => ResourceModel,
+    BaseEntity: new (data: Partial<ResourceModel>) => ResourceModel,
     route?: string
 ): any {
     return function (
@@ -77,10 +82,10 @@ export function GetRequest<ResourceModel>(
     ): any {
         Reflect.defineMetadata(
             'GetResource',
-            { baseEntity, propertyKey, target },
+            { BaseEntity, propertyKey, target },
             target
         );
-        const resourceName = baseEntity.name.toLowerCase();
+        const resourceName = BaseEntity.name.toLowerCase();
         const realRoute = route || `${resourceName}/:resourceid`;
 
         // eslint-disable-next-line no-param-reassign, func-names
@@ -94,8 +99,11 @@ export function GetRequest<ResourceModel>(
             return new Promise((resolve, reject) => {
                 this.http.get(url).subscribe(
                     (result: StandardResponseInterface<ResourceModel>) => {
-                        if (result) resolve(result);
-                        else reject(new Error('No result returned'));
+                        if (result) {
+                            // eslint-disable-next-line no-param-reassign
+                            result.data = new BaseEntity(result.data);
+                            resolve(result);
+                        } else reject(new Error('No result returned'));
                     },
                     (err) => {
                         reject(err);
@@ -109,7 +117,7 @@ export function GetRequest<ResourceModel>(
 }
 
 export function UpsertRequest<ResourceModel extends { id?: string }>(
-    baseEntity: new () => ResourceModel,
+    BaseEntity: new (data: Partial<ResourceModel>) => ResourceModel,
     route?: string
 ): any {
     return function (
@@ -117,7 +125,7 @@ export function UpsertRequest<ResourceModel extends { id?: string }>(
         propertyKey: string,
         descriptor: PropertyDescriptor
     ): any {
-        const resourceName = baseEntity.name.toLowerCase();
+        const resourceName = BaseEntity.name.toLowerCase();
 
         // eslint-disable-next-line no-param-reassign, func-names
         descriptor.value = async function (
@@ -141,8 +149,11 @@ export function UpsertRequest<ResourceModel extends { id?: string }>(
             return new Promise((resolve, reject) => {
                 action.subscribe(
                     (result: StandardResponseInterface<ResourceModel>) => {
-                        if (result) resolve(result);
-                        else reject(new Error('No result returned'));
+                        if (result) {
+                            // eslint-disable-next-line no-param-reassign
+                            result.data = new BaseEntity(result.data);
+                            resolve(result);
+                        } else reject(new Error('No result returned'));
                     },
                     (err) => {
                         reject(err);
@@ -156,7 +167,7 @@ export function UpsertRequest<ResourceModel extends { id?: string }>(
 }
 
 export function DeleteRequest<ResourceModel>(
-    baseEntity: new () => ResourceModel,
+    BaseEntity: new (data: Partial<ResourceModel>) => ResourceModel,
     route?: string
 ): any {
     return function (
@@ -164,7 +175,7 @@ export function DeleteRequest<ResourceModel>(
         propertyKey: string,
         descriptor: PropertyDescriptor
     ): any {
-        const resourceName = baseEntity.name.toLowerCase();
+        const resourceName = BaseEntity.name.toLowerCase();
         const realRoute = route || `${resourceName}/:resourceid`;
 
         // eslint-disable-next-line no-param-reassign, func-names
@@ -178,7 +189,7 @@ export function DeleteRequest<ResourceModel>(
             return new Promise((resolve, reject) => {
                 this.http.delete(url).subscribe(
                     (result: StandardResponseInterface<void>) => {
-                        if (result) resolve();
+                        if (result) resolve(result);
                         else reject(new Error('No result returned'));
                     },
                     (err) => {

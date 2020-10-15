@@ -1,167 +1,93 @@
-<h3 
-	*ngIf="(form && form.pages && form.pages[pageNumber])">
-	{{ form.pages[pageNumber].label }}
+<h3 *ngIf="(form && form.pages && form.pages[pageNumber])">
+  {{ form.pages[pageNumber].label }}
 </h3>
 
-<form
-	*ngIf="form"
-	(submit)="submit($event)">
+<form *ngIf="form" (submit)="submit($event)">
 
-	<!-- Iterate over all of the pages -->
-	<ng-container
-		*ngFor="let page of form.pages; let i = index"
-	>
-		<div 
-			class="form-page"
-			[class.disabled]="i != pageNumber"
-		>
+  <!-- Iterate over all of the pages -->
+  <ng-container *ngFor="let page of form.pages; let i = index">
+    <div class="form-page" [class.disabled]="i != pageNumber">
 
-			<!-- now we iterate over each of our groupings of inputs on this page -->
-			<ng-container
-				*ngFor="let group of form.inputGroups"
-			>
+      <!-- now we iterate over each of our groupings of inputs on this page -->
+      <ng-container *ngFor="let group of form.inputGroups">
 
-				<div
-					*ngIf="group.page == i"
-				>
+        <div *ngIf="group.page == i">
 
-					<div class="row" *ngFor="let numColumns of rowLayouts[group.name]; let row = index">
-						<div class="col" *ngFor="let column of Array(numColumns).fill(0); let col = index">
+          <div class="row" *ngFor="let numColumns of rowLayouts[group.name]; let row = index">
+            <div class="col" *ngFor="let column of Array(numColumns).fill(0); let col = index">
 
-						<!-- now we go through all inputs of the group and actually render them -->
-						<ng-container
-							*ngFor="let input of form.inputs"
-						>
+              <!-- now we go through all inputs of the group and actually render them -->
+              <ng-container *ngFor="let input of form.inputs">
 
-							<div
-								class="form-group"
-								*ngIf="!input.hidden && input.row == row && input.col == col && (input.group == group.name || (group.name == '' && !input.group))"
-							>
+                <div class="form-group"
+                  *ngIf="!input.hidden && input.row == row && input.col == col && (input.group == group.name || (group.name == '' && !input.group))">
 
-								<label
-									style="width: 100%">
-									{{ input.label }}:
-									<input
-										*ngIf="input.type == 'text'"
-										type="text"
-										value="{{ input.value }}"
-										class="form-control"
-										name="{{ input.name }}"
-										(change)="fieldUpdated(input.name, $event)"
-									>
-
-									<app-user-search-formfield
-										*ngIf="input.type == 'user'"
-										[user]="input.value"
-										[name]="input.name"
-										(onChange)="fieldUpdated(input.name, $event)"
-									></app-user-search-formfield>
-
-									<app-problem-search-form
-										*ngIf="input.type == 'problem'"
-										[problem]="input.value"
-										[name]="input.name"
-										[course]="input.course"
-										(onChange)="fieldUpdated(input.name, $event)"
-									></app-problem-search-form>
-
-									<app-meeting-times-formfield
-										*ngIf="input.type == 'meetingTimes'"
-										[meetable]="input.meetable"
-										(onChange)="fieldUpdated(input.name, $event)"
-									></app-meeting-times-formfield>
-
-									<app-lesson-plan-steps-form
-										*ngIf="input.type == 'lessonPlanSteps'"
-										[lessonPlan]="input.lessonPlan"
-										(onChange)="fieldUpdated(input.name, $event)"
-									></app-lesson-plan-steps-form>
-
-									<quill-editor
-										*ngIf="input.type == 'wysiwyg'"
-										name="input.name"
-										[ngModel]="input.formatted"
-										[modules]="defaultWYSIWYGModules"
-										(onContentChanged)="fieldUpdatedWysiwyg(input.name, $event)"
-										(onEditorCreated)="wysiwygCreated(input.value, $event)"
-									></quill-editor>
-
-									<select
-										*ngIf="input.type == 'select'"
-										name="{{ input.name }}"
-										class="form-control"
-										(change)="fieldUpdated(input.name, $event)"
-										[value]="input.value"
-									>
-										<option
-											*ngFor="let option of input.options"
-											value="{{ option.value }}"
-										>
-											{{ option.label }}
-										</option>
-									</select>
-
-									<input
-										*ngIf="input.type == 'time'"
-										value="{{ input.value }}"
-										type="time"
-										name="{{ input.name }}"
-										(change)="fieldUpdated(input.name, $event)"
-									>
-
-									<input
-										*ngIf="input.type == 'number'"
-										value="{{ input.value }}"
-										type="number"
-										class="form-control"
-										name="{{ input.name }}"
-										(change)="fieldUpdated(input.name, $event)"
-										[disabled]="input.disabled"
-									>
-
-									<input
-										*ngIf="input.type == 'password'"
-										type="password"
-										value="{{ input.value }}"
-										class="form-control"
-										name="{{ input.name }}"
-										(change)="fieldUpdated(input.name, $event)"
-									>
-								</label>
-
-							</div>
-
-						</ng-container>
-
-						</div>
-					</div>
-
-				</div>
-
-			</ng-container>
+                  <label style="width: 100%">
+                    {{ input.label }}:
+                    <input *ngIf="input.type == 'text'" type="text" value="{{ input.value }}" class="form-control"
+                      name="{{ input.name }}" (change)="fieldUpdated(input.name, $event)">
 
 
-			<!-- This will navigate use through the form pages -->
-			<button 
-				type="button"
-				class="btn btn-primary"
-				(click)="prevPage()"
-				*ngIf="pageNumber != 0"
-			>{{ page.previousButton || "Back" }}</button>
+                    <input *ngIf="input.type == 'date'" type="date" ngbDatepicker value="{{ input.value }}"
+                      class="form-control" name="{{ input.name }}" (change)="fieldUpdated(input.name, $event)">
+
+                    <app-user-search-formfield *ngIf="input.type == 'user'" [user]="input.value" [name]="input.name"
+                      (onChange)="fieldUpdated(input.name, $event)"></app-user-search-formfield>
+
+                    <app-problem-search-form *ngIf="input.type == 'problem'" [problem]="input.value" [name]="input.name"
+                      [course]="input.course" (onChange)="fieldUpdated(input.name, $event)"></app-problem-search-form>
+
+                    <app-meeting-times-formfield *ngIf="input.type == 'meetingTimes'" [meetable]="input.meetable"
+                      (onChange)="fieldUpdated(input.name, $event)"></app-meeting-times-formfield>
+
+                    <app-lesson-plan-steps-form *ngIf="input.type == 'lessonPlanSteps'" [lessonPlan]="input.lessonPlan"
+                      (onChange)="fieldUpdated(input.name, $event)"></app-lesson-plan-steps-form>
+
+                    <quill-editor *ngIf="input.type == 'wysiwyg'" name="input.name" [ngModel]="input.formatted"
+                      [modules]="defaultWYSIWYGModules" (onContentChanged)="fieldUpdatedWysiwyg(input.name, $event)"
+                      (onEditorCreated)="wysiwygCreated(input.value, $event)"></quill-editor>
+
+                    <select *ngIf="input.type == 'select'" name="{{ input.name }}" class="form-control"
+                      (change)="fieldUpdated(input.name, $event)" [value]="input.value">
+                      <option *ngFor="let option of input.options" value="{{ option.value }}">
+                        {{ option.label }}
+                      </option>
+                    </select>
+
+                    <input *ngIf="input.type == 'time'" value="{{ input.value }}" type="time" name="{{ input.name }}"
+                      (change)="fieldUpdated(input.name, $event)">
+
+                    <input *ngIf="input.type == 'number'" value="{{ input.value }}" type="number" class="form-control"
+                      name="{{ input.name }}" (change)="fieldUpdated(input.name, $event)" [disabled]="input.disabled">
+
+                    <input *ngIf="input.type == 'password'" type="password" value="{{ input.value }}"
+                      class="form-control" name="{{ input.name }}" (change)="fieldUpdated(input.name, $event)">
+                  </label>
+
+                </div>
+
+              </ng-container>
+
+            </div>
+          </div>
+
+        </div>
+
+      </ng-container>
+
+
+      <!-- This will navigate use through the form pages -->
+      <button type="button" class="btn btn-primary" (click)="prevPage()"
+        *ngIf="pageNumber != 0">{{ page.previousButton || "Back" }}</button>
 
 
 
-			<button 
-				#submitButton
-				[hidden]="!showSubmit"
-				type="button"
-				class="btn btn-primary"
-				(click)="nextPage()"
-			>{{ page.continueButton || "Submit" }}</button>
+      <button #submitButton [hidden]="!showSubmit" type="button" class="btn btn-primary"
+        (click)="nextPage()">{{ page.continueButton || "Submit" }}</button>
 
-		</div>
-	
-	</ng-container>
+    </div>
+
+  </ng-container>
 
 
 </form>

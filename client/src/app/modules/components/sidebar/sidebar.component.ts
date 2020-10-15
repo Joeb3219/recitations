@@ -65,7 +65,6 @@ export class SidebarComponent implements OnInit {
             const slug = `/courses/${course.id}`;
             if (url.indexOf(slug) === 0) {
                 this.selectedCourse = course;
-                // console.log("selected course: " + this.selectedCourse.name);
                 this.setStep(this.userCourses.indexOf(this.selectedCourse));
             }
         });

@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { environment } from '@environment';
 import { StandardResponseInterface } from '@interfaces/http/standardResponse.interface';
 import { Course } from '@models/course';
-import { GetRequest } from '../decorators';
+import { GetRequest, UpsertRequest } from '../decorators';
 
 @Injectable()
 export class CourseService {
@@ -22,6 +22,13 @@ export class CourseService {
                 }
             );
         });
+    }
+
+    @UpsertRequest<Course>(Course)
+    public async upsertCourse(
+        course: Course
+    ): Promise<StandardResponseInterface<Course>> {
+        return undefined;
     }
 
     @GetRequest<Course>(Course)

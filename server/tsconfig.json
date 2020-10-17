@@ -1,6 +1,8 @@
 {
     "compileOnSave": false,
     "compilerOptions": {
+        "strict": true,
+	"strictPropertyInitialization": false,
         "baseUrl": "./",
         "paths": {
             "@interfaces/*": ["../common/interfaces/*"],
@@ -11,6 +13,8 @@
             "@helpers/*": ["library/helpers/*"]
         },
         "emitDecoratorMetadata": true,
-        "experimentalDecorators": true
-    }
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true
+    },
+    "files": ["library/express.d.ts"]
 }

@@ -20,7 +20,7 @@ import { HttpArgs } from '../helpers/route.helper';
 )
 export class CourseController {
     @GetRequest('/course')
-    async getCourses({ repo }: HttpArgs<Course>): Promise<Course[]> {
-        return repo(Course).find({});
+    async getCourses(): Promise<Course[]> {
+        return Course.find({});
     }
 }

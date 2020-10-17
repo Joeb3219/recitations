@@ -12,8 +12,8 @@ import { HttpArgs } from '../helpers/route.helper';
 @Controller
 export class UserController {
     @GetRequest('/user')
-    async getUsers({ repo }: HttpArgs<User>): Promise<User[]> {
-        return repo(User).find({});
+    async getUsers(): Promise<User[]> {
+        return User.find({});
     }
 
     @GetRequest('/user/me')
@@ -25,11 +25,12 @@ export class UserController {
     @Unauthenticated()
     async signin({
         body,
-        repo,
     }: HttpArgs<{ username: string; password: string }>): Promise<string> {
         const { username, password } = body;
 
-        const user = await repo(User).findOne({
+        if (!password) throw Boom.badRequest('No password provided');
+
+        const user = await User.findOne({
             where: { username },
             select: ['id', 'passwordHash', 'username'],
         });

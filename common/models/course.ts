@@ -1,13 +1,13 @@
 import { CourseInterface } from '@interfaces/course.interface';
 import { Section } from '@models/section';
 import {
+    BaseEntity,
     Column,
     Entity,
     JoinTable,
     OneToMany,
     PrimaryGeneratedColumn,
 } from 'typeorm';
-import { BaseEntity } from '../../client/shim/typeorm.shim';
 import { DefaultCourseSettings } from '../constants/courseSettings.constant';
 import {
     CourseSettingKey,
@@ -40,7 +40,7 @@ export class Course extends BaseEntity implements CourseInterface {
     getMergedSettings(): CourseSettings {
         return Object.assign(
             {},
-            ...Object.keys(DefaultCourseSettings).map(
+            ...(Object.keys(DefaultCourseSettings) as CourseSettingKey[]).map(
                 (key: CourseSettingKey) => ({
                     [key]: {
                         ...DefaultCourseSettings[key],

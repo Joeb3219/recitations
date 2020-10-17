@@ -41,6 +41,6 @@ export class SectionDeleteComponent {
     }
 
     getUserFullName(user: User): string {
-        return User.getFullName(user);
+        return user.getFullName();
     }
 }

@@ -1,6 +1,6 @@
 import { MeetingType } from '@enums/meetingType.enum';
-import { UserInterface } from '@interfaces/user.interface';
 import { MeetableInterface } from '@interfaces/meetable.interface';
+import { UserInterface } from '@interfaces/user.interface';
 
 export interface MeetingTimeInterface {
     id: string;

@@ -9,6 +9,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "@types/lodash": "^4.14.162",
     "@types/node": "^12.7.5",
     "eslint-plugin-extra-rules": "^0.0.0-development",
     "pg": "^7.12.1",

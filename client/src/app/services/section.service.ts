@@ -14,7 +14,7 @@ export class SectionService {
     public async upsertSection(
         section: Section
     ): Promise<StandardResponseInterface<Section>> {
-        return undefined;
+        throw new Error('Decorator Overloading Failed');
     }
 
     @ListRequest<Section>(Section)
@@ -22,13 +22,13 @@ export class SectionService {
         course: Course,
         args?: HttpFilterInterface
     ): Promise<StandardResponseInterface<Section[]>> {
-        return undefined;
+        throw new Error('Decorator Overloading Failed');
     }
 
     @DeleteRequest<Section>(Section)
     public async deleteSection(
         sectionID: string
     ): Promise<StandardResponseInterface<void>> {
-        return undefined;
+        throw new Error('Decorator Overloading Failed');
     }
 }

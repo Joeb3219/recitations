@@ -55,9 +55,9 @@ export class ListProblemsComponent {
         },
     ];
 
-    selectedEditProblem: Problem = null;
+    selectedEditProblem?: Problem = undefined;
 
-    selectedDeleteProblem: Problem = null;
+    selectedDeleteProblem?: Problem = undefined;
 
     isEditProblemModalOpen = false;
 
@@ -83,7 +83,7 @@ export class ListProblemsComponent {
     handleCloseEditProblemModal(): void {
         this.isEditProblemModalOpen = false;
 
-        this.selectedEditProblem = null;
+        this.selectedEditProblem = undefined;
 
         this.refreshData.emit();
     }

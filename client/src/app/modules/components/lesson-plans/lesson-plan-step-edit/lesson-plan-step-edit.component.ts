@@ -93,7 +93,7 @@ export class LessonPlanStepEditComponent implements OnInit {
     }
 
     handleFieldChange({ name, value }: FormFieldUpdated): void {
-        this.lessonPlanStep[name] = value;
+        Object.assign(this.lessonPlanService, { [name]: value });
         this.generateForm();
     }
 
@@ -101,11 +101,9 @@ export class LessonPlanStepEditComponent implements OnInit {
         this.onClose.emit();
     }
 
-    async formSubmitted(data): Promise<void> {
+    async formSubmitted(data: LessonPlanStep): Promise<void> {
         // first we update the data in the model
-        Object.keys(data).forEach((key) => {
-            this.lessonPlanStep[key] = data[key];
-        });
+        Object.assign(this.lessonPlanStep, data);
 
         // and now we submit it to the API.
         try {

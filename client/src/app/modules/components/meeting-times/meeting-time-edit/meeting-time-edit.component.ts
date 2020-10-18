@@ -98,7 +98,7 @@ export class MeetingTimeEditComponent implements OnInit {
     }
 
     handleClose(): void {
-        this.onClose.emit(null);
+        this.onClose.emit();
     }
 
     async formSubmitted(data: MeetingTime): Promise<void> {

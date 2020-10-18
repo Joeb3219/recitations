@@ -43,8 +43,8 @@ export class Problem extends BaseEntity implements ProblemInterface {
         Object.assign(this, args);
     }
 
-    public static getMinuteUnit(estimatedDuration: number): string | undefined {
-        if (!estimatedDuration) return undefined;
+    public static getMinuteUnit(estimatedDuration: number): string {
+        if (!estimatedDuration) return '';
         let unit: string;
         unit = estimatedDuration > 1 ? (unit = 'minutes') : (unit = 'minute');
         return unit;

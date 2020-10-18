@@ -11,6 +11,7 @@ import {
 import { ProblemDifficulty } from '@enums/problemDifficulty.enum';
 import { HttpFilterInterface } from '@http/httpFilter.interface';
 import { StandardResponseInterface } from '@interfaces/http/standardResponse.interface';
+import { User } from '@models/user';
 import { ColumnMode } from '@swimlane/ngx-datatable';
 import { get } from 'lodash';
 import { Subject } from 'rxjs';
@@ -27,11 +28,12 @@ export interface DatatableAction {
     href?: string;
 }
 
-export interface DatatableColumn<ResourceModel> {
+export interface DatatableColumn<ResourceModel = any> {
     name: string;
     cellTemplate?: DatatableColumnCellTemplateName | TemplateRef<unknown>;
     prop?: keyof ResourceModel;
     actions?: (row: ResourceModel) => DatatableAction[];
+    cellTemplateName?: DatatableColumnCellTemplateName;
 }
 @Component({
     selector: 'app-datatable',
@@ -55,7 +57,7 @@ export class DatatableComponent implements OnInit {
 
     @Input() reload: Subject<any> = new Subject<any>();
 
-    @Input() columns: any[] = [];
+    @Input() columns: DatatableColumn<unknown>[] = [];
 
     @Input() pageSize = 25;
 
@@ -68,7 +70,7 @@ export class DatatableComponent implements OnInit {
     // these will override the defaults provided by the datatable, or create new ones if there isn't one.
     @Input() csvTemplateOverrides: any = {};
 
-    @Input() csvFileName: () => string = undefined;
+    @Input() csvFileName?: () => string = undefined;
 
     rows: any[] = [];
 
@@ -78,11 +80,11 @@ export class DatatableComponent implements OnInit {
 
     offset = 0;
 
-    sortDirection = 'desc';
+    sortDirection: 'desc' | 'asc' = 'desc';
 
-    sort: string = undefined;
+    sort?: string = undefined;
 
-    search: string = undefined;
+    search?: string = undefined;
 
     searchDebouncer: EventEmitter<string> = new EventEmitter<string>();
 
@@ -115,7 +117,12 @@ export class DatatableComponent implements OnInit {
     // Returns all of the templates in our system, arranged by key.
     // Each object contains a template identifying the viewchild template to render,
     // as well as possibly other values, like a csv function to use when generating a csv
-    getTemplates() {
+    getTemplates(): {
+        [K in DatatableColumnCellTemplateName]: {
+            template: TemplateRef<any>;
+            csv?: (prop: any | undefined, row: unknown) => unknown;
+        };
+    } {
         return {
             difficultyCell: {
                 template: this.difficultyCellTemplate,
@@ -123,7 +130,7 @@ export class DatatableComponent implements OnInit {
             },
             userCell: {
                 template: this.userCellTemplate,
-                csv: (user) =>
+                csv: (user: User | undefined) =>
                     user
                         ? `${user.firstName} ${user.lastName} (${user.username})`
                         : undefined,
@@ -135,22 +142,23 @@ export class DatatableComponent implements OnInit {
     }
 
     // Returns a list of CSV formats, potentially modified
-    getCSVFormats() {
-        // We build a list of template keys => their CSV function, if available
-        const allFormats = {};
-
-        const allTemplates = this.getTemplates();
-        Object.keys(allTemplates).forEach((templateKey) => {
-            allFormats[templateKey] = allTemplates[templateKey].csv;
-        });
+    getCSVFormats(): {
+        [K in DatatableColumnCellTemplateName]: {
+            template: TemplateRef<any>;
+            csv?: (prop: unknown, row: unknown) => unknown;
+        };
+    } {
+        const allFormats = this.getTemplates();
 
         // Now we go through the overrides provided and redefine (or define) any key => functions.
         if (this.csvTemplateOverrides) {
-            Object.keys(this.csvTemplateOverrides).forEach((templateKey) => {
-                allFormats[templateKey] = this.csvTemplateOverrides[
-                    templateKey
-                ];
-            });
+            Object.keys(this.csvTemplateOverrides).forEach(
+                (templateKey: string) => {
+                    allFormats[
+                        templateKey as DatatableColumnCellTemplateName
+                    ].csv = this.csvTemplateOverrides[templateKey];
+                }
+            );
         }
 
         return allFormats;
@@ -158,13 +166,15 @@ export class DatatableComponent implements OnInit {
 
     // Generates and downloads a CSV for the datatable
     async handleCSVExport(): Promise<void> {
-        const csvStringWrap = (str) => {
+        const csvStringWrap = (str: string) => {
             const escapedStr = `${str}`.replace(/"/g, '""');
             return `"${escapedStr}"`;
         };
 
         // We first must generate a listing of all rows in the system + their respective column displays
-        const excludedTemplates = ['actionsCell'];
+        const excludedTemplates: DatatableColumnCellTemplateName[] = [
+            'actionsCell',
+        ];
 
         const csvFormats = this.getCSVFormats();
 
@@ -172,6 +182,7 @@ export class DatatableComponent implements OnInit {
         // the most obvious case here is the actions cell, which should really never be printed.
         const includedColumns = this.columns.filter(
             ({ cellTemplateName }) =>
+                cellTemplateName &&
                 !excludedTemplates.includes(cellTemplateName)
         );
 
@@ -184,13 +195,14 @@ export class DatatableComponent implements OnInit {
             .map(({ name }) => csvStringWrap(name))
             .join(',');
 
-        const csvRows = allData.data.map((row) => {
+        const csvRows = allData.data.map((row: unknown) => {
             const rowCells = includedColumns.map(
                 ({ cellTemplateName, prop }) => {
-                    const value = get(row, prop);
+                    const value = get(row, prop ?? '');
 
-                    return csvFormats[cellTemplateName]
-                        ? csvFormats[cellTemplateName](value, row)
+                    return cellTemplateName
+                        ? csvFormats[cellTemplateName]?.csv?.(value, row) ??
+                              value
                         : value;
                 }
             );
@@ -204,7 +216,7 @@ export class DatatableComponent implements OnInit {
     }
 
     // Adapted from https://stackoverflow.com/questions/51806464/how-to-create-and-download-text-json-file-with-dynamic-content-using-angular-2
-    downloadFile(contents): void {
+    downloadFile(contents: string): void {
         const element = document.createElement('a');
         const fileType = 'text/csv';
         const fileName = this.csvFileName
@@ -221,8 +233,8 @@ export class DatatableComponent implements OnInit {
         element.dispatchEvent(event);
     }
 
-    handleSort(sort) {
-        const sorts = sort ? sort.sorts : undefined;
+    handleSort(sort: { sorts: { prop: string; dir: 'asc' | 'desc' }[] }) {
+        const sorts = sort?.sorts;
         if (!sorts || !sorts.length) return;
 
         this.sort = sorts[0].prop;
@@ -235,7 +247,7 @@ export class DatatableComponent implements OnInit {
         this.searchDebouncer.next(this.search);
     }
 
-    handlePageChange(page): void {
+    handlePageChange(page: { offset: number }): void {
         this.offset = page.offset;
         this.loadData();
     }
@@ -247,13 +259,19 @@ export class DatatableComponent implements OnInit {
 
         this.columns.forEach((column) => {
             // Sets cell template to the defined one in our map if it is in the map, or uses the already set one otherwise.
-            if (!column.cellTemplateName) {
+            if (
+                !column.cellTemplateName &&
+                typeof column.cellTemplate === 'string'
+            ) {
                 // eslint-disable-next-line no-param-reassign
                 column.cellTemplateName = column.cellTemplate;
             }
+
+            if (!column.cellTemplateName) return;
+
             // eslint-disable-next-line no-param-reassign
             column.cellTemplate =
-                get(allTemplates[column.cellTemplate], 'template') ||
+                allTemplates[column.cellTemplateName].template ??
                 column.cellTemplate;
         });
     }

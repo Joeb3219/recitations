@@ -22,7 +22,7 @@ export class MeetingTimesFormfieldComponent implements OnInit {
 
     isEditingMeetingTime = false;
 
-    selectedEditedMeetingTime: MeetingTime = null;
+    selectedEditedMeetingTime?: MeetingTime = undefined;
 
     ngOnInit(): void {
         if (this.meetable && !this.meetable.meetingTimes) {
@@ -39,7 +39,7 @@ export class MeetingTimesFormfieldComponent implements OnInit {
 
     handleEditMeetingTimeClosed(): void {
         this.isEditingMeetingTime = false;
-        this.selectedEditedMeetingTime = null;
+        this.selectedEditedMeetingTime = undefined;
         this.onChange.emit(this.meetable.meetingTimes);
     }
 
@@ -50,6 +50,10 @@ export class MeetingTimesFormfieldComponent implements OnInit {
 
     handleMeetingTimeEdited(meetingTime: MeetingTime): void {
         if (!meetingTime) return; // Check that the meeting time was actually returned by the calling form, indicating that a successful meeting time was created
+
+        if (!this.meetable.meetingTimes) {
+            this.meetable.meetingTimes = [];
+        }
 
         // Now we check to see if this meeting time already existed in the database
         // if so, we will simply update the list to include this one at the given index

@@ -22,14 +22,14 @@ export class LessonPlanService {
     public async upsertLessonPlan(
         lessonPlan: LessonPlan
     ): Promise<StandardResponseInterface<LessonPlan>> {
-        return undefined;
+        throw new Error('Decorator Overloading Failed');
     }
 
     @UpsertRequest<LessonPlanStep>(LessonPlanStep)
     public async upsertLessonPlanStep(
         lessonPlanStep: LessonPlanStep
     ): Promise<StandardResponseInterface<LessonPlanStep>> {
-        return undefined;
+        throw new Error('Decorator Overloading Failed');
     }
 
     @ListRequest<LessonPlan>(LessonPlan)
@@ -37,20 +37,20 @@ export class LessonPlanService {
         course: Course,
         args: HttpFilterInterface
     ): Promise<StandardResponseInterface<LessonPlan[]>> {
-        return undefined;
+        throw new Error('Decorator Overloading Failed');
     }
 
     @GetRequest<LessonPlan>(LessonPlan)
     public async getLessonPlan(
         lessonPlanID: string
     ): Promise<StandardResponseInterface<LessonPlan>> {
-        return undefined;
+        throw new Error('Decorator Overloading Failed');
     }
 
     @DeleteRequest<LessonPlan>(LessonPlan)
     public async deleteLessonPlan(
         lessonPlanID: string
     ): Promise<StandardResponseInterface<LessonPlan>> {
-        return undefined;
+        throw new Error('Decorator Overloading Failed');
     }
 }

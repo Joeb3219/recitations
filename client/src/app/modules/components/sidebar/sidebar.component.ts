@@ -12,7 +12,7 @@ import { UserService } from '@services/user.service';
 export class SidebarComponent implements OnInit {
     userCourses: Course[] = [];
 
-    selectedCourse: Course = null;
+    selectedCourse?: Course = undefined;
 
     activeLink: number;
 

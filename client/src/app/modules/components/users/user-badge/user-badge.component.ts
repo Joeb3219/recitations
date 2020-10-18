@@ -7,5 +7,5 @@ import { User } from '@models/user';
     styleUrls: ['./user-badge.component.scss'],
 })
 export class UserBadgeComponent {
-    @Input() user: User = null;
+    @Input() user?: User = undefined;
 }

@@ -28,7 +28,7 @@ export class AppComponent implements OnInit {
     ngOnInit(): void {
         this.router.events.subscribe((event) => {
             if (event instanceof ChildActivationEnd) {
-                this.currentParams = event.snapshot.firstChild.params;
+                this.currentParams = event.snapshot.firstChild?.params ?? {};
             }
         });
 
@@ -37,7 +37,7 @@ export class AppComponent implements OnInit {
         });
     }
 
-    handleOnActivate(data) {
+    handleOnActivate(data: any) {
         this.isLoadingArgs = true;
         setTimeout(async () => {
             const loadedArgs: {

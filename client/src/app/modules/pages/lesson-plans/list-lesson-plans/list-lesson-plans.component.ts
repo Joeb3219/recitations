@@ -48,7 +48,7 @@ export class ListLessonPlansComponent {
         },
     ];
 
-    selectedLessonPlan: LessonPlan = undefined;
+    selectedLessonPlan?: LessonPlan = undefined;
 
     refreshData: EventEmitter<void> = new EventEmitter();
 

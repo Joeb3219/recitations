@@ -71,7 +71,7 @@ export class LessonPlanEditComponent implements OnInit {
     }
 
     handleClose(): void {
-        this.onClose.emit(null);
+        this.onClose.emit();
     }
 
     async formSubmitted(lessonPlan: LessonPlan): Promise<void> {

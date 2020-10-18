@@ -25,7 +25,7 @@ export class ProblemViewComponent implements OnInit {
 
     @Input() problem: Problem;
 
-    userFullName: string;
+    userFullName?: string;
 
     showSolution = false;
 

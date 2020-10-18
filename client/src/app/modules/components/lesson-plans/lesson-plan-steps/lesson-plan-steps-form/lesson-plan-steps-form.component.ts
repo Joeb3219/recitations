@@ -22,7 +22,7 @@ export class LessonPlanStepsFormComponent implements OnInit {
 
     isEditingStep = false;
 
-    selectedEditedStep: LessonPlanStep = null;
+    selectedEditedStep?: LessonPlanStep = undefined;
 
     ngOnInit(): void {
         if (this.lessonPlan && !this.lessonPlan.steps) {
@@ -43,7 +43,7 @@ export class LessonPlanStepsFormComponent implements OnInit {
 
     handleEditStepClosed(): void {
         this.isEditingStep = false;
-        this.selectedEditedStep = null;
+        this.selectedEditedStep = undefined;
         this.onChange.emit(this.lessonPlan.steps);
     }
 

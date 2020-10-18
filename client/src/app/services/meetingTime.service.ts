@@ -12,6 +12,6 @@ export class MeetingTimeService {
     public async upsertMeetingTime(
         meetingtime: MeetingTime
     ): Promise<StandardResponseInterface<MeetingTime>> {
-        return undefined;
+        throw new Error('Decorator Overloading Failed');
     }
 }

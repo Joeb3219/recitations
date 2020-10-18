@@ -2,7 +2,7 @@
     "compileOnSave": false,
     "compilerOptions": {
         "strict": true,
-	"strictPropertyInitialization": false,
+        "strictPropertyInitialization": false,
         "baseUrl": "./",
         "paths": {
             "@interfaces/*": ["../common/interfaces/*"],

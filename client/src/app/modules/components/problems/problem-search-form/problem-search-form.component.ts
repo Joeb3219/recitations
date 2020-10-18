@@ -19,9 +19,9 @@ import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
     styleUrls: ['./problem-search-form.component.scss'],
 })
 export class ProblemSearchFormComponent implements OnInit, OnChanges {
-    @Input() problem: Problem = null;
+    @Input() problem?: Problem = undefined;
 
-    @Input() name: string = null;
+    @Input() name?: string = undefined;
 
     @Input() course: Course;
 
@@ -59,7 +59,7 @@ export class ProblemSearchFormComponent implements OnInit, OnChanges {
         return ``;
     };
 
-    handleProblemSelected(data): void {
+    handleProblemSelected(data: { item: Problem }): void {
         this.onChange.emit(data.item);
     }
 
@@ -76,9 +76,9 @@ export class ProblemSearchFormComponent implements OnInit, OnChanges {
                                   problem.name
                                       .toLowerCase()
                                       .indexOf(term.toLowerCase()) > -1 ||
-                                  problem.creator.username
+                                  (problem.creator?.username
                                       .toLowerCase()
-                                      .indexOf(term.toLowerCase()) > -1
+                                      .indexOf(term.toLowerCase()) ?? -1) > -1
                               );
                           })
                           .slice(0, 10)

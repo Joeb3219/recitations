@@ -21,28 +21,28 @@ export class ProblemService {
     public async upsertProblem(
         problem: Problem
     ): Promise<StandardResponseInterface<Problem>> {
-        return undefined;
+        throw new Error('Decorator Overloading Failed');
     }
 
     @ListRequest<Problem>(Problem)
     public async getCourseProblems(
         course: Course,
-        filter: HttpFilterInterface = undefined
+        filter?: HttpFilterInterface
     ): Promise<StandardResponseInterface<Problem[]>> {
-        return undefined;
+        throw new Error('Decorator Overloading Failed');
     }
 
     @GetRequest<Problem>(Problem)
     public async getProblem(
         problemID: string
     ): Promise<StandardResponseInterface<Problem>> {
-        return undefined;
+        throw new Error('Decorator Overloading Failed');
     }
 
     @DeleteRequest<Problem>(Problem)
     public async deleteProblem(
         problemID: string
     ): Promise<StandardResponseInterface<void>> {
-        return undefined;
+        throw new Error('Decorator Overloading Failed');
     }
 }

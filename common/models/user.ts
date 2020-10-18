@@ -26,7 +26,7 @@ export class User extends BaseEntity implements UserInterface {
         Object.assign(this, args);
     }
 
-    public getFullName(): string | undefined {
+    public getFullName(): string {
         return this.firstName + ' ' + this.lastName;
     }
 }

@@ -6,8 +6,8 @@ export function LoadedArg<ResourceModel>(
     resource: new () => ResourceModel,
     stub: string
 ) {
-    // eslint-disable-next-line func-names, @typescript-eslint/explicit-module-boundary-types
-    return function (target, propertyKey: string) {
+    // eslint-disable-next-line func-names,  @typescript-eslint/ban-types
+    return function (target: Object, propertyKey: string): void {
         const currentMetadata = Reflect.getMetadata('loadedArgs', target) || [];
 
         currentMetadata.push({
@@ -24,7 +24,5 @@ export function LoadedArg<ResourceModel>(
             configurable: true,
             writable: true,
         });
-
-        return target;
     };
 }

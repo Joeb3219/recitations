@@ -71,7 +71,7 @@ export class SectionEditComponent implements OnInit {
     }
 
     handleClose(): void {
-        this.onClose.emit(null);
+        this.onClose.emit();
     }
 
     async formSubmitted(section: Section): Promise<void> {

@@ -10,5 +10,5 @@ import { LoadedArg } from 'src/app/decorators';
 })
 export class ViewCourseComponent {
     @LoadedArg(CourseService, Course, 'courseID')
-    course: Course = null;
+    course: Course;
 }

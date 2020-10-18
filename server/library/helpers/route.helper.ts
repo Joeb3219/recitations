@@ -7,7 +7,7 @@ import { Express, NextFunction } from 'express';
 import { BAD_REQUEST } from 'http-status-codes';
 import { get, isEqual, pickBy, sortBy } from 'lodash';
 import 'reflect-metadata';
-import { BaseEntity, DeleteResult } from 'typeorm';
+import { BaseEntity, DeleteResult, getRepository } from 'typeorm';
 import {
     ResourceAction,
     ResourceArgs,
@@ -193,7 +193,9 @@ export function generateUpdateResource<T extends BaseEntity>(
         });
 
         // first, we find the resource that is referenced by the given ID
-        let resource = await resourceClass.prototype.findOne({ id });
+        let resource = await getRepository<T>(resourceClass).findOne({
+            where: { id },
+        });
 
         // no resource found, 404 it out
         if (!resource) throw Boom.notFound(`${resourceName} not found`);
@@ -201,7 +203,7 @@ export function generateUpdateResource<T extends BaseEntity>(
         resource = Object.assign(resource, updateableData);
 
         // and now we can update the resource
-        return resourceClass.prototype.save(resource);
+        return getRepository<T>(resourceClass).save(resource as any);
     };
 }
 
@@ -214,7 +216,9 @@ export function generateGetResource<T extends BaseEntity>(
         const id = params[`${resourceName}ID`];
 
         // first, we find the resource that is referenced by the given ID
-        const resource = await resourceClass.prototype.findOne({ id });
+        const resource = await getRepository<T>(resourceClass).findOne({
+            where: { id },
+        });
 
         // no resource found, 404 it out
         if (!resource) throw Boom.notFound(`${resourceName} not found`);
@@ -223,7 +227,7 @@ export function generateGetResource<T extends BaseEntity>(
     };
 }
 
-export function generateDeleteResource<T extends BaseEntity>(
+export function generateDeleteResource<T extends BaseEntity & { id: string }>(
     resourceClass: new () => T,
     resourceName: string
 ) {
@@ -232,14 +236,14 @@ export function generateDeleteResource<T extends BaseEntity>(
         const id = params[`${resourceName}ID`];
 
         // first, we find the resource that is referenced by the given ID
-        const resource = await resourceClass.prototype.findOne({ id });
+        const resource = await getRepository<T>(resourceClass).findOne({
+            where: { id },
+        });
 
         // no resource found, 404 it out
         if (!resource) throw Boom.notFound(`${resourceName} not found`);
 
-        return resourceClass.prototype.delete({ id });
-
-        return resource;
+        return getRepository<T>(resourceClass).delete({ id });
     };
 }
 
@@ -252,7 +256,7 @@ export function generateCreateResource<T extends BaseEntity>(
             return !!item;
         });
 
-        return resourceClass.prototype.save({ data });
+        return getRepository<T>(resourceClass).save(data as any);
     };
 }
 
@@ -263,7 +267,9 @@ export function generateListResource<T extends BaseEntity>(
         const { params } = args;
         const { courseID } = params;
 
-        return resourceClass.prototype.find({ course: courseID });
+        return getRepository<T>(resourceClass).find({
+            where: { course: courseID },
+        });
     };
 }
 
@@ -275,7 +281,7 @@ export type ResourceData<T extends BaseEntity> = {
     generatedFunctions: ResourceAction[];
 };
 
-export function generateResource<T extends BaseEntity>(
+export function generateResource<T extends BaseEntity & { id: string }>(
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     app: any,
     data: ResourceData<T>,

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Form } from '@models/forms/form';
+import { User } from '@models/user';
 import { UserService } from '@services/user.service';
 
 @Component({
@@ -8,11 +9,9 @@ import { UserService } from '@services/user.service';
     styleUrls: ['./manual-login-form.component.scss'],
 })
 export class ManualLoginFormComponent implements OnInit {
-    form: Form = null;
+    form?: Form = undefined;
 
-    @Output() onSuccessfulLogin: EventEmitter<string> = new EventEmitter<
-        string
-    >();
+    @Output() onSuccessfulLogin: EventEmitter<User> = new EventEmitter<User>();
 
     constructor(private userService: UserService) {}
 
@@ -36,9 +35,9 @@ export class ManualLoginFormComponent implements OnInit {
         ];
     }
 
-    formSubmitted(data): void {
+    formSubmitted(data: { username: string; password: string }): void {
         const { username, password } = data;
-        this.userService.signin(username, password).subscribe((result: any) => {
+        this.userService.signin(username, password).subscribe((result) => {
             if (result?.data) {
                 this.onSuccessfulLogin.emit(result.data);
             }

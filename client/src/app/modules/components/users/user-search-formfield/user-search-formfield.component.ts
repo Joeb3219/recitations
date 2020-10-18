@@ -10,9 +10,9 @@ import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
     styleUrls: ['./user-search-formfield.component.scss'],
 })
 export class UserSearchFormfieldComponent implements OnInit {
-    @Input() user: User = null;
+    @Input() user?: User = undefined;
 
-    @Input() name: string = null;
+    @Input() name?: string = undefined;
 
     @Output() onChange: EventEmitter<User> = new EventEmitter<User>();
 
@@ -30,7 +30,7 @@ export class UserSearchFormfieldComponent implements OnInit {
         return ``;
     };
 
-    handleUserSelected(data): void {
+    handleUserSelected(data: { item: User }): void {
         this.onChange.emit(data.item);
     }
 

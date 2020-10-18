@@ -1,24 +1,23 @@
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
-import { BehaviorSubject, Observable } from 'rxjs';
-
+import { Injectable } from '@angular/core';
 import { environment } from '@environment';
-
 import { User } from '@models/user';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { StandardResponseInterface } from '../../../../common/interfaces/http/standardResponse.interface';
 
 @Injectable()
 export class UserService {
-    private currentUserObservable: BehaviorSubject<User> = new BehaviorSubject<
-        User
-    >(null);
+    private currentUserObservable: BehaviorSubject<
+        User | undefined
+    > = new BehaviorSubject<User | undefined>(undefined);
 
     constructor(private http: HttpClient) {
         this.flushCurrentUser();
     }
 
-    public flushCurrentUser() {
-        if (!localStorage.getItem('jwt')) this.currentUserObservable.next(null);
+    public flushCurrentUser(): void {
+        if (!localStorage.getItem('jwt'))
+            this.currentUserObservable.next(undefined);
         else {
             this.getMyUserObject().subscribe((result: { data: User }) => {
                 if (result) this.currentUserObservable.next(result.data);
@@ -30,32 +29,38 @@ export class UserService {
         this.flushCurrentUser();
     }
 
-    public getCurrentUser(): Observable<User> {
+    public getCurrentUser(): Observable<User | undefined> {
         return this.currentUserObservable.asObservable();
     }
 
-    public getMyUserObject() {
+    public getMyUserObject(): Observable<StandardResponseInterface<User>> {
         const url = `${environment.apiURL}/user/me`;
-        return this.http.get(url);
+        return this.http.get<StandardResponseInterface<User>>(url);
     }
 
     public async getUsers(): Promise<User[]> {
         const url = `${environment.apiURL}/user`;
         return new Promise((resolve, reject) => {
-            this.http.get(url).subscribe(
-                (result: { data: User[] }) => {
+            this.http.get<StandardResponseInterface<User[]>>(url).subscribe(
+                (result: StandardResponseInterface<User[]>) => {
                     if (result) resolve(result.data);
                     else reject(new Error('No result returned'));
                 },
-                (err) => {
+                (err: Error) => {
                     reject(err);
                 }
             );
         });
     }
 
-    public signin(username: string, password: string) {
+    public signin(
+        username: string,
+        password: string
+    ): Observable<StandardResponseInterface<User>> {
         const url = `${environment.apiURL}/user/signin`;
-        return this.http.post(url, { username, password });
+        return this.http.post<StandardResponseInterface<User>>(url, {
+            username,
+            password,
+        });
     }
 }

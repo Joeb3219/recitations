@@ -43,13 +43,10 @@ export class ConfigurationsComponent implements OnInit {
 
         const mergedSections = this.course.getMergedSettings();
 
-        form.inputs = Object.keys(mergedSections)
-            .filter(
-                (key: CourseSettingKey) =>
-                    mergedSections[key].section === section.section
-            )
+        form.inputs = (Object.keys(mergedSections) as CourseSettingKey[])
+            .filter((key) => mergedSections[key].section === section.section)
             .map(
-                (key: CourseSettingKey): FormInput => {
+                (key): FormInput => {
                     const input = mergedSections[key];
                     const inputType =
                         // eslint-disable-next-line no-nested-ternary

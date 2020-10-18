@@ -17,7 +17,7 @@ export class ViewSectionsComponent {
     @LoadedArg(CourseService, Course, 'courseID')
     course: Course;
 
-    selectedSection: Section = null;
+    selectedSection?: Section = undefined;
 
     isEditSectionModalOpen = false;
 
@@ -88,7 +88,7 @@ export class ViewSectionsComponent {
 
     handleCloseEditSectionModal(): void {
         this.isEditSectionModalOpen = false;
-        this.selectedSection = null;
+        this.selectedSection = undefined;
         this.refreshData.next();
     }
 

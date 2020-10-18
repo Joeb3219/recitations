@@ -15,9 +15,11 @@
 		"prettier": "prettier --write \"**/*.ts\""
 	},
 	"devDependencies": {
+		"lerna": "^3.22.1",
 		"pre-commit": "^1.2.2"
 	},
 	"pre-commit": [
 		"lint"
-	]
+	],
+	"name": "recitations"
 }

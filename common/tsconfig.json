@@ -1,0 +1,26 @@
+{
+    "compileOnSave": false,
+    "compilerOptions": {
+        "strict": true,
+        "strictPropertyInitialization": false,
+        "downlevelIteration": true,
+        "sourceMap": true,
+        "declaration": false,
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "importHelpers": true,
+        "target": "es2015",
+        "typeRoots": ["node_modules/@types"],
+        "types": ["node"],
+        "lib": ["es2018", "dom"],
+        "esModuleInterop": true,
+        "paths": {
+            "@models/*": ["./models/*"],
+            "@interfaces/*": ["./interfaces/*"],
+            "@enums/*": ["./enums/*"],
+        }
+    },
+    "types": ["node"]
+}

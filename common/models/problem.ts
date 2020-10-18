@@ -30,11 +30,11 @@ export class Problem extends BaseEntity implements ProblemInterface {
     @Column()
     public estimatedDuration: number;
 
-    @ManyToOne((type) => Course, { eager: true })
+    @ManyToOne(() => Course, { eager: true })
     @JoinColumn()
     public course: Course;
 
-    @ManyToOne((type) => User, { eager: true, cascade: true })
+    @ManyToOne(() => User, { eager: true, cascade: true })
     @JoinColumn()
     public creator?: User;
 

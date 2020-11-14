@@ -1,4 +1,4 @@
-import { User } from '@models/user';
+import { User } from '@dynrec/common';
 import * as express from 'express';
 
 declare namespace Express {

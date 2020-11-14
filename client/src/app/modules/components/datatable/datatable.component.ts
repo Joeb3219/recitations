@@ -8,10 +8,12 @@ import {
     ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
-import { ProblemDifficulty } from '@enums/problemDifficulty.enum';
+import {
+    ProblemDifficulty,
+    StandardResponseInterface,
+    User,
+} from '@dynrec/common';
 import { HttpFilterInterface } from '@http/httpFilter.interface';
-import { StandardResponseInterface } from '@interfaces/http/standardResponse.interface';
-import { User } from '@models/user';
 import { ColumnMode } from '@swimlane/ngx-datatable';
 import { get } from 'lodash';
 import { Subject } from 'rxjs';

@@ -1,6 +1,5 @@
+import { User } from '@dynrec/common';
 import * as Boom from '@hapi/boom';
-import { UserHelper } from '@helpers/user.helper';
-import { User } from '@models/user';
 import {
     Controller,
     GetRequest,
@@ -8,6 +7,7 @@ import {
     Unauthenticated,
 } from '../decorators';
 import { HttpArgs } from '../helpers/route.helper';
+import { UserHelper } from '../helpers/user.helper';
 
 @Controller
 export class UserController {

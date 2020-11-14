@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { StandardResponseInterface } from '@interfaces/http/standardResponse.interface';
-import { MeetingTime } from '@models/meetingTime';
+import { MeetingTime, StandardResponseInterface } from '@dynrec/common';
 import { UpsertRequest } from '../decorators';
 
 @Injectable()

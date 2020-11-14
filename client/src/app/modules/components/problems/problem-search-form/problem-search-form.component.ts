@@ -7,8 +7,7 @@ import {
     Output,
     SimpleChanges,
 } from '@angular/core';
-import { Course } from '@models/course';
-import { Problem } from '@models/problem';
+import { Course, Problem } from '@dynrec/common';
 import { ProblemService } from '@services/problem.service';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';

@@ -1,8 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { StandardResponseInterface } from '@interfaces/http/standardResponse.interface';
-import { Course } from '@models/course';
-import { Section } from '@models/section';
+import { Course, Section, StandardResponseInterface } from '@dynrec/common';
 import { DeleteRequest, ListRequest, UpsertRequest } from '../decorators';
 import { HttpFilterInterface } from '../http/httpFilter.interface';
 

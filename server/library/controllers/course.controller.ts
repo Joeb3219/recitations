@@ -1,4 +1,4 @@
-import { Course } from '@models/course';
+import { Course } from '@dynrec/common';
 import { Controller, GetRequest, Resource } from '../decorators';
 import { HttpArgs } from '../helpers/route.helper';
 

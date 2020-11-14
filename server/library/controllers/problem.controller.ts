@@ -1,4 +1,4 @@
-import { Problem } from '@models/problem';
+import { Problem } from '@dynrec/common';
 import { get } from 'lodash';
 import { Controller, Resource } from '../decorators';
 import { HttpArgs } from '../helpers/route.helper';

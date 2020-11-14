@@ -1,25 +1,27 @@
 {
-	"private": true,
-	"workspaces": [
-		"server",
-		"client",
-		"common"
-	],
-	"nohoist": [
-		"**/typeorm**/",
-		"**/typeorm"
-	],
-	"scripts": {
-		"lint": "yarn prettier && yarn eslint",
-		"eslint": "eslint . --ext ts --quiet --fix",
-		"prettier": "prettier --write \"**/*.ts\""
-	},
-	"devDependencies": {
-		"lerna": "^3.22.1",
-		"pre-commit": "^1.2.2"
-	},
-	"pre-commit": [
-		"lint"
-	],
-	"name": "recitations"
+    "private": true,
+    "workspaces": [
+        "server",
+        "client",
+        "common"
+    ],
+    "nohoist": [
+        "**/typeorm**/",
+        "**/typeorm",
+        "**@dynrec/common**"
+    ],
+    "scripts": {
+        "lint": "yarn prettier && yarn eslint",
+        "eslint": "eslint . --ext ts --quiet --fix",
+        "prettier": "prettier --write \"**/*.ts\"",
+        "serve": "lerna run serve --parallel"
+    },
+    "devDependencies": {
+        "lerna": "^3.22.1",
+        "pre-commit": "^1.2.2"
+    },
+    "pre-commit": [
+        "lint"
+    ],
+    "name": "recitations"
 }

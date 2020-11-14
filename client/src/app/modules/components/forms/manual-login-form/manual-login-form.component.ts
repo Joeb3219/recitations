@@ -1,6 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Form } from '@models/forms/form';
-import { User } from '@models/user';
+import { Form, User } from '@dynrec/common';
 import { UserService } from '@services/user.service';
 
 @Component({

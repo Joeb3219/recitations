@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Course } from '@models/course';
+import { Course } from '@dynrec/common';
 import { CourseService } from '@services/course.service';
 import { UserService } from '@services/user.service';
 

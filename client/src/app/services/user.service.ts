@@ -1,9 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { StandardResponseInterface, User } from '@dynrec/common';
 import { environment } from '@environment';
-import { User } from '@models/user';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { StandardResponseInterface } from '../../../../common/interfaces/http/standardResponse.interface';
 
 @Injectable()
 export class UserService {

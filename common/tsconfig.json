@@ -5,22 +5,12 @@
         "strictPropertyInitialization": false,
         "downlevelIteration": true,
         "sourceMap": true,
-        "declaration": false,
-        "module": "commonjs",
-        "moduleResolution": "node",
+        "outDir": "./dist",
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "importHelpers": true,
-        "target": "es2015",
-        "typeRoots": ["node_modules/@types"],
-        "types": ["node"],
-        "lib": ["es2018", "dom"],
         "esModuleInterop": true,
-        "paths": {
-            "@models/*": ["./models/*"],
-            "@interfaces/*": ["./interfaces/*"],
-            "@enums/*": ["./enums/*"],
-        }
+        "baseUrl": "./src"
     },
-    "types": ["node"]
+    "exclude": ["dist", "node_modules"]
 }

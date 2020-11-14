@@ -1,11 +1,9 @@
 import { Component, EventEmitter } from '@angular/core';
 import { DatatableColumn } from '@components/datatable/datatable.component';
+import { Course, Section, StandardResponseInterface } from '@dynrec/common';
 import { HttpFilterInterface } from '@http/httpFilter.interface';
-import { StandardResponseInterface } from '@interfaces/http/standardResponse.interface';
-import { Course } from '@models/course';
-import { Section } from '@models/section';
 import { CourseService } from '@services/course.service';
-import { LoadedArg } from 'src/app/decorators';
+import { LoadedArg } from '../../../../decorators';
 import { SectionService } from '../../../../services/section.service';
 
 @Component({

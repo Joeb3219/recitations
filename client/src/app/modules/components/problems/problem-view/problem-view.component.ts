@@ -1,7 +1,6 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnInit } from '@angular/core';
-import { ProblemDifficulty } from '@enums/problemDifficulty.enum';
-import { Problem } from '@models/problem';
+import { Problem, ProblemDifficulty } from '@dynrec/common';
 
 @Component({
     selector: 'app-problem-view',

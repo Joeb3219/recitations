@@ -1,8 +1,7 @@
 import { HttpParams } from '@angular/common/http';
+import { Course, StandardResponseInterface } from '@dynrec/common';
 import { environment } from '@environment';
 import { HttpFilterInterface } from '@http/httpFilter.interface';
-import { StandardResponseInterface } from '@interfaces/http/standardResponse.interface';
-import { Course } from '@models/course';
 import { Observable } from 'rxjs';
 
 function getFilterParams(filter?: HttpFilterInterface) {

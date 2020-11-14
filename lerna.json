@@ -1,7 +1,11 @@
 {
+  "npmClient": "yarn",
+  "useWorkspaces": true,
+  "private": true,
   "packages": [
     "client",
-    "server"
+    "server",
+    "common"
   ],
   "version": "0.0.0"
 }

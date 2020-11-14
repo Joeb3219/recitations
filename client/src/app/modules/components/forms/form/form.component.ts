@@ -7,7 +7,7 @@ import {
     Output,
     ViewChild,
 } from '@angular/core';
-import { Form, FormFieldUpdated } from '@models/forms/form';
+import { Form, FormFieldUpdated } from '@dynrec/common';
 import Quill from 'quill';
 import { Observable } from 'rxjs';
 

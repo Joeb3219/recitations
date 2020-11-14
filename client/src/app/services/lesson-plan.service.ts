@@ -1,9 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { StandardResponseInterface } from '@interfaces/http/standardResponse.interface';
-import { Course } from '@models/course';
-import { LessonPlan } from '@models/lessonPlan';
-import { LessonPlanStep } from '@models/lessonPlanStep';
+import {
+    Course,
+    LessonPlan,
+    LessonPlanStep,
+    StandardResponseInterface,
+} from '@dynrec/common';
 import {
     DeleteRequest,
     GetRequest,

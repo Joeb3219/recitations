@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { LessonPlanStep } from '@models/lessonPlanStep';
+import { LessonPlanStep } from '@dynrec/common';
 
 @Component({
     selector: 'app-lesson-plan-step-view',

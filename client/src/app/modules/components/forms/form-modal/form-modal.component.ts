@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Form, FormFieldUpdated } from '@models/forms/form';
+import { Form, FormFieldUpdated } from '@dynrec/common';
 import { Observable, Subject } from 'rxjs';
 
 @Component({

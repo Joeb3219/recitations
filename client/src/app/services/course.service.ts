@@ -1,8 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Course, StandardResponseInterface } from '@dynrec/common';
 import { environment } from '@environment';
-import { StandardResponseInterface } from '@interfaces/http/standardResponse.interface';
-import { Course } from '@models/course';
 import { GetRequest, UpsertRequest } from '../decorators';
 
 @Injectable()

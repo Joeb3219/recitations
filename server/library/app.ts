@@ -1,9 +1,4 @@
-import {
-    generateResource,
-    generateRoute,
-    RouteData,
-} from '@helpers/route.helper';
-import { User } from '@models/user';
+import { User } from '@dynrec/common';
 import * as bodyParser from 'body-parser';
 import * as dotenv from 'dotenv';
 import * as Express from 'express';
@@ -12,7 +7,12 @@ import * as jwt from 'jsonwebtoken';
 import 'reflect-metadata';
 import { Connection, createConnection } from 'typeorm';
 import { promisify } from 'util';
-import { ResourceData } from './helpers/route.helper';
+import {
+    generateResource,
+    generateRoute,
+    ResourceData,
+    RouteData,
+} from './helpers/route.helper';
 
 class AppWrapper {
     port = 3000;

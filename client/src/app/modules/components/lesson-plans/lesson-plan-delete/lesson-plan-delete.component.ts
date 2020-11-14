@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { LessonPlan } from '@models/lessonPlan';
+import { LessonPlan } from '@dynrec/common';
 
 @Component({
     selector: 'app-lesson-plan-delete',

@@ -1,20 +1,14 @@
 {
-    "compileOnSave": false,
+    "extends": "../tsconfig.json",
     "compilerOptions": {
+        "declaration": true,
         "strict": true,
         "strictPropertyInitialization": false,
         "baseUrl": "./",
-        "paths": {
-            "@interfaces/*": ["../common/interfaces/*"],
-            "@models/*": ["../common/models/*"],
-            "@controllers/*": ["library/controllers/*"],
-            "@enums/*": ["../common/enums/*"],
-            "@routes/*": ["library/routes/*"],
-            "@helpers/*": ["library/helpers/*"]
-        },
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
-        "allowSyntheticDefaultImports": true
+        "allowSyntheticDefaultImports": true,
+        "typeRoots": ["../node_modules/@types", "node_modules/@types", "@types"]
     },
-    "files": ["library/express.d.ts"]
+    "files": ["./library/express.d.ts"]
 }

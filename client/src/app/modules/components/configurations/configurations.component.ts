@@ -1,12 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Course } from '@models/course';
-import { Form, FormFieldUpdated, FormInput } from '@models/forms/form';
-import { CourseService } from '@services/course.service';
-import { DefaultCourseSettings } from '../../../../../../common/constants/courseSettings.constant';
 import {
+    Course,
     CourseSettingKey,
     CourseSettingSection,
-} from '../../../../../../common/interfaces/courseSetting.interface';
+    DefaultCourseSettings,
+    Form,
+    FormFieldUpdated,
+    FormInput,
+} from '@dynrec/common';
+import { CourseService } from '@services/course.service';
 
 type SettingSection = {
     section: CourseSettingSection;

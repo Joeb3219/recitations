@@ -1,8 +1,7 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { User } from '@dynrec/common';
 import * as Boom from '@hapi/boom';
-import { isAuthenticated } from '@helpers/auth/auth.helper';
-import { User } from '@models/user';
 import { Express, NextFunction } from 'express';
 import { BAD_REQUEST } from 'http-status-codes';
 import { get, isEqual, pickBy, sortBy } from 'lodash';
@@ -15,6 +14,7 @@ import {
     SortableData,
 } from '../decorators/controller.decorator';
 import { HttpRequest, HttpResponse } from '../express';
+import { isAuthenticated } from './auth/auth.helper';
 
 function searchIn<ObjectType extends any = any, TargetType extends any = any>(
     object: ObjectType,

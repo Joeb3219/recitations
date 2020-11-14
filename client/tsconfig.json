@@ -1,34 +1,35 @@
 {
-    "compileOnSave": false,
-    "compilerOptions": {
-        "strict": true,
-        "strictPropertyInitialization": false,
-        "baseUrl": "./",
-        "downlevelIteration": true,
-        "outDir": "./dist/out-tsc",
-        "sourceMap": true,
-        "declaration": false,
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "importHelpers": true,
-        "target": "es2015",
-        "typeRoots": ["node_modules/@types"],
-        "types": ["node"],
-        "lib": ["es2018", "dom"],
-        "esModuleInterop": true,
-        "paths": {
-            "typeorm": ["./shim/typeorm.shim.ts"],
-            "@environment": ["./src/environments/environment"],
-            "@services/*": ["./src/app/services/*"],
-            "@models/*": ["../common/models/*"],
-            "@components/*": ["./src/app/modules/components/*"],
-            "@pages/*": ["./src/app/modules/pages/*"],
-            "@interfaces/*": ["../common/interfaces/*"],
-            "@enums/*": ["../common/enums/*"],
-            "@http/*": ["./src/app/http/*"]
-        }
-    },
-    "types": ["node"]
+  "compileOnSave": false,
+  "compilerOptions": {
+    "strict": true,
+    "strictPropertyInitialization": false,
+    "baseUrl": "./src",
+    "downlevelIteration": true,
+    "outDir": "./dist/out-tsc",
+    "sourceMap": true,
+    "declaration": false,
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "typeRoots": [
+      "../../node_modules/@types",
+      "../node_modules/@types",
+      "@types"
+    ],
+    "types": ["node"],
+    "lib": ["es2018", "dom"],
+    "esModuleInterop": true,
+    "paths": {
+      "typeorm": ["./shim/typeorm.shim.ts"],
+      "@environment": ["./environments/environment"],
+      "@services/*": ["./app/services/*"],
+      "@components/*": ["./app/modules/components/*"],
+      "@decorators": ["./app/modules/decorators"],
+      "@pages/*": ["./app/modules/pages/*"],
+      "@http/*": ["./app/http/*"]
+    }
+  }
 }

@@ -1,9 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Course, Problem, StandardResponseInterface } from '@dynrec/common';
 import { HttpFilterInterface } from '@http/httpFilter.interface';
-import { StandardResponseInterface } from '@interfaces/http/standardResponse.interface';
-import { Course } from '@models/course';
-import { Problem } from '@models/problem';
 import {
     DeleteRequest,
     GetRequest,

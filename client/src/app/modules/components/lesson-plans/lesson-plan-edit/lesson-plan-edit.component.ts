@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Form } from '@models/forms/form';
-import { LessonPlan } from '@models/lessonPlan';
+import { Form, LessonPlan } from '@dynrec/common';
 import { LessonPlanService } from '@services/lesson-plan.service';
 import { get } from 'lodash';
 import { ToastrService } from 'ngx-toastr';

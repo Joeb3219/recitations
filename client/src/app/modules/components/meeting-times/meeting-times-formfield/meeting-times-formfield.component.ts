@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Meetable, MeetingTime } from '@dynrec/common';
 import { faEllipsisV, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
-import { Meetable } from '@models/meetable';
-import { MeetingTime } from '@models/meetingTime';
 
 @Component({
     selector: 'app-meeting-times-formfield',

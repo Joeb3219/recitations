@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { LessonPlan, LessonPlanStep, LessonPlanStepType } from '@dynrec/common';
 import { faEllipsisV, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
-import { LessonPlan } from '@models/lessonPlan';
-import { LessonPlanStep, LessonPlanStepType } from '@models/lessonPlanStep';
 
 @Component({
     selector: 'app-lesson-plan-steps-form',

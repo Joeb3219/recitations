@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Form } from '@models/forms/form';
-import { Section } from '@models/section';
+import { Form, Section } from '@dynrec/common';
 import { SectionService } from '@services/section.service';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';

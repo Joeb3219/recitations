@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { MatTabChangeEvent } from '@angular/material/tabs';
-import { Course } from '@models/course';
-import { Section } from '@models/section';
+import { Course, Section } from '@dynrec/common';
 import { CourseService } from '@services/course.service';
 import { Subject } from 'rxjs';
 import { LoadedArg } from '../../../decorators/input.decorator';

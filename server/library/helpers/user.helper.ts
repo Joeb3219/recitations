@@ -1,3 +1,4 @@
+import * as Boom from '@hapi/boom';
 import * as bcrypt from 'bcrypt';
 import * as jwt from 'jsonwebtoken';
 
@@ -29,6 +30,9 @@ export class UserHelper {
             userid,
             exp: Date.now() + Number(process.env.JWT_EXPIRY_SECONDS),
         };
+
+        if (!process.env.JWT_SECRET)
+            throw Boom.badData('No JWT Secret Provided');
 
         return jwt.sign(data, process.env.JWT_SECRET);
     }

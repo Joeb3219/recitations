@@ -1,6 +1,7 @@
 import 'reflect-metadata';
+import { HttpMethods } from '../helpers/route.helper';
 
-const Request = (method) => (route: string): any => {
+const Request = (method: HttpMethods) => (route: string): any => {
     return function (
         target: any,
         propertyKey: string,

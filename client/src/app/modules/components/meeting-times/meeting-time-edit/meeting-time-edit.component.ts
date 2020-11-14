@@ -1,7 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MeetingType } from '@enums/meetingType.enum';
-import { Form } from '@models/forms/form';
-import { MeetingTime } from '@models/meetingTime';
+import { Form, MeetingTime, MeetingType } from '@dynrec/common';
 import { MeetingTimeService } from '@services/meetingTime.service';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
@@ -98,7 +96,7 @@ export class MeetingTimeEditComponent implements OnInit {
     }
 
     handleClose(): void {
-        this.onClose.emit(null);
+        this.onClose.emit();
     }
 
     async formSubmitted(data: MeetingTime): Promise<void> {

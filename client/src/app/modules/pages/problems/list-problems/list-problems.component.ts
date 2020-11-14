@@ -1,10 +1,8 @@
 import { Component, EventEmitter, ViewEncapsulation } from '@angular/core';
-import { Course } from '@models/course';
-import { Problem } from '@models/problem';
+import { Course, Problem, StandardResponseInterface } from '@dynrec/common';
 import { CourseService } from '@services/course.service';
 import { ProblemService } from '@services/problem.service';
-import { LoadedArg } from 'src/app/decorators';
-import { StandardResponseInterface } from '../../../../../../../common/interfaces/http/standardResponse.interface';
+import { LoadedArg } from '../../../../decorators';
 import { HttpFilterInterface } from '../../../../http/httpFilter.interface';
 import { DatatableColumn } from '../../../components/datatable/datatable.component';
 
@@ -55,9 +53,9 @@ export class ListProblemsComponent {
         },
     ];
 
-    selectedEditProblem: Problem = null;
+    selectedEditProblem?: Problem = undefined;
 
-    selectedDeleteProblem: Problem = null;
+    selectedDeleteProblem?: Problem = undefined;
 
     isEditProblemModalOpen = false;
 
@@ -83,7 +81,7 @@ export class ListProblemsComponent {
     handleCloseEditProblemModal(): void {
         this.isEditProblemModalOpen = false;
 
-        this.selectedEditProblem = null;
+        this.selectedEditProblem = undefined;
 
         this.refreshData.emit();
     }

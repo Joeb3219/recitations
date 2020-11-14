@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { StandardResponseInterface } from '@interfaces/http/standardResponse.interface';
-import { MeetingTime } from '@models/meetingTime';
+import { MeetingTime, StandardResponseInterface } from '@dynrec/common';
 import { UpsertRequest } from '../decorators';
 
 @Injectable()
@@ -12,6 +11,6 @@ export class MeetingTimeService {
     public async upsertMeetingTime(
         meetingtime: MeetingTime
     ): Promise<StandardResponseInterface<MeetingTime>> {
-        return undefined;
+        throw new Error('Decorator Overloading Failed');
     }
 }

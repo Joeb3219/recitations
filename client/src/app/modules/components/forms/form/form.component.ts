@@ -1,12 +1,14 @@
 import {
     Component,
+    ElementRef,
     EventEmitter,
     Input,
     OnInit,
     Output,
     ViewChild,
 } from '@angular/core';
-import { Form, FormFieldUpdated } from '@models/forms/form';
+import { Form, FormFieldUpdated } from '@dynrec/common';
+import Quill from 'quill';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -15,7 +17,7 @@ import { Observable } from 'rxjs';
     styleUrls: ['./form.component.scss'],
 })
 export class FormComponent implements OnInit {
-    @ViewChild('submitButton', { static: false }) submitButton;
+    @ViewChild('submitButton', { static: false }) submitButton: ElementRef;
 
     @Input() form: Form;
 
@@ -23,17 +25,19 @@ export class FormComponent implements OnInit {
 
     @Input() forceSubmit: Observable<boolean>; // If provided, can be used to forcefully submit the form, regardless of user intention
 
-    @Output() onSubmit: EventEmitter<any> = new EventEmitter();
+    @Output() onSubmit: EventEmitter<{
+        [key: string]: unknown;
+    }> = new EventEmitter();
 
     @Output() onFieldChange: EventEmitter<
         FormFieldUpdated
     > = new EventEmitter();
 
-    internalStore = {};
+    internalStore: { [key: string]: unknown } = {};
 
     Array = Array;
 
-    rowLayouts = {};
+    rowLayouts: { [key: string]: number[] } = {};
 
     pageNumber = 0; // which page number of the form are we currently executing?
 
@@ -77,7 +81,7 @@ export class FormComponent implements OnInit {
         this.recomputeLayout();
 
         this.form.inputs.forEach((input) => {
-            this.internalStore[input.name] = input.value;
+            this.internalStore[input.name ?? 'unknown'] = input.value;
         });
     }
 
@@ -94,9 +98,10 @@ export class FormComponent implements OnInit {
                     (group.name === '' && !input.group)
             );
 
-            this.rowLayouts[group.name] = [1]; // By default, we have a 1x1 grid, and will fill it out more as needed
+            this.rowLayouts[group.name ?? 'unknown'] = [1]; // By default, we have a 1x1 grid, and will fill it out more as needed
 
             inputs.forEach((input) => {
+                const groupName = group.name ?? 'unknown';
                 // If there isn't a row or col, we assign 0 to the row and col
                 // This will put it into the first grid position
                 // eslint-disable-next-line no-param-reassign
@@ -106,17 +111,17 @@ export class FormComponent implements OnInit {
 
                 // Now we insert the row if needed
                 // This is done by adding an array of (needed length - current length) filled with 1 to the end of the array.
-                if (input.row + 1 > this.rowLayouts[group.name].length)
-                    this.rowLayouts[group.name] = [
-                        ...this.rowLayouts[group.name],
+                if (input.row + 1 > this.rowLayouts[groupName].length)
+                    this.rowLayouts[groupName] = [
+                        ...this.rowLayouts[groupName],
                         ...Array(
-                            input.row + 1 - this.rowLayouts[group.name].length
+                            input.row + 1 - this.rowLayouts[groupName].length
                         ).fill(1),
                     ];
 
                 // And now we increment the column if needed
-                if (input.col + 1 > this.rowLayouts[group.name][input.row])
-                    this.rowLayouts[group.name][input.row] = input.col + 1;
+                if (input.col + 1 > this.rowLayouts[groupName][input.row])
+                    this.rowLayouts[groupName][input.row] = input.col + 1;
             });
         });
     }
@@ -125,8 +130,8 @@ export class FormComponent implements OnInit {
     // we then can format the content and then set the contents
     // Why not do this beforehand? It seems they don't support it very well.
     // This approach is documented here: https://github.com/KillerCodeMonkey/ngx-quill/issues/77
-    wysiwygCreated(value, editor): void {
-        const contents = editor.clipboard.convert(value);
+    wysiwygCreated(value: string, editor: Quill): void {
+        const contents = editor.clipboard.convert({ html: value });
         editor.setContents(contents);
     }
 
@@ -139,8 +144,11 @@ export class FormComponent implements OnInit {
         if (this.form.pages.length && this.pageNumber > 0) this.pageNumber -= 1;
     }
 
-    fieldUpdatedWysiwyg(name, data): void {
-        const value = (data.target ? data.target.value : data).html;
+    fieldUpdatedWysiwyg(
+        name: string,
+        data: { target?: { value: any } } | any
+    ): void {
+        const value = (data.target?.value ?? data).html;
         this.internalStore[name] = value;
 
         this.onFieldChange.emit({
@@ -149,9 +157,9 @@ export class FormComponent implements OnInit {
         });
     }
 
-    fieldUpdated(name, data): void {
-        const value = data.target ? data.target.value : data;
-        this.internalStore[name] = value;
+    fieldUpdated(name: string, data: { target?: { value: any } } | any): void {
+        const value = data.target?.value ?? data;
+        Object.assign(this.internalStore, { [name]: value });
 
         this.onFieldChange.emit({
             name,

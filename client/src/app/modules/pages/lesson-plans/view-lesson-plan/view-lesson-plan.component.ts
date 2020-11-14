@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { LessonPlan } from '@models/lessonPlan';
+import { LessonPlan } from '@dynrec/common';
 import { LessonPlanService } from '@services/lesson-plan.service';
-import { LoadedArg } from 'src/app/decorators';
+import { LoadedArg } from '../../../../decorators';
 
 @Component({
     selector: 'app-view-lesson-plan',

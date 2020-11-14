@@ -1,9 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { StandardResponseInterface } from '@interfaces/http/standardResponse.interface';
-import { Course } from '@models/course';
-import { LessonPlan } from '@models/lessonPlan';
-import { LessonPlanStep } from '@models/lessonPlanStep';
+import {
+    Course,
+    LessonPlan,
+    LessonPlanStep,
+    StandardResponseInterface,
+} from '@dynrec/common';
 import {
     DeleteRequest,
     GetRequest,
@@ -22,14 +24,14 @@ export class LessonPlanService {
     public async upsertLessonPlan(
         lessonPlan: LessonPlan
     ): Promise<StandardResponseInterface<LessonPlan>> {
-        return undefined;
+        throw new Error('Decorator Overloading Failed');
     }
 
     @UpsertRequest<LessonPlanStep>(LessonPlanStep)
     public async upsertLessonPlanStep(
         lessonPlanStep: LessonPlanStep
     ): Promise<StandardResponseInterface<LessonPlanStep>> {
-        return undefined;
+        throw new Error('Decorator Overloading Failed');
     }
 
     @ListRequest<LessonPlan>(LessonPlan)
@@ -37,20 +39,20 @@ export class LessonPlanService {
         course: Course,
         args: HttpFilterInterface
     ): Promise<StandardResponseInterface<LessonPlan[]>> {
-        return undefined;
+        throw new Error('Decorator Overloading Failed');
     }
 
     @GetRequest<LessonPlan>(LessonPlan)
     public async getLessonPlan(
         lessonPlanID: string
     ): Promise<StandardResponseInterface<LessonPlan>> {
-        return undefined;
+        throw new Error('Decorator Overloading Failed');
     }
 
     @DeleteRequest<LessonPlan>(LessonPlan)
     public async deleteLessonPlan(
         lessonPlanID: string
     ): Promise<StandardResponseInterface<LessonPlan>> {
-        return undefined;
+        throw new Error('Decorator Overloading Failed');
     }
 }

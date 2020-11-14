@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { LessonPlan, LessonPlanStep, LessonPlanStepType } from '@dynrec/common';
 import { faEllipsisV, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
-import { LessonPlan } from '@models/lessonPlan';
-import { LessonPlanStep, LessonPlanStepType } from '@models/lessonPlanStep';
 
 @Component({
     selector: 'app-lesson-plan-steps-form',
@@ -22,7 +21,7 @@ export class LessonPlanStepsFormComponent implements OnInit {
 
     isEditingStep = false;
 
-    selectedEditedStep: LessonPlanStep = null;
+    selectedEditedStep?: LessonPlanStep = undefined;
 
     ngOnInit(): void {
         if (this.lessonPlan && !this.lessonPlan.steps) {
@@ -43,7 +42,7 @@ export class LessonPlanStepsFormComponent implements OnInit {
 
     handleEditStepClosed(): void {
         this.isEditingStep = false;
-        this.selectedEditedStep = null;
+        this.selectedEditedStep = undefined;
         this.onChange.emit(this.lessonPlan.steps);
     }
 

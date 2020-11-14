@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Section } from '@models/section';
-import { User } from '@models/user';
+import { Section, User } from '@dynrec/common';
 import { SectionService } from '@services/section.service';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
@@ -41,6 +40,6 @@ export class SectionDeleteComponent {
     }
 
     getUserFullName(user: User): string {
-        return User.getFullName(user);
+        return user.getFullName();
     }
 }

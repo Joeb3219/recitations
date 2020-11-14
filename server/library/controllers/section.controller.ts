@@ -1,4 +1,4 @@
-import { Section } from '@models/section';
+import { Section } from '@dynrec/common';
 import { get } from 'lodash';
 import { Controller, Resource } from '../decorators';
 import { HttpArgs } from '../helpers/route.helper';

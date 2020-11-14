@@ -1,39 +1,52 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { User } from '@dynrec/common';
 import * as Boom from '@hapi/boom';
-import { isAuthenticated } from '@helpers/auth/auth.helper';
-import { User } from '@models/user';
-import { Request, Response } from 'express';
+import { Express, NextFunction } from 'express';
 import { BAD_REQUEST } from 'http-status-codes';
 import { get, isEqual, pickBy, sortBy } from 'lodash';
 import 'reflect-metadata';
-import { DeleteResult, Repository } from 'typeorm';
-import { BaseEntity } from '../../../client/shim/typeorm.shim';
+import { BaseEntity, DeleteResult, getRepository } from 'typeorm';
 import {
     ResourceAction,
     ResourceArgs,
+    SearchableData,
+    SortableData,
 } from '../decorators/controller.decorator';
+import { HttpRequest, HttpResponse } from '../express';
+import { isAuthenticated } from './auth/auth.helper';
 
-function searchIn(object, key, target) {
+function searchIn<ObjectType extends any = any, TargetType extends any = any>(
+    object: ObjectType,
+    key: string,
+    target: TargetType
+) {
     if (!target || !target.toString()) return true; // Ensure that the search target is actually comparable
 
     const data = get(object, key); // Lodash get, which will find object.path.to.key, for all key = "path.to.key".
     if (!data) return false; // A real search query was provided, but we don't have it for this key.
 
-    if (typeof data === 'string') return data.includes(target);
-    if (typeof data === 'number') return parseInt(target, 10) === data;
+    if (typeof target === 'string' && typeof data === 'string')
+        return data.includes(target);
+    if (typeof target === 'string' && typeof data === 'number')
+        return parseInt(target, 10) === data;
     return isEqual(data, target);
 }
 
 // Finds if any of the provided keys are matches for the provided target.
-function multiKeySearchIn(object, keys, target) {
-    return keys.filter((key) => searchIn(object, key, target)).length;
+function multiKeySearchIn<
+    ObjectType extends any = any,
+    TargetType extends any = any
+>(object: ObjectType, keys: string[], target: TargetType) {
+    return keys.filter((key) =>
+        searchIn<ObjectType, TargetType>(object, key, target)
+    ).length;
 }
 
 function searchResultData(
     results: any | any[],
-    searchableFields,
-    req: Request
+    req: HttpRequest,
+    searchableFields?: SearchableData
 ) {
     if (!results || !Array.isArray(results) || !results.length) return results; // oops, this isn't an array afterall
     if (!searchableFields || !searchableFields.length) return results; // oops, no fields were passed in to search by.
@@ -45,9 +58,13 @@ function searchResultData(
     );
 }
 
-function sortResultData(results: any | any[], sortableFields, req: Request) {
+function sortResultData(
+    results: any | any[],
+    req: HttpRequest,
+    sortableFields?: SortableData
+) {
     if (!results || !Array.isArray(results) || !results.length) return results; // oops, this isn't an array afterall
-    if (!sortableFields || !sortableFields.length) return results; // oops, no fields were passed in to search by.
+    if (!sortableFields) return results; // oops, no fields were passed in to search by.
 
     const { sort, sortDirection } = req.query;
 
@@ -69,49 +86,63 @@ function sortResultData(results: any | any[], sortableFields, req: Request) {
     return sorted;
 }
 
-function paginateResultData(results: any | any[], req: Request) {
+function paginateResultData(
+    results: any | any[],
+    req: HttpRequest<any, { limit: string; offset: string }>
+) {
     if (!results || !Array.isArray(results) || !results.length) return results; // oops, this isn't an array afterall
 
-    let { limit, offset } = req.query;
+    const { limit, offset } = req.query;
 
-    limit = parseInt(limit, 10) || 25;
-    offset = parseInt(offset, 10) || 0;
+    const parsedLimit = parseInt(limit, 10) || 25;
+    const parsedOffset = parseInt(offset, 10) || 0;
 
-    return limit < 0 ? results : results.slice(offset, offset + limit + 1);
+    return parsedLimit < 0
+        ? results
+        : results.slice(parsedOffset, parsedOffset + parsedLimit + 1);
 }
 
-export interface HttpArgs<ResourceModel extends BaseEntity> {
-    body: Partial<ResourceModel>;
-    repo: (T) => Repository<typeof T>;
+export interface HttpArgs<
+    BodyType extends any = any,
+    ParamsType extends any = any
+> {
+    body: Partial<BodyType>;
     currentUser: User;
-    params: any;
+    params: Omit<any, 'courseID'> & { courseID: string } & ParamsType;
 }
+
+export type HttpMethods = 'put' | 'post' | 'get' | 'delete';
+export type ControllerFunction<T extends BaseEntity> = (
+    args: HttpArgs<T>
+) => Promise<T> | Promise<T[]> | Promise<DeleteResult>;
 
 function httpMiddleware(
-    target,
-    method,
-    route,
-    { sortableFields, searchableFields }
+    target: ControllerFunction<any>,
+    method: HttpMethods,
+    route: string,
+    {
+        sortableFields,
+        searchableFields,
+    }: { sortableFields?: SortableData; searchableFields?: SearchableData }
 ) {
     console.log(`Generating ${method} ${route}`);
-    return async (req: Request, res: Response) => {
+    return async (req: HttpRequest, res: HttpResponse) => {
         try {
             const result = await target({
                 body: req.body,
-                repo: res.locals.repo,
                 currentUser: res.locals.currentUser,
                 params: req.params,
-            } as HttpArgs<unknown>);
+            } as HttpArgs<any>);
 
             const searchedResult = searchResultData(
                 result,
-                searchableFields,
-                req
+                req,
+                searchableFields
             );
             const sortedResult = sortResultData(
                 searchedResult,
-                sortableFields,
-                req
+                req,
+                sortableFields
             );
 
             // and now we paginate the data
@@ -149,20 +180,22 @@ function httpMiddleware(
 }
 
 export function generateUpdateResource<T extends BaseEntity>(
-    resourceClass: BaseEntity,
+    resourceClass: new () => T,
     resourceName: string,
-    dataFn: (HttpArgs) => unknown
+    dataFn: (args: HttpArgs<T>) => Partial<T>
 ) {
     return async (args: HttpArgs<T>): Promise<T> => {
-        const { params, repo } = args;
+        const { params } = args;
         const id = params[`${resourceName}ID`];
 
         const updateableData = pickBy(await dataFn(args), (item) => {
-            return item !== 'undefined' && item !== undefined;
+            return item !== undefined;
         });
 
         // first, we find the resource that is referenced by the given ID
-        let resource = await repo(resourceClass).findOne({ id });
+        let resource = await getRepository<T>(resourceClass).findOne({
+            where: { id },
+        });
 
         // no resource found, 404 it out
         if (!resource) throw Boom.notFound(`${resourceName} not found`);
@@ -170,20 +203,22 @@ export function generateUpdateResource<T extends BaseEntity>(
         resource = Object.assign(resource, updateableData);
 
         // and now we can update the resource
-        return repo(resourceClass).save(resource);
+        return getRepository<T>(resourceClass).save(resource as any);
     };
 }
 
 export function generateGetResource<T extends BaseEntity>(
-    resourceClass: BaseEntity,
+    resourceClass: new () => T,
     resourceName: string
 ) {
     return async (args: HttpArgs<T>): Promise<T> => {
-        const { params, repo } = args;
+        const { params } = args;
         const id = params[`${resourceName}ID`];
 
         // first, we find the resource that is referenced by the given ID
-        const resource = await repo(resourceClass).findOne({ id });
+        const resource = await getRepository<T>(resourceClass).findOne({
+            where: { id },
+        });
 
         // no resource found, 404 it out
         if (!resource) throw Boom.notFound(`${resourceName} not found`);
@@ -192,62 +227,64 @@ export function generateGetResource<T extends BaseEntity>(
     };
 }
 
-export function generateDeleteResource<T extends BaseEntity>(
-    resourceClass: BaseEntity,
+export function generateDeleteResource<T extends BaseEntity & { id: string }>(
+    resourceClass: new () => T,
     resourceName: string
 ) {
     return async (args: HttpArgs<T>): Promise<DeleteResult> => {
-        const { params, repo } = args;
+        const { params } = args;
         const id = params[`${resourceName}ID`];
 
         // first, we find the resource that is referenced by the given ID
-        const resource = await repo(resourceClass).findOne({ id });
+        const resource = await getRepository<T>(resourceClass).findOne({
+            where: { id },
+        });
 
         // no resource found, 404 it out
         if (!resource) throw Boom.notFound(`${resourceName} not found`);
 
-        return repo(resourceClass).delete({ id });
-
-        return resource;
+        return getRepository<T>(resourceClass).delete({ id });
     };
 }
 
 export function generateCreateResource<T extends BaseEntity>(
-    resourceClass: BaseEntity,
-    dataFn: (HttpArgs) => unknown
+    resourceClass: new () => T,
+    dataFn: (args: HttpArgs<T>) => Partial<T>
 ) {
     return async (args: HttpArgs<T>): Promise<T> => {
-        const { repo } = args;
-
         const data = pickBy(await dataFn(args), (item) => {
-            return item !== 'undefined' && item !== undefined;
+            return !!item;
         });
 
-        return repo(resourceClass).save(data);
+        return getRepository<T>(resourceClass).save(data as any);
     };
 }
 
 export function generateListResource<T extends BaseEntity>(
-    resourceClass: BaseEntity
+    resourceClass: new () => T
 ) {
     return async (args: HttpArgs<T>): Promise<T[]> => {
-        const { repo, params } = args;
+        const { params } = args;
         const { courseID } = params;
 
-        return repo(resourceClass).find({ course: courseID });
+        return getRepository<T>(resourceClass).find({
+            where: { course: courseID },
+        });
     };
 }
 
-export function generateResource(
+export type ResourceData<T extends BaseEntity> = {
+    target: any;
+    resourceName: string;
+    resourceModel: new () => T;
+    args: ResourceArgs;
+    generatedFunctions: ResourceAction[];
+};
+
+export function generateResource<T extends BaseEntity & { id: string }>(
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     app: any,
-    data: {
-        target: any;
-        resourceName: string;
-        resourceModel: new () => BaseEntity;
-        args: ResourceArgs;
-        generatedFunctions: ResourceAction[];
-    },
+    data: ResourceData<T>,
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     controller: any
 ): void {
@@ -255,16 +292,25 @@ export function generateResource(
     const { sortable, searchable, dataDict } = args;
 
     const generateInternalRoute = (
-        controller,
-        app,
-        fn,
-        route,
-        method,
-        args: { searchableFields; sortableFields }
+        controller: new () => unknown,
+        app: Express,
+        fn: ControllerFunction<T>,
+        route: string,
+        method: HttpMethods,
+        args: {
+            searchableFields?: SearchableData;
+            sortableFields?: SortableData<T>;
+        }
     ) => {
         const providedFunction = fn;
 
-        const middlewares = [isAuthenticated];
+        const middlewares: [
+            (
+                req: HttpRequest,
+                res: HttpResponse,
+                next: NextFunction
+            ) => Promise<HttpResponse> | Promise<any>
+        ] = [isAuthenticated];
         middlewares.push(httpMiddleware(providedFunction, method, route, args));
 
         app.route(route)[method](...middlewares);
@@ -274,11 +320,7 @@ export function generateResource(
         generateInternalRoute(
             controller,
             app,
-            generateUpdateResource<typeof resourceModel>(
-                resourceModel,
-                resourceName,
-                dataDict
-            ),
+            generateUpdateResource<T>(resourceModel, resourceName, dataDict),
             `/${resourceName}/:${resourceName}ID`,
             `put`,
             { searchableFields: undefined, sortableFields: undefined }
@@ -289,10 +331,7 @@ export function generateResource(
         generateInternalRoute(
             controller,
             app,
-            generateGetResource<typeof resourceModel>(
-                resourceModel,
-                resourceName
-            ),
+            generateGetResource<T>(resourceModel, resourceName),
             `/${resourceName}/:${resourceName}ID`,
             `get`,
             { searchableFields: undefined, sortableFields: undefined }
@@ -314,7 +353,7 @@ export function generateResource(
         generateInternalRoute(
             controller,
             app,
-            generateListResource<typeof resourceModel>(resourceModel),
+            generateListResource<T>(resourceModel),
             `/course/:courseID/${resourceName}s`,
             `get`,
             { searchableFields: searchable, sortableFields: sortable }
@@ -325,10 +364,7 @@ export function generateResource(
         generateInternalRoute(
             controller,
             app,
-            generateCreateResource<typeof resourceModel>(
-                resourceModel,
-                dataDict
-            ),
+            generateCreateResource<T>(resourceModel, dataDict),
             `/${resourceName}`,
             `post`,
             { searchableFields: undefined, sortableFields: undefined }
@@ -336,10 +372,17 @@ export function generateResource(
     }
 }
 
+export type RouteData = {
+    target: any;
+    method: HttpMethods;
+    route: string;
+    propertyKey: string;
+};
+
 export function generateRoute(
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     app: any,
-    data: { target: any; method: string; route: string; propertyKey: string },
+    data: RouteData,
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
     controller: any
 ): void {

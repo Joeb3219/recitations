@@ -1,20 +1,25 @@
-import { generateResource, generateRoute } from '@helpers/route.helper';
-import { User } from '@models/user';
+import { User } from '@dynrec/common';
 import * as bodyParser from 'body-parser';
 import * as dotenv from 'dotenv';
-import * as express from 'express';
+import * as Express from 'express';
 import * as fs from 'fs';
 import * as jwt from 'jsonwebtoken';
 import 'reflect-metadata';
-import { createConnection, getConnection } from 'typeorm';
+import { Connection, createConnection } from 'typeorm';
 import { promisify } from 'util';
+import {
+    generateResource,
+    generateRoute,
+    ResourceData,
+    RouteData,
+} from './helpers/route.helper';
 
 class AppWrapper {
     port = 3000;
 
-    app = null;
+    app?: Express.Express = undefined;
 
-    connection = null;
+    connection?: Connection;
 
     constructor() {
         this.init().then(() => {
@@ -33,7 +38,7 @@ class AppWrapper {
     }
 
     async listen() {
-        this.app.listen(this.port, () =>
+        this.app?.listen(this.port, () =>
             // eslint-disable-next-line no-console
             console.log(
                 `Dynamic Recitation backend listening on port ${this.port}!`
@@ -42,7 +47,7 @@ class AppWrapper {
     }
 
     async initAccessControl() {
-        this.app.use(function (req, res, next) {
+        this.app?.use(function (req, res, next) {
             res.setHeader('Access-Control-Allow-Origin', '*');
             res.setHeader(
                 'Access-Control-Allow-Methods',
@@ -52,13 +57,12 @@ class AppWrapper {
                 'Access-Control-Allow-Headers',
                 'Content-Type, Authorization'
             );
-            res.setHeader('Access-Control-Allow-Credentials', true);
             next();
         });
     }
 
     async registerControllers() {
-        this.app.get('/', (req, res) => res.send('Hello World'));
+        this.app?.get('/', (req, res) => res.send('Hello World'));
 
         // Now we go through all of the controllers in our system, and register any routes they may have
         const readDir = promisify(fs.readdir);
@@ -93,10 +97,10 @@ class AppWrapper {
                     Reflect.getMetadata('routes', controllerInstance) || [];
                 const resources =
                     Reflect.getMetadata('resources', controller) || [];
-                routes.forEach((data) => {
+                routes.forEach((data: RouteData) => {
                     generateRoute(this.app, data, controllerInstance);
                 });
-                resources.forEach((data) => {
+                resources.forEach((data: ResourceData<any>) => {
                     generateResource(this.app, data, controllerInstance);
                 });
             });
@@ -104,42 +108,53 @@ class AppWrapper {
     }
 
     async initJWTParser() {
-        this.app.use(async function (req, res, next) {
-            const headers = req.headers;
+        this.app?.use(
+            async (
+                req: Express.Request,
+                res: Express.Response,
+                next: Express.NextFunction
+            ) => {
+                const headers = req.headers;
 
-            if (headers?.authorization) {
-                const auth = headers.authorization;
+                if (headers?.authorization) {
+                    const auth = headers.authorization;
 
-                // The user passed us authorization headers
-                // The typical format for this header is: Bearer token
-                // thus, we will split the token to remove the "Bearer " string, and assuming there is a right piece,
-                // grab out just the token
-                const parts = auth.split('Bearer ');
+                    // The user passed us authorization headers
+                    // The typical format for this header is: Bearer token
+                    // thus, we will split the token to remove the "Bearer " string, and assuming there is a right piece,
+                    // grab out just the token
+                    const parts = auth.split('Bearer ');
 
-                if (parts.length === 2) {
-                    const token = parts[1];
+                    if (parts.length === 2) {
+                        const token = parts[1];
 
-                    if (token) {
-                        try {
-                            // now we decode the token!
-                            const decoded = jwt.verify(
-                                token,
-                                process.env.JWT_SECRET
-                            );
-                            if (decoded?.userid) {
-                                res.locals.currentUser = await res.locals
-                                    .repo(User)
-                                    .findOne({ id: decoded.userid });
+                        if (token) {
+                            try {
+                                if (!process.env.JWT_SECRET)
+                                    throw new Error('No JWT Secret specified');
+                                // now we decode the token!
+                                const decoded = jwt.verify(
+                                    token,
+                                    process.env.JWT_SECRET
+                                );
+                                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                if ((decoded as any)?.userid) {
+                                    res.locals.currentUser = await User
+                                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                        .findOne({
+                                            id: (decoded as any).userid,
+                                        });
+                                }
+                            } catch (err) {
+                                // eslint-disable-next-line no-console
+                                console.error(err);
                             }
-                        } catch (err) {
-                            // eslint-disable-next-line no-console
-                            console.error(err);
                         }
                     }
                 }
+                next();
             }
-            next();
-        });
+        );
     }
 
     async initDB() {
@@ -147,15 +162,9 @@ class AppWrapper {
     }
 
     async initExpress() {
-        this.app = express();
+        this.app = Express();
         this.app.use(bodyParser.urlencoded({ extended: false }));
         this.app.use(bodyParser.json());
-        this.app.use(async function (req, res, next) {
-            res.locals.repo = (entity) => {
-                return getConnection().getRepository(entity);
-            };
-            next();
-        });
     }
 }
 

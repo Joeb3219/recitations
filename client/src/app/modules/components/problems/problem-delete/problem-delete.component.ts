@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Problem } from '@models/problem';
+import { Problem } from '@dynrec/common';
 import { ProblemService } from '@services/problem.service';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';

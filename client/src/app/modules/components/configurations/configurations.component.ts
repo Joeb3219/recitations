@@ -1,12 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Course } from '@models/course';
-import { Form, FormFieldUpdated, FormInput } from '@models/forms/form';
-import { CourseService } from '@services/course.service';
-import { DefaultCourseSettings } from '../../../../../../common/constants/courseSettings.constant';
 import {
+    Course,
     CourseSettingKey,
     CourseSettingSection,
-} from '../../../../../../common/interfaces/courseSetting.interface';
+    DefaultCourseSettings,
+    Form,
+    FormFieldUpdated,
+    FormInput,
+} from '@dynrec/common';
+import { CourseService } from '@services/course.service';
 
 type SettingSection = {
     section: CourseSettingSection;
@@ -43,13 +45,10 @@ export class ConfigurationsComponent implements OnInit {
 
         const mergedSections = this.course.getMergedSettings();
 
-        form.inputs = Object.keys(mergedSections)
-            .filter(
-                (key: CourseSettingKey) =>
-                    mergedSections[key].section === section.section
-            )
+        form.inputs = (Object.keys(mergedSections) as CourseSettingKey[])
+            .filter((key) => mergedSections[key].section === section.section)
             .map(
-                (key: CourseSettingKey): FormInput => {
+                (key): FormInput => {
                     const input = mergedSections[key];
                     const inputType =
                         // eslint-disable-next-line no-nested-ternary

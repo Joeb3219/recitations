@@ -13,7 +13,7 @@ export const Searchable = (searchPaths: any[]): any => {
 
 export const Sortable = (
     dataDictionary: any,
-    defaultSortKey: string = undefined,
+    defaultSortKey: string | undefined = undefined,
     defaultSortDir = 'desc'
 ): any => {
     return function (

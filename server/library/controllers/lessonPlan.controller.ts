@@ -1,5 +1,4 @@
-import { LessonPlan } from '@models/lessonPlan';
-import { LessonPlanStep } from '@models/lessonPlanStep';
+import { LessonPlan, LessonPlanStep } from '@dynrec/common';
 import { get } from 'lodash';
 import { Controller, Resource } from '../decorators';
 import { HttpArgs } from '../helpers/route.helper';

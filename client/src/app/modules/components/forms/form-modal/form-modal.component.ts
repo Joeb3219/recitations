@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Form, FormFieldUpdated } from '@models/forms/form';
+import { Form, FormFieldUpdated } from '@dynrec/common';
 import { Observable, Subject } from 'rxjs';
 
 @Component({
@@ -20,7 +20,9 @@ export class FormModalComponent {
 
     @Input() modalSize = 'lg';
 
-    @Output() onSubmit: EventEmitter<any> = new EventEmitter();
+    @Output() onSubmit: EventEmitter<{
+        [key: string]: unknown;
+    }> = new EventEmitter();
 
     @Output() onClose: EventEmitter<void> = new EventEmitter();
 
@@ -31,12 +33,12 @@ export class FormModalComponent {
 
     forceFormSubmit: Subject<any> = new Subject<any>();
 
-    handleOnSubmit(val): void {
+    handleOnSubmit(val: { [key: string]: unknown }): void {
         this.onSubmit.emit(val);
     }
 
     handleOnClose(): void {
-        this.onClose.emit(null);
+        this.onClose.emit();
     }
 
     handleOnFieldChange(val: FormFieldUpdated): void {

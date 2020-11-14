@@ -1,13 +1,13 @@
 import {
-    ViewChild,
     Component,
-    OnInit,
-    Input,
-    Output,
     EventEmitter,
+    Input,
+    OnInit,
+    Output,
+    ViewChild,
 } from '@angular/core';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { Observable } from 'rxjs';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'app-modal',
@@ -15,9 +15,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
     styleUrls: ['./modal.component.scss'],
 })
 export class ModalComponent implements OnInit {
-    @ViewChild('modal', { static: false }) modal;
+    @ViewChild('modal', { static: false }) modal: NgbModal;
 
-    openedModal;
+    openedModal?: NgbModalRef;
 
     @Output() onClose: EventEmitter<any> = new EventEmitter<any>();
 

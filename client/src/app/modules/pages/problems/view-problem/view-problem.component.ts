@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { Problem } from '@models/problem';
+import { Problem } from '@dynrec/common';
 import { ProblemService } from '@services/problem.service';
-import { LoadedArg } from 'src/app/decorators';
+import { LoadedArg } from '../../../../decorators';
 
 @Component({
     selector: 'app-view-problem',

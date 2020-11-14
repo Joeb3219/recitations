@@ -1,12 +1,10 @@
 import { Component, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { DatatableColumn } from '@components/datatable/datatable.component';
+import { Course, LessonPlan, StandardResponseInterface } from '@dynrec/common';
 import { HttpFilterInterface } from '@http/httpFilter.interface';
-import { StandardResponseInterface } from '@interfaces/http/standardResponse.interface';
-import { Course } from '@models/course';
-import { LessonPlan } from '@models/lessonPlan';
 import { CourseService } from '@services/course.service';
 import { LessonPlanService } from '@services/lesson-plan.service';
-import { LoadedArg } from 'src/app/decorators';
+import { LoadedArg } from '../../../../decorators';
 
 @Component({
     selector: 'app-list-lesson-plans',
@@ -48,7 +46,7 @@ export class ListLessonPlansComponent {
         },
     ];
 
-    selectedLessonPlan: LessonPlan = undefined;
+    selectedLessonPlan?: LessonPlan = undefined;
 
     refreshData: EventEmitter<void> = new EventEmitter();
 

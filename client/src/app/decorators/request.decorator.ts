@@ -1,15 +1,17 @@
 import { HttpParams } from '@angular/common/http';
+import { Course, StandardResponseInterface } from '@dynrec/common';
 import { environment } from '@environment';
 import { HttpFilterInterface } from '@http/httpFilter.interface';
-import { StandardResponseInterface } from '@interfaces/http/standardResponse.interface';
-import { Course } from '@models/course';
+import { Observable } from 'rxjs';
 
-function getFilterParams(filter: HttpFilterInterface) {
+function getFilterParams(filter?: HttpFilterInterface) {
     let params = new HttpParams();
     if (filter) {
-        params = Object.keys(filter).reduce(
+        params = (Object.keys(filter) as (keyof HttpFilterInterface)[]).reduce(
             (prev, curr) =>
-                filter[curr] ? prev.append(curr, filter[curr]) : prev,
+                filter[curr] !== undefined
+                    ? prev.append(curr, filter[curr]?.toString() ?? '')
+                    : prev,
             params
         );
     }
@@ -17,7 +19,7 @@ function getFilterParams(filter: HttpFilterInterface) {
     return params;
 }
 
-function getResolvedRoute(route, mappings) {
+function getResolvedRoute(route: string, mappings: { [key: string]: string }) {
     Object.keys(mappings).forEach((key) => {
         // eslint-disable-next-line no-param-reassign
         route = route.replace(key, mappings[key]);
@@ -50,7 +52,7 @@ export function ListRequest<ResourceModel>(
             const params = getFilterParams(filter);
 
             return new Promise((resolve, reject) => {
-                this.http.get(url, { params }).subscribe(
+                (this as any).http.get(url, { params }).subscribe(
                     (result: StandardResponseInterface<ResourceModel[]>) => {
                         if (result) {
                             // eslint-disable-next-line no-param-reassign
@@ -60,7 +62,7 @@ export function ListRequest<ResourceModel>(
                             resolve(result);
                         } else reject(new Error('No result returned'));
                     },
-                    (err) => {
+                    (err: Error) => {
                         reject(err);
                     }
                 );
@@ -97,7 +99,7 @@ export function GetRequest<ResourceModel>(
             });
 
             return new Promise((resolve, reject) => {
-                this.http.get(url).subscribe(
+                (this as any).http.get(url).subscribe(
                     (result: StandardResponseInterface<ResourceModel>) => {
                         if (result) {
                             // eslint-disable-next-line no-param-reassign
@@ -105,7 +107,7 @@ export function GetRequest<ResourceModel>(
                             resolve(result);
                         } else reject(new Error('No result returned'));
                     },
-                    (err) => {
+                    (err: Error) => {
                         reject(err);
                     }
                 );
@@ -116,7 +118,7 @@ export function GetRequest<ResourceModel>(
     };
 }
 
-export function UpsertRequest<ResourceModel extends { id?: string }>(
+export function UpsertRequest<ResourceModel extends { id: string }>(
     BaseEntity: new (data: Partial<ResourceModel>) => ResourceModel,
     route?: string
 ): any {
@@ -141,10 +143,10 @@ export function UpsertRequest<ResourceModel extends { id?: string }>(
                 ':resourceid': resource.id,
             });
 
-            let action;
+            let action: Observable<StandardResponseInterface<ResourceModel>>;
 
-            if (resource.id) action = this.http.put(url, resource);
-            else action = this.http.post(url, resource);
+            if (resource.id) action = (this as any).http.put(url, resource);
+            else action = (this as any).http.post(url, resource);
 
             return new Promise((resolve, reject) => {
                 action.subscribe(
@@ -155,7 +157,7 @@ export function UpsertRequest<ResourceModel extends { id?: string }>(
                             resolve(result);
                         } else reject(new Error('No result returned'));
                     },
-                    (err) => {
+                    (err: Error) => {
                         reject(err);
                     }
                 );
@@ -187,12 +189,12 @@ export function DeleteRequest<ResourceModel>(
             });
 
             return new Promise((resolve, reject) => {
-                this.http.delete(url).subscribe(
+                (this as any).http.delete(url).subscribe(
                     (result: StandardResponseInterface<void>) => {
                         if (result) resolve(result);
                         else reject(new Error('No result returned'));
                     },
-                    (err) => {
+                    (err: Error) => {
                         reject(err);
                     }
                 );

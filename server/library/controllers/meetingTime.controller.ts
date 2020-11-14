@@ -1,4 +1,4 @@
-import { MeetingTime } from '@models/meetingTime';
+import { MeetingTime } from '@dynrec/common';
 import { Controller, Resource } from '../decorators';
 import { HttpArgs } from '../helpers/route.helper';
 

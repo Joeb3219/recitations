@@ -1,8 +1,6 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, Input, OnInit } from '@angular/core';
-import { ProblemDifficulty } from '@enums/problemDifficulty.enum';
-import { Problem } from '@models/problem';
-import { User } from '@models/user';
+import { Problem, ProblemDifficulty } from '@dynrec/common';
 
 @Component({
     selector: 'app-problem-view',
@@ -26,14 +24,14 @@ export class ProblemViewComponent implements OnInit {
 
     @Input() problem: Problem;
 
-    userFullName: string;
+    userFullName?: string;
 
     showSolution = false;
 
     solutionButtonText = 'Show Solution';
 
     ngOnInit(): void {
-        this.userFullName = User.getFullName(this.problem.creator);
+        this.userFullName = this.problem.creator?.getFullName();
     }
 
     get problemDifficulty() {

@@ -1,0 +1,16 @@
+{
+    "compileOnSave": false,
+    "compilerOptions": {
+        "strict": true,
+        "strictPropertyInitialization": false,
+        "downlevelIteration": true,
+        "sourceMap": true,
+        "outDir": "./dist",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "importHelpers": true,
+        "esModuleInterop": true,
+        "baseUrl": "./src"
+    },
+    "exclude": ["dist", "node_modules"]
+}

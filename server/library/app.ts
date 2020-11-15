@@ -2,11 +2,10 @@ import { User } from '@dynrec/common';
 import * as bodyParser from 'body-parser';
 import * as dotenv from 'dotenv';
 import * as Express from 'express';
-import * as fs from 'fs';
 import * as jwt from 'jsonwebtoken';
 import 'reflect-metadata';
 import { Connection, createConnection } from 'typeorm';
-import { promisify } from 'util';
+import { AllControllers } from './controllers';
 import {
     generateResource,
     generateRoute,
@@ -64,45 +63,24 @@ class AppWrapper {
     async registerControllers() {
         this.app?.get('/', (req, res) => res.send('Hello World'));
 
-        // Now we go through all of the controllers in our system, and register any routes they may have
-        const readDir = promisify(fs.readdir);
-        const potentialControllers = await readDir('./library/controllers/');
-        const allowedAffixes = ['.ts', '.js'];
+        AllControllers.forEach((controller) => {
+            const metadata = Reflect.getMetadata('controllers', controller)
+                ? controller
+                : undefined;
 
-        potentialControllers.forEach((fileName) => {
-            const affix = allowedAffixes.find((aff) => fileName.endsWith(aff)); // we find which affix this controller ends with
-            if (!affix) return; // this file doesn't end with one of the approved affixes, and thus is ignored
+            if (!metadata) return;
 
-            // First we require the file
-            // controllerFile will now contain a list of every exported module from the file
-            // eslint-disable-next-line global-require, @typescript-eslint/no-var-requires
-            const controllerFile = require('./controllers/' +
-                fileName.replace(affix, ''));
-            // We now can iterate through the exports and see which are actually classes
-            const controllers = Object.keys(controllerFile)
-                .map((name) => {
-                    // Grab the variable itself being exported
-                    const exportedVariable = controllerFile[name];
-                    return Reflect.getMetadata('controllers', exportedVariable)
-                        ? exportedVariable
-                        : undefined;
-                })
-                .filter((controller) => controller); // Ensure only items that are non-null exist
-
-            // And now we can go through and register any functions declared within these controllers
-            controllers.forEach((controller) => {
-                // eslint-disable-next-line new-cap
-                const controllerInstance = new controller();
-                const routes =
-                    Reflect.getMetadata('routes', controllerInstance) || [];
-                const resources =
-                    Reflect.getMetadata('resources', controller) || [];
-                routes.forEach((data: RouteData) => {
-                    generateRoute(this.app, data, controllerInstance);
-                });
-                resources.forEach((data: ResourceData<any>) => {
-                    generateResource(this.app, data, controllerInstance);
-                });
+            // eslint-disable-next-line new-cap
+            const controllerInstance = new controller();
+            const routes =
+                Reflect.getMetadata('routes', controllerInstance) || [];
+            const resources =
+                Reflect.getMetadata('resources', controller) || [];
+            routes.forEach((data: RouteData) => {
+                generateRoute(this.app, data, controllerInstance);
+            });
+            resources.forEach((data: ResourceData<any>) => {
+                generateResource(this.app, data, controllerInstance);
             });
         });
     }

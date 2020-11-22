@@ -1,12 +1,4 @@
-import {
-    Component,
-    ElementRef,
-    EventEmitter,
-    Input,
-    OnInit,
-    Output,
-    ViewChild,
-} from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Form, FormFieldUpdated } from '@dynrec/common';
 import Quill from 'quill';
 import { Observable } from 'rxjs';
@@ -29,9 +21,7 @@ export class FormComponent implements OnInit {
         [key: string]: unknown;
     }> = new EventEmitter();
 
-    @Output() onFieldChange: EventEmitter<
-        FormFieldUpdated
-    > = new EventEmitter();
+    @Output() onFieldChange: EventEmitter<FormFieldUpdated> = new EventEmitter();
 
     internalStore: { [key: string]: unknown } = {};
 
@@ -80,7 +70,8 @@ export class FormComponent implements OnInit {
 
         this.recomputeLayout();
 
-        this.form.inputs.forEach((input) => {
+        // First, we load in the defaults
+        this.form.inputs.forEach(input => {
             this.internalStore[input.name ?? 'unknown'] = input.value;
         });
     }
@@ -90,17 +81,15 @@ export class FormComponent implements OnInit {
         this.rowLayouts = {};
 
         // Each group will have its own layouts per group
-        this.form.inputGroups.forEach((group) => {
+        this.form.inputGroups.forEach(group => {
             // Find all inputs on this page
             const inputs = this.form.inputs.filter(
-                (input) =>
-                    input.group === group.name ||
-                    (group.name === '' && !input.group)
+                input => input.group === group.name || (group.name === '' && !input.group)
             );
 
             this.rowLayouts[group.name ?? 'unknown'] = [1]; // By default, we have a 1x1 grid, and will fill it out more as needed
 
-            inputs.forEach((input) => {
+            inputs.forEach(input => {
                 const groupName = group.name ?? 'unknown';
                 // If there isn't a row or col, we assign 0 to the row and col
                 // This will put it into the first grid position
@@ -114,9 +103,7 @@ export class FormComponent implements OnInit {
                 if (input.row + 1 > this.rowLayouts[groupName].length)
                     this.rowLayouts[groupName] = [
                         ...this.rowLayouts[groupName],
-                        ...Array(
-                            input.row + 1 - this.rowLayouts[groupName].length
-                        ).fill(1),
+                        ...Array(input.row + 1 - this.rowLayouts[groupName].length).fill(1),
                     ];
 
                 // And now we increment the column if needed
@@ -144,10 +131,7 @@ export class FormComponent implements OnInit {
         if (this.form.pages.length && this.pageNumber > 0) this.pageNumber -= 1;
     }
 
-    fieldUpdatedWysiwyg(
-        name: string,
-        data: { target?: { value: any } } | any
-    ): void {
+    fieldUpdatedWysiwyg(name: string, data: { target?: { value: any } } | any): void {
         const value = (data.target?.value ?? data).html;
         this.internalStore[name] = value;
 
@@ -159,7 +143,11 @@ export class FormComponent implements OnInit {
 
     fieldUpdated(name: string, data: { target?: { value: any } } | any): void {
         const value = data.target?.value ?? data;
-        Object.assign(this.internalStore, { [name]: value });
+
+        // This is hella hacky, we need a better solution to this later.
+        const resolvedValue = value === '_INVALID_OPTION_' ? undefined : value;
+
+        Object.assign(this.internalStore, { [name]: resolvedValue });
 
         this.onFieldChange.emit({
             name,

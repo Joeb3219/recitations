@@ -36,7 +36,7 @@ export class ManualLoginFormComponent implements OnInit {
 
     formSubmitted(data: { username: string; password: string }): void {
         const { username, password } = data;
-        this.userService.signin(username, password).subscribe((result) => {
+        this.userService.signin(username, password).subscribe(result => {
             if (result?.data) {
                 this.onSuccessfulLogin.emit(result.data);
             }

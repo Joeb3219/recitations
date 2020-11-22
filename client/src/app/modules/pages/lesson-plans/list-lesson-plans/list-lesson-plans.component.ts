@@ -58,9 +58,7 @@ export class ListLessonPlansComponent {
         this.fetchLessonPlans = this.fetchLessonPlans.bind(this);
     }
 
-    async fetchLessonPlans(
-        args: HttpFilterInterface
-    ): Promise<StandardResponseInterface<LessonPlan[]>> {
+    async fetchLessonPlans(args: HttpFilterInterface): Promise<StandardResponseInterface<LessonPlan[]>> {
         return this.lessonPlanService.getCourseLessonPlans(this.course, args);
     }
 

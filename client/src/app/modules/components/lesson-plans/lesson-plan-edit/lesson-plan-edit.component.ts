@@ -21,10 +21,7 @@ export class LessonPlanEditComponent implements OnInit {
 
     form: Form;
 
-    constructor(
-        private lessonPlanService: LessonPlanService,
-        private toastr: ToastrService
-    ) {}
+    constructor(private lessonPlanService: LessonPlanService, private toastr: ToastrService) {}
 
     ngOnInit(): void {
         this.generateForm();
@@ -77,16 +74,10 @@ export class LessonPlanEditComponent implements OnInit {
         // We apply any fields from the object, and then any from the overwritten data
         // This allows us to submit a new object with the changes between this.lessonPlan and lessonPlan, without
         // having to commit them to the real copy before we've sent to the database
-        const updatedLessonPlan = Object.assign(
-            {},
-            this.lessonPlan,
-            lessonPlan
-        );
+        const updatedLessonPlan = Object.assign({}, this.lessonPlan, lessonPlan);
         try {
             // send state to the db, and obtain back the ground truth that the db produces
-            const result = await (
-                await this.lessonPlanService.upsertLessonPlan(updatedLessonPlan)
-            ).data;
+            const result = await (await this.lessonPlanService.upsertLessonPlan(updatedLessonPlan)).data;
 
             // and now we store the ground truth back in our real object
             Object.assign(this.lessonPlan, result);

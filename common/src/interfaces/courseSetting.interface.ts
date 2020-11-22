@@ -36,12 +36,7 @@ export type CourseSettingBase = {
 };
 
 export type CourseSetting = CourseSettingBase &
-    (
-        | CourseSettingNumber
-        | CourseSettingSelect
-        | CourseSettingText
-        | CourseSettingDate
-    );
+    (CourseSettingNumber | CourseSettingSelect | CourseSettingText | CourseSettingDate);
 
 export type CourseSettings = {
     [K in CourseSettingKey]: CourseSetting;

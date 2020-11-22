@@ -16,18 +16,13 @@ export class MeetingTimeEditComponent implements OnInit {
 
     @Output() onClose: EventEmitter<boolean> = new EventEmitter();
 
-    @Output() onMeetingTimeEdited: EventEmitter<
-        MeetingTime
-    > = new EventEmitter();
+    @Output() onMeetingTimeEdited: EventEmitter<MeetingTime> = new EventEmitter();
 
     forceClose: Subject<void> = new Subject<void>();
 
     form: Form;
 
-    constructor(
-        private meetingTimeService: MeetingTimeService,
-        private toastr: ToastrService
-    ) {}
+    constructor(private meetingTimeService: MeetingTimeService, private toastr: ToastrService) {}
 
     ngOnInit(): void {
         this.generateForm();
@@ -104,9 +99,7 @@ export class MeetingTimeEditComponent implements OnInit {
 
         // and now we submit it to the API.
         try {
-            const result = await this.meetingTimeService.upsertMeetingTime(
-                Object.assign({}, this.meetingTime, data)
-            );
+            const result = await this.meetingTimeService.upsertMeetingTime(Object.assign({}, this.meetingTime, data));
             this.onMeetingTimeEdited.emit(result.data);
 
             this.toastr.success('Successfully created meeting time');

@@ -18,10 +18,7 @@ export class ProblemDeleteComponent {
 
     forceClose: Subject<void> = new Subject<void>();
 
-    constructor(
-        private problemService: ProblemService,
-        private toastr: ToastrService
-    ) {}
+    constructor(private problemService: ProblemService, private toastr: ToastrService) {}
 
     handleClose(): void {
         this.onClose.emit(false);

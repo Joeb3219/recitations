@@ -49,6 +49,7 @@
 
                     <select *ngIf="input.type == 'select'" name="{{ input.name }}" class="form-control"
                       (change)="fieldUpdated(input.name, $event)" [value]="input.value">
+                      <option value="_INVALID_OPTION_">Please select an option</option>
                       <option *ngFor="let option of input.options" value="{{ option.value }}">
                         {{ option.label }}
                       </option>

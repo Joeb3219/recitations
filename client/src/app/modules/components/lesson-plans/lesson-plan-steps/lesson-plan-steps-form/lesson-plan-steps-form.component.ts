@@ -10,9 +10,7 @@ import { faEllipsisV, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 export class LessonPlanStepsFormComponent implements OnInit {
     @Input() lessonPlan: LessonPlan;
 
-    @Output() onChange: EventEmitter<LessonPlanStep[]> = new EventEmitter<
-        LessonPlanStep[]
-    >();
+    @Output() onChange: EventEmitter<LessonPlanStep[]> = new EventEmitter<LessonPlanStep[]>();
 
     icons = {
         add: faPlusSquare,

@@ -3,16 +3,12 @@ import { BaseEntity } from 'typeorm';
 import { HttpArgs } from '../helpers/route.helper';
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-export function Controller<T extends { new (...args: unknown[]): {} }>(
-    target: T
-): T {
+export function Controller<T extends { new (...args: unknown[]): {} }>(target: T): T {
     Reflect.defineMetadata('controllers', true, target);
     return target;
 }
 
-export type SortableDataDictionaryType<
-    ResourceModel extends BaseEntity = any
-> = {
+export type SortableDataDictionaryType<ResourceModel extends BaseEntity = any> = {
     [key: string]: (object: ResourceModel) => any;
 };
 
@@ -36,13 +32,7 @@ export function Resource<ResourceModel extends BaseEntity>(
     // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types, @typescript-eslint/no-explicit-any
     resourceModel: new () => ResourceModel,
     args: ResourceArgs<ResourceModel>,
-    generatedFunctions: ResourceAction[] = [
-        'create',
-        'update',
-        'delete',
-        'get',
-        'list',
-    ]
+    generatedFunctions: ResourceAction[] = ['create', 'update', 'delete', 'get', 'list']
 ) {
     // eslint-disable-next-line @typescript-eslint/ban-types
     return function <T extends { new (...args: unknown[]): {} }>(target: T): T {

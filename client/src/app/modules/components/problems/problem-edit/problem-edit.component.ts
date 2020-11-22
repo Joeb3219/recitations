@@ -21,10 +21,7 @@ export class ProblemEditComponent implements OnInit {
 
     form: Form;
 
-    constructor(
-        private problemService: ProblemService,
-        private toastr: ToastrService
-    ) {}
+    constructor(private problemService: ProblemService, private toastr: ToastrService) {}
 
     ngOnInit(): void {
         this.generateForm();
@@ -94,9 +91,7 @@ export class ProblemEditComponent implements OnInit {
         const updatedProblem = Object.assign({}, this.problem, problem);
         try {
             // send state to the db, and obtain back the ground truth that the db produces
-            const result = await this.problemService.upsertProblem(
-                updatedProblem
-            );
+            const result = await this.problemService.upsertProblem(updatedProblem);
 
             // and now we store the ground truth back in our real object
             Object.assign(this.problem, result);

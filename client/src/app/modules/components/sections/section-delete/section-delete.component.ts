@@ -18,10 +18,7 @@ export class SectionDeleteComponent {
 
     forceClose: Subject<void> = new Subject<void>();
 
-    constructor(
-        private sectionService: SectionService,
-        private toastr: ToastrService
-    ) {}
+    constructor(private sectionService: SectionService, private toastr: ToastrService) {}
 
     handleClose(): void {
         this.onClose.emit(false);

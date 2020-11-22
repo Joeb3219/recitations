@@ -65,9 +65,7 @@ export class ListProblemsComponent {
         this.fetchProblems = this.fetchProblems.bind(this);
     }
 
-    async fetchProblems(
-        args: HttpFilterInterface
-    ): Promise<StandardResponseInterface<Problem[]>> {
+    async fetchProblems(args: HttpFilterInterface): Promise<StandardResponseInterface<Problem[]>> {
         return this.problemService.getCourseProblems(this.course, args);
     }
 

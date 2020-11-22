@@ -8,21 +8,14 @@ import {
     ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
-import {
-    ProblemDifficulty,
-    StandardResponseInterface,
-    User,
-} from '@dynrec/common';
+import { ProblemDifficulty, StandardResponseInterface, User } from '@dynrec/common';
 import { HttpFilterInterface } from '@http/httpFilter.interface';
 import { ColumnMode } from '@swimlane/ngx-datatable';
 import { get } from 'lodash';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
-export type DatatableColumnCellTemplateName =
-    | 'difficultyCell'
-    | 'userCell'
-    | 'actionsCell';
+export type DatatableColumnCellTemplateName = 'difficultyCell' | 'userCell' | 'actionsCell';
 
 export interface DatatableAction {
     text: string;
@@ -53,9 +46,7 @@ export class DatatableComponent implements OnInit {
     @ViewChild('actionsCellTemplate', { static: true })
     actionsCellTemplate: TemplateRef<unknown>;
 
-    @Input() dataFunction: (
-        args: HttpFilterInterface
-    ) => StandardResponseInterface<any>;
+    @Input() dataFunction: (args: HttpFilterInterface) => StandardResponseInterface<any>;
 
     @Input() reload: Subject<any> = new Subject<any>();
 
@@ -128,14 +119,12 @@ export class DatatableComponent implements OnInit {
         return {
             difficultyCell: {
                 template: this.difficultyCellTemplate,
-                csv: (difficulty) => difficulty,
+                csv: difficulty => difficulty,
             },
             userCell: {
                 template: this.userCellTemplate,
                 csv: (user: User | undefined) =>
-                    user
-                        ? `${user.firstName} ${user.lastName} (${user.username})`
-                        : undefined,
+                    user ? `${user.firstName} ${user.lastName} (${user.username})` : undefined,
             },
             actionsCell: {
                 template: this.actionsCellTemplate,
@@ -154,13 +143,9 @@ export class DatatableComponent implements OnInit {
 
         // Now we go through the overrides provided and redefine (or define) any key => functions.
         if (this.csvTemplateOverrides) {
-            Object.keys(this.csvTemplateOverrides).forEach(
-                (templateKey: string) => {
-                    allFormats[
-                        templateKey as DatatableColumnCellTemplateName
-                    ].csv = this.csvTemplateOverrides[templateKey];
-                }
-            );
+            Object.keys(this.csvTemplateOverrides).forEach((templateKey: string) => {
+                allFormats[templateKey as DatatableColumnCellTemplateName].csv = this.csvTemplateOverrides[templateKey];
+            });
         }
 
         return allFormats;
@@ -174,18 +159,14 @@ export class DatatableComponent implements OnInit {
         };
 
         // We first must generate a listing of all rows in the system + their respective column displays
-        const excludedTemplates: DatatableColumnCellTemplateName[] = [
-            'actionsCell',
-        ];
+        const excludedTemplates: DatatableColumnCellTemplateName[] = ['actionsCell'];
 
         const csvFormats = this.getCSVFormats();
 
         // Remove any columns from our mapping in which the cell template should never be printed to CSV
         // the most obvious case here is the actions cell, which should really never be printed.
         const includedColumns = this.columns.filter(
-            ({ cellTemplateName }) =>
-                cellTemplateName &&
-                !excludedTemplates.includes(cellTemplateName)
+            ({ cellTemplateName }) => cellTemplateName && !excludedTemplates.includes(cellTemplateName)
         );
 
         // Now we fetch _every_ row, as the CSV should not just show the local table, but rather all data.
@@ -193,21 +174,14 @@ export class DatatableComponent implements OnInit {
             limit: -1,
         });
 
-        const headers = includedColumns
-            .map(({ name }) => csvStringWrap(name))
-            .join(',');
+        const headers = includedColumns.map(({ name }) => csvStringWrap(name)).join(',');
 
         const csvRows = allData.data.map((row: unknown) => {
-            const rowCells = includedColumns.map(
-                ({ cellTemplateName, prop }) => {
-                    const value = get(row, prop ?? '');
+            const rowCells = includedColumns.map(({ cellTemplateName, prop }) => {
+                const value = get(row, prop ?? '');
 
-                    return cellTemplateName
-                        ? csvFormats[cellTemplateName]?.csv?.(value, row) ??
-                              value
-                        : value;
-                }
-            );
+                return cellTemplateName ? csvFormats[cellTemplateName]?.csv?.(value, row) ?? value : value;
+            });
 
             // Join all cells within the row w/ a comma, as they're already escaped
             return rowCells.join(',');
@@ -221,14 +195,9 @@ export class DatatableComponent implements OnInit {
     downloadFile(contents: string): void {
         const element = document.createElement('a');
         const fileType = 'text/csv';
-        const fileName = this.csvFileName
-            ? this.csvFileName()
-            : `csv_export.csv`;
+        const fileName = this.csvFileName ? this.csvFileName() : `csv_export.csv`;
 
-        element.setAttribute(
-            'href',
-            `data:${fileType};charset=utf-8,${encodeURIComponent(contents)}`
-        );
+        element.setAttribute('href', `data:${fileType};charset=utf-8,${encodeURIComponent(contents)}`);
         element.setAttribute('download', fileName);
 
         const event = new MouseEvent('click');
@@ -259,12 +228,9 @@ export class DatatableComponent implements OnInit {
 
         const allTemplates = this.getTemplates();
 
-        this.columns.forEach((column) => {
+        this.columns.forEach(column => {
             // Sets cell template to the defined one in our map if it is in the map, or uses the already set one otherwise.
-            if (
-                !column.cellTemplateName &&
-                typeof column.cellTemplate === 'string'
-            ) {
+            if (!column.cellTemplateName && typeof column.cellTemplate === 'string') {
                 // eslint-disable-next-line no-param-reassign
                 column.cellTemplateName = column.cellTemplate;
             }
@@ -272,9 +238,7 @@ export class DatatableComponent implements OnInit {
             if (!column.cellTemplateName) return;
 
             // eslint-disable-next-line no-param-reassign
-            column.cellTemplate =
-                allTemplates[column.cellTemplateName].template ??
-                column.cellTemplate;
+            column.cellTemplate = allTemplates[column.cellTemplateName].template ?? column.cellTemplate;
         });
     }
 

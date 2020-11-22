@@ -9,9 +9,7 @@ export class SectionService {
     constructor(private http: HttpClient) {}
 
     @UpsertRequest<Section>(Section)
-    public async upsertSection(
-        section: Section
-    ): Promise<StandardResponseInterface<Section>> {
+    public async upsertSection(section: Section): Promise<StandardResponseInterface<Section>> {
         throw new Error('Decorator Overloading Failed');
     }
 
@@ -24,9 +22,7 @@ export class SectionService {
     }
 
     @DeleteRequest<Section>(Section)
-    public async deleteSection(
-        sectionID: string
-    ): Promise<StandardResponseInterface<void>> {
+    public async deleteSection(sectionID: string): Promise<StandardResponseInterface<void>> {
         throw new Error('Decorator Overloading Failed');
     }
 }

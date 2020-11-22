@@ -7,8 +7,14 @@
         "baseUrl": "./",
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
-        "allowSyntheticDefaultImports": true,
-        "typeRoots": ["../node_modules/@types", "node_modules/@types", "@types"]
+        "moduleResolution": "node",
+        "target": "es2015",
+        "types": ["node"],
+        "lib": ["es2015", "dom"],
+        "module": "commonjs",
+        "esModuleInterop": true,
+        "typeRoots": ["./@types", "./node_modules/@types", "../node_modules/@types"],
+        "allowSyntheticDefaultImports": true
     },
     "files": ["./library/express.d.ts"]
 }

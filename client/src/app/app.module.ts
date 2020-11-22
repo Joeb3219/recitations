@@ -15,13 +15,17 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CourseSettingsComponent } from '@pages/course-settings/course-settings.component';
 import { ListProblemsComponent } from '@pages/problems/list-problems/list-problems.component';
 import { ViewProblemComponent } from '@pages/problems/view-problem/view-problem.component';
+import { MeetingService } from '@services/meeting.service';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { QuillModule } from 'ngx-quill';
 import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TokenInterceptor } from './http/token.interceptor';
+import { CalendarComponent } from './modules/components/calendar/calendar.component';
 import { ConfigurationsComponent } from './modules/components/configurations/configurations.component';
 import { DatatableComponent } from './modules/components/datatable/datatable.component';
 import { FooterComponent } from './modules/components/footer/footer.component';
@@ -114,6 +118,7 @@ export let GlobalActivatedRoute: ActivatedRoute;
         LessonPlanStepEditComponent,
         LessonPlanStepViewComponent,
         ViewLessonPlanComponent,
+        CalendarComponent,
     ],
     imports: [
         HttpClientModule,
@@ -134,10 +139,15 @@ export let GlobalActivatedRoute: ActivatedRoute;
         MatTabsModule,
         NgxDatatableModule,
         MatFormFieldModule,
+        CalendarModule.forRoot({
+            provide: DateAdapter,
+            useFactory: adapterFactory,
+        }),
     ],
     providers: [
         UserService,
         CourseService,
+        MeetingService,
         SectionService,
         MeetingTimeService,
         { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },

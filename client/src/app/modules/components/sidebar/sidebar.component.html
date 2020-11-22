@@ -1,9 +1,6 @@
-<nav class="col-md-2 d-none d-md-block bg-light sidebar position-fixed">
-
-
+<nav class="d-md-block bg-light sidebar">
   <mat-accordion *ngFor="let course of userCourses; let i = index" class="example-headers-align">
-    <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)"
-                         class="mat-expansion-panel mat-elevation-z0">
+    <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)" class="mat-expansion-panel mat-elevation-z0">
       <mat-expansion-panel-header [collapsedHeight]="'max-content'" [expandedHeight]="'max-content'">
         <mat-panel-title>
           <strong>{{userCourses[i].name}}</strong>
@@ -12,19 +9,26 @@
 
       <div class="btn-group-vertical">
         <a class="btn btn-light btn-sidebar input-block-level form-control link-style"
-           routerLink="/courses/{{ course.id }}" [ngClass]="{'link-bold':activeLink == 0 && course.id==selectedCourse.id}">Home</a>
+          routerLink="/courses/{{ course.id }}"
+          [ngClass]="{'link-bold':activeLink == 0 && course.id==selectedCourse.id}">Home</a>
         <a class="btn btn-light btn-sidebar input-block-level form-control link-style"
-           routerLink="/courses/{{ course.id }}/recitations" [ngClass]="{'link-bold':activeLink == 1 && course.id==selectedCourse.id}">Recitations</a>
+          routerLink="/courses/{{ course.id }}/recitations"
+          [ngClass]="{'link-bold':activeLink == 1 && course.id==selectedCourse.id}">Recitations</a>
         <a class="btn btn-light btn-sidebar input-block-level form-control link-style"
-           routerLink="/courses/{{ course.id }}/sections" [ngClass]="{'link-bold':activeLink == 2 && course.id==selectedCourse.id}">Sections</a>
+          routerLink="/courses/{{ course.id }}/sections"
+          [ngClass]="{'link-bold':activeLink == 2 && course.id==selectedCourse.id}">Sections</a>
         <a class="btn btn-light btn-sidebar input-block-level form-control link-style"
-           routerLink="/courses/{{ course.id }}/problems" [ngClass]="{'link-bold':activeLink == 3 && course.id==selectedCourse.id}">Problems</a>
+          routerLink="/courses/{{ course.id }}/problems"
+          [ngClass]="{'link-bold':activeLink == 3 && course.id==selectedCourse.id}">Problems</a>
         <a class="btn btn-light btn-sidebar input-block-level form-control link-style"
-           routerLink="/courses/{{ course.id }}/coverage-requests" [ngClass]="{'link-bold':activeLink == 4 && course.id==selectedCourse.id}">Coverage Requests</a>
+          routerLink="/courses/{{ course.id }}/coverage-requests"
+          [ngClass]="{'link-bold':activeLink == 4 && course.id==selectedCourse.id}">Coverage Requests</a>
         <a class="btn btn-light btn-sidebar input-block-level form-control link-style"
-           routerLink="/courses/{{ course.id }}/settings" [ngClass]="{'link-bold':activeLink == 5 && course.id==selectedCourse.id}">Settings</a>
+          routerLink="/courses/{{ course.id }}/settings"
+          [ngClass]="{'link-bold':activeLink == 5 && course.id==selectedCourse.id}">Settings</a>
         <a class="btn btn-light btn-sidebar input-block-level form-control link-style"
-           routerLink="/courses/{{ course.id }}/lesson-plans" [ngClass]="{'link-bold':activeLink == 6 && course.id==selectedCourse.id}">Lesson Plans</a>
+          routerLink="/courses/{{ course.id }}/lesson-plans"
+          [ngClass]="{'link-bold':activeLink == 6 && course.id==selectedCourse.id}">Lesson Plans</a>
 
       </div>
 
@@ -32,5 +36,3 @@
   </mat-accordion>
 
 </nav>
-
-

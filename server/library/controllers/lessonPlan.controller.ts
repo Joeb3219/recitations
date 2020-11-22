@@ -7,16 +7,10 @@ import { HttpArgs } from '../helpers/route.helper';
 @Resource(LessonPlan, {
     sortable: {
         dataDictionary: {
-            course: (lessonPlan) => get(lessonPlan, 'course.name'),
+            course: lessonPlan => get(lessonPlan, 'course.name'),
         },
     },
-    searchable: [
-        'name',
-        'course.name',
-        'creator.firstName',
-        'creator.lastName',
-        'creator.username',
-    ],
+    searchable: ['name', 'course.name', 'creator.firstName', 'creator.lastName', 'creator.username'],
     dataDict: (args: HttpArgs<LessonPlan>) => {
         const { body, currentUser } = args;
         return {

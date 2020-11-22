@@ -7,8 +7,7 @@ export const DefaultCourseSettings: CourseSettings = {
         name: 'Semester Start Date',
         section: 'dates',
         default: undefined,
-        description:
-            'This is the date that the semester starts on. This date is used in week computations.',
+        description: 'This is the date that the semester starts on. This date is used in week computations.',
     },
     semester_end_date: {
         type: 'date',

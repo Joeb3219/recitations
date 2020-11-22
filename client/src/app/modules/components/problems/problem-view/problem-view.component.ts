@@ -40,9 +40,7 @@ export class ProblemViewComponent implements OnInit {
 
     handleSolutionButton(): void {
         this.showSolution = !this.showSolution;
-        this.solutionButtonText = this.showSolution
-            ? 'Hide Solution'
-            : 'Show Solution';
+        this.solutionButtonText = this.showSolution ? 'Hide Solution' : 'Show Solution';
     }
 
     handleOpenEditProblemModal(): void {

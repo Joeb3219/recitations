@@ -25,8 +25,7 @@ export class UserSearchFormfieldComponent implements OnInit {
     }
 
     formatter = (user: User): string => {
-        if (user)
-            return `${user.firstName} ${user.lastName} (${user.username}, ${user.email})`;
+        if (user) return `${user.firstName} ${user.lastName} (${user.username}, ${user.email})`;
         return ``;
     };
 
@@ -38,24 +37,16 @@ export class UserSearchFormfieldComponent implements OnInit {
         text$.pipe(
             debounceTime(200),
             distinctUntilChanged(),
-            map((term) =>
+            map(term =>
                 term === ''
                     ? []
                     : this.users
-                          .filter((user) => {
+                          .filter(user => {
                               return (
-                                  user.firstName
-                                      .toLowerCase()
-                                      .indexOf(term.toLowerCase()) > -1 ||
-                                  user.lastName
-                                      .toLowerCase()
-                                      .indexOf(term.toLowerCase()) > -1 ||
-                                  user.email
-                                      .toLowerCase()
-                                      .indexOf(term.toLowerCase()) > -1 ||
-                                  user.username
-                                      .toLowerCase()
-                                      .indexOf(term.toLowerCase()) > -1
+                                  user.firstName.toLowerCase().indexOf(term.toLowerCase()) > -1 ||
+                                  user.lastName.toLowerCase().indexOf(term.toLowerCase()) > -1 ||
+                                  user.email.toLowerCase().indexOf(term.toLowerCase()) > -1 ||
+                                  user.username.toLowerCase().indexOf(term.toLowerCase()) > -1
                               );
                           })
                           .slice(0, 10)

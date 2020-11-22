@@ -1,6 +1,6 @@
 import { CourseController } from './course.controller';
 import { LessonPlanController } from './lessonPlan.controller';
-import { MeetingController } from './meeting.controller';
+import { MeetingController } from './meetings/meeting.controller';
 import { MeetingTimeController } from './meetingTime.controller';
 import { ProblemController } from './problem.controller';
 import { SectionController } from './section.controller';

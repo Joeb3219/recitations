@@ -1,9 +1,10 @@
-import { Meetable, MeetingTime } from '../models';
+import { MeetingType } from '../enums';
+import { MeetingTime } from '../models';
 
-export class Meeting {
+export class Meeting<Type extends MeetingType = MeetingType> {
     meetingTime: MeetingTime;
 
-    meetable: Meetable;
+    meetingType: Type;
 
     date: Date;
 

@@ -17,18 +17,13 @@ export class LessonPlanStepEditComponent implements OnInit {
 
     @Output() onClose: EventEmitter<void> = new EventEmitter<void>();
 
-    @Output() onStepEdited: EventEmitter<LessonPlanStep> = new EventEmitter<
-        LessonPlanStep
-    >();
+    @Output() onStepEdited: EventEmitter<LessonPlanStep> = new EventEmitter<LessonPlanStep>();
 
     form: Form;
 
     forceClose: Subject<void> = new Subject<void>();
 
-    constructor(
-        private lessonPlanService: LessonPlanService,
-        private toastr: ToastrService
-    ) {}
+    constructor(private lessonPlanService: LessonPlanService, private toastr: ToastrService) {}
 
     ngOnInit(): void {
         this.generateForm();
@@ -106,11 +101,7 @@ export class LessonPlanStepEditComponent implements OnInit {
 
         // and now we submit it to the API.
         try {
-            const result = await (
-                await this.lessonPlanService.upsertLessonPlanStep(
-                    this.lessonPlanStep
-                )
-            ).data;
+            const result = await (await this.lessonPlanService.upsertLessonPlanStep(this.lessonPlanStep)).data;
             this.onStepEdited.emit(result);
 
             this.toastr.success('Successfully created lesson plan step');

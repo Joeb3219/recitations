@@ -46,17 +46,13 @@ export class ConfigurationsComponent implements OnInit {
         const mergedSections = this.course.getMergedSettings();
 
         form.inputs = (Object.keys(mergedSections) as CourseSettingKey[])
-            .filter((key) => mergedSections[key].section === section.section)
+            .filter(key => mergedSections[key].section === section.section)
             .map(
                 (key): FormInput => {
                     const input = mergedSections[key];
                     const inputType =
                         // eslint-disable-next-line no-nested-ternary
-                        input.type === 'date'
-                            ? 'date'
-                            : input.type === 'number'
-                            ? 'number'
-                            : 'text';
+                        input.type === 'date' ? 'date' : input.type === 'number' ? 'number' : 'text';
                     return {
                         name: input.key,
                         options: 'values' in input ? input.values : undefined,
@@ -73,7 +69,7 @@ export class ConfigurationsComponent implements OnInit {
     generateForms(): void {
         if (!this.course) return;
 
-        this.settingSections.forEach((section) => {
+        this.settingSections.forEach(section => {
             // eslint-disable-next-line no-param-reassign
             section.form = this.generateSectionForm(section);
         });

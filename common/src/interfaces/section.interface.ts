@@ -1,8 +1,4 @@
-import {
-    CourseInterface,
-    MeetableInterface,
-    UserInterface,
-} from '../interfaces';
+import { CourseInterface, MeetableInterface, UserInterface } from '../interfaces';
 
 export interface SectionInterface extends MeetableInterface {
     id: string; // the document id

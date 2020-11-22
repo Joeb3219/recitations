@@ -1,12 +1,4 @@
-import {
-    ChildEntity,
-    Column,
-    JoinColumn,
-    JoinTable,
-    ManyToMany,
-    ManyToOne,
-    PrimaryGeneratedColumn,
-} from 'typeorm';
+import { ChildEntity, Column, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { SectionInterface } from '../interfaces';
 import { Course, Meetable, User } from '../models';
 
@@ -21,19 +13,19 @@ export class Section extends Meetable implements SectionInterface {
     @Column()
     public sectionNumber: string;
 
-    @ManyToOne((type) => Course, (course) => course.sections, { eager: true })
+    @ManyToOne(type => Course, course => course.sections, { eager: true })
     @JoinColumn()
     public course: Course;
 
-    @ManyToOne((type) => User, { eager: true, cascade: true })
+    @ManyToOne(type => User, { eager: true, cascade: true })
     @JoinColumn()
     public ta?: User;
 
-    @ManyToOne((type) => User, { eager: true, cascade: true })
+    @ManyToOne(type => User, { eager: true, cascade: true })
     @JoinColumn()
     public instructor?: User;
 
-    @ManyToMany((type) => User)
+    @ManyToMany(type => User)
     @JoinTable()
     public students?: User[];
 

@@ -16,21 +16,9 @@ export class SidebarComponent implements OnInit {
 
     activeLink: number;
 
-    links = [
-        'home',
-        'recitations',
-        'sections',
-        'problems',
-        'coverage-requests',
-        'settings',
-        'lesson-plans',
-    ];
+    links = ['home', 'recitations', 'sections', 'problems', 'coverage-requests', 'settings', 'lesson-plans'];
 
-    constructor(
-        private userService: UserService,
-        private courseService: CourseService,
-        private router: Router
-    ) {}
+    constructor(private userService: UserService, private courseService: CourseService, private router: Router) {}
 
     ngOnInit(): void {
         this.userService.getCurrentUser().subscribe({
@@ -46,7 +34,7 @@ export class SidebarComponent implements OnInit {
         // we do this by examining URL changes, and on each change, breaking the URL down into its slugs and
         // comparing those slugs with what we current have stored.
         this.router.events.subscribe({
-            next: async (event) => {
+            next: async event => {
                 // ensure this event describes a URL change
                 if ('url' in event && event?.url) {
                     this.setActiveCourseFromRouter();
@@ -59,7 +47,7 @@ export class SidebarComponent implements OnInit {
     // and attempt to set the active course in the sidebar depending on what the loaded course is
     setActiveCourseFromRouter(): void {
         const url = this.router.url;
-        this.userCourses.forEach((course) => {
+        this.userCourses.forEach(course => {
             // this slug is the prefix to the URL that would indicate that this course is
             // currently active/being worked in.
             const slug = `/courses/${course.id}`;

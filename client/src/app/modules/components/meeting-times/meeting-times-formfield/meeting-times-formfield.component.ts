@@ -10,9 +10,7 @@ import { faEllipsisV, faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 export class MeetingTimesFormfieldComponent implements OnInit {
     @Input() meetable: Meetable;
 
-    @Output() onChange: EventEmitter<MeetingTime[]> = new EventEmitter<
-        MeetingTime[]
-    >();
+    @Output() onChange: EventEmitter<MeetingTime[]> = new EventEmitter<MeetingTime[]>();
 
     icons = {
         add: faPlusSquare,
@@ -58,12 +56,9 @@ export class MeetingTimesFormfieldComponent implements OnInit {
         // if so, we will simply update the list to include this one at the given index
         // we keep track of the found index that the given id already exists at, so that we can overwrite
         // if none is found, the foundIndex will stillb e null, and thus we push instead
-        const foundIndex = this.meetable.meetingTimes.findIndex(
-            (item) => item.id === meetingTime.id
-        );
+        const foundIndex = this.meetable.meetingTimes.findIndex(item => item.id === meetingTime.id);
 
-        if (foundIndex !== -1)
-            this.meetable.meetingTimes[foundIndex] = meetingTime;
+        if (foundIndex !== -1) this.meetable.meetingTimes[foundIndex] = meetingTime;
         else this.meetable.meetingTimes.push(meetingTime);
 
         this.handleEditMeetingTimeClosed();

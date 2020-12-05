@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import dayjs from 'dayjs';
 import { BaseEntity, Column, Entity, JoinTable, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { MeetingType } from '../enums';
@@ -26,6 +27,7 @@ export class MeetingTime extends BaseEntity implements MeetingTimeInterface {
 
     @ManyToOne(() => User, { eager: true })
     @JoinTable()
+    @Type(() => User)
     public leader?: User;
 
     @Column({
@@ -39,6 +41,7 @@ export class MeetingTime extends BaseEntity implements MeetingTimeInterface {
 
     @ManyToOne(type => Meetable, meetable => meetable.meetingTimes)
     @JoinTable()
+    @Type(() => Meetable)
     public meetable: Meetable;
 
     get numericWeekday(): number {

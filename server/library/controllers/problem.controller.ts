@@ -22,6 +22,7 @@ import { HttpArgs } from '../helpers/route.helper';
             estimatedDuration: body.estimatedDuration,
             course: body.course,
             creator: body.creator || currentUser,
+            learningGoals: body.learningGoals,
         };
     },
 })

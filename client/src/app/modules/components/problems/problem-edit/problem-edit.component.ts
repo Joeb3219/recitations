@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Form, Problem } from '@dynrec/common';
 import { ProblemService } from '@services/problem.service';
-import { get } from 'lodash';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
 
@@ -13,7 +12,7 @@ import { Subject } from 'rxjs';
 export class ProblemEditComponent implements OnInit {
     @Input() isVisible: boolean;
 
-    @Input() problem: Problem;
+    @Input() problem?: Problem;
 
     @Output() onClose: EventEmitter<void> = new EventEmitter();
 
@@ -33,11 +32,16 @@ export class ProblemEditComponent implements OnInit {
 
     generateForm(): void {
         this.form = new Form();
+
+        if (!this.problem?.course) {
+            return;
+        }
+
         this.form.inputs = [
             {
                 type: 'text',
                 name: 'name',
-                value: get(this, 'problem.name'),
+                value: this.problem?.name,
                 label: 'Name',
                 row: 0,
                 col: 0,
@@ -46,11 +50,11 @@ export class ProblemEditComponent implements OnInit {
                 type: 'select',
                 name: 'difficulty',
                 options: [
-                    { label: 'Easy', value: '1' },
-                    { label: 'Medium', value: '3' },
-                    { label: 'Hard', value: '5' },
+                    { label: 'Easy', value: 1 },
+                    { label: 'Medium', value: 3 },
+                    { label: 'Hard', value: 5 },
                 ],
-                value: get(this, 'problem.difficulty'),
+                value: this.problem?.difficulty,
                 label: 'Difficulty',
                 row: 1,
                 col: 0,
@@ -58,7 +62,7 @@ export class ProblemEditComponent implements OnInit {
             {
                 type: 'number',
                 name: 'estimatedDuration',
-                value: get(this, 'problem.estimatedDuration'),
+                value: this.problem?.estimatedDuration,
                 label: 'Estimated Duration (minutes)',
                 row: 1,
                 col: 1,
@@ -66,16 +70,24 @@ export class ProblemEditComponent implements OnInit {
             {
                 type: 'wysiwyg',
                 name: 'question',
-                value: get(this, 'problem.question'),
+                value: this.problem?.question,
                 label: 'Question',
                 row: 2,
             },
             {
                 type: 'wysiwyg',
                 name: 'solution',
-                value: get(this, 'problem.solution'),
+                value: this.problem?.solution,
                 label: 'Solution',
                 row: 3,
+            },
+            {
+                type: 'learningGoals',
+                name: 'learningGoals',
+                label: 'Learning Goals',
+                value: this.problem?.learningGoals,
+                course: this.problem?.course,
+                row: 4,
             },
         ];
     }

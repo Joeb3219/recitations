@@ -1,0 +1,29 @@
+<div class="row">
+  <div class="col">
+    <input type="text" value="{{ formatter(currentlySelectedGoal) }}" class="form-control" [ngbTypeahead]="search"
+      [resultFormatter]="formatter" [inputFormatter]="formatter" name="{{ name }}"
+      (selectItem)="handleGoalSelected($event)" multiple="true">
+  </div>
+</div>
+<div class="row" style="padding: 0px 16px">
+  <div class="col">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Number</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let goal of goals">
+          <td>{{ goal.number }}</td>
+          <td>{{ goal.name }}</td>
+          <td>{{ goal.description }}</td>
+          <td><button type="button" class="btn btn-secondary" (click)="handleGoalDeleted(goal)">Delete</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -8,37 +8,59 @@ import {
     ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
-import { ProblemDifficulty, StandardResponseInterface, User } from '@dynrec/common';
+import { FormFieldUpdated, FormInput, ProblemDifficulty, StandardResponseInterface, User } from '@dynrec/common';
 import { HttpFilterInterface } from '@http/httpFilter.interface';
 import { ColumnMode } from '@swimlane/ngx-datatable';
-import { get } from 'lodash';
+import _, { get } from 'lodash';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
-export type DatatableColumnCellTemplateName = 'difficultyCell' | 'userCell' | 'actionsCell';
+export type DatatableColumnCellTemplateName = 'difficultyCell' | 'userCell' | 'actionsCell' | 'editCell' | 'toggleCell';
 
 export interface DatatableAction {
     text: string;
-    click?: () => unknown;
+    action?: 'edit' | 'save' | undefined;
+    click?: () => Promise<unknown> | void;
     href?: string;
 }
 
-export interface DatatableColumn<ResourceModel = any> {
+export type DatatableColumn<
+    ResourceModel = any,
+    CellTemplateName extends DatatableColumnCellTemplateName = DatatableColumnCellTemplateName
+> = {
     name: string;
     cellTemplate?: DatatableColumnCellTemplateName | TemplateRef<unknown>;
     prop?: keyof ResourceModel;
-    actions?: (row: ResourceModel) => DatatableAction[];
-    cellTemplateName?: DatatableColumnCellTemplateName;
-}
+    actions?: (row: ResourceModel, isEditing: boolean) => DatatableAction[];
+    cellTemplateName?: CellTemplateName;
+} & (CellTemplateName extends 'editCell'
+    ? {
+          edit: (object: ResourceModel) => Omit<FormInput, 'row' | 'col' | 'group' | 'hidden'>;
+      }
+    : {
+          edit?: undefined;
+      });
+
+type Datatable<T> = {
+    rowDetail: {
+        toggleExpandRow: (data: T) => void;
+    };
+};
+
 @Component({
     selector: 'app-datatable',
     templateUrl: './datatable.component.html',
     styleUrls: ['./datatable.component.scss'],
     encapsulation: ViewEncapsulation.None,
 })
-export class DatatableComponent implements OnInit {
+export class DatatableComponent<T extends { id?: string }> implements OnInit {
+    @ViewChild('datatable') table: Datatable<T>;
+
     @ViewChild('difficultyCellTemplate', { static: true })
     difficultyCellTemplate: TemplateRef<unknown>;
+
+    @ViewChild('detailToggleCellTemplate', { static: true })
+    detailToggleCellTemplate: TemplateRef<unknown>;
 
     @ViewChild('userCellTemplate', { static: true })
     userCellTemplate: TemplateRef<unknown>;
@@ -46,11 +68,18 @@ export class DatatableComponent implements OnInit {
     @ViewChild('actionsCellTemplate', { static: true })
     actionsCellTemplate: TemplateRef<unknown>;
 
-    @Input() dataFunction: (args: HttpFilterInterface) => StandardResponseInterface<any>;
+    @ViewChild('editCellTemplate', { static: true })
+    editCellTemplate: TemplateRef<unknown>;
 
-    @Input() reload: Subject<any> = new Subject<any>();
+    @Input() detailTemplate?: TemplateRef<unknown>;
 
-    @Input() columns: DatatableColumn<unknown>[] = [];
+    @Input() dataFunction: (args: HttpFilterInterface) => StandardResponseInterface<T[]>;
+
+    @Input() createNewRow: () => T;
+
+    @Input() reload: Subject<void> = new Subject<void>();
+
+    @Input() columns: DatatableColumn<T>[] = [];
 
     @Input() pageSize = 25;
 
@@ -65,10 +94,20 @@ export class DatatableComponent implements OnInit {
 
     @Input() csvFileName?: () => string = undefined;
 
-    rows: any[] = [];
+    // Rows fetched from the database
+    fetchedRows: T[] = [];
+    // Rows added or edited by the user
+    editedRows: T[] = [];
+    // All of the rows, merged.
+    rows: T[] = [];
+
+    editedIndices: number[] = [];
 
     reorderable = true;
 
+    // Number of results in the database
+    numFetchedResults = 0;
+    // Number of total results.
     numResults = 0;
 
     offset = 0;
@@ -107,6 +146,56 @@ export class DatatableComponent implements OnInit {
         this.loadData();
     }
 
+    async handleActionClicked(index: number, action: DatatableAction) {
+        const result = await action.click?.();
+
+        switch (action.action) {
+            case 'save':
+                if (!result) return;
+                if (this.rows[index].id) {
+                    const editedIndex = this.editedRows.findIndex(row => row.id === this.rows[index].id);
+                    if (editedIndex === -1) return;
+
+                    this.editedRows.splice(editedIndex, 1);
+                } else {
+                    this.editedRows.splice(index, 1);
+                }
+
+                this.loadData();
+                break;
+            case 'edit':
+                if (this.editedIndices.includes(index)) return;
+                this.editedRows.push(this.rows[index]);
+                this.refreshDataCharacteristics();
+                break;
+            default:
+                break;
+        }
+    }
+
+    handleNewRowCreated() {
+        if (!this.createNewRow) {
+            throw new Error('No row creation function provided.');
+        }
+
+        this.editedRows.push(this.createNewRow());
+        this.refreshDataCharacteristics();
+    }
+
+    onFieldChange(index: number, data: FormFieldUpdated) {
+        // This is a real row, so we can simply find it and update.
+        if (this.rows[index].id) {
+            const editedIndex = this.editedRows.findIndex(row => row.id === this.rows[index].id);
+            if (editedIndex === -1) return;
+
+            this.editedRows[editedIndex] = { ...this.editedRows[editedIndex], [data.name]: data.value };
+        } else {
+            this.editedRows[index] = { ...this.editedRows[index], [data.name]: data.value };
+        }
+
+        this.refreshDataCharacteristics();
+    }
+
     // Returns all of the templates in our system, arranged by key.
     // Each object contains a template identifying the viewchild template to render,
     // as well as possibly other values, like a csv function to use when generating a csv
@@ -128,6 +217,13 @@ export class DatatableComponent implements OnInit {
             },
             actionsCell: {
                 template: this.actionsCellTemplate,
+            },
+            editCell: {
+                template: this.editCellTemplate,
+                csv: val => val,
+            },
+            toggleCell: {
+                template: this.detailToggleCellTemplate,
             },
         };
     }
@@ -159,7 +255,7 @@ export class DatatableComponent implements OnInit {
         };
 
         // We first must generate a listing of all rows in the system + their respective column displays
-        const excludedTemplates: DatatableColumnCellTemplateName[] = ['actionsCell'];
+        const excludedTemplates: DatatableColumnCellTemplateName[] = ['actionsCell', 'toggleCell'];
 
         const csvFormats = this.getCSVFormats();
 
@@ -204,6 +300,10 @@ export class DatatableComponent implements OnInit {
         element.dispatchEvent(event);
     }
 
+    handleRowToggle(row: T) {
+        this.table.rowDetail.toggleExpandRow(row);
+    }
+
     handleSort(sort: { sorts: { prop: string; dir: 'asc' | 'desc' }[] }) {
         const sorts = sort?.sorts;
         if (!sorts || !sorts.length) return;
@@ -242,6 +342,35 @@ export class DatatableComponent implements OnInit {
         });
     }
 
+    mergedRows() {
+        const editedById = _.keyBy(this.editedRows, 'id');
+        const overwrittenIds = _.intersectionBy(this.fetchedRows, this.editedRows, 'id');
+
+        const newRows = this.editedRows.filter(row => !overwrittenIds.find(subRow => subRow.id === row.id));
+
+        this.rows = [
+            ...newRows,
+            ...this.fetchedRows.map(row => ({ ...row, ...(row.id ? editedById[row.id] ?? {} : {}) })),
+        ];
+
+        const fetchedEditedIndicex = this.fetchedRows.reduce<number[]>((state, row, index) => {
+            if (!row.id || !editedById[row.id]) return state;
+            state.push(index);
+            return state;
+        }, []);
+
+        this.editedIndices = [..._.range(newRows.length), ...fetchedEditedIndicex];
+    }
+
+    refreshDataCharacteristics() {
+        this.mergedRows();
+
+        const overwritten = _.intersectionBy(this.fetchedRows, this.editedRows, 'id');
+        this.numResults = this.numFetchedResults + this.editedRows.length - overwritten.length;
+
+        this.applicationRef.tick();
+    }
+
     async loadData(): Promise<void> {
         // First, we update columns to have correct data
         this.updateColumnDefs();
@@ -254,9 +383,9 @@ export class DatatableComponent implements OnInit {
             search: this.search,
         });
 
-        this.rows = data;
-        this.numResults = metadata.total || 0;
+        this.fetchedRows = data;
+        this.numFetchedResults = metadata.total || 0;
 
-        this.applicationRef.tick();
+        this.refreshDataCharacteristics();
     }
 }

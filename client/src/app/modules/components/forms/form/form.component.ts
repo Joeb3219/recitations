@@ -1,6 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Form, FormFieldUpdated } from '@dynrec/common';
-import Quill from 'quill';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -30,24 +29,6 @@ export class FormComponent implements OnInit {
     rowLayouts: { [key: string]: number[] } = {};
 
     pageNumber = 0; // which page number of the form are we currently executing?
-
-    defaultWYSIWYGModules = {
-        formula: true,
-        toolbar: [
-            ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-            ['blockquote', 'code-block'],
-
-            [{ list: 'ordered' }, { list: 'bullet' }],
-            [{ script: 'sub' }, { script: 'super' }], // superscript and subscript
-            [{ indent: '-1' }, { indent: '+1' }], // outdent and indent
-
-            [{ size: ['small', false, 'large', 'huge'] }], // custom dropdown
-
-            [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-
-            ['formula', 'link', 'image', 'video'], // link and image, video
-        ],
-    };
 
     ngOnInit(): void {
         if (this.forceSubmit) {
@@ -113,13 +94,9 @@ export class FormComponent implements OnInit {
         });
     }
 
-    // When an editor is created, we pass back the value we wish to save into it in addition to the editor
-    // we then can format the content and then set the contents
-    // Why not do this beforehand? It seems they don't support it very well.
-    // This approach is documented here: https://github.com/KillerCodeMonkey/ngx-quill/issues/77
-    wysiwygCreated(value: string, editor: Quill): void {
-        const contents = editor.clipboard.convert({ html: value });
-        editor.setContents(contents);
+    handleFieldInput(data: FormFieldUpdated) {
+        Object.assign(this.internalStore, { [data.name]: data.value });
+        this.onFieldChange.emit(data);
     }
 
     nextPage(): void {
@@ -129,30 +106,6 @@ export class FormComponent implements OnInit {
 
     prevPage(): void {
         if (this.form.pages.length && this.pageNumber > 0) this.pageNumber -= 1;
-    }
-
-    fieldUpdatedWysiwyg(name: string, data: { target?: { value: any } } | any): void {
-        const value = (data.target?.value ?? data).html;
-        this.internalStore[name] = value;
-
-        this.onFieldChange.emit({
-            name,
-            value,
-        });
-    }
-
-    fieldUpdated(name: string, data: { target?: { value: any } } | any): void {
-        const value = data.target?.value ?? data;
-
-        // This is hella hacky, we need a better solution to this later.
-        const resolvedValue = value === '_INVALID_OPTION_' ? undefined : value;
-
-        Object.assign(this.internalStore, { [name]: resolvedValue });
-
-        this.onFieldChange.emit({
-            name,
-            value,
-        });
     }
 
     submit(): void {

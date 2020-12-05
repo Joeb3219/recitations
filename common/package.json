@@ -15,13 +15,16 @@
     "dependencies": {
         "@types/lodash": "^4.14.165",
         "@types/node": "^12.7.5",
+        "@types/uuid": "^8.3.0",
+        "class-transformer": "^0.3.1",
         "dayjs": "^1.9.6",
         "eslint-plugin-extra-rules": "^0.0.0-development",
         "lodash": "^4.17.20",
         "pg": "^7.12.1",
         "reflect-metadata": "^0.1.13",
         "typeorm": "^0.2.20",
-        "typescript": "3.8.3"
+        "typescript": "3.8.3",
+        "uuid": "^8.3.1"
     },
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^4.2.0",

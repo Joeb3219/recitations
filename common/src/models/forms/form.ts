@@ -11,24 +11,47 @@ export type FormInputType =
     | 'time'
     | 'number'
     | 'password'
-    | 'date';
+    | 'date'
+    | 'learningGoals';
 
-export interface FormInput {
+type Undefinable<T> = { [P in keyof T]?: never };
+
+interface ProblemInput {
+    course: Course;
+}
+
+interface MeetingTimeInput {
+    meetable: Meetable;
+}
+
+interface LessonPlanStepsInput {
+    lessonPlan: LessonPlan;
+}
+
+interface WysiwygInput {
+    formatted: any;
+}
+
+interface LearningGoalsInput {
+    course: Course;
+}
+
+export type FormInput<InputType extends FormInputType = FormInputType> = {
     group?: string;
     name?: string;
     options?: { label: string; value: any }[];
     label?: string;
-    type?: FormInputType;
+    type: InputType;
     value?: any;
-    meetable?: Meetable;
-    lessonPlan?: LessonPlan;
-    formatted?: any;
     row?: number;
     col?: number;
     hidden?: boolean;
     disabled?: boolean;
-    course?: Course;
-}
+} & (InputType extends 'problem' ? ProblemInput : Undefinable<ProblemInput>) &
+    (InputType extends 'meetingTimes' ? MeetingTimeInput : Undefinable<MeetingTimeInput>) &
+    (InputType extends 'lessonPlanSteps' ? LessonPlanStepsInput : Undefinable<LessonPlanStepsInput>) &
+    (InputType extends 'learningGoals' ? LearningGoalsInput : Undefinable<LearningGoalsInput>) &
+    (InputType extends 'wysiwyg' ? WysiwygInput : Undefinable<WysiwygInput>);
 
 export interface FormFieldUpdated {
     name: string;

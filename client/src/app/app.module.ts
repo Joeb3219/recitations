@@ -10,6 +10,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CourseSettingsComponent } from '@pages/course-settings/course-settings.component';
@@ -30,10 +31,12 @@ import { ConfigurationsComponent } from './modules/components/configurations/con
 import { DatatableComponent } from './modules/components/datatable/datatable.component';
 import { FooterComponent } from './modules/components/footer/footer.component';
 import { FormModalComponent } from './modules/components/forms/form-modal/form-modal.component';
+import { FormInputsComponent } from './modules/components/forms/form/form-inputs/form-inputs.component';
 import { FormComponent } from './modules/components/forms/form/form.component';
 import { ManualLoginFormComponent } from './modules/components/forms/manual-login-form/manual-login-form.component';
 import { GradebookComponent } from './modules/components/gradebook/gradebook.component';
 import { HeaderComponent } from './modules/components/header/header.component';
+import { LearningGoalSearchFormfieldComponent } from './modules/components/learning-goals/learning-goal-search-formfield/learning-goal-search-formfield.component';
 import { LearningGoalsComponent } from './modules/components/learning-goals/learning-goals.component';
 import { LessonPlanDeleteComponent } from './modules/components/lesson-plans/lesson-plan-delete/lesson-plan-delete.component';
 import { LessonPlanEditComponent } from './modules/components/lesson-plans/lesson-plan-edit/lesson-plan-edit.component';
@@ -60,12 +63,14 @@ import { UserSearchFormfieldComponent } from './modules/components/users/user-se
 import { WeeksComponent } from './modules/components/weeks/weeks.component';
 import { ViewCourseComponent } from './modules/pages/courses/view-course/view-course.component';
 import { CoverageRequestsComponent } from './modules/pages/coverage-requests/coverage-requests.component';
+import { ListLearningGoalsComponent } from './modules/pages/learning-goals/list-learning-goals/list-learning-goals.component';
 import { ListLessonPlansComponent } from './modules/pages/lesson-plans/list-lesson-plans/list-lesson-plans.component';
 import { ViewLessonPlanComponent } from './modules/pages/lesson-plans/view-lesson-plan/view-lesson-plan.component';
 import { LoginComponent } from './modules/pages/login/login.component';
 import { RecitationsComponent } from './modules/pages/recitations/recitations.component';
 import { ViewSectionsComponent } from './modules/pages/sections/view-sections/view-sections.component';
 import { CourseService } from './services/course.service';
+import { LearningGoalService } from './services/learningGoal.service';
 import { MeetingTimeService } from './services/meetingTime.service';
 import { SectionService } from './services/section.service';
 import { UserService } from './services/user.service';
@@ -119,6 +124,9 @@ export let GlobalActivatedRoute: ActivatedRoute;
         LessonPlanStepViewComponent,
         ViewLessonPlanComponent,
         CalendarComponent,
+        ListLearningGoalsComponent,
+        FormInputsComponent,
+        LearningGoalSearchFormfieldComponent,
     ],
     imports: [
         HttpClientModule,
@@ -130,6 +138,7 @@ export let GlobalActivatedRoute: ActivatedRoute;
         BrowserAnimationsModule,
         FormsModule,
         ReactiveFormsModule,
+        CKEditorModule,
         QuillModule.forRoot(),
         MatExpansionModule,
         MatIconModule,
@@ -150,6 +159,7 @@ export let GlobalActivatedRoute: ActivatedRoute;
         MeetingService,
         SectionService,
         MeetingTimeService,
+        LearningGoalService,
         { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     ],
     entryComponents: [

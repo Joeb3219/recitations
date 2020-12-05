@@ -1,0 +1,106 @@
+{{ input.value }}
+<input
+    *ngIf="input.type == 'text'"
+    type="text"
+    value="{{ input.value }}"
+    class="form-control"
+    name="{{ input.name }}"
+    (change)="fieldUpdated(input.name, $event)"
+    [disabled]="input.disabled || disabled"
+/>
+
+<input
+    *ngIf="input.type == 'date'"
+    type="date"
+    ngbDatepicker
+    value="{{ input.value }}"
+    class="form-control"
+    name="{{ input.name }}"
+    (change)="fieldUpdated(input.name, $event)"
+    [disabled]="input.disabled || disabled"
+/>
+
+<app-user-search-formfield
+    *ngIf="input.type == 'user'"
+    [user]="input.value"
+    [name]="input.name"
+    (onChange)="fieldUpdated(input.name, $event)"
+></app-user-search-formfield>
+
+<app-learning-goal-search-formfield
+    *ngIf="input.type == 'learningGoals'"
+    [course]="input.course"
+    [goals]="input.value"
+    [name]="input.name"
+    (onChange)="fieldUpdated(input.name, $event)"
+></app-learning-goal-search-formfield>
+
+<app-problem-search-form
+    *ngIf="input.type == 'problem'"
+    [problem]="input.value"
+    [name]="input.name"
+    [course]="input.course"
+    (onChange)="fieldUpdated(input.name, $event)"
+></app-problem-search-form>
+
+<app-meeting-times-formfield
+    *ngIf="input.type == 'meetingTimes'"
+    [meetable]="input.meetable"
+    (onChange)="fieldUpdated(input.name, $event)"
+></app-meeting-times-formfield>
+
+<app-lesson-plan-steps-form
+    *ngIf="input.type == 'lessonPlanSteps'"
+    [lessonPlan]="input.lessonPlan"
+    (onChange)="fieldUpdated(input.name, $event)"
+></app-lesson-plan-steps-form>
+
+<ckeditor
+    [editor]="Editor"
+    (change)="fieldUpdatedWysiwyg(input.name, $event)"
+    data="{{ input.value }}"
+    *ngIf="input.type === 'wysiwyg'"
+    name="input.name"
+></ckeditor>
+
+<select
+    *ngIf="input.type == 'select'"
+    name="{{ input.name }}"
+    class="form-control"
+    (change)="fieldUpdated(input.name, $event)"
+    [value]="input.value"
+>
+    <option value="_INVALID_OPTION_">Please select an option</option>
+    <option *ngFor="let option of input.options" value="{{ option.value }}">
+        {{ option.label }} ({{ option.value }})
+    </option>
+</select>
+
+<input
+    *ngIf="input.type == 'time'"
+    value="{{ input.value }}"
+    type="time"
+    name="{{ input.name }}"
+    (change)="fieldUpdated(input.name, $event)"
+    [disabled]="input.disabled || disabled"
+/>
+
+<input
+    *ngIf="input.type == 'number'"
+    value="{{ input.value }}"
+    type="number"
+    class="form-control"
+    name="{{ input.name }}"
+    (change)="fieldUpdated(input.name, $event)"
+    [disabled]="input.disabled || disabled"
+/>
+
+<input
+    *ngIf="input.type == 'password'"
+    type="password"
+    value="{{ input.value }}"
+    class="form-control"
+    name="{{ input.name }}"
+    (change)="fieldUpdated(input.name, $event)"
+    [disabled]="input.disabled || disabled"
+/>

@@ -16,7 +16,16 @@ export class SidebarComponent implements OnInit {
 
     activeLink: number;
 
-    links = ['home', 'recitations', 'sections', 'problems', 'coverage-requests', 'settings', 'lesson-plans'];
+    links = [
+        'home',
+        'recitations',
+        'sections',
+        'problems',
+        'coverage-requests',
+        'settings',
+        'lesson-plans',
+        'learning-goals',
+    ];
 
     constructor(private userService: UserService, private courseService: CourseService, private router: Router) {}
 

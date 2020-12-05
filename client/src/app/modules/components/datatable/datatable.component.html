@@ -1,38 +1,86 @@
 <div class="row">
-  <div class="col" *ngIf="enableExporting">
-    <span class="btn btn-secondary" (click)="handleCSVExport()">Export CSV</span>
-  </div>
-  <div class="col" *ngIf="enableSearching">
-    <input class="search" type="text" placeholder="Search..." (input)="handleSearchTextUpdated($event)"
-      [(ngModel)]="search">
-  </div>
+    <div class="col">
+        <span *ngIf="createNewRow" class="btn btn-primary" (click)="handleNewRowCreated()" style="margin-right: 8px"
+            >Add New</span
+        >
+        <span *ngIf="enableExporting" class="btn btn-secondary" (click)="handleCSVExport()">Export CSV</span>
+    </div>
+    <div class="col" *ngIf="enableSearching">
+        <input
+            class="search"
+            type="text"
+            placeholder="Search..."
+            (input)="handleSearchTextUpdated($event)"
+            [(ngModel)]="search"
+        />
+    </div>
 </div>
-<ngx-datatable class="bootstrap" [rows]="rows" [headerHeight]="50" [footerHeight]="50" rowHeight="auto"
-  [columns]="columns" [reorderable]="reorderable" [loadingIndicator]="true" [columnMode]="ColumnMode.force"
-  [externalPaging]="true" [count]="numResults" [offset]="offset" [limit]="pageSize" (page)="handlePageChange($event)"
-  (sort)="handleSort($event)"></ngx-datatable>
+<ngx-datatable
+    #datatable
+    class="bootstrap"
+    [rows]="rows"
+    [headerHeight]="50"
+    [footerHeight]="50"
+    rowHeight="auto"
+    [columns]="columns"
+    [reorderable]="reorderable"
+    [loadingIndicator]="true"
+    [columnMode]="ColumnMode.force"
+    [externalPaging]="true"
+    [count]="numResults"
+    [offset]="offset"
+    [limit]="pageSize"
+    (page)="handlePageChange($event)"
+    (sort)="handleSort($event)"
+>
+    <ngx-datatable-row-detail [template]="detailTemplate" rowHeight="auto"> </ngx-datatable-row-detail>
+</ngx-datatable>
+
+<ng-template #detailToggleCellTemplate let-row="row" let-expanded="expanded">
+    <span href="javascript:void(0)" (click)="handleRowToggle(row)"> Toggle </span>
+</ng-template>
 
 <ng-template #difficultyCellTemplate let-value="value" let-row="row">
-  <span [ngClass]="
-        {
+    <span
+        [ngClass]="{
             'pill-success': value == ProblemDifficulty.Easy,
             'pill-warning': value == ProblemDifficulty.Medium,
             'pill-danger': value == ProblemDifficulty.Hard
-        }" class="badge-pill pill-success" id="difficulty">
-    {{ProblemDifficulty[value]}}
-  </span>
+        }"
+        class="badge-pill pill-success"
+        id="difficulty"
+    >
+        {{ ProblemDifficulty[value] }}
+    </span>
+</ng-template>
+
+<ng-template #editCellTemplate let-value="value" let-column="column" let-row="row" let-rowIndex="rowIndex">
+    <app-form-inputs
+        *ngIf="editedIndices.includes(rowIndex)"
+        [input]="column.edit(row)"
+        (onFieldChange)="onFieldChange(rowIndex, $event)"
+    ></app-form-inputs>
+    <ng-container *ngIf="!editedIndices.includes(rowIndex)">
+        {{ value }}
+    </ng-container>
 </ng-template>
 
 <ng-template #userCellTemplate let-value="value" let-row="row">
-  <app-user-badge [user]="value">
-  </app-user-badge>
+    <app-user-badge [user]="value"> </app-user-badge>
 </ng-template>
 
-<ng-template #actionsCellTemplate let-column="column" let-value="value" let-row="row">
-  <div class="btn-group btn-group-sm" data-toggle="buttons">
-    <ng-container *ngFor="let action of column.actions(row)">
-      <a *ngIf="action.href" class="btn btn-outline-secondary" routerLink="{{action.href}}">{{ action.text }}</a>
-      <span *ngIf="action.click" class="btn btn-outline-secondary" (click)="action.click()">{{ action.text }}</span>
-    </ng-container>
-  </div>
+<ng-template #actionsCellTemplate let-column="column" let-value="value" let-rowIndex="rowIndex" let-row="row">
+    <div class="btn-group btn-group-sm" data-toggle="buttons">
+        <ng-container *ngFor="let action of column.actions(row, editedIndices.includes(rowIndex))">
+            <a *ngIf="action.href" class="btn btn-outline-secondary" routerLink="{{ action.href }}">{{
+                action.text
+            }}</a>
+            <span
+                *ngIf="action.click || action.action"
+                class="btn btn-outline-secondary"
+                (click)="handleActionClicked(rowIndex, action)"
+                >{{ action.text }}</span
+            >
+        </ng-container>
+    </div>
 </ng-template>

@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import { BaseEntity, Column, Entity, JoinTable, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { DefaultCourseSettings } from '../constants';
 import { CourseInterface, CourseSetting, CourseSettingKey, CourseSettings } from '../interfaces';
@@ -21,6 +22,7 @@ export class Course extends BaseEntity implements CourseInterface {
         cascade: true,
     })
     @JoinTable()
+    @Type(() => Section)
     public sections?: Section[];
 
     @Column({ type: 'jsonb', nullable: true })

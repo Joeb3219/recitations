@@ -2,6 +2,7 @@ import { HttpParams } from '@angular/common/http';
 import { Course, StandardResponseInterface } from '@dynrec/common';
 import { environment } from '@environment';
 import { HttpFilterInterface } from '@http/httpFilter.interface';
+import { plainToClass } from 'class-transformer';
 import { Observable } from 'rxjs';
 
 function getFilterParams(filter?: HttpFilterInterface) {
@@ -49,7 +50,7 @@ export function ListRequest<ResourceModel>(
                     (result: StandardResponseInterface<ResourceModel[]>) => {
                         if (result) {
                             // eslint-disable-next-line no-param-reassign
-                            result.data = result.data.map(item => new BaseEntity(item));
+                            result.data = result.data.map(item => plainToClass(BaseEntity, item));
                             resolve(result);
                         } else reject(new Error('No result returned'));
                     },
@@ -84,7 +85,7 @@ export function GetRequest<ResourceModel>(
                     (result: StandardResponseInterface<ResourceModel>) => {
                         if (result) {
                             // eslint-disable-next-line no-param-reassign
-                            result.data = new BaseEntity(result.data);
+                            result.data = plainToClass(BaseEntity, result.data);
                             resolve(result);
                         } else reject(new Error('No result returned'));
                     },
@@ -124,7 +125,7 @@ export function UpsertRequest<ResourceModel extends { id: string }>(
                     (result: StandardResponseInterface<ResourceModel>) => {
                         if (result) {
                             // eslint-disable-next-line no-param-reassign
-                            result.data = new BaseEntity(result.data);
+                            result.data = plainToClass(BaseEntity, result.data);
                             resolve(result);
                         } else reject(new Error('No result returned'));
                     },

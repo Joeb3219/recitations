@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import { BaseEntity, Entity, JoinTable, OneToMany, PrimaryGeneratedColumn, TableInheritance } from 'typeorm';
 import { MeetableInterface } from '../interfaces';
 import { MeetingTime } from '../models';
@@ -13,6 +14,7 @@ export class Meetable extends BaseEntity implements MeetableInterface {
         cascade: true,
     })
     @JoinTable()
+    @Type(() => MeetingTime)
     public meetingTimes?: MeetingTime[];
 
     constructor(args: Partial<Meetable> = {}) {

@@ -29,6 +29,9 @@
         <a class="btn btn-light btn-sidebar input-block-level form-control link-style"
           routerLink="/courses/{{ course.id }}/lesson-plans"
           [ngClass]="{'link-bold':activeLink == 6 && course.id==selectedCourse.id}">Lesson Plans</a>
+        <a class="btn btn-light btn-sidebar input-block-level form-control link-style"
+          routerLink="/courses/{{ course.id }}/learning-goals"
+          [ngClass]="{'link-bold':activeLink == 7 && course.id==selectedCourse.id}">Learning Goals</a>
 
       </div>
 

@@ -1,6 +1,5 @@
-import { Course, Meeting, MeetingType } from '@dynrec/common';
+import { Course, dateRange, Meeting, MeetingType } from '@dynrec/common';
 import _ from 'lodash';
-import { dateRange } from '../../../../../common/src/utils/date.utils';
 import { AllMeetingSources } from './index';
 
 export interface MeetingDataSourceConfig {

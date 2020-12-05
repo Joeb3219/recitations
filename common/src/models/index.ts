@@ -1,5 +1,7 @@
 export * from './course';
 export * from './forms/form';
+export * from './learningGoal';
+export * from './learningGoalCategory';
 export * from './lessonPlan';
 export * from './lessonPlanStep';
 export * from './meetable';

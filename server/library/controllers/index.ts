@@ -1,4 +1,5 @@
 import { CourseController } from './course.controller';
+import { LearningGoalController } from './learningGoal.controller';
 import { LessonPlanController } from './lessonPlan.controller';
 import { MeetingController } from './meetings/meeting.controller';
 import { MeetingTimeController } from './meetingTime.controller';
@@ -14,6 +15,7 @@ export {
     ProblemController,
     SectionController,
     UserController,
+    LearningGoalController,
 };
 
 export const AllControllers = [
@@ -24,4 +26,5 @@ export const AllControllers = [
     ProblemController,
     SectionController,
     UserController,
+    LearningGoalController,
 ];

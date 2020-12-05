@@ -1,6 +1,7 @@
 export * from './course.interface';
 export * from './courseSetting.interface';
 export * from './http/standardResponse.interface';
+export * from './learningGoal.interface';
 export * from './lessonPlan.interface';
 export * from './lessonPlanStep.interface';
 export * from './location.interface';

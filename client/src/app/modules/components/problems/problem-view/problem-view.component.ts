@@ -23,6 +23,7 @@ export class ProblemViewComponent implements OnInit {
     isEditProblemModalOpen = false;
 
     @Input() problem: Problem;
+    @Input() showLearningGoals: boolean = true;
 
     userFullName?: string;
 

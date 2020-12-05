@@ -26,6 +26,7 @@
         "@typescript-eslint/no-non-null-asserted-optional-chain": 2,
         "extra-rules/no-commented-out-code": 2,
         "lines-between-class-members": 0,
-        "@typescript-eslint/explicit-module-boundary-types": 0
+        "@typescript-eslint/explicit-module-boundary-types": 0,
+        "@typescript-eslint/no-inferrable-types": 0
     }
 }

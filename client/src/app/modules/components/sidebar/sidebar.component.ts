@@ -4,6 +4,11 @@ import { Course } from '@dynrec/common';
 import { CourseService } from '@services/course.service';
 import { UserService } from '@services/user.service';
 
+type CourseEntry = {
+    name: string;
+    slug: string;
+};
+
 @Component({
     selector: 'app-sidebar',
     templateUrl: './sidebar.component.html',
@@ -14,17 +19,41 @@ export class SidebarComponent implements OnInit {
 
     selectedCourse?: Course = undefined;
 
-    activeLink: number;
+    activeSlug?: string;
 
-    links = [
-        'home',
-        'recitations',
-        'sections',
-        'problems',
-        'coverage-requests',
-        'settings',
-        'lesson-plans',
-        'learning-goals',
+    courseEntries: CourseEntry[] = [
+        {
+            slug: '',
+            name: 'Home',
+        },
+        {
+            slug: 'recitations',
+            name: 'Recitations',
+        },
+        {
+            slug: 'sections',
+            name: 'Sections',
+        },
+        {
+            slug: 'problems',
+            name: 'Problems',
+        },
+        {
+            slug: 'lesson-plans',
+            name: 'Lesson Plans',
+        },
+        {
+            slug: 'learning-goals',
+            name: 'Lesson Goals',
+        },
+        {
+            slug: 'coverage-requests',
+            name: 'Coverage Requests',
+        },
+        {
+            slug: 'settings',
+            name: 'Settings',
+        },
     ];
 
     constructor(private userService: UserService, private courseService: CourseService, private router: Router) {}
@@ -81,10 +110,7 @@ export class SidebarComponent implements OnInit {
                 page = page.substr(0, page.indexOf('/'));
             }
 
-            this.activeLink = this.links.indexOf(page);
-            if (page === '') {
-                this.activeLink = 0;
-            }
+            this.activeSlug = page;
         }
     }
 
@@ -92,9 +118,5 @@ export class SidebarComponent implements OnInit {
 
     setStep(index: number): void {
         this.step = index;
-    }
-
-    setActiveLink(number: number): void {
-        this.activeLink = number;
     }
 }

@@ -8,31 +8,12 @@
       </mat-expansion-panel-header>
 
       <div class="btn-group-vertical">
-        <a class="btn btn-light btn-sidebar input-block-level form-control link-style"
-          routerLink="/courses/{{ course.id }}"
-          [ngClass]="{'link-bold':activeLink == 0 && course.id==selectedCourse.id}">Home</a>
-        <a class="btn btn-light btn-sidebar input-block-level form-control link-style"
-          routerLink="/courses/{{ course.id }}/recitations"
-          [ngClass]="{'link-bold':activeLink == 1 && course.id==selectedCourse.id}">Recitations</a>
-        <a class="btn btn-light btn-sidebar input-block-level form-control link-style"
-          routerLink="/courses/{{ course.id }}/sections"
-          [ngClass]="{'link-bold':activeLink == 2 && course.id==selectedCourse.id}">Sections</a>
-        <a class="btn btn-light btn-sidebar input-block-level form-control link-style"
-          routerLink="/courses/{{ course.id }}/problems"
-          [ngClass]="{'link-bold':activeLink == 3 && course.id==selectedCourse.id}">Problems</a>
-        <a class="btn btn-light btn-sidebar input-block-level form-control link-style"
-          routerLink="/courses/{{ course.id }}/coverage-requests"
-          [ngClass]="{'link-bold':activeLink == 4 && course.id==selectedCourse.id}">Coverage Requests</a>
-        <a class="btn btn-light btn-sidebar input-block-level form-control link-style"
-          routerLink="/courses/{{ course.id }}/settings"
-          [ngClass]="{'link-bold':activeLink == 5 && course.id==selectedCourse.id}">Settings</a>
-        <a class="btn btn-light btn-sidebar input-block-level form-control link-style"
-          routerLink="/courses/{{ course.id }}/lesson-plans"
-          [ngClass]="{'link-bold':activeLink == 6 && course.id==selectedCourse.id}">Lesson Plans</a>
-        <a class="btn btn-light btn-sidebar input-block-level form-control link-style"
-          routerLink="/courses/{{ course.id }}/learning-goals"
-          [ngClass]="{'link-bold':activeLink == 7 && course.id==selectedCourse.id}">Learning Goals</a>
-
+        <a *ngFor="let entry of courseEntries"
+          class="btn btn-light btn-sidebar input-block-level form-control link-style"
+          routerLink="/courses/{{ course.id }}{{ entry.slug !== '' ? '/' : '' }}{{ entry.slug }}"
+          [ngClass]="{'link-bold': activeSlug === entry.slug && course.id==selectedCourse.id}">
+          {{ entry.name }}
+        </a>
       </div>
 
     </mat-expansion-panel>

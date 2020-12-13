@@ -30,6 +30,10 @@ export class MultipleChoiceComponent implements OnInit {
     handleOptionUpdated(index: number, field: keyof MultipleChoiceOption, data: { target?: { value: any } } | any) {
         const value = data.target?.value ?? data;
 
-        console.log({ data, value });
+        if (!this.options[index]) {
+            return;
+        }
+
+        (this.options[index][field] as any) = value;
     }
 }

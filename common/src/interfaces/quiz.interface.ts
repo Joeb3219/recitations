@@ -11,6 +11,7 @@ export interface QuizElementItem<ElementId extends QuizElementId = QuizElementId
 export interface QuizInterface {
     id: string;
 
+    name: string;
     elements: QuizElementItem[];
 
     creator?: UserInterface; // Who made this quiz?

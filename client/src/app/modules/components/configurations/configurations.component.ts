@@ -45,7 +45,6 @@ export class ConfigurationsComponent implements OnInit {
         const form = new Form();
 
         const mergedSections = this.course.getMergedSettings();
-        console.log({ course: this.course, mergedSections });
 
         form.inputs = (Object.keys(mergedSections) as CourseSettingKey[])
             .filter(key => mergedSections[key].section === section.section)

@@ -54,6 +54,10 @@ export class SidebarComponent implements OnInit {
             slug: 'settings',
             name: 'Settings',
         },
+        {
+            slug: 'quizzes',
+            name: 'Quizzes',
+        },
     ];
 
     constructor(private userService: UserService, private courseService: CourseService, private router: Router) {}

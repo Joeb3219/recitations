@@ -77,6 +77,8 @@ import { LearningGoalService } from './services/learningGoal.service';
 import { MeetingTimeService } from './services/meetingTime.service';
 import { SectionService } from './services/section.service';
 import { UserService } from './services/user.service';
+import { ListQuizzesComponent } from './modules/pages/quizzes/list-quizzes/list-quizzes.component';
+import { QuizEditComponent } from './modules/components/quizzes/quiz-edit/quiz-edit.component';
 
 export let GlobalActivatedRoute: ActivatedRoute;
 
@@ -133,6 +135,8 @@ export let GlobalActivatedRoute: ActivatedRoute;
         QuizBuilderComponent,
         QuizViewComponent,
         MultipleChoiceComponent,
+        ListQuizzesComponent,
+        QuizEditComponent,
     ],
     imports: [
         HttpClientModule,

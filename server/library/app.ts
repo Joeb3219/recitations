@@ -118,7 +118,7 @@ class AppWrapper {
             database: 'recitations_dev',
             synchronize: true,
             logging: false,
-            entities: AllEntities, //["{.., ., ../..}/node_modules/@dynrec/common/{src, dist}/models/index{.ts, .js}"]
+            entities: AllEntities,
         });
     }
 

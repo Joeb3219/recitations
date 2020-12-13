@@ -8,6 +8,9 @@ export class Quiz extends BaseEntity implements QuizInterface {
     @PrimaryGeneratedColumn('uuid')
     public id: string;
 
+    @Column({ type: 'varchar' })
+    public name: string;
+
     @Column({ type: 'jsonb', default: '[]' })
     public elements: QuizElementItem[] = [];
 

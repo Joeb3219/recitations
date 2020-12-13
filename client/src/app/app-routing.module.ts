@@ -11,6 +11,7 @@ import { RecitationsComponent } from '@pages/recitations/recitations.component';
 import { ViewSectionsComponent } from '@pages/sections/view-sections/view-sections.component';
 import { ListLearningGoalsComponent } from './modules/pages/learning-goals/list-learning-goals/list-learning-goals.component';
 import { ViewLessonPlanComponent } from './modules/pages/lesson-plans/view-lesson-plan/view-lesson-plan.component';
+import { ListQuizzesComponent } from './modules/pages/quizzes/list-quizzes/list-quizzes.component';
 
 const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -39,6 +40,10 @@ const routes: Routes = [
     {
         path: 'courses/:courseID/learning-goals',
         component: ListLearningGoalsComponent,
+    },
+    {
+        path: 'courses/:courseID/quizzes',
+        component: ListQuizzesComponent,
     },
 ];
 

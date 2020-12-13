@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { EditElementPayload } from '@components/quizzes/quiz-view/quiz-view.component';
 import { Form, MultipleChoice, Quiz, QuizElement, QuizElementId, QuizElementItem } from '@dynrec/common';
 
@@ -9,6 +9,7 @@ import { Form, MultipleChoice, Quiz, QuizElement, QuizElementId, QuizElementItem
 })
 export class QuizBuilderComponent {
     @Input() quiz: Quiz;
+    @Output() quizChange: EventEmitter<Quiz> = new EventEmitter<Quiz>();
 
     quizElements: QuizElement[] = [new MultipleChoice()];
 
@@ -38,6 +39,11 @@ export class QuizBuilderComponent {
         this.selectedIndex = undefined;
     }
 
+    handleSetQuizName(name: { target?: { value: string } }) {
+        this.quiz.name = name.target?.value ?? this.quiz.name;
+        this.quizChange.emit(this.quiz);
+    }
+
     handleClose() {
         this.selectedElement = undefined;
         this.selectedConfigForm = undefined;
@@ -56,8 +62,7 @@ export class QuizBuilderComponent {
             this.quiz.elements[this.selectedIndex].config = config;
         }
 
-        console.log(this.quiz.elements);
-
+        this.quizChange.emit(this.quiz);
         this.handleClose();
     }
 
@@ -73,5 +78,7 @@ export class QuizBuilderComponent {
         this.selectedIndex = index;
         this.selectedConfigForm = definition.getConfigForm(element.config);
         this.isEditFormVisible = true;
+
+        this.quizChange.emit(this.quiz);
     }
 }

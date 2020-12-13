@@ -35,8 +35,6 @@ export class MultipleChoice extends QuizElement<MultipleChoiceSettingsPayload, M
     public getConfigForm = (config?: MultipleChoiceSettingsPayload) => {
         const form = new Form();
 
-        console.log(config);
-
         form.inputs = [
             {
                 name: 'question',

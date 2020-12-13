@@ -51,6 +51,9 @@ import { ProblemDeleteComponent } from './modules/components/problems/problem-de
 import { ProblemEditComponent } from './modules/components/problems/problem-edit/problem-edit.component';
 import { ProblemSearchFormComponent } from './modules/components/problems/problem-search-form/problem-search-form.component';
 import { ProblemViewComponent } from './modules/components/problems/problem-view/problem-view.component';
+import { MultipleChoiceComponent } from './modules/components/quizzes/formfields/multiple-choice/multiple-choice/multiple-choice.component';
+import { QuizBuilderComponent } from './modules/components/quizzes/quiz-builder/quiz-builder/quiz-builder.component';
+import { QuizViewComponent } from './modules/components/quizzes/quiz-view/quiz-view.component';
 import { QuizzesComponent } from './modules/components/quizzes/quizzes.component';
 import { ReportsComponent } from './modules/components/reports/reports.component';
 import { RolesComponent } from './modules/components/roles/roles.component';
@@ -127,6 +130,9 @@ export let GlobalActivatedRoute: ActivatedRoute;
         ListLearningGoalsComponent,
         FormInputsComponent,
         LearningGoalSearchFormfieldComponent,
+        QuizBuilderComponent,
+        QuizViewComponent,
+        MultipleChoiceComponent,
     ],
     imports: [
         HttpClientModule,

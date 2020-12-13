@@ -14,7 +14,7 @@ type SettingSection = {
     section: CourseSettingSection;
     headerText: string;
     explanationText: string;
-    form?: Form;
+    form: Form;
 };
 
 @Component({
@@ -31,6 +31,7 @@ export class ConfigurationsComponent implements OnInit {
             headerText: 'Dates and Times',
             explanationText:
                 'These fields control various dates and times that affect how courses run, when students can take various actions, and more.',
+            form: new Form(),
         },
     ];
 
@@ -44,6 +45,7 @@ export class ConfigurationsComponent implements OnInit {
         const form = new Form();
 
         const mergedSections = this.course.getMergedSettings();
+        console.log({ course: this.course, mergedSections });
 
         form.inputs = (Object.keys(mergedSections) as CourseSettingKey[])
             .filter(key => mergedSections[key].section === section.section)

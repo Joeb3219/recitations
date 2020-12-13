@@ -8,7 +8,7 @@ import { UserService } from '@services/user.service';
     styleUrls: ['./manual-login-form.component.scss'],
 })
 export class ManualLoginFormComponent implements OnInit {
-    form?: Form = undefined;
+    form?: Form<{ username: string; password: string }> = undefined;
 
     @Output() onSuccessfulLogin: EventEmitter<User> = new EventEmitter<User>();
 

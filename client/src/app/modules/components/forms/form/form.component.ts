@@ -7,22 +7,20 @@ import { Observable } from 'rxjs';
     templateUrl: './form.component.html',
     styleUrls: ['./form.component.scss'],
 })
-export class FormComponent implements OnInit {
+export class FormComponent<T> implements OnInit {
     @ViewChild('submitButton', { static: false }) submitButton: ElementRef;
 
-    @Input() form: Form;
+    @Input() form: Form<T>;
 
     @Input() showSubmit = true; // Whether or not to show the submit button. Generally true, save for places like when placed in a modal.
 
     @Input() forceSubmit: Observable<boolean>; // If provided, can be used to forcefully submit the form, regardless of user intention
 
-    @Output() onSubmit: EventEmitter<{
-        [key: string]: unknown;
-    }> = new EventEmitter();
+    @Output() onSubmit: EventEmitter<T> = new EventEmitter();
 
     @Output() onFieldChange: EventEmitter<FormFieldUpdated> = new EventEmitter();
 
-    internalStore: { [key: string]: unknown } = {};
+    internalStore: Partial<T> = {};
 
     Array = Array;
 
@@ -53,7 +51,8 @@ export class FormComponent implements OnInit {
 
         // First, we load in the defaults
         this.form.inputs.forEach(input => {
-            this.internalStore[input.name ?? 'unknown'] = input.value;
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            (this.internalStore as any)[(input.name ?? 'unknown') as string] = input.value;
         });
     }
 
@@ -109,6 +108,6 @@ export class FormComponent implements OnInit {
     }
 
     submit(): void {
-        this.onSubmit.emit(this.internalStore);
+        this.onSubmit.emit(this.internalStore as T);
     }
 }

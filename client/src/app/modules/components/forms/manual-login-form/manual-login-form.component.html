@@ -1,4 +1,2 @@
-<app-form
-	[form]="form"
-	(onSubmit)="formSubmitted($event)">
+<app-form *ngIf="form" [form]="form" (onSubmit)="formSubmitted($event)">
 </app-form>

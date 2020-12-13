@@ -24,12 +24,10 @@ export class LoginComponent implements OnInit {
     }
 
     successfulLogout(): void {
-        localStorage.removeItem('jwt');
         this.userService.signOut();
     }
 
-    successfulLogin(jwt: string): void {
-        localStorage.setItem('jwt', jwt);
+    successfulLogin(): void {
         this.userService.flushCurrentUser();
         this.router.navigate(['/']);
     }

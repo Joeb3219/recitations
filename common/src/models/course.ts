@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { BaseEntity, Column, Entity, JoinTable, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { DefaultCourseSettings } from '../constants';
 import { CourseInterface, CourseSetting, CourseSettingKey, CourseSettings } from '../interfaces';
 import { Section } from '../models';
@@ -21,7 +21,7 @@ export class Course extends BaseEntity implements CourseInterface {
     @OneToMany(type => Section, section => section.course, {
         cascade: true,
     })
-    @JoinTable()
+    @JoinColumn()
     @Type(() => Section)
     public sections?: Section[];
 

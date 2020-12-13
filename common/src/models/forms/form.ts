@@ -12,7 +12,8 @@ export type FormInputType =
     | 'number'
     | 'password'
     | 'date'
-    | 'learningGoals';
+    | 'learningGoals'
+    | 'multiChoiceOptions';
 
 type Undefinable<T> = { [P in keyof T]?: never };
 
@@ -36,9 +37,9 @@ interface LearningGoalsInput {
     course: Course;
 }
 
-export type FormInput<InputType extends FormInputType = FormInputType> = {
+export type FormInput<InputType extends FormInputType = FormInputType, G extends any = any> = {
     group?: string;
-    name?: string;
+    name?: keyof G & string;
     options?: { label: string; value: any }[];
     label?: string;
     type: InputType;
@@ -53,12 +54,12 @@ export type FormInput<InputType extends FormInputType = FormInputType> = {
     (InputType extends 'learningGoals' ? LearningGoalsInput : Undefinable<LearningGoalsInput>) &
     (InputType extends 'wysiwyg' ? WysiwygInput : Undefinable<WysiwygInput>);
 
-export interface FormFieldUpdated {
-    name: string;
-    value: any;
+export interface FormFieldUpdated<T extends any = any> {
+    name: keyof T;
+    value: T[keyof T];
 }
 
-export class Form {
+export class Form<T extends any = any> {
     constructor(
         public inputGroups: {
             name?: string;
@@ -84,6 +85,6 @@ export class Form {
                 previousButton: '',
             },
         ],
-        public inputs: FormInput[] = []
+        public inputs: FormInput<FormInputType, T>[] = []
     ) {}
 }

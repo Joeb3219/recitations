@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { FormFieldUpdated, FormInput, ProblemDifficulty, StandardResponseInterface, User } from '@dynrec/common';
 import { HttpFilterInterface } from '@http/httpFilter.interface';
-import { ColumnMode } from '@swimlane/ngx-datatable';
+import { ColumnMode, TableColumn } from '@swimlane/ngx-datatable';
 import _, { get } from 'lodash';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
@@ -24,22 +24,28 @@ export interface DatatableAction {
     href?: string;
 }
 
+interface DatatableColumnBase<
+    ResourceModel = any,
+    CellTemplateName extends DatatableColumnCellTemplateName = DatatableColumnCellTemplateName
+> extends TableColumn {
+    name: string;
+    cellTemplate?: DatatableColumnCellTemplateName | TemplateRef<unknown>;
+    prop?: keyof ResourceModel & string;
+    actions?: (row: ResourceModel, isEditing: boolean) => DatatableAction[];
+    cellTemplateName?: CellTemplateName;
+}
+
 export type DatatableColumn<
     ResourceModel = any,
     CellTemplateName extends DatatableColumnCellTemplateName = DatatableColumnCellTemplateName
-> = {
-    name: string;
-    cellTemplate?: DatatableColumnCellTemplateName | TemplateRef<unknown>;
-    prop?: keyof ResourceModel;
-    actions?: (row: ResourceModel, isEditing: boolean) => DatatableAction[];
-    cellTemplateName?: CellTemplateName;
-} & (CellTemplateName extends 'editCell'
-    ? {
-          edit: (object: ResourceModel) => Omit<FormInput, 'row' | 'col' | 'group' | 'hidden'>;
-      }
-    : {
-          edit?: undefined;
-      });
+> = DatatableColumnBase<ResourceModel, CellTemplateName> &
+    (CellTemplateName extends 'editCell'
+        ? {
+              edit: (object: ResourceModel) => Omit<FormInput, 'row' | 'col' | 'group' | 'hidden'>;
+          }
+        : {
+              edit?: undefined;
+          });
 
 type Datatable<T> = {
     rowDetail: {
@@ -73,7 +79,9 @@ export class DatatableComponent<T extends { id?: string }> implements OnInit {
 
     @Input() detailTemplate?: TemplateRef<unknown>;
 
-    @Input() dataFunction: (args: HttpFilterInterface) => StandardResponseInterface<T[]>;
+    @Input() dataFunction: (
+        args: HttpFilterInterface
+    ) => StandardResponseInterface<T[]> | Promise<StandardResponseInterface<T[]>>;
 
     @Input() createNewRow: () => T;
 

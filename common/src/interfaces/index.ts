@@ -9,5 +9,6 @@ export * from './meetable.interface';
 export * from './meeting.interface';
 export * from './meetingTime.interface';
 export * from './problem.interface';
+export * from './quiz.interface';
 export * from './section.interface';
 export * from './user.interface';

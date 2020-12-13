@@ -1,11 +1,11 @@
 import { Type } from 'class-transformer';
-import { BaseEntity, Entity, JoinTable, OneToMany, PrimaryGeneratedColumn, TableInheritance } from 'typeorm';
+import { BaseEntity, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn, TableInheritance } from 'typeorm';
 import { MeetableInterface } from '../interfaces';
 import { MeetingTime } from '../models';
 
 @Entity()
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })
-export class Meetable extends BaseEntity implements MeetableInterface {
+export abstract class Meetable extends BaseEntity implements MeetableInterface {
     @PrimaryGeneratedColumn('uuid')
     public id: string;
 
@@ -13,7 +13,7 @@ export class Meetable extends BaseEntity implements MeetableInterface {
         eager: true,
         cascade: true,
     })
-    @JoinTable()
+    @JoinColumn()
     @Type(() => MeetingTime)
     public meetingTimes?: MeetingTime[];
 

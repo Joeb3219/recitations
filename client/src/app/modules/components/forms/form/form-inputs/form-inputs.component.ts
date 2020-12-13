@@ -15,14 +15,22 @@ export class FormInputsComponent {
 
     Editor = ClassicEditor;
 
-    fieldUpdatedWysiwyg(name: string, { editor }: ChangeEvent): void {
+    fieldUpdatedWysiwyg(name: string | number | symbol | undefined, { editor }: ChangeEvent): void {
+        if (!name) {
+            return;
+        }
+
         this.onFieldChange.emit({
             name,
             value: editor.getData(),
         });
     }
 
-    fieldUpdated(name: string, data: { target?: { value: any } } | any): void {
+    fieldUpdated(name: string | number | symbol | undefined, data: { target?: { value: any } } | any): void {
+        if (!name) {
+            return;
+        }
+
         const value = data.target?.value ?? data;
 
         // This is hella hacky, we need a better solution to this later.

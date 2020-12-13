@@ -8,6 +8,7 @@
     "nohoist": [
         "**/typeorm**/",
         "**/typeorm",
+        "@dynrec/common",
         "**@dynrec/common**"
     ],
     "scripts": {

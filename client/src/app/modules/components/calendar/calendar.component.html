@@ -1,19 +1,21 @@
 <ng-template #modalContent let-close="close">
-  <div class="modal-header">
-    <h5 class="modal-title">{{ getCalendarTitle(selectedMeeting) }}</h5>
-    <button type="button" class="close" (click)="close()">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body" *ngIf="selectedMeeting">
-    {{ selectedMeeting.meetingType | titlecase }}:
-    <app-user-badge [user]="selectedMeeting.meetingTime.leader"></app-user-badge>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline-secondary" (click)="close()">
-      OK
-    </button>
-  </div>
+  <ng-container *ngIf="selectedMeeting">
+    <div class="modal-header">
+      <h5 class="modal-title">{{ getCalendarTitle(selectedMeeting) }}</h5>
+      <button type="button" class="close" (click)="close()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body" *ngIf="selectedMeeting">
+      {{ selectedMeeting.meetingType | titlecase }}:
+      <app-user-badge [user]="selectedMeeting.meetingTime.leader"></app-user-badge>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-secondary" (click)="close()">
+        OK
+      </button>
+    </div>
+  </ng-container>
 </ng-template>
 
 <ng-container *ngIf="meetings">

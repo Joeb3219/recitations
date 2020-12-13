@@ -7,8 +7,8 @@ import { Observable, Subject } from 'rxjs';
     templateUrl: './form-modal.component.html',
     styleUrls: ['./form-modal.component.scss'],
 })
-export class FormModalComponent {
-    @Input() form: Form;
+export class FormModalComponent<T> {
+    @Input() form: Form<T>;
 
     @Input() title: string;
 
@@ -20,20 +20,18 @@ export class FormModalComponent {
 
     @Input() modalSize = 'lg';
 
-    @Output() onSubmit: EventEmitter<{
-        [key: string]: unknown;
-    }> = new EventEmitter();
+    @Output() onSubmit: EventEmitter<T> = new EventEmitter();
 
     @Output() onClose: EventEmitter<void> = new EventEmitter();
 
     @Output() onFieldChange: EventEmitter<{
-        name: string;
-        value: any;
+        name: keyof T;
+        value: T[keyof T];
     }> = new EventEmitter();
 
-    forceFormSubmit: Subject<any> = new Subject<any>();
+    forceFormSubmit: Subject<boolean> = new Subject<boolean>();
 
-    handleOnSubmit(val: { [key: string]: unknown }): void {
+    handleOnSubmit(val: T): void {
         this.onSubmit.emit(val);
     }
 
@@ -41,7 +39,7 @@ export class FormModalComponent {
         this.onClose.emit();
     }
 
-    handleOnFieldChange(val: FormFieldUpdated): void {
+    handleOnFieldChange(val: FormFieldUpdated<T>): void {
         this.onFieldChange.emit(val);
     }
 

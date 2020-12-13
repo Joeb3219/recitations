@@ -13,7 +13,7 @@ import { LearningGoalService } from '../../../../services/learningGoal.service';
 export class LearningGoalSearchFormfieldComponent implements OnInit {
     @Input() goals?: LearningGoal[] = [];
     @Input() course: Course;
-    @Input() name: string;
+    @Input() name?: string;
 
     @Output() onChange: EventEmitter<LearningGoal[]> = new EventEmitter<LearningGoal[]>();
 

@@ -1,0 +1,24 @@
+<div class="row" *ngFor="let element of quiz.elements; let index = index">
+  test{{ element.elementId.toString() }}
+  <div class="col">
+    <div class="quiz-element">
+      <div class="multipleChoice" *ngIf="element.elementId == 'multiple_choice'">
+        <div class="row">
+          <div class="col">
+            {{ element.config.question }}
+          </div>
+        </div>
+        <div class="row" *ngFor="let option of element.config.options">
+          <div class="col">
+            {{ option.label }}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="showEditButtons" class="actions">
+      <button type="button" class="btn btn-outline-secondary" (click)="handleEditElement(element, index)">
+        Edit
+      </button>
+    </div>
+  </div>
+</div>

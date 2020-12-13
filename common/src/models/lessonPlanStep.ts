@@ -1,5 +1,5 @@
 import { Type } from 'class-transformer';
-import { BaseEntity, Column, Entity, JoinColumn, JoinTable, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { LessonPlanStepInterface } from '../interfaces';
 import { Course, Problem, User } from '../models';
 import { LessonPlan } from './lessonPlan';
@@ -33,7 +33,7 @@ export class LessonPlanStep extends BaseEntity implements LessonPlanStepInterfac
     public course: Course;
 
     @ManyToOne(type => LessonPlan, lessonPlan => lessonPlan.steps)
-    @JoinTable()
+    @JoinColumn()
     @Type(() => LessonPlan)
     public lessonPlan: LessonPlan;
 

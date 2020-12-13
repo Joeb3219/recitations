@@ -1,0 +1,22 @@
+<app-form-modal *ngIf="isEditFormVisible && selectedConfigForm" [submitText]="'Save Quiz Element'"
+  [showModal]="isEditFormVisible" [forceClose]="forceClose" [form]="selectedConfigForm" [modalSize]="'xl'"
+  [title]="'Save Quiz Element'" (onSubmit)="formSubmitted($event)" (onClose)="handleClose()">
+</app-form-modal>
+
+<div class="row">
+  <div class="col">
+    <select [(ngModel)]="newElementId">
+      <option *ngFor="let element of quizElements" value="{{ element.id }}">
+        {{ element.name }}
+      </option>
+    </select>
+    <button type="button" class="btn btn-outline-primary" (click)="handleAddElement()">
+      Add
+    </button>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <app-quiz-view [quiz]="quiz" [showEditButtons]="true" (editElement)="handleEditElement($event)"></app-quiz-view>
+  </div>
+</div>

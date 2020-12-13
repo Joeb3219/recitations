@@ -1,7 +1,7 @@
-import { User } from '@dynrec/common';
+import { AllEntities, User } from '@dynrec/common';
 import * as bodyParser from 'body-parser';
 import * as dotenv from 'dotenv';
-import Express from 'express';
+import { default as Express } from 'express';
 import * as jwt from 'jsonwebtoken';
 import 'reflect-metadata';
 import { Connection, createConnection } from 'typeorm';
@@ -109,7 +109,17 @@ class AppWrapper {
     }
 
     async initDB() {
-        this.connection = await createConnection();
+        this.connection = await createConnection({
+            name: 'default',
+            type: 'postgres',
+            host: 'localhost',
+            username: 'postgres',
+            password: 'banana',
+            database: 'recitations_dev',
+            synchronize: true,
+            logging: false,
+            entities: AllEntities, //["{.., ., ../..}/node_modules/@dynrec/common/{src, dist}/models/index{.ts, .js}"]
+        });
     }
 
     async initExpress() {

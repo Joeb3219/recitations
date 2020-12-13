@@ -63,4 +63,12 @@ export class MeetingTimesFormfieldComponent implements OnInit {
 
         this.handleEditMeetingTimeClosed();
     }
+
+    handleDeleteMeetingTime(meetingTime: MeetingTime) {
+        const foundIndex = this.meetable.meetingTimes?.findIndex(item => item.id === meetingTime.id);
+
+        if (foundIndex !== undefined) {
+            this.meetable.meetingTimes?.splice(foundIndex, 0);
+        }
+    }
 }

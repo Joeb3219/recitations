@@ -1,56 +1,52 @@
-<h3 *ngIf="(form && form.pages && form.pages[pageNumber])">
-  {{ form.pages[pageNumber].label }}
+<h3 *ngIf="form && form.pages && form.pages[pageNumber]">
+    {{ form.pages[pageNumber].label }}
 </h3>
 
-<form *ngIf="form" (submit)="submit($event)">
-
-  <!-- Iterate over all of the pages -->
-  <ng-container *ngFor="let page of form.pages; let i = index">
-    <div class="form-page" [class.disabled]="i != pageNumber">
-
-      <!-- now we iterate over each of our groupings of inputs on this page -->
-      <ng-container *ngFor="let group of form.inputGroups">
-
-        <div *ngIf="group.page == i">
-
-          <div class="row" *ngFor="let numColumns of rowLayouts[group.name]; let row = index">
-            <div class="col" *ngFor="let column of Array(numColumns).fill(0); let col = index">
-
-              <!-- now we go through all inputs of the group and actually render them -->
-              <ng-container *ngFor="let input of form.inputs">
-
-                <div class="form-group"
-                  *ngIf="!input.hidden && input.row == row && input.col == col && (input.group == group.name || (group.name == '' && !input.group))">
-
-                  <label style="width: 100%">
-                    {{ input.label }}:
-                    <app-form-inputs [input]="input" (onFieldChange)="handleFieldInput($event)"></app-form-inputs>
-                  </label>
-
+<form *ngIf="form" (submit)="submit()">
+    <!-- Iterate over all of the pages -->
+    <ng-container *ngFor="let page of form.pages; let i = index">
+        <div class="form-page" [class.disabled]="i != pageNumber">
+            <!-- now we iterate over each of our groupings of inputs on this page -->
+            <ng-container *ngFor="let group of form.inputGroups">
+                <div *ngIf="group.page == i">
+                    <div
+                        class="row"
+                        *ngFor="let numColumns of rowLayouts[group.name ? group.name : '']; let row = index"
+                    >
+                        <div class="col" *ngFor="let column of Array(numColumns).fill(0); let col = index">
+                            <!-- now we go through all inputs of the group and actually render them -->
+                            <ng-container *ngFor="let input of form.inputs">
+                                <div
+                                    class="form-group"
+                                    *ngIf="
+                                        !input.hidden &&
+                                        input.row == row &&
+                                        input.col == col &&
+                                        (input.group == group.name || (group.name == '' && !input.group))
+                                    "
+                                >
+                                    <label style="width: 100%">
+                                        {{ input.label }}:
+                                        <app-form-inputs
+                                            [input]="input"
+                                            (onFieldChange)="handleFieldInput($event)"
+                                        ></app-form-inputs>
+                                    </label>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
                 </div>
+            </ng-container>
 
-              </ng-container>
+            <!-- This will navigate use through the form pages -->
+            <button type="button" class="btn btn-primary" (click)="prevPage()" *ngIf="pageNumber != 0">
+                {{ page.previousButton || 'Back' }}
+            </button>
 
-            </div>
-          </div>
-
+            <button #submitButton [hidden]="!showSubmit" type="button" class="btn btn-primary" (click)="nextPage()">
+                {{ page.continueButton || 'Submit' }}
+            </button>
         </div>
-
-      </ng-container>
-
-
-      <!-- This will navigate use through the form pages -->
-      <button type="button" class="btn btn-primary" (click)="prevPage()"
-        *ngIf="pageNumber != 0">{{ page.previousButton || "Back" }}</button>
-
-
-
-      <button #submitButton [hidden]="!showSubmit" type="button" class="btn btn-primary"
-        (click)="nextPage()">{{ page.continueButton || "Submit" }}</button>
-
-    </div>
-
-  </ng-container>
-
-
+    </ng-container>
 </form>

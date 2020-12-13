@@ -11,7 +11,7 @@
         <a *ngFor="let entry of courseEntries"
           class="btn btn-light btn-sidebar input-block-level form-control link-style"
           routerLink="/courses/{{ course.id }}{{ entry.slug !== '' ? '/' : '' }}{{ entry.slug }}"
-          [ngClass]="{'link-bold': activeSlug === entry.slug && course.id==selectedCourse.id}">
+          [ngClass]="{'link-bold': activeSlug === entry.slug && course.id==selectedCourse?.id}">
           {{ entry.name }}
         </a>
       </div>

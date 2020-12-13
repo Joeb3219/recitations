@@ -1,6 +1,6 @@
 import { Type } from 'class-transformer';
 import dayjs from 'dayjs';
-import { BaseEntity, Column, Entity, JoinTable, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { MeetingType } from '../enums';
 import { MeetingTimeInterface } from '../interfaces';
 import { Meetable, User } from '../models';
@@ -26,7 +26,7 @@ export class MeetingTime extends BaseEntity implements MeetingTimeInterface {
     public weekday: Weekdays;
 
     @ManyToOne(() => User, { eager: true })
-    @JoinTable()
+    @JoinColumn()
     @Type(() => User)
     public leader?: User;
 
@@ -40,7 +40,7 @@ export class MeetingTime extends BaseEntity implements MeetingTimeInterface {
     public frequency: number;
 
     @ManyToOne(type => Meetable, meetable => meetable.meetingTimes)
-    @JoinTable()
+    @JoinColumn()
     @Type(() => Meetable)
     public meetable: Meetable;
 

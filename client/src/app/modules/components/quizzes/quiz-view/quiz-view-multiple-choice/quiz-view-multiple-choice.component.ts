@@ -1,7 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { MultipleChoiceOption, Quiz } from '@dynrec/common';
+import { MultipleChoiceOption, Quiz, QuizElementItem } from '@dynrec/common';
 import _ from 'lodash';
-import { QuizElementItem } from '../../../../../../../../common/dist/interfaces/quiz.interface';
 
 @Component({
     selector: 'app-quiz-view-multiple-choice',

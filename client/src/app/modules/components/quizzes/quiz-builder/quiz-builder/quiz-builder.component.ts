@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { EditElementPayload } from '@components/quizzes/quiz-view/quiz-view.component';
 import { Form, MultipleChoice, Quiz, QuizElement, QuizElementId, QuizElementItem } from '@dynrec/common';
+import { FreeResponse } from '../../../../../../../../common/src/definitions/quiz/FreeResponse.definition';
 
 @Component({
     selector: 'app-quiz-builder',
@@ -11,7 +12,7 @@ export class QuizBuilderComponent {
     @Input() quiz: Quiz;
     @Output() quizChange: EventEmitter<Quiz> = new EventEmitter<Quiz>();
 
-    quizElements: QuizElement[] = [new MultipleChoice()];
+    quizElements: QuizElement[] = [new MultipleChoice(), new FreeResponse()];
 
     newElementId?: QuizElementId;
 

@@ -81,6 +81,7 @@ import { ListQuizzesComponent } from './modules/pages/quizzes/list-quizzes/list-
 import { QuizEditComponent } from './modules/components/quizzes/quiz-edit/quiz-edit.component';
 import { ViewQuizComponent } from './modules/pages/quizzes/view-quiz/view-quiz.component';
 import { QuizViewMultipleChoiceComponent } from './modules/components/quizzes/quiz-view/quiz-view-multiple-choice/quiz-view-multiple-choice.component';
+import { QuizViewFreeResponseComponent } from './modules/components/quizzes/quiz-view/quiz-view-free-response/quiz-view-free-response.component';
 
 export let GlobalActivatedRoute: ActivatedRoute;
 
@@ -141,6 +142,7 @@ export let GlobalActivatedRoute: ActivatedRoute;
         QuizEditComponent,
         ViewQuizComponent,
         QuizViewMultipleChoiceComponent,
+        QuizViewFreeResponseComponent,
     ],
     imports: [
         HttpClientModule,

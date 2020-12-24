@@ -33,7 +33,7 @@ export class MultipleChoice extends QuizElement<MultipleChoiceSettingsPayload, M
     });
 
     public getConfigForm = (config?: MultipleChoiceSettingsPayload) => {
-        const form = new Form();
+        const form = new Form<MultipleChoiceSettingsPayload>();
 
         form.inputs = [
             {

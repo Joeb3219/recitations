@@ -5,6 +5,9 @@
       <div class="multipleChoice" *ngIf="element.elementId == 'multiple_choice'">
         <app-quiz-view-multiple-choice [quiz]="quiz" [element]="element"></app-quiz-view-multiple-choice>
       </div>
+      <div class="freeResponse" *ngIf="element.elementId == 'free_response'">
+        <app-quiz-view-free-response [quiz]="quiz" [element]="element"></app-quiz-view-free-response>
+      </div>
     </div>
     <div *ngIf="showEditButtons" class="actions">
       <button type="button" class="btn btn-outline-secondary" (click)="handleEditElement(element, index)">

@@ -4,6 +4,9 @@
 </app-form-modal>
 
 <div class="row">
+  <div class="col-sm-1">
+    Title:
+  </div>
   <div class="col">
     <input type="text" value="{{ quiz.name }}" class="form-control" name="quizName"
       (change)="handleSetQuizName($event)" />
@@ -12,7 +15,7 @@
 </div>
 <div class="row">
   <div class="col">
-    <select [(ngModel)]="newElementId">
+    Add a new question: <select [(ngModel)]="newElementId">
       <option *ngFor="let element of quizElements" value="{{ element.id }}">
         {{ element.name }}
       </option>

@@ -12,6 +12,7 @@ import { ViewSectionsComponent } from '@pages/sections/view-sections/view-sectio
 import { ListLearningGoalsComponent } from './modules/pages/learning-goals/list-learning-goals/list-learning-goals.component';
 import { ViewLessonPlanComponent } from './modules/pages/lesson-plans/view-lesson-plan/view-lesson-plan.component';
 import { ListQuizzesComponent } from './modules/pages/quizzes/list-quizzes/list-quizzes.component';
+import { ViewQuizComponent } from './modules/pages/quizzes/view-quiz/view-quiz.component';
 
 const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -44,6 +45,10 @@ const routes: Routes = [
     {
         path: 'courses/:courseID/quizzes',
         component: ListQuizzesComponent,
+    },
+    {
+        path: 'courses/:courseID/quizzes/:quizID',
+        component: ViewQuizComponent,
     },
 ];
 

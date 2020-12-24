@@ -79,6 +79,8 @@ import { SectionService } from './services/section.service';
 import { UserService } from './services/user.service';
 import { ListQuizzesComponent } from './modules/pages/quizzes/list-quizzes/list-quizzes.component';
 import { QuizEditComponent } from './modules/components/quizzes/quiz-edit/quiz-edit.component';
+import { ViewQuizComponent } from './modules/pages/quizzes/view-quiz/view-quiz.component';
+import { QuizViewMultipleChoiceComponent } from './modules/components/quizzes/quiz-view/quiz-view-multiple-choice/quiz-view-multiple-choice.component';
 
 export let GlobalActivatedRoute: ActivatedRoute;
 
@@ -137,6 +139,8 @@ export let GlobalActivatedRoute: ActivatedRoute;
         MultipleChoiceComponent,
         ListQuizzesComponent,
         QuizEditComponent,
+        ViewQuizComponent,
+        QuizViewMultipleChoiceComponent,
     ],
     imports: [
         HttpClientModule,

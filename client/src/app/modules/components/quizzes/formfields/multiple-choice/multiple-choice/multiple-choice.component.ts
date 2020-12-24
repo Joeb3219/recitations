@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MultipleChoiceOption } from '@dynrec/common';
+import { v4 } from 'uuid';
 
 @Component({
     selector: 'app-multiple-choice',
@@ -23,7 +24,7 @@ export class MultipleChoiceComponent implements OnInit {
     }
 
     handleAddOption() {
-        this.options.push({ value: 'some-value', label: 'foo-bar', correctAnswer: false });
+        this.options.push({ value: v4(), label: '', correctAnswer: false });
         this.onChange.emit(this.options);
     }
 

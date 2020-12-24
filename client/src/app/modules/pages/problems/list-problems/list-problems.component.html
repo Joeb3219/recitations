@@ -24,8 +24,8 @@
   </ng-container>
 </div>
 
-<app-problem-edit *ngIf="selectedEditProblem" [isVisible]="isEditProblemModalOpen" [problem]="selectedEditProblem"
-  (onClose)="handleCloseEditProblemModal()"></app-problem-edit>
+<app-problem-edit *ngIf="selectedEditProblem" [problem]="selectedEditProblem" (onClose)="handleCloseEditProblemModal()">
+</app-problem-edit>
 
 <app-problem-delete *ngIf="selectedDeleteProblem" [isVisible]="isDeleteProblemModalOpen"
   [problem]="selectedDeleteProblem" (onClose)="handleCloseDeleteProblemModal()"></app-problem-delete>

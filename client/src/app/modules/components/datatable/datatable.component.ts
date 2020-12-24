@@ -30,6 +30,7 @@ interface DatatableColumnBase<
 > extends TableColumn {
     name: string;
     cellTemplate?: DatatableColumnCellTemplateName | TemplateRef<unknown>;
+    renderCell?: (row: ResourceModel) => boolean;
     prop?: keyof ResourceModel & string;
     actions?: (row: ResourceModel, isEditing: boolean) => DatatableAction[];
     cellTemplateName?: CellTemplateName;
@@ -108,6 +109,8 @@ export class DatatableComponent<T extends { id?: string }> implements OnInit {
     editedRows: T[] = [];
     // All of the rows, merged.
     rows: T[] = [];
+
+    renderedCells: { [rowIdx: number]: string[] };
 
     editedIndices: number[] = [];
 
@@ -375,6 +378,16 @@ export class DatatableComponent<T extends { id?: string }> implements OnInit {
 
         const overwritten = _.intersectionBy(this.fetchedRows, this.editedRows, 'id');
         this.numResults = this.numFetchedResults + this.editedRows.length - overwritten.length;
+
+        this.renderedCells = this.rows.reduce(
+            (state, item, idx) => ({
+                ...state,
+                [idx]: this.columns
+                    .filter(col => col.prop && (col.renderCell ? col.renderCell(item) : true))
+                    .map(col => col.prop),
+            }),
+            {}
+        );
 
         this.applicationRef.tick();
     }

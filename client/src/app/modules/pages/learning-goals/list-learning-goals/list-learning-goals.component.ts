@@ -21,7 +21,7 @@ export class ListLearningGoalsComponent {
 
     columns: DatatableColumn<LearningGoalCategory>[] = [
         {
-            name: '',
+            name: 'Toggle Sub Goals',
             cellTemplateName: 'toggleCell',
         },
         {

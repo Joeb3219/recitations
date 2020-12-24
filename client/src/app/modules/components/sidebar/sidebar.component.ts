@@ -44,7 +44,7 @@ export class SidebarComponent implements OnInit {
         },
         {
             slug: 'learning-goals',
-            name: 'Lesson Goals',
+            name: 'Learning Goals',
         },
         {
             slug: 'coverage-requests',

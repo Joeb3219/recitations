@@ -1,10 +1,10 @@
-import { MultipleChoiceDataPayload } from '../definitions/quiz/MultipleChoice.definition';
+import { MultipleChoiceSettingsPayload } from '../definitions/quiz/MultipleChoice.definition';
 import { QuizElementId } from '../definitions/quiz/QuizElement.definition';
 import { CourseInterface, UserInterface } from '../interfaces';
 
 export interface QuizElementItem<ElementId extends QuizElementId = QuizElementId> {
     elementId: QuizElementId;
-    config: ElementId extends 'multiple_choice' ? MultipleChoiceDataPayload : any;
+    config: ElementId extends 'multiple_choice' ? MultipleChoiceSettingsPayload : any;
     points: number;
 }
 

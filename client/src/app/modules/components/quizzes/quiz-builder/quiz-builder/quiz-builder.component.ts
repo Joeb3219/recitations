@@ -39,8 +39,8 @@ export class QuizBuilderComponent {
         this.selectedIndex = undefined;
     }
 
-    handleSetQuizName(name: { target?: { value: string } }) {
-        this.quiz.name = name.target?.value ?? this.quiz.name;
+    handleSetQuizName(name: Event) {
+        this.quiz.name = (name.target as HTMLInputElement).value ?? this.quiz.name;
         this.quizChange.emit(this.quiz);
     }
 

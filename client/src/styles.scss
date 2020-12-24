@@ -31,164 +31,160 @@ $client-theme: mat-light-theme($client-primary, $client-accent, $client-warn);
 @import '~quill/dist/quill.bubble.css';
 @import '~quill/dist/quill.snow.css';
 
+@import '~angular-calendar/css/angular-calendar.css';
+
 @import '~@swimlane/ngx-datatable/index.css';
 @import '~@swimlane/ngx-datatable/themes/bootstrap.scss';
 @import '~@swimlane/ngx-datatable/themes/material.scss';
 @import '~@swimlane/ngx-datatable/themes/dark.scss';
 @import '~@swimlane/ngx-datatable/assets/icons.css';
 
-
 // @import '~ngx-toastr/toastr-bs4-alert';
 
 fa-icon {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .divider-xs {
-  height: 0.5rem;
+    height: 0.5rem;
 }
 
 .divider-sm {
-  height: 1rem;
+    height: 1rem;
 }
 
 .divider-md {
-  height: 2rem;
+    height: 2rem;
 }
 
 .rounded-container {
-  border-radius: 1.25rem;
-  background-color: #ebebeb;
-  padding: 1rem;
+    border-radius: 1.25rem;
+    background-color: #ebebeb;
+    padding: 1rem;
 }
 
 $theme-colors: (
-  "primary": #CC0033,
-  "secondary": #5f6a72,
-  "light": #ebebeb,
-  "danger": #ff4444
+    'primary': #cc0033,
+    'secondary': #5f6a72,
+    'light': #ebebeb,
+    'danger': #ff4444,
 );
-
 
 $colors: (
-  "success": #5cb85c,
-  "danger": #ff4444
+    'success': #5cb85c,
+    'danger': #ff4444,
 );
 
-
 :root {
-  --success: #5cb85c;
-  --danger: #ff3737;
-  --warning: #f0ad4e;
-  --primary: #CC0033;
-  --secondary: #5f6a72;
-  --grey: #d6d6d6;
-  --light: #ebebeb;
-  --light-grey: #f7f7f7;
+    --success: #5cb85c;
+    --danger: #ff3737;
+    --warning: #f0ad4e;
+    --primary: #cc0033;
+    --secondary: #5f6a72;
+    --grey: #d6d6d6;
+    --light: #ebebeb;
+    --light-grey: #f7f7f7;
 }
 
 :root {
-  --secondaryRGB: 95, 106, 114;
-  --greyRGB: 214, 214, 214;
+    --secondaryRGB: 95, 106, 114;
+    --greyRGB: 214, 214, 214;
 }
 
 .badge-pill {
-  padding: .5rem;
-  opacity: 90%;
-  border-radius: .8rem;
+    padding: 0.5rem;
+    opacity: 90%;
+    border-radius: 0.8rem;
 }
 
 .pill-success {
-  background-color: var(--success);
-  color: white;
+    background-color: var(--success);
+    color: white;
 }
 
 .pill-warning {
-  background-color: var(--warning);
-  color: white;
+    background-color: var(--warning);
+    color: white;
 }
 
 .pill-danger {
-  background-color: var(--danger);
-  color: white;
+    background-color: var(--danger);
+    color: white;
 }
 
-
 .mat-expansion-panel-content > .mat-expansion-panel-body {
-  padding-bottom: 0;
+    padding-bottom: 0;
 }
 
 .container-margin {
-  margin: 1rem;
+    margin: 1rem;
 }
 
-.mat-tab-group.mat-primary .mat-ink-bar, .mat-tab-nav-bar.mat-primary .mat-ink-bar {
-  background: var(--primary);
+.mat-tab-group.mat-primary .mat-ink-bar,
+.mat-tab-nav-bar.mat-primary .mat-ink-bar {
+    background: var(--primary);
 }
 
 /* Styles for the active tab label */
 .mat-tab-label.mat-tab-label-active {
-  color: var(--primary);
-  font-weight: bold;
+    color: var(--primary);
+    font-weight: bold;
 }
 
 /* Styles for tab labels */
 .mat-tab-label {
-  min-width: 5rem !important;
-  width: content-box !important;
-  background-color: transparent;
+    min-width: 5rem !important;
+    width: content-box !important;
+    background-color: transparent;
 }
 
-.mat-tab-group{
-  width: inherit ;
+.mat-tab-group {
+    width: inherit;
 }
 
-@import "../node_modules/bootstrap/scss/bootstrap";
+@import '../node_modules/bootstrap/scss/bootstrap';
 
-html, body {
-  height: 100%;
+html,
+body {
+    height: 100%;
 }
 
 body {
-  margin: 0;
-  font-family: Lato, "Helvetica Neue", sans-serif;
+    margin: 0;
+    font-family: Lato, 'Helvetica Neue', sans-serif;
 }
-
 
 //MODAL STYLES
 .modal-holder {
-  animation-name: example;
-  animation-duration: 0.3s;
+    animation-name: example;
+    animation-duration: 0.3s;
 }
 
 @keyframes example {
-  0% {
-    transform: scale(0.6)
-  }
-  75% {
-    transform: scale(1.03)
-  }
-  100% {
-    transform: scale(1)
-  }
+    0% {
+        transform: scale(0.6);
+    }
+    75% {
+        transform: scale(1.03);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
-
 
 .ngx-datatable.material {
-  box-shadow: none;
+    box-shadow: none;
 }
 
-.ngx-datatable{
-  //width: 100%;
-  //max-width: max-content;
-  //min-width: max-content;
+.ngx-datatable {
+    //width: 100%;
+    //max-width: max-content;
+    //min-width: max-content;
 }
-
 
 .form-control:focus {
-  border-color: rgba(var(--secondaryRGB), 0.3);
-  box-shadow: 0 0 0 0.2rem rgba(var(--secondaryRGB), 0.2);
-
+    border-color: rgba(var(--secondaryRGB), 0.3);
+    box-shadow: 0 0 0 0.2rem rgba(var(--secondaryRGB), 0.2);
 }
 
 //.form-control:focus {
@@ -196,7 +192,6 @@ body {
 //  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
 //}
 
-
-.pill{
-  color: green;
+.pill {
+    color: green;
 }

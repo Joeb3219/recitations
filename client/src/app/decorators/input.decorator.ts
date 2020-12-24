@@ -1,11 +1,7 @@
 import { Provider } from '@angular/core';
 import 'reflect-metadata';
 
-export function LoadedArg<ResourceModel>(
-    service: Provider,
-    resource: new () => ResourceModel,
-    stub: string
-) {
+export function LoadedArg<ResourceModel>(service: Provider, resource: new () => ResourceModel, stub: string) {
     // eslint-disable-next-line func-names,  @typescript-eslint/ban-types
     return function (target: Object, propertyKey: string): void {
         const currentMetadata = Reflect.getMetadata('loadedArgs', target) || [];

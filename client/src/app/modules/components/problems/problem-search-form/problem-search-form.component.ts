@@ -1,12 +1,4 @@
-import {
-    Component,
-    EventEmitter,
-    Input,
-    OnChanges,
-    OnInit,
-    Output,
-    SimpleChanges,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Course, Problem } from '@dynrec/common';
 import { ProblemService } from '@services/problem.service';
 import { Observable } from 'rxjs';
@@ -42,18 +34,13 @@ export class ProblemSearchFormComponent implements OnInit, OnChanges {
 
     async loadProblems(): Promise<void> {
         if (!this.course) this.problems = [];
-        else
-            this.problems = (
-                await this.problemService.getCourseProblems(this.course)
-            ).data;
+        else this.problems = (await this.problemService.getCourseProblems(this.course)).data;
     }
 
     formatter = (problem: Problem): string => {
         if (problem)
             return `${problem.name} ${
-                problem.creator
-                    ? `(${problem.creator.firstName} ${problem.creator.lastName})`
-                    : ``
+                problem.creator ? `(${problem.creator.firstName} ${problem.creator.lastName})` : ``
             }`;
         return ``;
     };
@@ -66,18 +53,14 @@ export class ProblemSearchFormComponent implements OnInit, OnChanges {
         text$.pipe(
             debounceTime(200),
             distinctUntilChanged(),
-            map((term) =>
+            map(term =>
                 term === ''
                     ? []
                     : this.problems
-                          .filter((problem) => {
+                          .filter(problem => {
                               return (
-                                  problem.name
-                                      .toLowerCase()
-                                      .indexOf(term.toLowerCase()) > -1 ||
-                                  (problem.creator?.username
-                                      .toLowerCase()
-                                      .indexOf(term.toLowerCase()) ?? -1) > -1
+                                  problem.name.toLowerCase().indexOf(term.toLowerCase()) > -1 ||
+                                  (problem.creator?.username.toLowerCase().indexOf(term.toLowerCase()) ?? -1) > -1
                               );
                           })
                           .slice(0, 10)

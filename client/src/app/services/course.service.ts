@@ -24,16 +24,12 @@ export class CourseService {
     }
 
     @UpsertRequest<Course>(Course)
-    public async upsertCourse(
-        course: Course
-    ): Promise<StandardResponseInterface<Course>> {
+    public async upsertCourse(course: Course): Promise<StandardResponseInterface<Course>> {
         throw new Error('Decorator Overloading Failed');
     }
 
     @GetRequest<Course>(Course)
-    public async getCourse(
-        courseID: string
-    ): Promise<StandardResponseInterface<Course>> {
+    public async getCourse(courseID: string): Promise<StandardResponseInterface<Course>> {
         throw new Error('Decorator Overloading Failed');
     }
 }

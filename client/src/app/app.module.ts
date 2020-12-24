@@ -10,26 +10,33 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CourseSettingsComponent } from '@pages/course-settings/course-settings.component';
 import { ListProblemsComponent } from '@pages/problems/list-problems/list-problems.component';
 import { ViewProblemComponent } from '@pages/problems/view-problem/view-problem.component';
+import { MeetingService } from '@services/meeting.service';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { CalendarModule, DateAdapter } from 'angular-calendar';
+import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { QuillModule } from 'ngx-quill';
 import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TokenInterceptor } from './http/token.interceptor';
+import { CalendarComponent } from './modules/components/calendar/calendar.component';
 import { ConfigurationsComponent } from './modules/components/configurations/configurations.component';
 import { DatatableComponent } from './modules/components/datatable/datatable.component';
 import { FooterComponent } from './modules/components/footer/footer.component';
 import { FormModalComponent } from './modules/components/forms/form-modal/form-modal.component';
+import { FormInputsComponent } from './modules/components/forms/form/form-inputs/form-inputs.component';
 import { FormComponent } from './modules/components/forms/form/form.component';
 import { ManualLoginFormComponent } from './modules/components/forms/manual-login-form/manual-login-form.component';
 import { GradebookComponent } from './modules/components/gradebook/gradebook.component';
 import { HeaderComponent } from './modules/components/header/header.component';
+import { LearningGoalSearchFormfieldComponent } from './modules/components/learning-goals/learning-goal-search-formfield/learning-goal-search-formfield.component';
 import { LearningGoalsComponent } from './modules/components/learning-goals/learning-goals.component';
 import { LessonPlanDeleteComponent } from './modules/components/lesson-plans/lesson-plan-delete/lesson-plan-delete.component';
 import { LessonPlanEditComponent } from './modules/components/lesson-plans/lesson-plan-edit/lesson-plan-edit.component';
@@ -44,6 +51,9 @@ import { ProblemDeleteComponent } from './modules/components/problems/problem-de
 import { ProblemEditComponent } from './modules/components/problems/problem-edit/problem-edit.component';
 import { ProblemSearchFormComponent } from './modules/components/problems/problem-search-form/problem-search-form.component';
 import { ProblemViewComponent } from './modules/components/problems/problem-view/problem-view.component';
+import { MultipleChoiceComponent } from './modules/components/quizzes/formfields/multiple-choice/multiple-choice/multiple-choice.component';
+import { QuizBuilderComponent } from './modules/components/quizzes/quiz-builder/quiz-builder/quiz-builder.component';
+import { QuizViewComponent } from './modules/components/quizzes/quiz-view/quiz-view.component';
 import { QuizzesComponent } from './modules/components/quizzes/quizzes.component';
 import { ReportsComponent } from './modules/components/reports/reports.component';
 import { RolesComponent } from './modules/components/roles/roles.component';
@@ -56,15 +66,22 @@ import { UserSearchFormfieldComponent } from './modules/components/users/user-se
 import { WeeksComponent } from './modules/components/weeks/weeks.component';
 import { ViewCourseComponent } from './modules/pages/courses/view-course/view-course.component';
 import { CoverageRequestsComponent } from './modules/pages/coverage-requests/coverage-requests.component';
+import { ListLearningGoalsComponent } from './modules/pages/learning-goals/list-learning-goals/list-learning-goals.component';
 import { ListLessonPlansComponent } from './modules/pages/lesson-plans/list-lesson-plans/list-lesson-plans.component';
 import { ViewLessonPlanComponent } from './modules/pages/lesson-plans/view-lesson-plan/view-lesson-plan.component';
 import { LoginComponent } from './modules/pages/login/login.component';
 import { RecitationsComponent } from './modules/pages/recitations/recitations.component';
 import { ViewSectionsComponent } from './modules/pages/sections/view-sections/view-sections.component';
 import { CourseService } from './services/course.service';
+import { LearningGoalService } from './services/learningGoal.service';
 import { MeetingTimeService } from './services/meetingTime.service';
 import { SectionService } from './services/section.service';
 import { UserService } from './services/user.service';
+import { ListQuizzesComponent } from './modules/pages/quizzes/list-quizzes/list-quizzes.component';
+import { QuizEditComponent } from './modules/components/quizzes/quiz-edit/quiz-edit.component';
+import { ViewQuizComponent } from './modules/pages/quizzes/view-quiz/view-quiz.component';
+import { QuizViewMultipleChoiceComponent } from './modules/components/quizzes/quiz-view/quiz-view-multiple-choice/quiz-view-multiple-choice.component';
+import { QuizViewFreeResponseComponent } from './modules/components/quizzes/quiz-view/quiz-view-free-response/quiz-view-free-response.component';
 
 export let GlobalActivatedRoute: ActivatedRoute;
 
@@ -114,6 +131,18 @@ export let GlobalActivatedRoute: ActivatedRoute;
         LessonPlanStepEditComponent,
         LessonPlanStepViewComponent,
         ViewLessonPlanComponent,
+        CalendarComponent,
+        ListLearningGoalsComponent,
+        FormInputsComponent,
+        LearningGoalSearchFormfieldComponent,
+        QuizBuilderComponent,
+        QuizViewComponent,
+        MultipleChoiceComponent,
+        ListQuizzesComponent,
+        QuizEditComponent,
+        ViewQuizComponent,
+        QuizViewMultipleChoiceComponent,
+        QuizViewFreeResponseComponent,
     ],
     imports: [
         HttpClientModule,
@@ -125,6 +154,7 @@ export let GlobalActivatedRoute: ActivatedRoute;
         BrowserAnimationsModule,
         FormsModule,
         ReactiveFormsModule,
+        CKEditorModule,
         QuillModule.forRoot(),
         MatExpansionModule,
         MatIconModule,
@@ -134,12 +164,18 @@ export let GlobalActivatedRoute: ActivatedRoute;
         MatTabsModule,
         NgxDatatableModule,
         MatFormFieldModule,
+        CalendarModule.forRoot({
+            provide: DateAdapter,
+            useFactory: adapterFactory,
+        }),
     ],
     providers: [
         UserService,
         CourseService,
+        MeetingService,
         SectionService,
         MeetingTimeService,
+        LearningGoalService,
         { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     ],
     entryComponents: [

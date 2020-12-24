@@ -7,12 +7,7 @@ import { BAD_REQUEST } from 'http-status-codes';
 import { get, isEqual, pickBy, sortBy } from 'lodash';
 import 'reflect-metadata';
 import { BaseEntity, DeleteResult, getRepository } from 'typeorm';
-import {
-    ResourceAction,
-    ResourceArgs,
-    SearchableData,
-    SortableData,
-} from '../decorators/controller.decorator';
+import { ResourceAction, ResourceArgs, SearchableData, SortableData } from '../decorators/controller.decorator';
 import { HttpRequest, HttpResponse } from '../express';
 import { isAuthenticated } from './auth/auth.helper';
 
@@ -21,48 +16,35 @@ function searchIn<ObjectType extends any = any, TargetType extends any = any>(
     key: string,
     target: TargetType
 ) {
-    if (!target || !target.toString()) return true; // Ensure that the search target is actually comparable
+    if (!target || !('toString' in target)) return true; // Ensure that the search target is actually comparable
 
     const data = get(object, key); // Lodash get, which will find object.path.to.key, for all key = "path.to.key".
     if (!data) return false; // A real search query was provided, but we don't have it for this key.
 
-    if (typeof target === 'string' && typeof data === 'string')
-        return data.includes(target);
-    if (typeof target === 'string' && typeof data === 'number')
-        return parseInt(target, 10) === data;
+    if (typeof target === 'string' && typeof data === 'string') return data.includes(target);
+    if (typeof target === 'string' && typeof data === 'number') return parseInt(target, 10) === data;
     return isEqual(data, target);
 }
 
 // Finds if any of the provided keys are matches for the provided target.
-function multiKeySearchIn<
-    ObjectType extends any = any,
-    TargetType extends any = any
->(object: ObjectType, keys: string[], target: TargetType) {
-    return keys.filter((key) =>
-        searchIn<ObjectType, TargetType>(object, key, target)
-    ).length;
+function multiKeySearchIn<ObjectType extends any = any, TargetType extends any = any>(
+    object: ObjectType,
+    keys: string[],
+    target: TargetType
+) {
+    return keys.filter(key => searchIn<ObjectType, TargetType>(object, key, target)).length;
 }
 
-function searchResultData(
-    results: any | any[],
-    req: HttpRequest,
-    searchableFields?: SearchableData
-) {
+function searchResultData(results: any | any[], req: HttpRequest, searchableFields?: SearchableData) {
     if (!results || !Array.isArray(results) || !results.length) return results; // oops, this isn't an array afterall
     if (!searchableFields || !searchableFields.length) return results; // oops, no fields were passed in to search by.
 
     if (!req.query || !req.query.search) return results;
 
-    return results.filter((result) =>
-        multiKeySearchIn(result, searchableFields, req.query.search)
-    );
+    return results.filter(result => multiKeySearchIn(result, searchableFields, req.query.search));
 }
 
-function sortResultData(
-    results: any | any[],
-    req: HttpRequest,
-    sortableFields?: SortableData
-) {
+function sortResultData(results: any | any[], req: HttpRequest, sortableFields?: SortableData) {
     if (!results || !Array.isArray(results) || !results.length) return results; // oops, this isn't an array afterall
     if (!sortableFields) return results; // oops, no fields were passed in to search by.
 
@@ -86,10 +68,7 @@ function sortResultData(
     return sorted;
 }
 
-function paginateResultData(
-    results: any | any[],
-    req: HttpRequest<any, { limit: string; offset: string }>
-) {
+function paginateResultData(results: any | any[], req: HttpRequest<any, { limit: string; offset: string }>) {
     if (!results || !Array.isArray(results) || !results.length) return results; // oops, this isn't an array afterall
 
     const { limit, offset } = req.query;
@@ -97,15 +76,10 @@ function paginateResultData(
     const parsedLimit = parseInt(limit, 10) || 25;
     const parsedOffset = parseInt(offset, 10) || 0;
 
-    return parsedLimit < 0
-        ? results
-        : results.slice(parsedOffset, parsedOffset + parsedLimit + 1);
+    return parsedLimit < 0 ? results : results.slice(parsedOffset, parsedOffset + parsedLimit + 1);
 }
 
-export interface HttpArgs<
-    BodyType extends any = any,
-    ParamsType extends any = any
-> {
+export interface HttpArgs<BodyType extends any = any, ParamsType extends any = any> {
     body: Partial<BodyType>;
     currentUser: User;
     params: Omit<any, 'courseID'> & { courseID: string } & ParamsType;
@@ -120,10 +94,7 @@ function httpMiddleware(
     target: ControllerFunction<any>,
     method: HttpMethods,
     route: string,
-    {
-        sortableFields,
-        searchableFields,
-    }: { sortableFields?: SortableData; searchableFields?: SearchableData }
+    { sortableFields, searchableFields }: { sortableFields?: SortableData; searchableFields?: SearchableData }
 ) {
     console.log(`Generating ${method} ${route}`);
     return async (req: HttpRequest, res: HttpResponse) => {
@@ -134,16 +105,8 @@ function httpMiddleware(
                 params: req.params,
             } as HttpArgs<any>);
 
-            const searchedResult = searchResultData(
-                result,
-                req,
-                searchableFields
-            );
-            const sortedResult = sortResultData(
-                searchedResult,
-                req,
-                sortableFields
-            );
+            const searchedResult = searchResultData(result, req, searchableFields);
+            const sortedResult = sortResultData(searchedResult, req, sortableFields);
 
             // and now we paginate the data
             const paginatedResult = paginateResultData(sortedResult, req);
@@ -165,9 +128,7 @@ function httpMiddleware(
             console.log({ method, route, err });
             if (Boom.isBoom(err)) {
                 return res.status(err.output.statusCode).json({
-                    message:
-                        get(err, 'output.payload.message') ||
-                        'An error occurred.',
+                    message: get(err, 'output.payload.message') || 'An error occurred.',
                     error: err,
                 });
             }
@@ -188,7 +149,7 @@ export function generateUpdateResource<T extends BaseEntity>(
         const { params } = args;
         const id = params[`${resourceName}ID`];
 
-        const updateableData = pickBy(await dataFn(args), (item) => {
+        const updateableData = pickBy(await dataFn(args), item => {
             return item !== undefined;
         });
 
@@ -207,10 +168,7 @@ export function generateUpdateResource<T extends BaseEntity>(
     };
 }
 
-export function generateGetResource<T extends BaseEntity>(
-    resourceClass: new () => T,
-    resourceName: string
-) {
+export function generateGetResource<T extends BaseEntity>(resourceClass: new () => T, resourceName: string) {
     return async (args: HttpArgs<T>): Promise<T> => {
         const { params } = args;
         const id = params[`${resourceName}ID`];
@@ -252,7 +210,7 @@ export function generateCreateResource<T extends BaseEntity>(
     dataFn: (args: HttpArgs<T>) => Partial<T>
 ) {
     return async (args: HttpArgs<T>): Promise<T> => {
-        const data = pickBy(await dataFn(args), (item) => {
+        const data = pickBy(await dataFn(args), item => {
             return !!item;
         });
 
@@ -260,9 +218,7 @@ export function generateCreateResource<T extends BaseEntity>(
     };
 }
 
-export function generateListResource<T extends BaseEntity>(
-    resourceClass: new () => T
-) {
+export function generateListResource<T extends BaseEntity>(resourceClass: new () => T) {
     return async (args: HttpArgs<T>): Promise<T[]> => {
         const { params } = args;
         const { courseID } = params;
@@ -305,11 +261,7 @@ export function generateResource<T extends BaseEntity & { id: string }>(
         const providedFunction = fn;
 
         const middlewares: [
-            (
-                req: HttpRequest,
-                res: HttpResponse,
-                next: NextFunction
-            ) => Promise<HttpResponse> | Promise<any>
+            (req: HttpRequest, res: HttpResponse, next: NextFunction) => Promise<HttpResponse> | Promise<any>
         ] = [isAuthenticated];
         middlewares.push(httpMiddleware(providedFunction, method, route, args));
 
@@ -390,12 +342,9 @@ export function generateRoute(
     const middlewares = [];
     const providedFunction = target[propertyKey].bind(target);
 
-    const isUnauthenticated =
-        Reflect.getMetadata('unauthenticated', controller) || false;
-    const searchableFields =
-        Reflect.getMetadata('searchable', controller) || undefined;
-    const sortableFields =
-        Reflect.getMetadata('sortable', controller) || undefined;
+    const isUnauthenticated = Reflect.getMetadata('unauthenticated', controller) || false;
+    const searchableFields = Reflect.getMetadata('searchable', controller) || undefined;
+    const sortableFields = Reflect.getMetadata('sortable', controller) || undefined;
 
     if (!isUnauthenticated) middlewares.push(isAuthenticated);
     middlewares.push(

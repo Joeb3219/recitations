@@ -1,0 +1,12 @@
+<div class="page" style="padding: 1rem">
+  <ng-container *ngIf="!quiz">
+    <h4>Not Found</h4>
+  </ng-container>
+  <ng-container *ngIf="quiz">
+    <div class="divider-sm"></div>
+
+    <app-quiz-view [quiz]="quiz">
+    </app-quiz-view>
+
+  </ng-container>
+</div>

@@ -1,16 +1,13 @@
 <div *ngIf="settingSections">
+    <div *ngFor="let section of settingSections">
+        <h3>{{ section.headerText }}</h3>
+        {{ section.explanationText }}
+        <br />
 
-  <div *ngFor="let section of settingSections">
-    <h3>{{ section.headerText }}</h3>
-    {{ section.explanationText }}
-    <br>
+        <app-form [form]="section.form" [showSubmit]="false" (onFieldChange)="handleFieldUpdated($event)"></app-form>
 
-    <app-form [form]="section.form" [showSubmit]="false" (onFieldChange)="handleFieldUpdated($event)"></app-form>
+        <hr />
+    </div>
 
-    <hr>
-  </div>
-
-  <button type="button" class="btn btn-primary" (click)="handleSubmit()">Save Settings</button>
-
-
+    <button type="button" class="btn btn-primary" (click)="handleSubmit()">Save Settings</button>
 </div>

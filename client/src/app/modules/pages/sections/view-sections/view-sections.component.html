@@ -23,9 +23,9 @@
   </ng-container>
 </div>
 
-<app-section-edit [isVisible]="isEditSectionModalOpen" [section]="selectedSection"
+<app-section-edit *ngIf="selectedSection" [isVisible]="isEditSectionModalOpen" [section]="selectedSection"
   (onClose)="handleCloseEditSectionModal()"></app-section-edit>
 
 
-<app-section-delete [isVisible]="isDeleteSectionModalOpen" [section]="selectedSection"
-  (onClose)="handleCloseDeleteSectionModal($event)"></app-section-delete>
+<app-section-delete *ngIf="selectedSection" [isVisible]="isDeleteSectionModalOpen" [section]="selectedSection"
+  (onClose)="handleCloseDeleteSectionModal()"></app-section-delete>

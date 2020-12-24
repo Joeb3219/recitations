@@ -8,7 +8,7 @@ import { UserService } from '@services/user.service';
     styleUrls: ['./manual-login-form.component.scss'],
 })
 export class ManualLoginFormComponent implements OnInit {
-    form?: Form = undefined;
+    form?: Form<{ username: string; password: string }> = undefined;
 
     @Output() onSuccessfulLogin: EventEmitter<User> = new EventEmitter<User>();
 
@@ -36,7 +36,7 @@ export class ManualLoginFormComponent implements OnInit {
 
     formSubmitted(data: { username: string; password: string }): void {
         const { username, password } = data;
-        this.userService.signin(username, password).subscribe((result) => {
+        this.userService.signin(username, password).subscribe(result => {
             if (result?.data) {
                 this.onSuccessfulLogin.emit(result.data);
             }

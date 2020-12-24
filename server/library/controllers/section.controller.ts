@@ -7,15 +7,9 @@ import { HttpArgs } from '../helpers/route.helper';
 @Resource(Section, {
     sortable: {
         dataDictionary: {
-            course: (section) => get(section, 'course.name'),
-            ta: (section) =>
-                get(section, 'ta.firstName') +
-                ' ' +
-                get(section, 'ta.lastName'),
-            instructor: (section) =>
-                get(section, 'instructor.firstName') +
-                ' ' +
-                get(section, 'instructor.lastName'),
+            course: section => get(section, 'course.name'),
+            ta: section => get(section, 'ta.firstName') + ' ' + get(section, 'ta.lastName'),
+            instructor: section => get(section, 'instructor.firstName') + ' ' + get(section, 'instructor.lastName'),
         },
     },
     searchable: [

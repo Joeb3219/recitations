@@ -13,10 +13,7 @@ export class UserHelper {
         });
     }
 
-    static async comparePasswords(
-        rawStr: string,
-        storedHash: string
-    ): Promise<boolean> {
+    static async comparePasswords(rawStr: string, storedHash: string): Promise<boolean> {
         return new Promise((resolve, reject) => {
             bcrypt.compare(rawStr, storedHash, (err, res) => {
                 if (err) reject(err);
@@ -31,8 +28,7 @@ export class UserHelper {
             exp: Date.now() + Number(process.env.JWT_EXPIRY_SECONDS),
         };
 
-        if (!process.env.JWT_SECRET)
-            throw Boom.badData('No JWT Secret Provided');
+        if (!process.env.JWT_SECRET) throw Boom.badData('No JWT Secret Provided');
 
         return jwt.sign(data, process.env.JWT_SECRET);
     }

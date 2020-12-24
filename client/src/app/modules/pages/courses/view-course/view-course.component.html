@@ -3,14 +3,13 @@
     <h4>Not Found</h4>
   </ng-container>
   <ng-container *ngIf="course">
-    <!--    <div class="jumbotron">-->
+
     <div class="container-margin">
       <h1 class="display-4">{{ course.name }}</h1>
       <p class="lead">{{course.department}}:{{course.courseCode}}</p>
     </div>
-    <!--    </div>-->
 
-
+    <app-calendar [course]="course"></app-calendar>
 
   </ng-container>
 </div>

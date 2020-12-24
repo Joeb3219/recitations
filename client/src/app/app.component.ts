@@ -1,10 +1,4 @@
-import {
-    ApplicationRef,
-    Component,
-    Injector,
-    OnInit,
-    Provider,
-} from '@angular/core';
+import { ApplicationRef, Component, Injector, OnInit, Provider } from '@angular/core';
 import { ActivatedRoute, ChildActivationEnd, Router } from '@angular/router';
 import 'reflect-metadata';
 
@@ -26,13 +20,13 @@ export class AppComponent implements OnInit {
     isLoadingArgs = false;
 
     ngOnInit(): void {
-        this.router.events.subscribe((event) => {
+        this.router.events.subscribe(event => {
             if (event instanceof ChildActivationEnd) {
                 this.currentParams = event.snapshot.firstChild?.params ?? {};
             }
         });
 
-        this.aRoute.params.subscribe((params) => {
+        this.aRoute.params.subscribe(params => {
             this.currentParams = params;
         });
     }
@@ -48,22 +42,17 @@ export class AppComponent implements OnInit {
             }[] = Reflect.getMetadata('loadedArgs', data) || [];
 
             await Promise.all(
-                loadedArgs.map(async (arg) => {
+                loadedArgs.map(async arg => {
                     // This will contain the metadata of what resource this service providers for, and the function to call for a Getter.
                     const injectedProvider = this.injector.get(arg.service);
 
-                    const provider = Reflect.getMetadata(
-                        'GetResource',
-                        injectedProvider
-                    );
+                    const provider = Reflect.getMetadata('GetResource', injectedProvider);
 
                     // execute our function
                     const resourceId = this.currentParams[arg.stub];
 
                     // and now we can actually grab a value
-                    const response = await injectedProvider[
-                        provider.propertyKey
-                    ](resourceId);
+                    const response = await injectedProvider[provider.propertyKey](resourceId);
                     const resource = response?.data;
 
                     // and now we can set the component's value

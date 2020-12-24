@@ -1,0 +1,24 @@
+<div class="row" *ngFor="let element of quiz.elements; let index = index">
+  <div class="col">
+    <div class="quiz-element">
+      <div class="row">
+        <div class="col">
+          <h4>Question {{index + 1}}</h4>
+        </div>
+        <div class="col">
+          <div *ngIf="showEditButtons" class="actions">
+            <button type="button" class="btn btn-outline-secondary" (click)="handleEditElement(element, index)">
+              Edit
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="multipleChoice" *ngIf="element.elementId == 'multiple_choice'">
+        <app-quiz-view-multiple-choice [quiz]="quiz" [element]="element"></app-quiz-view-multiple-choice>
+      </div>
+      <div class="freeResponse" *ngIf="element.elementId == 'free_response'">
+        <app-quiz-view-free-response [quiz]="quiz" [element]="element"></app-quiz-view-free-response>
+      </div>
+    </div>
+  </div>
+</div>

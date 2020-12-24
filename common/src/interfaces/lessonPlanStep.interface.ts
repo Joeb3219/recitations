@@ -1,8 +1,4 @@
-import {
-    CourseInterface,
-    ProblemInterface,
-    UserInterface,
-} from '../interfaces';
+import { CourseInterface, ProblemInterface, UserInterface } from '../interfaces';
 
 export interface LessonPlanStepInterface {
     id: string;

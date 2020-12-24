@@ -1,13 +1,16 @@
+import { Type } from 'class-transformer';
 import {
     BaseEntity,
     Column,
     Entity,
     JoinColumn,
+    JoinTable,
+    ManyToMany,
     ManyToOne,
     PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ProblemInterface } from '../interfaces';
-import { Course, User } from '../models';
+import { Course, LearningGoal, User } from '../models';
 
 @Entity()
 export class Problem extends BaseEntity implements ProblemInterface {
@@ -29,12 +32,19 @@ export class Problem extends BaseEntity implements ProblemInterface {
     @Column()
     public estimatedDuration: number;
 
+    @ManyToMany(() => LearningGoal, { cascade: true, eager: true })
+    @JoinTable()
+    @Type(() => LearningGoal)
+    public learningGoals: LearningGoal[];
+
     @ManyToOne(() => Course, { eager: true })
     @JoinColumn()
+    @Type(() => Course)
     public course: Course;
 
     @ManyToOne(() => User, { eager: true, cascade: true })
     @JoinColumn()
+    @Type(() => User)
     public creator?: User;
 
     constructor(args: Partial<Problem> = {}) {

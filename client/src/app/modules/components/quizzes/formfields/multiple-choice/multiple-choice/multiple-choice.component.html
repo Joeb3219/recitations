@@ -1,0 +1,24 @@
+<button type="button" class="btn btn-outline-primary" (click)="handleAddOption()" style="float: right">
+  Add Option
+</button>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Answer</th>
+      <th>Is Correct</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let option of options; let index = index">
+      <td><input type="text" [ngModel]="option.label" (change)="handleOptionUpdated(index, 'label', $event)"></td>
+      <td><input type="checkbox" [(ngModel)]="option.correctAnswer"
+          (change)="handleOptionUpdated(index, 'correctAnswer', option.correctAnswer)" /></td>
+      <td>
+        <button type="button" class="btn btn-outline-secondary" (click)="handleDeleteOption(index)">
+          Delete
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>

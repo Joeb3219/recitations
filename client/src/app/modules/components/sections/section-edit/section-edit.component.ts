@@ -20,10 +20,7 @@ export class SectionEditComponent implements OnInit {
 
     form: Form;
 
-    constructor(
-        private sectionService: SectionService,
-        private toastr: ToastrService
-    ) {}
+    constructor(private sectionService: SectionService, private toastr: ToastrService) {}
 
     ngOnInit(): void {
         this.generateForm();
@@ -80,9 +77,7 @@ export class SectionEditComponent implements OnInit {
         const updatedSection = Object.assign({}, this.section, section);
         try {
             // send state to the db, and obtain back the ground truth that the db produces
-            const result = await (
-                await this.sectionService.upsertSection(updatedSection)
-            ).data;
+            const result = await (await this.sectionService.upsertSection(updatedSection)).data;
 
             // and now we store the ground truth back in our real object
             Object.assign(this.section, result);

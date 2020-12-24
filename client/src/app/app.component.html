@@ -4,12 +4,15 @@
 
   <div class="page">
 
-    <app-header></app-header>
+    <div class="row">
+      <app-header></app-header>
+    </div>
 
-    <div class="container-fluid">
-      <div class="row">
+    <div class="row" style="min-height: 100vh;">
+      <div class="col-sm-auto" style="width: 13rem;">
         <app-sidebar></app-sidebar>
-
+      </div>
+      <div class="col">
         <div class="content">
           <div *ngIf="isLoadingArgs" class="d-flex justify-content-center">
             <div class="spinner-border text-primary" role="status">
@@ -18,13 +21,13 @@
           </div>
           <router-outlet (activate)='handleOnActivate($event)'></router-outlet>
         </div>
-
       </div>
+    </div>
 
-      <div class="row ">
+    <div class="row ">
+      <div class="col">
         <app-footer class="footer"></app-footer>
       </div>
-
     </div>
 
   </div>

@@ -24,8 +24,8 @@
   </ng-container>
 </div>
 
-<app-lesson-plan-edit [isVisible]="isEditLessonPlanModalOpen" [lessonPlan]="selectedLessonPlan"
-  (onClose)="handleCloseEditLessonPlanModal()"></app-lesson-plan-edit>
+<app-lesson-plan-edit *ngIf="selectedLessonPlan" [isVisible]="isEditLessonPlanModalOpen"
+  [lessonPlan]="selectedLessonPlan" (onClose)="handleCloseEditLessonPlanModal()"></app-lesson-plan-edit>
 
-<app-lesson-plan-delete [isVisible]="isDeleteLessonPlanModalOpen" [lessonPlan]="selectedLessonPlan"
-  (onClose)="handleCloseDeleteLessonPlanModal($event)"></app-lesson-plan-delete>
+<app-lesson-plan-delete *ngIf="selectedLessonPlan" [isVisible]="isDeleteLessonPlanModalOpen"
+  [lessonPlan]="selectedLessonPlan" (onClose)="handleCloseDeleteLessonPlanModal()"></app-lesson-plan-delete>

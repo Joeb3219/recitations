@@ -6,17 +6,14 @@ import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
 export class UserService {
-    private currentUserObservable: BehaviorSubject<
-        User | undefined
-    > = new BehaviorSubject<User | undefined>(undefined);
+    private currentUserObservable: BehaviorSubject<User | undefined> = new BehaviorSubject<User | undefined>(undefined);
 
     constructor(private http: HttpClient) {
         this.flushCurrentUser();
     }
 
     public flushCurrentUser(): void {
-        if (!localStorage.getItem('jwt'))
-            this.currentUserObservable.next(undefined);
+        if (!localStorage.getItem('jwt')) this.currentUserObservable.next(undefined);
         else {
             this.getMyUserObject().subscribe((result: { data: User }) => {
                 if (result) this.currentUserObservable.next(result.data);
@@ -52,10 +49,7 @@ export class UserService {
         });
     }
 
-    public signin(
-        username: string,
-        password: string
-    ): Observable<StandardResponseInterface<User>> {
+    public signin(username: string, password: string): Observable<StandardResponseInterface<User>> {
         const url = `${environment.apiURL}/user/signin`;
         return this.http.post<StandardResponseInterface<User>>(url, {
             username,

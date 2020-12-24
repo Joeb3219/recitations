@@ -8,9 +8,7 @@ export class MeetingTimeService {
     constructor(private http: HttpClient) {}
 
     @UpsertRequest<MeetingTime>(MeetingTime)
-    public async upsertMeetingTime(
-        meetingtime: MeetingTime
-    ): Promise<StandardResponseInterface<MeetingTime>> {
+    public async upsertMeetingTime(meetingtime: MeetingTime): Promise<StandardResponseInterface<MeetingTime>> {
         throw new Error('Decorator Overloading Failed');
     }
 }

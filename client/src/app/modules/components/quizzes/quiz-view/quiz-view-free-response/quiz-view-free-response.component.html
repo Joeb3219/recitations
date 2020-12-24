@@ -1,0 +1,14 @@
+<div class="row">
+  <div class="col">
+    Please read the following prompt, and then respond
+    {{ element.config.minLength > 0 ? ' with at least ' + element.config.minLength + ' characters' : '' }}:
+    <blockquote class="blockquote preamble">
+      <p class="mb-0">{{ element.config.question }}</p>
+    </blockquote>
+  </div>
+</div>
+<div class="row">
+  <div class="col options">
+    <textarea></textarea>
+  </div>
+</div>

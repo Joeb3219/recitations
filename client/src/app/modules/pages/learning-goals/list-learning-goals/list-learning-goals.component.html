@@ -1,0 +1,59 @@
+<div class="page">
+  <ng-container *ngIf="!course">
+    <h4>Not Found</h4>
+  </ng-container>
+  <ng-container *ngIf="course">
+    <div class="container-margin">
+      <div class="row">
+        <div style="float: left; text-align: left" class="col">
+          <h4>{{ course.name }} Learning Goals</h4>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-margin">
+      <app-datatable [dataFunction]="fetchCategories" [columns]="columns" [reload]="refreshData"
+        [createNewRow]="createNewCategory" [detailTemplate]="detailTemplate">
+      </app-datatable>
+    </div>
+  </ng-container>
+</div>
+
+<ng-template #detailTemplate let-row="row">
+  <div style="padding: 8px 32px">
+    <span class="btn btn-outline-primary" (click)="handleNewLearningGoal(row)">Add Learning Goal</span>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Number</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let goal of row.goals; let index = index">
+          <td>
+            <input type="text" value="{{ goal.number }}"
+              (change)="handleLearningGoalUpdated(row, index, 'number', $event)" />
+          </td>
+          <td>
+            <input type="text" value="{{ goal.name }}"
+              (change)="handleLearningGoalUpdated(row, index, 'name', $event)" />
+          </td>
+          <td>
+            <input type="text" value="{{ goal.description }}"
+              (change)="handleLearningGoalUpdated(row, index, 'description', $event)" />
+          </td>
+          <td>
+            <span class="btn btn-outline-secondary" (click)="handleDeleteLearningGoal(row, index)">Delete</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</ng-template>
+
+<!-- <app-problem-delete *ngIf="selectedCategory" [isVisible]="isDeleteModalOpen" [problem]="selectedCategory"
+  (onClose)="handleCloseDeleteModal()">
+</app-problem-delete> -->

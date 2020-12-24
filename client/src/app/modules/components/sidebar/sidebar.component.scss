@@ -1,18 +1,7 @@
 .sidebar {
-  position: absolute;
-  top: 2.5rem;
-  bottom: 0;
-  left: 0;
-  z-index: 100;
-  padding: 0;
   width: 13rem;
-  min-width: 13rem;
-  max-width: 13rem;
-  min-height: 100%;
   display: block !important;
-  //display: flex;
-  //box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
-
+  height: 100%;
 }
 
 
@@ -27,11 +16,9 @@
 
 
 .mat-expansion-panel-header {
-  /* styles that were added to panel before */
   background: var(--grey);
   font-size: 1rem;
   padding: 0.9rem;
-  //padding: inherit;
 }
 
 
@@ -57,7 +44,7 @@ li {
   margin-top: .4rem;
 }
 
-.btn-sidebar{
+.btn-sidebar {
   width: 13.4rem;
   margin-left: -1.5rem;
   background-color: white;
@@ -66,16 +53,16 @@ li {
   border-width: 0;
 }
 
-.btn-sidebar:hover{
+.btn-sidebar:hover {
   background-color: var(--light-grey);
 }
 
 .btn-light:not(:disabled):not(.disabled):active:focus,
-.btn-light:focus, .btn-light.focus
-{
-  box-shadow:none;
+.btn-light:focus,
+.btn-light.focus {
+  box-shadow: none;
 }
 
-.link-bold{
+.link-bold {
   font-weight: bold;
 }

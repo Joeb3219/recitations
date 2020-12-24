@@ -1,11 +1,6 @@
 import { User } from '@dynrec/common';
 import * as Boom from '@hapi/boom';
-import {
-    Controller,
-    GetRequest,
-    PostRequest,
-    Unauthenticated,
-} from '../decorators';
+import { Controller, GetRequest, PostRequest, Unauthenticated } from '../decorators';
 import { HttpArgs } from '../helpers/route.helper';
 import { UserHelper } from '../helpers/user.helper';
 
@@ -23,9 +18,7 @@ export class UserController {
 
     @PostRequest('/user/signin')
     @Unauthenticated()
-    async signin({
-        body,
-    }: HttpArgs<{ username: string; password: string }>): Promise<string> {
+    async signin({ body }: HttpArgs<{ username: string; password: string }>): Promise<string> {
         const { username, password } = body;
 
         if (!password) throw Boom.badRequest('No password provided');

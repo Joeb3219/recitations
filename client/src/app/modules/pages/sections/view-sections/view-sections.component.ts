@@ -71,9 +71,7 @@ export class ViewSectionsComponent {
         this.fetchSections = this.fetchSections.bind(this);
     }
 
-    async fetchSections(
-        args: HttpFilterInterface
-    ): Promise<StandardResponseInterface<Section[]>> {
+    async fetchSections(args: HttpFilterInterface): Promise<StandardResponseInterface<Section[]>> {
         return this.SectionService.getCourseSections(this.course, args);
     }
 

@@ -1,16 +1,18 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-
-import { LoginComponent } from '@pages/login/login.component';
+import { RouterModule, Routes } from '@angular/router';
+import { CourseSettingsComponent } from '@pages/course-settings/course-settings.component';
 import { ViewCourseComponent } from '@pages/courses/view-course/view-course.component';
-import { ViewSectionsComponent } from '@pages/sections/view-sections/view-sections.component';
+import { CoverageRequestsComponent } from '@pages/coverage-requests/coverage-requests.component';
+import { ListLessonPlansComponent } from '@pages/lesson-plans/list-lesson-plans/list-lesson-plans.component';
+import { LoginComponent } from '@pages/login/login.component';
 import { ListProblemsComponent } from '@pages/problems/list-problems/list-problems.component';
 import { ViewProblemComponent } from '@pages/problems/view-problem/view-problem.component';
-import { CourseSettingsComponent } from '@pages/course-settings/course-settings.component';
-import { CoverageRequestsComponent } from '@pages/coverage-requests/coverage-requests.component';
 import { RecitationsComponent } from '@pages/recitations/recitations.component';
-import { ListLessonPlansComponent } from '@pages/lesson-plans/list-lesson-plans/list-lesson-plans.component';
+import { ViewSectionsComponent } from '@pages/sections/view-sections/view-sections.component';
+import { ListLearningGoalsComponent } from './modules/pages/learning-goals/list-learning-goals/list-learning-goals.component';
 import { ViewLessonPlanComponent } from './modules/pages/lesson-plans/view-lesson-plan/view-lesson-plan.component';
+import { ListQuizzesComponent } from './modules/pages/quizzes/list-quizzes/list-quizzes.component';
+import { ViewQuizComponent } from './modules/pages/quizzes/view-quiz/view-quiz.component';
 
 const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -35,6 +37,18 @@ const routes: Routes = [
     {
         path: 'courses/:courseID/lesson-plans/:lessonPlanID',
         component: ViewLessonPlanComponent,
+    },
+    {
+        path: 'courses/:courseID/learning-goals',
+        component: ListLearningGoalsComponent,
+    },
+    {
+        path: 'courses/:courseID/quizzes',
+        component: ListQuizzesComponent,
+    },
+    {
+        path: 'courses/:courseID/quizzes/:quizID',
+        component: ViewQuizComponent,
     },
 ];
 

@@ -4,6 +4,11 @@ import { Course } from '@dynrec/common';
 import { CourseService } from '@services/course.service';
 import { UserService } from '@services/user.service';
 
+type CourseEntry = {
+    name: string;
+    slug: string;
+};
+
 @Component({
     selector: 'app-sidebar',
     templateUrl: './sidebar.component.html',
@@ -14,23 +19,48 @@ export class SidebarComponent implements OnInit {
 
     selectedCourse?: Course = undefined;
 
-    activeLink: number;
+    activeSlug?: string;
 
-    links = [
-        'home',
-        'recitations',
-        'sections',
-        'problems',
-        'coverage-requests',
-        'settings',
-        'lesson-plans',
+    courseEntries: CourseEntry[] = [
+        {
+            slug: '',
+            name: 'Home',
+        },
+        {
+            slug: 'recitations',
+            name: 'Recitations',
+        },
+        {
+            slug: 'sections',
+            name: 'Sections',
+        },
+        {
+            slug: 'problems',
+            name: 'Problems',
+        },
+        {
+            slug: 'lesson-plans',
+            name: 'Lesson Plans',
+        },
+        {
+            slug: 'learning-goals',
+            name: 'Learning Goals',
+        },
+        {
+            slug: 'coverage-requests',
+            name: 'Coverage Requests',
+        },
+        {
+            slug: 'settings',
+            name: 'Settings',
+        },
+        {
+            slug: 'quizzes',
+            name: 'Quizzes',
+        },
     ];
 
-    constructor(
-        private userService: UserService,
-        private courseService: CourseService,
-        private router: Router
-    ) {}
+    constructor(private userService: UserService, private courseService: CourseService, private router: Router) {}
 
     ngOnInit(): void {
         this.userService.getCurrentUser().subscribe({
@@ -46,7 +76,7 @@ export class SidebarComponent implements OnInit {
         // we do this by examining URL changes, and on each change, breaking the URL down into its slugs and
         // comparing those slugs with what we current have stored.
         this.router.events.subscribe({
-            next: async (event) => {
+            next: async event => {
                 // ensure this event describes a URL change
                 if ('url' in event && event?.url) {
                     this.setActiveCourseFromRouter();
@@ -59,7 +89,7 @@ export class SidebarComponent implements OnInit {
     // and attempt to set the active course in the sidebar depending on what the loaded course is
     setActiveCourseFromRouter(): void {
         const url = this.router.url;
-        this.userCourses.forEach((course) => {
+        this.userCourses.forEach(course => {
             // this slug is the prefix to the URL that would indicate that this course is
             // currently active/being worked in.
             const slug = `/courses/${course.id}`;
@@ -84,10 +114,7 @@ export class SidebarComponent implements OnInit {
                 page = page.substr(0, page.indexOf('/'));
             }
 
-            this.activeLink = this.links.indexOf(page);
-            if (page === '') {
-                this.activeLink = 0;
-            }
+            this.activeSlug = page;
         }
     }
 
@@ -95,9 +122,5 @@ export class SidebarComponent implements OnInit {
 
     setStep(index: number): void {
         this.step = index;
-    }
-
-    setActiveLink(number: number): void {
-        this.activeLink = number;
     }
 }

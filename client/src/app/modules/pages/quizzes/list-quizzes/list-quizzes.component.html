@@ -1,0 +1,31 @@
+<div class="page">
+  <ng-container *ngIf="!course">
+    <h4>Not Found</h4>
+  </ng-container>
+  <ng-container *ngIf="course">
+
+    <div class="container-margin">
+      <div class="row">
+        <div style="float: left; text-align: left" class="col">
+          <h4>{{course.name}} Quizzes</h4>
+        </div>
+        <div style="float: right; text-align: right" class="col">
+          <button type="button" class="btn btn-primary" (click)="handleOpenNewQuizModal()">Add Quiz
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="container-margin">
+
+      <app-datatable [dataFunction]="fetchQuizzes" [columns]="columns" [reload]="refreshData"></app-datatable>
+
+    </div>
+  </ng-container>
+</div>
+
+<app-quiz-edit *ngIf="selectedEditQuiz" [isVisible]="isEditQuizModalOpen" [quiz]="selectedEditQuiz"
+  (onClose)="handleCloseEditQuizModal()"></app-quiz-edit>
+
+<!-- <app-problem-delete *ngIf="selectedDeleteProblem" [isVisible]="isDeleteProblemModalOpen"
+    [problem]="selectedDeleteProblem" (onClose)="handleCloseDeleteProblemModal()"></app-problem-delete> -->

@@ -7,11 +7,8 @@ import { HttpArgs } from '../helpers/route.helper';
 @Resource(Problem, {
     sortable: {
         dataDictionary: {
-            course: (problem) => get(problem, 'course.name'),
-            creator: (problem) =>
-                get(problem, 'creator.firstName') +
-                ' ' +
-                get(problem, 'creator.lastName'),
+            course: problem => get(problem, 'course.name'),
+            creator: problem => get(problem, 'creator.firstName') + ' ' + get(problem, 'creator.lastName'),
         },
     },
     searchable: ['name'],
@@ -25,6 +22,7 @@ import { HttpArgs } from '../helpers/route.helper';
             estimatedDuration: body.estimatedDuration,
             course: body.course,
             creator: body.creator || currentUser,
+            learningGoals: body.learningGoals,
         };
     },
 })

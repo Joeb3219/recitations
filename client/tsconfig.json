@@ -1,35 +1,44 @@
 {
-  "compileOnSave": false,
-  "compilerOptions": {
-    "strict": true,
-    "strictPropertyInitialization": false,
-    "baseUrl": "./src",
-    "downlevelIteration": true,
-    "outDir": "./dist/out-tsc",
-    "sourceMap": true,
-    "declaration": false,
-    "module": "commonjs",
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "target": "es2015",
-    "typeRoots": [
-      "../../node_modules/@types",
-      "../node_modules/@types",
-      "@types"
-    ],
-    "types": ["node"],
-    "lib": ["es2018", "dom"],
-    "esModuleInterop": true,
-    "paths": {
-      "typeorm": ["./shim/typeorm.shim.ts"],
-      "@environment": ["./environments/environment"],
-      "@services/*": ["./app/services/*"],
-      "@components/*": ["./app/modules/components/*"],
-      "@decorators": ["./app/modules/decorators"],
-      "@pages/*": ["./app/modules/pages/*"],
-      "@http/*": ["./app/http/*"]
+    "compileOnSave": false,
+    "compilerOptions": {
+        "strict": true,
+        "allowJs": true,
+        "strictPropertyInitialization": false,
+        "baseUrl": "./src",
+        "downlevelIteration": true,
+        "outDir": "./dist/out-tsc",
+        "sourceMap": true,
+        "declaration": false,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "importHelpers": true,
+        "moduleResolution": "node",
+        "target": "es2015",
+        "types": ["node"],
+        "lib": ["es2015", "dom"],
+        "module": "commonjs",
+        "strictNullChecks": true,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "esModuleInterop": true,
+        "typeRoots": ["./@types", "./node_modules/@types", "../node_modules/@types"],
+        "paths": {
+            "typeorm": ["./shim/typeorm.shim.ts"],
+            "@environment": ["./environments/environment"],
+            "@services/*": ["./app/services/*"],
+            "@components/*": ["./app/modules/components/*"],
+            "@decorators": ["./app/modules/decorators"],
+            "@pages/*": ["./app/modules/pages/*"],
+            "@http/*": ["./app/http/*"]
+        }
+    },
+    "exclude": ["./environments/**/*"],
+    "angularCompilerOptions": {
+        "fullTemplateTypeCheck": true,
+        "skipTemplateCodegen": true,
+        "strictTemplates": true,
+        "preserveWhitespaces": true,
+        "strictInjectionParameters": true,
+        "enableIvy": true
     }
-  }
 }

@@ -1,15 +1,5 @@
-<input 
-	type="text" 
-	name="{{ name }}"
-	value="{{ formatter(problem) }}"
-	class="form-control" 
-	[ngbTypeahead]="search" 
-	[resultFormatter]="formatter" 
-	[inputFormatter]="formatter" 
-	(selectItem)="handleProblemSelected($event)"
->
+<input type="text" name="{{ name }}" value="{{ problem ? formatter(problem) : undefined }}" class="form-control"
+  [ngbTypeahead]="search" [resultFormatter]="formatter" [inputFormatter]="formatter"
+  (selectItem)="handleProblemSelected($event)">
 
-<app-problem-view
-	*ngIf="problem"
-	[problem]="problem"
-></app-problem-view>
+<app-problem-view *ngIf="problem" [problem]="problem"></app-problem-view>

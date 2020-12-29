@@ -1,5 +1,6 @@
 import { User } from '@dynrec/common';
 import * as Boom from '@hapi/boom';
+import _ from 'lodash';
 import { Controller, GetRequest, PostRequest, Unauthenticated } from '../decorators';
 import { HttpArgs } from '../helpers/route.helper';
 import { UserHelper } from '../helpers/user.helper';
@@ -40,5 +41,40 @@ export class UserController {
         }
 
         throw Boom.unauthorized('Failed to sign in as user');
+    }
+
+    @PostRequest('/user/impersonate')
+    async impersonateUser({ body }: HttpArgs<{ username: string }>): Promise<string> {
+        const { username } = body;
+
+        const user = await User.findOne({
+            where: { username },
+            select: ['id', 'username'],
+        });
+
+        if (!user) throw Boom.notFound('User not found');
+
+        const jwt = UserHelper.generateJWT(user.id);
+        return jwt;
+    }
+
+    @PostRequest('/user/me')
+    async updateUser({ body, currentUser }: HttpArgs<{ user: User }>): Promise<User> {
+        const { user } = body;
+
+        if (!user || currentUser.id !== user.id) {
+            throw Boom.badRequest('Attempting to edit a different user');
+        }
+
+        const updateableData = _.pickBy(
+            { firstName: user.firstName, lastName: user.lastName, email: user.email },
+            item => {
+                return item !== undefined;
+            }
+        );
+
+        const updatedUser = Object.assign({}, currentUser, user);
+
+        return User.save(updatedUser);
     }
 }

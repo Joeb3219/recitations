@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Form, User } from '@dynrec/common';
+import { Form } from '@dynrec/common';
 import { UserService } from '@services/user.service';
 
 @Component({
@@ -10,7 +10,7 @@ import { UserService } from '@services/user.service';
 export class ManualLoginFormComponent implements OnInit {
     form?: Form<{ username: string; password: string }> = undefined;
 
-    @Output() onSuccessfulLogin: EventEmitter<User> = new EventEmitter<User>();
+    @Output() onSuccessfulLogin: EventEmitter<string> = new EventEmitter<string>();
 
     constructor(private userService: UserService) {}
 
@@ -38,6 +38,7 @@ export class ManualLoginFormComponent implements OnInit {
         const { username, password } = data;
         this.userService.signin(username, password).subscribe(result => {
             if (result?.data) {
+                localStorage.setItem('jwt', result.data);
                 this.onSuccessfulLogin.emit(result.data);
             }
         });

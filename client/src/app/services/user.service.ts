@@ -49,11 +49,36 @@ export class UserService {
         });
     }
 
-    public signin(username: string, password: string): Observable<StandardResponseInterface<User>> {
+    public signin(username: string, password: string): Observable<StandardResponseInterface<string>> {
         const url = `${environment.apiURL}/user/signin`;
-        return this.http.post<StandardResponseInterface<User>>(url, {
+        return this.http.post<StandardResponseInterface<string>>(url, {
             username,
             password,
+        });
+    }
+
+    public impersonateUser(username: string): Observable<StandardResponseInterface<string>> {
+        const url = `${environment.apiURL}/user/impersonate`;
+        return this.http.post<StandardResponseInterface<string>>(url, {
+            username,
+        });
+    }
+
+    public updateUser(user: User): Promise<StandardResponseInterface<User>> {
+        const url = `${environment.apiURL}/user/me`;
+        return new Promise((resolve, reject) => {
+            this.http
+                .post<StandardResponseInterface<User>>(url, { user })
+                .subscribe(
+                    result => {
+                        if (result) {
+                            resolve(result);
+                        } else reject(new Error('No result returned'));
+                    },
+                    (err: Error) => {
+                        reject(err);
+                    }
+                );
         });
     }
 }

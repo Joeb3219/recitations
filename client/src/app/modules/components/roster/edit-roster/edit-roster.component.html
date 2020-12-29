@@ -1,0 +1,28 @@
+<!-- <div class="row" *ngIf="rosterFormats && rosterFormats.length">
+    <div class="col">
+        Update Roster:
+        <select [(ngModel)]="selectedUploadFormatId">
+            <option *ngFor="let format of rosterFormats" value="{{ format.id }}">
+                {{ format.name }} -- {{ format.description }}
+            </option>
+        </select>
+
+        <ng-container *ngIf="selectedUploadFormatId">
+            <input type="file" (change)="handleFilesSelected($event.target.files)" />
+        </ng-container>
+    </div>
+</div> -->
+
+<app-form-modal
+    *ngIf="isVisible"
+    [submitText]="'Save Roster'"
+    [showModal]="isVisible"
+    [form]="form"
+    [modalSize]="'xl'"
+    [title]="'Update Roster'"
+    (onSubmit)="formSubmitted($event)"
+    (onClose)="handleClose()"
+    [forceClose]="forceClose"
+    (onFieldChange)="onFieldChanged($event)"
+>
+</app-form-modal>

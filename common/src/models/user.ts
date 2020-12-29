@@ -18,8 +18,8 @@ export class User extends BaseEntity implements UserInterface {
     @Column()
     public email: string;
 
-    @Column({ select: false })
-    public passwordHash: string;
+    @Column({ type: 'varchar', select: false, nullable: true })
+    public passwordHash?: string | undefined;
 
     constructor(args: Partial<User> = {}) {
         super();

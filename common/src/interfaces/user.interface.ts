@@ -5,5 +5,5 @@ export interface UserInterface {
     username: string; // username
     email: string; // email address
 
-    passwordHash: string; // bcrypt hash of the user's password, if they have one
+    passwordHash?: string; // bcrypt hash of the user's password, if they have one
 }

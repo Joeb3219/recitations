@@ -13,7 +13,9 @@ export type FormInputType =
     | 'password'
     | 'date'
     | 'learningGoals'
-    | 'multiChoiceOptions';
+    | 'multiChoiceOptions'
+    | 'file'
+    | 'textBlock';
 
 type Undefinable<T> = { [P in keyof T]?: never };
 

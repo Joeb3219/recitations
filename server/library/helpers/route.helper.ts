@@ -3,6 +3,7 @@
 import { User } from '@dynrec/common';
 import * as Boom from '@hapi/boom';
 import { Express, NextFunction } from 'express';
+import fileUpload from 'express-fileupload';
 import { BAD_REQUEST } from 'http-status-codes';
 import { get, isEqual, pickBy, sortBy } from 'lodash';
 import 'reflect-metadata';
@@ -79,10 +80,11 @@ function paginateResultData(results: any | any[], req: HttpRequest<any, { limit:
     return parsedLimit < 0 ? results : results.slice(parsedOffset, parsedOffset + parsedLimit + 1);
 }
 
-export interface HttpArgs<BodyType extends any = any, ParamsType extends any = any> {
+export interface HttpArgs<BodyType extends any = any, ParamsType extends any = never> {
     body: Partial<BodyType>;
     currentUser: User;
     params: Omit<any, 'courseID'> & { courseID: string } & ParamsType;
+    file?: fileUpload.UploadedFile | undefined;
 }
 
 export type HttpMethods = 'put' | 'post' | 'get' | 'delete';
@@ -103,6 +105,7 @@ function httpMiddleware(
                 body: req.body,
                 currentUser: res.locals.currentUser,
                 params: req.params,
+                file: req.files ? req.files.file ?? req.files : undefined,
             } as HttpArgs<any>);
 
             const searchedResult = searchResultData(result, req, searchableFields);
@@ -347,6 +350,7 @@ export function generateRoute(
     const sortableFields = Reflect.getMetadata('sortable', controller) || undefined;
 
     if (!isUnauthenticated) middlewares.push(isAuthenticated);
+
     middlewares.push(
         httpMiddleware(providedFunction, method, route, {
             searchableFields,

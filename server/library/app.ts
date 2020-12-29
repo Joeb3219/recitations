@@ -1,7 +1,9 @@
 import { AllEntities, User } from '@dynrec/common';
 import * as bodyParser from 'body-parser';
+import cors from 'cors';
 import * as dotenv from 'dotenv';
 import { default as Express } from 'express';
+import fileUpload from 'express-fileupload';
 import * as jwt from 'jsonwebtoken';
 import 'reflect-metadata';
 import { Connection, createConnection } from 'typeorm';
@@ -124,8 +126,26 @@ class AppWrapper {
 
     async initExpress() {
         this.app = Express();
-        this.app.use(bodyParser.urlencoded({ extended: false }));
-        this.app.use(bodyParser.json());
+
+        this.app.use(
+            (req, res, next) => {
+                next();
+            },
+            cors({
+                allowedHeaders: [
+                    'Origin',
+                    'Authorization',
+                    'X-Requested-With',
+                    'Content-Type',
+                    'Accept',
+                    'X-Access-Token',
+                ],
+                methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
+            })
+        );
+        this.app.use(bodyParser.json({ limit: '50mb' }));
+        this.app.use(bodyParser.urlencoded({ extended: false, limit: '50mb', parameterLimit: 50000 }));
+        this.app.use(fileUpload({ useTempFiles: true, tempFileDir: '/tmp/' }));
     }
 }
 

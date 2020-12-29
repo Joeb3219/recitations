@@ -26,12 +26,23 @@ export class FormInputsComponent {
         });
     }
 
-    fieldUpdated(name: string | number | symbol | undefined, data: { target?: { value: any } } | any): void {
+    fileUploaded(name: string | undefined, data?: FileList) {
+        if (!data || !data.length) {
+            return;
+        }
+
+        this.fieldUpdated(name, data[0]);
+    }
+
+    fieldUpdated(
+        name: string | number | symbol | undefined,
+        data?: { target?: { value: any } } | FileList | any
+    ): void {
         if (!name) {
             return;
         }
 
-        const value = data.target?.value ?? data;
+        const value = data?.target?.value ?? data;
 
         // This is hella hacky, we need a better solution to this later.
         const resolvedValue = value === '_INVALID_OPTION_' ? undefined : value;

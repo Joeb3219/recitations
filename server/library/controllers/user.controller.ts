@@ -30,6 +30,10 @@ export class UserController {
 
         if (!user) throw Boom.notFound('User not found');
 
+        if (!user.passwordHash) {
+            throw Boom.badRequest('Password login disabled');
+        }
+
         if (await UserHelper.comparePasswords(password, user.passwordHash)) {
             const jwt = UserHelper.generateJWT(user.id);
             return jwt;

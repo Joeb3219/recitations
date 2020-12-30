@@ -273,7 +273,7 @@ export class DatatableComponent<T extends { id?: string }> implements OnInit {
         // Remove any columns from our mapping in which the cell template should never be printed to CSV
         // the most obvious case here is the actions cell, which should really never be printed.
         const includedColumns = this.columns.filter(
-            ({ cellTemplateName }) => cellTemplateName && !excludedTemplates.includes(cellTemplateName)
+            ({ cellTemplateName }) => !cellTemplateName || !excludedTemplates.includes(cellTemplateName)
         );
 
         // Now we fetch _every_ row, as the CSV should not just show the local table, but rather all data.

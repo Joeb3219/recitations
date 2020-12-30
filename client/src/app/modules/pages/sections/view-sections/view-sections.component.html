@@ -1,31 +1,47 @@
 <div class="page">
-  <ng-container *ngIf="!course">
-    <h4>Not Found</h4>
-  </ng-container>
-  <ng-container *ngIf="course">
-    <div class="container-margin">
-      <div class="row">
-        <div style="float: left" class="col">
-          <h4>{{ course.name }} Sections</h4>
+    <ng-container *ngIf="!course">
+        <h4>Not Found</h4>
+    </ng-container>
+    <ng-container *ngIf="course">
+        <div class="container-margin">
+            <div class="row">
+                <div style="float: left" class="col">
+                    <h4>{{ course.name }} Sections</h4>
+                </div>
+                <div style="float: right; text-align: right" class="col">
+                    <button type="button" class="btn btn-primary" (click)="handleOpenNewSectionModal()">
+                        Add Section
+                    </button>
+                    <button type="button" class="btn btn-secondary" (click)="handleOpenSyncSectionModal()">
+                        Sync Section
+                    </button>
+                </div>
+            </div>
         </div>
-        <div style="float: right; text-align: right" class="col">
-          <button type="button" class="btn btn-primary" (click)="handleOpenNewSectionModal()">Add Section
-          </button>
+
+        <div class="container-margin">
+            <app-datatable [dataFunction]="fetchSections" [columns]="columns" [reload]="refreshData"></app-datatable>
         </div>
-      </div>
-    </div>
-
-
-    <div class="container-margin">
-      <app-datatable [dataFunction]="fetchSections" [columns]="columns" [reload]="refreshData"></app-datatable>
-    </div>
-
-  </ng-container>
+    </ng-container>
 </div>
 
-<app-section-edit *ngIf="selectedSection" [isVisible]="isEditSectionModalOpen" [section]="selectedSection"
-  (onClose)="handleCloseEditSectionModal()"></app-section-edit>
+<app-sections-sync
+    *ngIf="isSyncSectionModalOpen"
+    [isVisible]="isSyncSectionModalOpen"
+    [course]="course"
+    (onClose)="handleCloseSyncSectionModal()"
+></app-sections-sync>
 
+<app-section-edit
+    *ngIf="selectedSection"
+    [isVisible]="isEditSectionModalOpen"
+    [section]="selectedSection"
+    (onClose)="handleCloseEditSectionModal()"
+></app-section-edit>
 
-<app-section-delete *ngIf="selectedSection" [isVisible]="isDeleteSectionModalOpen" [section]="selectedSection"
-  (onClose)="handleCloseDeleteSectionModal()"></app-section-delete>
+<app-section-delete
+    *ngIf="selectedSection"
+    [isVisible]="isDeleteSectionModalOpen"
+    [section]="selectedSection"
+    (onClose)="handleCloseDeleteSectionModal()"
+></app-section-delete>

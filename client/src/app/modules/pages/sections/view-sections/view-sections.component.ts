@@ -18,7 +18,7 @@ export class ViewSectionsComponent {
     selectedSection?: Section = undefined;
 
     isEditSectionModalOpen = false;
-
+    isSyncSectionModalOpen = false;
     isDeleteSectionModalOpen = false;
 
     refreshData: EventEmitter<void> = new EventEmitter();
@@ -75,11 +75,20 @@ export class ViewSectionsComponent {
         return this.SectionService.getCourseSections(this.course, args);
     }
 
+    handleOpenSyncSectionModal() {
+        this.isSyncSectionModalOpen = true;
+    }
+
     handleOpenNewSectionModal(): void {
         this.isEditSectionModalOpen = true;
 
         this.selectedSection = new Section();
         this.selectedSection.course = this.course;
+    }
+
+    handleCloseSyncSectionModal() {
+        this.isSyncSectionModalOpen = false;
+        this.refreshData.next();
     }
 
     handleCloseEditSectionModal(): void {

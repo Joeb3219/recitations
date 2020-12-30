@@ -86,6 +86,7 @@ import { MeetingTimeService } from './services/meetingTime.service';
 import { SectionService } from './services/section.service';
 import { UserService } from './services/user.service';
 import { ViewUserSettingsComponent } from './modules/pages/user/view-user-settings/view-user-settings.component';
+import { SectionsSyncComponent } from './modules/components/sections/sections-sync/sections-sync.component';
 
 export let GlobalActivatedRoute: ActivatedRoute;
 
@@ -150,6 +151,7 @@ export let GlobalActivatedRoute: ActivatedRoute;
         ViewRosterComponent,
         FileUploaderComponent,
         ViewUserSettingsComponent,
+        SectionsSyncComponent,
     ],
     imports: [
         HttpClientModule,

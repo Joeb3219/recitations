@@ -57,6 +57,7 @@ export class Ability {
 export class AbilityDef {
     id: string;
     name: string;
+    isGlobal: boolean;
     actions: RawRule[];
 }
 
@@ -64,6 +65,7 @@ export class AbilityGenerator {
     id: string;
     name: string;
     tags?: RuleTag[];
+    isGlobal?: boolean;
     actions: (user?: User, course?: Course) => RawRule[];
 }
 
@@ -176,6 +178,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
         id: '8be45b51-ecd4-4499-9300-f688ccbcece6',
         name: 'Impersonate Users',
         tags: ['super_admin'],
+        isGlobal: true,
         actions: () => [
             {
                 action: 'view',

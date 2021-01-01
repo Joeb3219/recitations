@@ -1,39 +1,13 @@
 <div class="row">
     <div class="col">
-        <input
-            type="text"
-            value="{{ currentlySelectedAbility ? formatter(currentlySelectedAbility) : undefined }}"
-            class="form-control"
-            [ngbTypeahead]="search"
-            [resultFormatter]="formatter"
-            [inputFormatter]="formatter"
-            name="{{ name }}"
-            (selectItem)="handleAbilitySelected($event)"
-            multiple="true"
-        />
-    </div>
-</div>
-<div class="row" style="padding: 0px 16px">
-    <div class="col">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <ng-container *ngFor="let ability of allAbilities">
-                    <tr *ngIf="abilities.includes(ability.id)">
-                        <td>{{ ability.name }}</td>
-                        <td>
-                            <button type="button" class="btn btn-secondary" (click)="handleAbilityDeleted(ability)">
-                                Delete
-                            </button>
-                        </td>
-                    </tr>
-                </ng-container>
-            </tbody>
-        </table>
+        <ng-container *ngFor="let ability of allAbilities; let index = index">
+            <label class="ability">
+                <input
+                    type="checkbox"
+                    [checked]="abilities.includes(ability.id)"
+                    (change)="handleAbilityToggled(ability)"
+                />{{ ability.name }}</label
+            ><br />
+        </ng-container>
     </div>
 </div>

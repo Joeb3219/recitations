@@ -6,3 +6,12 @@ export const Unauthenticated = (): any => {
         return descriptor;
     };
 };
+
+export const Permission = (action: string | string[]): any => {
+    return function (target: any, propertyKey: string, descriptor: PropertyDescriptor): any {
+        const existingMetadata = Reflect.getMetadata('permission', target) ?? [];
+        const newMetadata = Array.isArray(action) ? action : [action];
+        Reflect.defineMetadata('permission', [...existingMetadata, ...newMetadata], target);
+        return descriptor;
+    };
+};

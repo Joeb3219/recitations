@@ -50,6 +50,12 @@
     (onChange)="fieldUpdated(input.name, $event)"
 ></app-meeting-times-formfield>
 
+<app-roles-formfield
+    *ngIf="input.type == 'abilities' && input.abilities"
+    [abilities]="input.abilities"
+    (onChange)="fieldUpdated(input.name, $event)"
+></app-roles-formfield>
+
 <app-lesson-plan-steps-form
     *ngIf="input.type == 'lessonPlanSteps' && input.lessonPlan"
     [lessonPlan]="input.lessonPlan"

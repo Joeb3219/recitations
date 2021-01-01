@@ -61,11 +61,15 @@ import { QuizViewMultipleChoiceComponent } from './modules/components/quizzes/qu
 import { QuizViewComponent } from './modules/components/quizzes/quiz-view/quiz-view.component';
 import { QuizzesComponent } from './modules/components/quizzes/quizzes.component';
 import { ReportsComponent } from './modules/components/reports/reports.component';
-import { RolesComponent } from './modules/components/roles/roles.component';
+import { RoleAssignComponent } from './modules/components/roles/role-assign/role-assign.component';
+import { RoleDeleteComponent } from './modules/components/roles/role-delete/role-delete.component';
+import { RoleEditComponent } from './modules/components/roles/role-edit/role-edit.component';
+import { RolesFormfieldComponent } from './modules/components/roles/roles-formfield/roles-formfield.component';
 import { EditRosterComponent } from './modules/components/roster/edit-roster/edit-roster.component';
 import { ViewRosterComponent } from './modules/components/roster/view-roster/view-roster.component';
 import { SectionDeleteComponent } from './modules/components/sections/section-delete/section-delete.component';
 import { SectionEditComponent } from './modules/components/sections/section-edit/section-edit.component';
+import { SectionsSyncComponent } from './modules/components/sections/sections-sync/sections-sync.component';
 import { SidebarComponent } from './modules/components/sidebar/sidebar.component';
 import { UserBadgeComponent } from './modules/components/users/user-badge/user-badge.component';
 import { UserSearchFormfieldComponent } from './modules/components/users/user-search-formfield/user-search-formfield.component';
@@ -79,14 +83,15 @@ import { LoginComponent } from './modules/pages/login/login.component';
 import { ListQuizzesComponent } from './modules/pages/quizzes/list-quizzes/list-quizzes.component';
 import { ViewQuizComponent } from './modules/pages/quizzes/view-quiz/view-quiz.component';
 import { RecitationsComponent } from './modules/pages/recitations/recitations.component';
+import { ListRolesComponent } from './modules/pages/roles/list-roles/list-roles.component';
 import { ViewSectionsComponent } from './modules/pages/sections/view-sections/view-sections.component';
+import { ViewUserSettingsComponent } from './modules/pages/user/view-user-settings/view-user-settings.component';
 import { CourseService } from './services/course.service';
 import { LearningGoalService } from './services/learningGoal.service';
 import { MeetingTimeService } from './services/meetingTime.service';
 import { SectionService } from './services/section.service';
 import { UserService } from './services/user.service';
-import { ViewUserSettingsComponent } from './modules/pages/user/view-user-settings/view-user-settings.component';
-import { SectionsSyncComponent } from './modules/components/sections/sections-sync/sections-sync.component';
+import { AbilitiesDirective } from './directives/abilities.directive';
 
 export let GlobalActivatedRoute: ActivatedRoute;
 
@@ -118,7 +123,6 @@ export let GlobalActivatedRoute: ActivatedRoute;
         CoverageRequestsComponent,
         RecitationsComponent,
         ConfigurationsComponent,
-        RolesComponent,
         GradebookComponent,
         WeeksComponent,
         LearningGoalsComponent,
@@ -152,6 +156,12 @@ export let GlobalActivatedRoute: ActivatedRoute;
         FileUploaderComponent,
         ViewUserSettingsComponent,
         SectionsSyncComponent,
+        ListRolesComponent,
+        RoleEditComponent,
+        RoleDeleteComponent,
+        RoleAssignComponent,
+        RolesFormfieldComponent,
+        AbilitiesDirective,
     ],
     imports: [
         HttpClientModule,

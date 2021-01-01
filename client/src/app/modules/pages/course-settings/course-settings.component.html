@@ -18,11 +18,6 @@
                     <app-configurations [course]="course"></app-configurations>
                 </div>
             </mat-tab>
-            <mat-tab label="{{ tabs[1] }}" [ngStyle]="{ display: activeTabIndex === 1 ? 'block' : 'none' }">
-                <div class="container-margin">
-                    <app-roles></app-roles>
-                </div>
-            </mat-tab>
             <mat-tab label="{{ tabs[2] }}" [ngStyle]="{ display: activeTabIndex === 2 ? 'block' : 'none' }">
                 <div class="container-margin">
                     <app-gradebook></app-gradebook>

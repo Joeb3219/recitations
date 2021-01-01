@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { User } from '@dynrec/common';
+import { Ability, AbilityManager, Course, User } from '@dynrec/common';
 import * as Boom from '@hapi/boom';
 import { Express, NextFunction } from 'express';
 import fileUpload from 'express-fileupload';
@@ -85,6 +85,8 @@ export interface HttpArgs<BodyType extends any = any, ParamsType extends any = n
     currentUser: User;
     params: Omit<any, 'courseID'> & { courseID: string } & ParamsType;
     file?: fileUpload.UploadedFile | undefined;
+    ability: Ability;
+    course?: Course;
 }
 
 export type HttpMethods = 'put' | 'post' | 'get' | 'delete';
@@ -106,7 +108,8 @@ function httpMiddleware(
                 currentUser: res.locals.currentUser,
                 params: req.params,
                 file: req.files ? req.files.file ?? req.files : undefined,
-            } as HttpArgs<any>);
+                ability: AbilityManager.getUserAbilities(res.locals.currentUser),
+            } as HttpArgs);
 
             const searchedResult = searchResultData(result, req, searchableFields);
             const sortedResult = sortResultData(searchedResult, req, sortableFields);
@@ -173,13 +176,17 @@ export function generateUpdateResource<T extends BaseEntity>(
 
 export function generateGetResource<T extends BaseEntity>(resourceClass: new () => T, resourceName: string) {
     return async (args: HttpArgs<T>): Promise<T> => {
-        const { params } = args;
+        const { params, ability } = args;
         const id = params[`${resourceName}ID`];
 
         // first, we find the resource that is referenced by the given ID
         const resource = await getRepository<T>(resourceClass).findOne({
             where: { id },
         });
+
+        if (!ability.can('view', resource)) {
+            throw Boom.unauthorized(`Unauthorized to view selected ${resourceName}`);
+        }
 
         // no resource found, 404 it out
         if (!resource) throw Boom.notFound(`${resourceName} not found`);
@@ -223,12 +230,13 @@ export function generateCreateResource<T extends BaseEntity>(
 
 export function generateListResource<T extends BaseEntity>(resourceClass: new () => T) {
     return async (args: HttpArgs<T>): Promise<T[]> => {
-        const { params } = args;
+        const { params, ability } = args;
         const { courseID } = params;
 
-        return getRepository<T>(resourceClass).find({
+        const results = await getRepository<T>(resourceClass).find({
             where: { course: courseID },
         });
+        return results.filter(result => ability.can('view', result));
     };
 }
 
@@ -345,9 +353,9 @@ export function generateRoute(
     const middlewares = [];
     const providedFunction = target[propertyKey].bind(target);
 
-    const isUnauthenticated = Reflect.getMetadata('unauthenticated', controller) || false;
-    const searchableFields = Reflect.getMetadata('searchable', controller) || undefined;
-    const sortableFields = Reflect.getMetadata('sortable', controller) || undefined;
+    const isUnauthenticated = Reflect.getMetadata('unauthenticated', controller) ?? false;
+    const searchableFields = Reflect.getMetadata('searchable', controller) ?? undefined;
+    const sortableFields = Reflect.getMetadata('sortable', controller) ?? undefined;
 
     if (!isUnauthenticated) middlewares.push(isAuthenticated);
 

@@ -9,6 +9,7 @@ export * from './meeting';
 export * from './meetingTime';
 export * from './problem';
 export * from './quiz';
+export * from './role';
 export * from './section';
 export * from './user';
 import { Course } from './course';
@@ -21,11 +22,14 @@ import { Meeting } from './meeting';
 import { MeetingTime } from './meetingTime';
 import { Problem } from './problem';
 import { Quiz } from './quiz';
+import { Role } from './role';
 import { Section } from './section';
 import { User } from './user';
 
 export const AllEntities = [
     Meetable,
+    Section,
+    Role,
     Course,
     LearningGoal,
     LearningGoalCategory,
@@ -35,6 +39,5 @@ export const AllEntities = [
     MeetingTime,
     Problem,
     Quiz,
-    Section,
     User,
 ];

@@ -1,0 +1,36 @@
+<div class="page">
+    <ng-container *ngIf="!course">
+        <h4>Not Found</h4>
+    </ng-container>
+    <ng-container *ngIf="course">
+        <div class="container-margin">
+            <div class="row">
+                <div style="float: left; text-align: left" class="col">
+                    <h4>{{ course.name }} Roles</h4>
+                </div>
+                <div style="float: right; text-align: right" class="col">
+                    <button type="button" class="btn btn-primary" (click)="handleOpenNewRoleModal()">Add Role</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-margin">
+            <app-datatable [dataFunction]="fetchRoles" [columns]="columns" [reload]="refreshData"></app-datatable>
+        </div>
+    </ng-container>
+</div>
+
+<app-role-edit
+    *ngIf="selectedEditRole && isEditRoleModalOpen"
+    [role]="selectedEditRole"
+    [isVisible]="isEditRoleModalOpen"
+    (onClose)="handleCloseEditRoleModal()"
+>
+</app-role-edit>
+
+<!-- <app-problem-role
+    *ngIf="selectedDeleteProblem"
+    [isVisible]="isDeleteProblemModalOpen"
+    [problem]="selectedDeleteProblem"
+    (onClose)="handleCloseDeleteProblemModal()"
+></app-problem-role> -->

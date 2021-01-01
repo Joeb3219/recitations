@@ -15,7 +15,8 @@ export type FormInputType =
     | 'learningGoals'
     | 'multiChoiceOptions'
     | 'file'
-    | 'textBlock';
+    | 'textBlock'
+    | 'abilities';
 
 type Undefinable<T> = { [P in keyof T]?: never };
 
@@ -39,6 +40,10 @@ interface LearningGoalsInput {
     course: Course;
 }
 
+interface AbilitiesInput {
+    abilities: string[];
+}
+
 export type FormInput<InputType extends FormInputType = FormInputType, G extends any = any> = {
     group?: string;
     name?: keyof G & string;
@@ -54,6 +59,7 @@ export type FormInput<InputType extends FormInputType = FormInputType, G extends
     (InputType extends 'meetingTimes' ? MeetingTimeInput : Undefinable<MeetingTimeInput>) &
     (InputType extends 'lessonPlanSteps' ? LessonPlanStepsInput : Undefinable<LessonPlanStepsInput>) &
     (InputType extends 'learningGoals' ? LearningGoalsInput : Undefinable<LearningGoalsInput>) &
+    (InputType extends 'abilities' ? AbilitiesInput : Undefinable<AbilitiesInput>) &
     (InputType extends 'wysiwyg' ? WysiwygInput : Undefinable<WysiwygInput>);
 
 export interface FormFieldUpdated<T extends any = any> {

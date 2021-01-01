@@ -14,6 +14,7 @@ import { ListLearningGoalsComponent } from './modules/pages/learning-goals/list-
 import { ViewLessonPlanComponent } from './modules/pages/lesson-plans/view-lesson-plan/view-lesson-plan.component';
 import { ListQuizzesComponent } from './modules/pages/quizzes/list-quizzes/list-quizzes.component';
 import { ViewQuizComponent } from './modules/pages/quizzes/view-quiz/view-quiz.component';
+import { ListRolesComponent } from './modules/pages/roles/list-roles/list-roles.component';
 
 const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -26,6 +27,7 @@ const routes: Routes = [
         component: ViewProblemComponent,
     },
     { path: 'courses/:courseID/settings', component: CourseSettingsComponent },
+    { path: 'courses/:courseID/roles', component: ListRolesComponent },
     {
         path: 'courses/:courseID/coverage-requests',
         component: CoverageRequestsComponent,

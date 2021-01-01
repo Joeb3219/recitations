@@ -44,8 +44,12 @@ export class UserController {
     }
 
     @PostRequest('/user/impersonate')
-    async impersonateUser({ body }: HttpArgs<{ username: string }>): Promise<string> {
+    async impersonateUser({ ability, body }: HttpArgs<{ username: string }>): Promise<string> {
         const { username } = body;
+
+        if (!ability.can('use', 'impersonate_users')) {
+            throw Boom.unauthorized('Unauthorized to impersonate users');
+        }
 
         const user = await User.findOne({
             where: { username },

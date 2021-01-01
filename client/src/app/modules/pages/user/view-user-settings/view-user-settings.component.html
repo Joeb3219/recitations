@@ -14,14 +14,16 @@
 <hr />
 
 <!-- Add perms checks here -->
-<h3>Impersonate a User</h3>
-<div class="row">
-    <div class="col">
-        <app-user-search-formfield (onChange)="selectedImpersonationUser = $event"></app-user-search-formfield>
+<ng-container *can="{ action: 'view', subject: 'impersonate_users' }">
+    <h3>Impersonate a User</h3>
+    <div class="row">
+        <div class="col">
+            <app-user-search-formfield (onChange)="selectedImpersonationUser = $event"></app-user-search-formfield>
+        </div>
+        <div class="col">
+            <button *ngIf="selectedImpersonationUser" class="btn btn-primary" (click)="handleImpersonateUser()">
+                Impersonate User
+            </button>
+        </div>
     </div>
-    <div class="col">
-        <button *ngIf="selectedImpersonationUser" class="btn btn-primary" (click)="handleImpersonateUser()">
-            Impersonate User
-        </button>
-    </div>
-</div>
+</ng-container>

@@ -1,5 +1,7 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Type } from 'class-transformer';
+import { BaseEntity, Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { UserInterface } from '../interfaces';
+import { Role } from './role';
 
 @Entity()
 export class User extends BaseEntity implements UserInterface {
@@ -17,6 +19,11 @@ export class User extends BaseEntity implements UserInterface {
 
     @Column()
     public email: string;
+
+    @ManyToMany(() => Role, { eager: true })
+    @JoinTable()
+    @Type(() => Role)
+    public roles: Role[];
 
     @Column({ type: 'varchar', select: false, nullable: true })
     public passwordHash?: string | undefined;

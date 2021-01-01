@@ -55,6 +55,10 @@ export class SidebarComponent implements OnInit {
             name: 'Settings',
         },
         {
+            slug: 'roles',
+            name: 'Roles',
+        },
+        {
             slug: 'quizzes',
             name: 'Quizzes',
         },

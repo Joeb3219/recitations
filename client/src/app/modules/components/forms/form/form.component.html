@@ -9,6 +9,7 @@
             <!-- now we iterate over each of our groupings of inputs on this page -->
             <ng-container *ngFor="let group of form.inputGroups">
                 <div *ngIf="group.page == i">
+                    <h3 *ngIf="group.label && group.label.length > 0">{{ group.label }}</h3>
                     <div
                         class="row"
                         *ngFor="let numColumns of rowLayouts[group.name ? group.name : '']; let row = index"

@@ -1,0 +1,28 @@
+<app-edit-roster
+    *ngIf="uploadingRosterModalOpen"
+    [course]="course"
+    [isVisible]="uploadingRosterModalOpen"
+    (onClose)="handleUploadRosterClosed()"
+></app-edit-roster>
+
+<div class="page">
+    <ng-container *ngIf="!course">
+        <h4>Not Found</h4>
+    </ng-container>
+    <ng-container *ngIf="course">
+        <div class="container-margin">
+            <div class="row">
+                <div style="float: left; text-align: left" class="col">
+                    <h4>{{ course.name }} Roster</h4>
+                </div>
+                <div style="float: right; text-align: right" class="col">
+                    <button class="btn btn-primary" (click)="handleUploadRosterOpened()">Upload Roster</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-margin">
+            <app-datatable [dataFunction]="fetchRoster" [columns]="columns" [reload]="refreshData"></app-datatable>
+        </div>
+    </ng-container>
+</div>

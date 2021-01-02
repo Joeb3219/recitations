@@ -6,7 +6,7 @@
         "dev": "nodemon",
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "tsc --declaration --declarationMap -p tsconfig.json",
-        "serve": "tsc --declaration --declarationMap -p tsconfig.json -w"
+        "serve": "tsc --declaration --incremental --declarationMap -p tsconfig.json -w"
     },
     "main": "./dist/index",
     "typings": "./dist/index.d.ts",

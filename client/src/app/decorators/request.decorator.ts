@@ -5,7 +5,7 @@ import { HttpFilterInterface } from '@http/httpFilter.interface';
 import { plainToClass } from 'class-transformer';
 import { Observable } from 'rxjs';
 
-function getFilterParams(filter?: HttpFilterInterface) {
+export function getFilterParams(filter?: HttpFilterInterface) {
     let params = new HttpParams();
     if (filter) {
         params = (Object.keys(filter) as (keyof HttpFilterInterface)[]).reduce(

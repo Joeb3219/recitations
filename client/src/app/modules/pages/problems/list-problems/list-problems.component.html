@@ -1,31 +1,38 @@
 <div class="page">
-  <ng-container *ngIf="!course">
-    <h4>Not Found</h4>
-  </ng-container>
-  <ng-container *ngIf="course">
-
-    <div class="container-margin">
-      <div class="row">
-        <div style="float: left; text-align: left" class="col">
-          <h4>{{course.name}} Problems</h4>
+    <ng-container *ngIf="!course">
+        <h4>Not Found</h4>
+    </ng-container>
+    <ng-container *ngIf="course">
+        <div class="container-margin">
+            <div class="row">
+                <div style="float: left; text-align: left" class="col">
+                    <h4>{{ course.name }} Problems</h4>
+                </div>
+                <div style="float: right; text-align: right" class="col">
+                    <button type="button" class="btn btn-primary" (click)="handleOpenNewProblemModal()">
+                        Add Problem
+                    </button>
+                </div>
+            </div>
         </div>
-        <div style="float: right; text-align: right" class="col">
-          <button type="button" class="btn btn-primary" (click)="handleOpenNewProblemModal()">Add Problem
-          </button>
+
+        <div class="container-margin">
+            <app-datatable [dataFunction]="fetchProblems" [columns]="columns" [reload]="refreshData"></app-datatable>
         </div>
-      </div>
-    </div>
-
-    <div class="container-margin">
-
-      <app-datatable [dataFunction]="fetchProblems" [columns]="columns" [reload]="refreshData"></app-datatable>
-
-    </div>
-  </ng-container>
+    </ng-container>
 </div>
 
-<app-problem-edit *ngIf="selectedEditProblem" [problem]="selectedEditProblem" (onClose)="handleCloseEditProblemModal()">
+<app-problem-edit
+    *ngIf="selectedEditProblem && isEditProblemModalOpen"
+    [problem]="selectedEditProblem"
+    [isVisible]="isEditProblemModalOpen"
+    (onClose)="handleCloseEditProblemModal()"
+>
 </app-problem-edit>
 
-<app-problem-delete *ngIf="selectedDeleteProblem" [isVisible]="isDeleteProblemModalOpen"
-  [problem]="selectedDeleteProblem" (onClose)="handleCloseDeleteProblemModal()"></app-problem-delete>
+<app-problem-delete
+    *ngIf="selectedDeleteProblem"
+    [isVisible]="isDeleteProblemModalOpen"
+    [problem]="selectedDeleteProblem"
+    (onClose)="handleCloseDeleteProblemModal()"
+></app-problem-delete>

@@ -1,8 +1,9 @@
 import { Type } from 'class-transformer';
-import { BaseEntity, Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { DefaultCourseSettings } from '../constants';
 import { CourseInterface, CourseSetting, CourseSettingKey, CourseSettings } from '../interfaces';
-import { Section } from '../models';
+import { CourseSemesterDescriptor } from '../interfaces/course.interface';
+import { Section, User } from '../models';
 
 @Entity()
 export class Course extends BaseEntity implements CourseInterface {
@@ -27,6 +28,14 @@ export class Course extends BaseEntity implements CourseInterface {
 
     @Column({ type: 'jsonb', nullable: true })
     public settings?: CourseSettings;
+
+    @Column({ type: 'jsonb', default: { term: 'Fall', year: '1900' } })
+    public semester: CourseSemesterDescriptor;
+
+    @ManyToOne(() => User, { nullable: true })
+    @JoinColumn()
+    @Type(() => User)
+    public creator?: User;
 
     getMergedSettings(): CourseSettings {
         return Object.assign(

@@ -9,10 +9,12 @@ import { ListProblemsComponent } from '@pages/problems/list-problems/list-proble
 import { ViewProblemComponent } from '@pages/problems/view-problem/view-problem.component';
 import { RecitationsComponent } from '@pages/recitations/recitations.component';
 import { ViewSectionsComponent } from '@pages/sections/view-sections/view-sections.component';
+import { ViewUserSettingsComponent } from '@pages/user/view-user-settings/view-user-settings.component';
 import { ListLearningGoalsComponent } from './modules/pages/learning-goals/list-learning-goals/list-learning-goals.component';
 import { ViewLessonPlanComponent } from './modules/pages/lesson-plans/view-lesson-plan/view-lesson-plan.component';
 import { ListQuizzesComponent } from './modules/pages/quizzes/list-quizzes/list-quizzes.component';
 import { ViewQuizComponent } from './modules/pages/quizzes/view-quiz/view-quiz.component';
+import { ListRolesComponent } from './modules/pages/roles/list-roles/list-roles.component';
 
 const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -25,6 +27,7 @@ const routes: Routes = [
         component: ViewProblemComponent,
     },
     { path: 'courses/:courseID/settings', component: CourseSettingsComponent },
+    { path: 'courses/:courseID/roles', component: ListRolesComponent },
     {
         path: 'courses/:courseID/coverage-requests',
         component: CoverageRequestsComponent,
@@ -49,6 +52,10 @@ const routes: Routes = [
     {
         path: 'courses/:courseID/quizzes/:quizID',
         component: ViewQuizComponent,
+    },
+    {
+        path: 'settings',
+        component: ViewUserSettingsComponent,
     },
 ];
 

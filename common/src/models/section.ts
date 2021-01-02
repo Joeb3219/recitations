@@ -29,7 +29,7 @@ export class Section extends Meetable implements SectionInterface {
     @Type(() => User)
     public instructor?: User;
 
-    @ManyToMany(type => User)
+    @ManyToMany(type => User, { eager: true })
     @JoinTable()
     @Type(() => User)
     public students?: User[];

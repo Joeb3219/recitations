@@ -1,0 +1,13 @@
+<div class="row">
+    <div class="col">
+        <ng-container *ngFor="let ability of allAbilities; let index = index">
+            <label class="ability">
+                <input
+                    type="checkbox"
+                    [checked]="abilities.includes(ability.id)"
+                    (change)="handleAbilityToggled(ability)"
+                />{{ ability.name }}</label
+            ><br />
+        </ng-container>
+    </div>
+</div>

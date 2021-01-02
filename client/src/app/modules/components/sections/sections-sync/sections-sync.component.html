@@ -1,0 +1,13 @@
+<app-form-modal
+    *ngIf="isVisible"
+    [submitText]="'Sync Sections'"
+    [showModal]="isVisible"
+    [form]="form"
+    [modalSize]="'xl'"
+    [title]="'Sync Sections'"
+    (onSubmit)="formSubmitted($event)"
+    (onClose)="handleClose()"
+    [forceClose]="forceClose"
+    (onFieldChange)="onFieldChanged($event)"
+>
+</app-form-modal>

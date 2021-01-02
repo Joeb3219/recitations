@@ -5,7 +5,10 @@ import { MeetingController } from './meetings/meeting.controller';
 import { MeetingTimeController } from './meetingTime.controller';
 import { ProblemController } from './problem.controller';
 import { QuizController } from './quiz.controller';
-import { SectionController } from './section.controller';
+import { RoleController } from './role.controller';
+import { RosterController } from './roster/roster.controller';
+import { SectionController } from './sections/section.controller';
+import { UploadController } from './upload.controller';
 import { UserController } from './user.controller';
 
 export {
@@ -18,6 +21,9 @@ export {
     UserController,
     LearningGoalController,
     QuizController,
+    RosterController,
+    UploadController,
+    RoleController,
 };
 
 export const AllControllers = [
@@ -30,4 +36,7 @@ export const AllControllers = [
     UserController,
     LearningGoalController,
     QuizController,
+    RosterController,
+    UploadController,
+    RoleController,
 ];

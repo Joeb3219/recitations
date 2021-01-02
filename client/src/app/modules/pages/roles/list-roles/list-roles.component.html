@@ -28,9 +28,10 @@
 >
 </app-role-edit>
 
-<!-- <app-problem-role
-    *ngIf="selectedDeleteProblem"
-    [isVisible]="isDeleteProblemModalOpen"
-    [problem]="selectedDeleteProblem"
-    (onClose)="handleCloseDeleteProblemModal()"
-></app-problem-role> -->
+<app-role-assign
+    *ngIf="selectedEditRole && isAssignUsersModalOpen"
+    [role]="selectedEditRole"
+    [isVisible]="isAssignUsersModalOpen"
+    (onClose)="handleCloseAssignUsersModal()"
+>
+</app-role-assign>

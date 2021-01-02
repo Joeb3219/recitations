@@ -20,11 +20,18 @@
 />
 
 <app-user-search-formfield
-    *ngIf="input.type == 'user'"
+    *ngIf="input.type == 'user' && !input.multi"
     [user]="input.value"
     [name]="input.name"
     (onChange)="fieldUpdated(input.name, $event)"
 ></app-user-search-formfield>
+
+<app-users-multi-formfield
+    *ngIf="input.type == 'user' && input.multi"
+    [users]="input.value"
+    [name]="input.name"
+    (onChange)="fieldUpdated(input.name, $event)"
+></app-users-multi-formfield>
 
 <app-learning-goal-search-formfield
     *ngIf="input.type == 'learningGoals' && input.course"

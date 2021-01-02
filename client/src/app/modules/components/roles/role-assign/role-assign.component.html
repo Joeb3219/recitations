@@ -1,1 +1,12 @@
-<p>role-assign works!</p>
+<app-form-modal
+    *ngIf="isVisible && role && form"
+    [submitText]="'Save Assignments'"
+    [showModal]="isVisible"
+    [form]="form"
+    [modalSize]="'xl'"
+    [title]="'Role Assignment Editor'"
+    (onSubmit)="formSubmitted($event)"
+    (onClose)="handleClose()"
+    [forceClose]="forceClose"
+>
+</app-form-modal>

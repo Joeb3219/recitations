@@ -1,5 +1,6 @@
 import { Type } from 'class-transformer';
 import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { RuleTag } from '../abilities/ability.definition';
 import { RoleInterface } from '../interfaces/role.interface';
 import { Course } from './course';
 import { User } from './user';
@@ -24,6 +25,9 @@ export class Role extends BaseEntity implements RoleInterface {
 
     @Column({ type: 'jsonb' })
     abilities: string[];
+
+    @Column({ type: 'varchar', nullable: true })
+    ruleTag?: RuleTag;
 
     constructor(args: Partial<Role> = {}) {
         super();

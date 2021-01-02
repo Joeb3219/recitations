@@ -24,11 +24,6 @@ export class ListRolesComponent {
             prop: 'name',
         },
         {
-            name: 'Creator',
-            prop: 'creator',
-            cellTemplate: 'userCell',
-        },
-        {
             name: 'Actions',
             cellTemplate: 'actionsCell',
             actions: (row: Role) => [
@@ -36,14 +31,22 @@ export class ListRolesComponent {
                     text: 'View',
                     href: `/courses/${row.course?.id}/roles/${row.id}`,
                 },
-                {
-                    text: 'Modify',
-                    click: () => this.handleOpenEditRoleModal(row),
-                },
-                // {
-                //     text: 'Delete',
-                //     click: () => this.handleOpenDeleteRoleModal(row),
-                // },
+                ...(!row.ruleTag
+                    ? [
+                          {
+                              text: 'Modify',
+                              click: () => this.handleOpenEditRoleModal(row),
+                          },
+                      ]
+                    : []),
+                ...(!row.ruleTag
+                    ? [
+                          {
+                              text: 'Assign Users',
+                              click: () => this.handleOpenAssignUsersModal(row),
+                          },
+                      ]
+                    : []),
             ],
         },
     ];
@@ -52,6 +55,7 @@ export class ListRolesComponent {
     selectedDeleteRole?: Role = undefined;
 
     isEditRoleModalOpen = false;
+    isAssignUsersModalOpen = false;
     isDeleteRoleModalOpen = false;
 
     constructor(private roleService: RoleService) {
@@ -77,8 +81,21 @@ export class ListRolesComponent {
         this.refreshData.emit();
     }
 
+    handleCloseAssignUsersModal(): void {
+        this.isAssignUsersModalOpen = false;
+
+        this.selectedEditRole = undefined;
+
+        this.refreshData.emit();
+    }
+
     handleOpenEditRoleModal(role: Role): void {
         this.isEditRoleModalOpen = true;
+        this.selectedEditRole = role;
+    }
+
+    handleOpenAssignUsersModal(role: Role) {
+        this.isAssignUsersModalOpen = true;
         this.selectedEditRole = role;
     }
 

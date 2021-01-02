@@ -8,6 +8,7 @@ export class AbilityManager {
             ABILITY_GENERATORS.map(ability => ({
                 id: ability.id,
                 name: ability.name,
+                tags: ability.tags,
                 isGlobal: ability.isGlobal ?? false,
                 actions: ability.actions(user),
             }))

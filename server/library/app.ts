@@ -8,7 +8,9 @@ import * as jwt from 'jsonwebtoken';
 import 'reflect-metadata';
 import { Connection, createConnection } from 'typeorm';
 import { AllControllers } from './controllers';
+import { RolesHelper } from './helpers/roles.helper';
 import { generateResource, generateRoute, ResourceData, RouteData } from './helpers/route.helper';
+import { AllListeners } from './listeners/index';
 
 class AppWrapper {
     port = 3000;
@@ -27,6 +29,7 @@ class AppWrapper {
     async init() {
         await this.initDB();
         await this.initExpress();
+        await this.initData();
         await this.initJWTParser();
         await this.initAccessControl();
         await this.registerControllers();
@@ -110,6 +113,10 @@ class AppWrapper {
         });
     }
 
+    async initData() {
+        await RolesHelper.upsertSuperAdminRole();
+    }
+
     async initDB() {
         this.connection = await createConnection({
             name: 'default',
@@ -121,6 +128,7 @@ class AppWrapper {
             synchronize: true,
             logging: false,
             entities: AllEntities,
+            subscribers: AllListeners,
         });
     }
 

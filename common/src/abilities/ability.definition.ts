@@ -86,12 +86,41 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
         ],
     },
     {
+        id: '946d2945-f09b-4e81-a574-bf2f9f1d1cca',
+        name: 'Edit all sections',
+        tags: ['course_admin', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'update',
+                subject: Section,
+                validate: (instance: Section) => !!course && course.id === instance.course?.id,
+            },
+        ],
+    },
+    {
         id: 'f7572352-6048-4cf5-998c-2fdb0026495a',
         name: 'View assigned sections',
-        tags: ['professor', 'ta', 'student', 'super_admin'],
+        tags: ['professor', 'ta', 'student', 'course_admin', 'super_admin'],
         actions: (user, course) => [
             {
                 action: 'view',
+                subject: Section,
+                validate: (instance: Section) =>
+                    (!!course &&
+                        course.id === instance.course?.id &&
+                        !!instance.students?.find(student => safeIdComparison(user?.id, student))) ||
+                    safeIdComparison(user?.id, instance.ta) ||
+                    safeIdComparison(user?.id, instance.instructor),
+            },
+        ],
+    },
+    {
+        id: '59713b50-9be9-4499-a19a-10a6ec2962b1',
+        name: 'Edit assigned sections',
+        tags: ['course_admin', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'update',
                 subject: Section,
                 validate: (instance: Section) =>
                     (!!course &&
@@ -109,6 +138,18 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
         actions: (_user, course) => [
             {
                 action: 'view',
+                subject: Problem,
+                validate: instance => !!course && course.id === instance.course?.id,
+            },
+        ],
+    },
+    {
+        id: '656c65b4-fe3d-4d9a-b891-3f949eab36c2',
+        name: 'Edit all problems',
+        tags: ['ta', 'professor', 'course_admin', 'super_admin'],
+        actions: (_user, course) => [
+            {
+                action: 'update',
                 subject: Problem,
                 validate: instance => !!course && course.id === instance.course?.id,
             },
@@ -133,6 +174,18 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
         actions: (_user, course) => [
             {
                 action: 'view',
+                subject: Role,
+                validate: (instance: Role) => !!course && safeIdComparison(course.id, instance.course),
+            },
+        ],
+    },
+    {
+        id: '47ea44e8-2c6b-4d8e-a033-18c1ac4b9403',
+        name: 'Edit all roles',
+        tags: ['course_admin', 'super_admin'],
+        actions: (_user, course) => [
+            {
+                action: 'update',
                 subject: Role,
                 validate: (instance: Role) => !!course && safeIdComparison(course.id, instance.course),
             },
@@ -171,6 +224,18 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
                 action: 'view',
                 subject: Quiz,
                 validate: (instance: Quiz) => !!course && safeIdComparison(course.id, instance.course),
+            },
+        ],
+    },
+    {
+        id: '99652b97-ebc3-4c3b-91dc-7a85fed49ced',
+        name: 'Edit course settings',
+        tags: ['course_admin', 'super_admin'],
+        actions: (_user, course) => [
+            {
+                action: 'update',
+                subject: Course,
+                validate: (instance: Course) => course?.id === instance?.id,
             },
         ],
     },

@@ -24,8 +24,9 @@ const dataDict = (args: HttpArgs<Course>) => {
 )
 export class CourseController {
     @GetRequest('/course')
-    async getCourses(): Promise<Course[]> {
-        return Course.find({});
+    async getCourses({ ability }: HttpArgs): Promise<Course[]> {
+        const courses = await Course.find({});
+        return courses.filter(course => ability.can('view', course));
     }
 
     @PostRequest('/course')

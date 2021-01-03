@@ -1,16 +1,16 @@
 <div class="header">
-  <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand">Dynamic Recitation</a>
+    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand">Dynamic Recitation</a>
 
-    <form class="form-inline">
-      <span *ngIf="user">
-        Hello, {{ user.firstName }} {{ user.lastName }}. <a [routerLink]="['/login']">Sign Out?</a>
-      </span>
-      <span *ngIf="!user">
-        <a [routerLink]="['/login']">Sign In</a>
-      </span>
-    </form>
-
-
-  </nav>
+        <form class="form-inline">
+            <span *ngIf="user">
+                Hello, {{ user.firstName ? user.firstName : '' }} {{ user.lastName ? user.lastName : '' }}.
+                <a style="cursor: pointer" [routerLink]="['/login']">Sign Out?</a>
+                <a style="cursor: pointer" [routerLink]="['/settings']">Settings</a>
+            </span>
+            <span *ngIf="!user">
+                <a [routerLink]="['/login']">Sign In</a>
+            </span>
+        </form>
+    </nav>
 </div>

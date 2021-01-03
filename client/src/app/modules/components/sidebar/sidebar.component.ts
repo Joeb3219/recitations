@@ -29,7 +29,7 @@ export class SidebarComponent implements OnInit {
 
     ngOnInit(): void {
         this.userService.getCurrentUser().subscribe({
-            next: async () => {
+            next: async user => {
                 this.userCourses = await this.courseService.getCourses();
                 this.loadCourseEntries();
                 this.setActiveCourseFromRouter();

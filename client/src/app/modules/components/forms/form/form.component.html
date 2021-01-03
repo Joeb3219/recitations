@@ -2,7 +2,7 @@
     {{ form.pages[pageNumber].label }}
 </h3>
 
-<form *ngIf="form" (submit)="submit()">
+<form ngbAutofocus *ngIf="form" (submit)="submit()">
     <!-- Iterate over all of the pages -->
     <ng-container *ngFor="let page of form.pages; let i = index">
         <div class="form-page" [class.disabled]="i != pageNumber">
@@ -18,7 +18,6 @@
                             <!-- now we go through all inputs of the group and actually render them -->
                             <ng-container *ngFor="let input of form.inputs">
                                 <div
-                                    class="form-group"
                                     *ngIf="
                                         !input.hidden &&
                                         input.row == row &&

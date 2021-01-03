@@ -1,4 +1,13 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnInit,
+    Output,
+    ViewChild,
+    ViewEncapsulation,
+} from '@angular/core';
 import { Form, FormFieldUpdated } from '@dynrec/common';
 import { Observable } from 'rxjs';
 
@@ -6,6 +15,7 @@ import { Observable } from 'rxjs';
     selector: 'app-form',
     templateUrl: './form.component.html',
     styleUrls: ['./form.component.scss'],
+    encapsulation: ViewEncapsulation.None,
 })
 export class FormComponent<T> implements OnInit {
     @ViewChild('submitButton', { static: false }) submitButton: ElementRef;

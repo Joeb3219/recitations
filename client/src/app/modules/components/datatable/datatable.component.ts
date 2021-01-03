@@ -322,6 +322,8 @@ export class DatatableComponent<T extends { id?: string }> implements OnInit {
         this.sort = sorts[0].prop;
         this.sortDirection = sorts[0].dir;
 
+        this.offset = 0;
+
         this.loadData();
     }
 
@@ -398,7 +400,7 @@ export class DatatableComponent<T extends { id?: string }> implements OnInit {
 
         const { data, metadata } = await this.dataFunction({
             limit: this.pageSize,
-            offset: this.offset,
+            offset: this.offset * this.pageSize,
             sort: this.sort,
             sortDirection: this.sortDirection,
             search: this.search,

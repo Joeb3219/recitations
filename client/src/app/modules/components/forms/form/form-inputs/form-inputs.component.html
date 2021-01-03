@@ -76,6 +76,7 @@
 ></app-multiple-choice>
 
 <ckeditor
+    class="ckeditor"
     [editor]="Editor"
     (change)="fieldUpdatedWysiwyg(input.name, $event)"
     data="{{ input.value }}"

@@ -1,27 +1,18 @@
-<app-modal
-	*ngIf="showModal"
-	(onClose)="handleOnClose()"
-	[modalSize]="modalSize"
-	[forceClose]="forceClose"
->
-	<span title>{{ title }}</span>
-	<div body>
-		<app-form
-			[form]="form"
-			[showSubmit]="false"
-			[forceSubmit]="forceFormSubmit"
-			(onSubmit)="handleOnSubmit($event)"
-			(onFieldChange)="handleOnFieldChange($event)"
-		>
-		</app-form>
-	</div>
-	<div footer>
-		<button
-			type="button"
-			class="btn btn-primary"
-			(click)="handleModalSubmit()"
-		>
-			{{ submitText }}
-		</button>
-	</div>
+<app-modal *ngIf="showModal" (onClose)="handleOnClose()" [modalSize]="modalSize" [forceClose]="forceClose">
+    <span title>{{ title }}</span>
+    <div body>
+        <app-form
+            [form]="form"
+            [showSubmit]="false"
+            [forceSubmit]="forceFormSubmit"
+            (onSubmit)="handleOnSubmit($event)"
+            (onFieldChange)="handleOnFieldChange($event)"
+        >
+        </app-form>
+    </div>
+    <div footer>
+        <button type="button" class="btn btn-primary" (click)="handleModalSubmit()">
+            {{ submitText }}
+        </button>
+    </div>
 </app-modal>

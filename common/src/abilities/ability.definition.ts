@@ -346,4 +346,16 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
             },
         ],
     },
+    {
+        id: 'abb7e2e4-b2fa-408d-99b7-7a55938d36a2',
+        name: 'Create Users',
+        tags: ['course_creator', 'super_admin'],
+        isGlobal: true,
+        actions: () => [
+            {
+                action: 'create',
+                subject: User,
+            },
+        ],
+    },
 ];

@@ -2,6 +2,7 @@ import { User } from '@dynrec/common';
 import * as Boom from '@hapi/boom';
 import _ from 'lodash';
 import { Controller, GetRequest, PostRequest, Unauthenticated } from '../decorators';
+import { PutRequest } from '../decorators/request.decorator';
 import { HttpArgs } from '../helpers/route.helper';
 import { UserHelper } from '../helpers/user.helper';
 
@@ -80,5 +81,16 @@ export class UserController {
         const updatedUser = Object.assign({}, currentUser, user);
 
         return User.save(updatedUser);
+    }
+
+    @PutRequest('/user')
+    async createUser({ ability, body }: HttpArgs<{ user: User }>): Promise<User> {
+        const { user } = body;
+
+        if (!ability.can('create', new User(user))) {
+            throw Boom.unauthorized('Unauthorized to create users.');
+        }
+
+        return User.save(user as User);
     }
 }

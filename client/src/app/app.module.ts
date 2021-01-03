@@ -93,6 +93,7 @@ import { SectionService } from './services/section.service';
 import { UserService } from './services/user.service';
 import { AbilitiesDirective } from './directives/abilities.directive';
 import { UsersMultiFormfieldComponent } from './modules/components/users/users-multi-formfield/users-multi-formfield.component';
+import { UserCreateComponent } from './modules/components/users/user-create/user-create.component';
 
 export let GlobalActivatedRoute: ActivatedRoute;
 
@@ -164,6 +165,7 @@ export let GlobalActivatedRoute: ActivatedRoute;
         RolesFormfieldComponent,
         AbilitiesDirective,
         UsersMultiFormfieldComponent,
+        UserCreateComponent,
     ],
     imports: [
         HttpClientModule,

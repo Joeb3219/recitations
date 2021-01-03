@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { User } from '@dynrec/common';
+import { faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 import { UserService } from '@services/user.service';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
-
 @Component({
     selector: 'app-user-search-formfield',
     templateUrl: './user-search-formfield.component.html',
@@ -16,7 +16,14 @@ export class UserSearchFormfieldComponent implements OnInit {
 
     @Output() onChange: EventEmitter<User> = new EventEmitter<User>();
 
+    // Dummy angular-ism, creating a var to be used in the template
+    baseUser: User = new User();
+
+    createUserIcon = faPlusSquare;
+
     users: User[];
+
+    isCreateUserModalOpen: boolean = false;
 
     constructor(private userService: UserService) {}
 
@@ -31,6 +38,19 @@ export class UserSearchFormfieldComponent implements OnInit {
 
     handleUserSelected(data: { item: User }): void {
         this.onChange.emit(data.item);
+    }
+
+    handleOpenCreateUserModal() {
+        this.isCreateUserModalOpen = true;
+    }
+
+    handleUserCreateModalClosed(user?: User) {
+        this.isCreateUserModalOpen = false;
+
+        if (user) {
+            this.user = user;
+            this.onChange.emit(this.user);
+        }
     }
 
     search = (text$: Observable<string>): Observable<User[]> =>

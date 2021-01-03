@@ -81,4 +81,22 @@ export class UserService {
                 );
         });
     }
+
+    public createUser(user: User): Promise<StandardResponseInterface<User>> {
+        const url = `${environment.apiURL}/user`;
+        return new Promise((resolve, reject) => {
+            this.http
+                .put<StandardResponseInterface<User>>(url, { user })
+                .subscribe(
+                    result => {
+                        if (result) {
+                            resolve(result);
+                        } else reject(new Error('No result returned'));
+                    },
+                    (err: Error) => {
+                        reject(err);
+                    }
+                );
+        });
+    }
 }

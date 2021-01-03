@@ -152,7 +152,7 @@ export function generateUpdateResource<T extends BaseEntity>(
     dataFn: (args: HttpArgs<T>) => Partial<T>
 ) {
     return async (args: HttpArgs<T>): Promise<T> => {
-        const { params } = args;
+        const { params, ability } = args;
         const id = params[`${resourceName}ID`];
 
         const updateableData = pickBy(await dataFn(args), item => {
@@ -163,6 +163,10 @@ export function generateUpdateResource<T extends BaseEntity>(
         let resource = await getRepository<T>(resourceClass).findOne({
             where: { id },
         });
+
+        if (!ability.can('update', resource)) {
+            throw Boom.unauthorized(`Unauthorized to update selected ${resourceName}`);
+        }
 
         // no resource found, 404 it out
         if (!resource) throw Boom.notFound(`${resourceName} not found`);
@@ -200,13 +204,17 @@ export function generateDeleteResource<T extends BaseEntity & { id: string }>(
     resourceName: string
 ) {
     return async (args: HttpArgs<T>): Promise<DeleteResult> => {
-        const { params } = args;
+        const { params, ability } = args;
         const id = params[`${resourceName}ID`];
 
         // first, we find the resource that is referenced by the given ID
         const resource = await getRepository<T>(resourceClass).findOne({
             where: { id },
         });
+
+        if (!ability.can('delete', resource)) {
+            throw Boom.unauthorized(`Unauthorized to delete selected ${resourceName}`);
+        }
 
         // no resource found, 404 it out
         if (!resource) throw Boom.notFound(`${resourceName} not found`);
@@ -220,9 +228,15 @@ export function generateCreateResource<T extends BaseEntity>(
     dataFn: (args: HttpArgs<T>) => Partial<T>
 ) {
     return async (args: HttpArgs<T>): Promise<T> => {
+        const { ability } = args;
+
         const data = pickBy(await dataFn(args), item => {
             return !!item;
         });
+
+        if (!ability.can('create', data as T)) {
+            throw Boom.unauthorized(`Unauthorized to create selected resource`);
+        }
 
         return getRepository<T>(resourceClass).save(data as any);
     };

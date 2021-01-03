@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Course } from '@dynrec/common';
+import { Course, LearningGoalCategory, LessonPlan, Problem, Quiz, Role, Section } from '@dynrec/common';
 import { CourseService } from '@services/course.service';
 import { UserService } from '@services/user.service';
+import { AbilitiesCanDirectivePayload } from '../../../directives/abilities.directive';
 
 type CourseEntry = {
     name: string;
     slug: string;
+    can?: AbilitiesCanDirectivePayload;
 };
 
 @Component({
@@ -21,48 +23,7 @@ export class SidebarComponent implements OnInit {
 
     activeSlug?: string;
 
-    courseEntries: CourseEntry[] = [
-        {
-            slug: '',
-            name: 'Home',
-        },
-        {
-            slug: 'recitations',
-            name: 'Recitations',
-        },
-        {
-            slug: 'sections',
-            name: 'Sections',
-        },
-        {
-            slug: 'problems',
-            name: 'Problems',
-        },
-        {
-            slug: 'lesson-plans',
-            name: 'Lesson Plans',
-        },
-        {
-            slug: 'learning-goals',
-            name: 'Learning Goals',
-        },
-        {
-            slug: 'coverage-requests',
-            name: 'Coverage Requests',
-        },
-        {
-            slug: 'settings',
-            name: 'Settings',
-        },
-        {
-            slug: 'roles',
-            name: 'Roles',
-        },
-        {
-            slug: 'quizzes',
-            name: 'Quizzes',
-        },
-    ];
+    courseEntries: { [courseID: string]: CourseEntry[] } = {};
 
     constructor(private userService: UserService, private courseService: CourseService, private router: Router) {}
 
@@ -70,6 +31,7 @@ export class SidebarComponent implements OnInit {
         this.userService.getCurrentUser().subscribe({
             next: async () => {
                 this.userCourses = await this.courseService.getCourses();
+                this.loadCourseEntries();
                 this.setActiveCourseFromRouter();
             },
         });
@@ -86,6 +48,62 @@ export class SidebarComponent implements OnInit {
                     this.setActiveCourseFromRouter();
                 }
             },
+        });
+    }
+
+    loadCourseEntries() {
+        this.userCourses?.forEach(course => {
+            this.courseEntries[course.id] = [
+                {
+                    slug: '',
+                    name: 'Home',
+                },
+                {
+                    slug: 'recitations',
+                    name: 'Recitations',
+                    can: { action: 'view', subject: 'recitation', existsOnCourse: course },
+                },
+                {
+                    slug: 'sections',
+                    name: 'Sections',
+                    can: { action: 'view', subject: Section, existsOnCourse: course },
+                },
+                {
+                    slug: 'problems',
+                    name: 'Problems',
+                    can: { action: 'view', subject: Problem, existsOnCourse: course },
+                },
+                {
+                    slug: 'lesson-plans',
+                    name: 'Lesson Plans',
+                    can: { action: 'view', subject: LessonPlan, existsOnCourse: course },
+                },
+                {
+                    slug: 'learning-goals',
+                    name: 'Learning Goals',
+                    can: { action: 'view', subject: LearningGoalCategory, existsOnCourse: course },
+                },
+                {
+                    slug: 'coverage-requests',
+                    name: 'Coverage Requests',
+                    can: { action: 'view', subject: 'coverage-requests', existsOnCourse: course },
+                },
+                {
+                    slug: 'settings',
+                    name: 'Settings',
+                    can: { action: 'update', subject: Course, existsOnCourse: course },
+                },
+                {
+                    slug: 'roles',
+                    name: 'Roles',
+                    can: { action: 'view', subject: Role, existsOnCourse: course },
+                },
+                {
+                    slug: 'quizzes',
+                    name: 'Quizzes',
+                    can: { action: 'view', subject: Quiz, existsOnCourse: course },
+                },
+            ];
         });
     }
 

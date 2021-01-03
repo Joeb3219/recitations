@@ -1,4 +1,5 @@
 import { Course } from '@dynrec/common';
+import Boom from '@hapi/boom';
 import { Controller, GetRequest, PostRequest, Resource } from '../decorators';
 import { RolesHelper } from '../helpers/roles.helper';
 import { HttpArgs } from '../helpers/route.helper';
@@ -29,7 +30,12 @@ export class CourseController {
 
     @PostRequest('/course')
     async createCourse(args: HttpArgs): Promise<Course> {
+        const { ability } = args;
         const data = await dataDict(args);
+
+        if (!ability.can('create', data as Course)) {
+            throw Boom.unauthorized('Unauthorized to create courses');
+        }
 
         const course = await Course.save(data as Course);
         await RolesHelper.createCourseRoles(course);

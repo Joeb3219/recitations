@@ -1,4 +1,4 @@
-<div class="page" style="padding: 1rem">
+<div class="page" style="padding: 1rem" *can="{ action: 'update', subject: course }">
     <ng-container *ngIf="!course">
         <h4>Not Found</h4>
     </ng-container>

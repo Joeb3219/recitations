@@ -39,7 +39,6 @@ export class ModalComponent implements OnInit {
                 backdrop: 'static',
                 size: this.modalSize,
                 windowClass: 'modal-holder',
-                autofocus: false,
             });
 
             this.openedModal.result.then(

@@ -87,6 +87,16 @@ export class UserController {
     async createUser({ ability, body }: HttpArgs<{ user: User }>): Promise<User> {
         const { user } = body;
 
+        if (!user?.username || !user?.email) {
+            throw Boom.badRequest('Missing username or email.');
+        }
+
+        // Ensure there is no user with this username already
+        const existing = await User.findOne({ username: user.username });
+        if (existing) {
+            throw Boom.badRequest('User with this username already exists');
+        }
+
         if (!ability.can('create', new User(user))) {
             throw Boom.unauthorized('Unauthorized to create users.');
         }

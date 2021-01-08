@@ -1,7 +1,9 @@
 export * from './course';
+export * from './coverageRequest';
 export * from './forms/form';
 export * from './learningGoal';
 export * from './learningGoalCategory';
+export * from './lesson';
 export * from './lessonPlan';
 export * from './lessonPlanStep';
 export * from './meetable';
@@ -13,8 +15,10 @@ export * from './role';
 export * from './section';
 export * from './user';
 import { Course } from './course';
+import { CoverageRequest } from './coverageRequest';
 import { LearningGoal } from './learningGoal';
 import { LearningGoalCategory } from './learningGoalCategory';
+import { Lesson } from './lesson';
 import { LessonPlan } from './lessonPlan';
 import { LessonPlanStep } from './lessonPlanStep';
 import { Meetable } from './meetable';
@@ -40,4 +44,6 @@ export const AllEntities = [
     Problem,
     Quiz,
     User,
+    CoverageRequest,
+    Lesson,
 ];

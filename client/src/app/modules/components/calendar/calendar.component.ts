@@ -41,7 +41,7 @@ export class CalendarComponent implements OnInit {
     getCalendarTitle(meeting: Meeting): string {
         const typeString = _.startCase(meeting.meetingType);
         const date = dayjs(meeting.date).format('MMM DD, YYYY HH:mm');
-        return `${typeString}: ${date}`;
+        return `${typeString}: ${date} (${meeting.getAccessCode()})`;
     }
 
     async loadMeetings(): Promise<void> {

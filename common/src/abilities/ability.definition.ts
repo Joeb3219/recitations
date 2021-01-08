@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Course, Problem, Role, Section, User } from '../models';
+import { Course, CoverageRequest, Lesson, Problem, Role, Section, User } from '../models';
 import { LearningGoalCategory } from '../models/learningGoalCategory';
 import { LessonPlan } from '../models/lessonPlan';
 import { Quiz } from '../models/quiz';
@@ -9,7 +9,15 @@ export type RawRuleConditions<Resource extends any> = {
 };
 
 export type RuleAction = 'view' | 'update' | 'create' | 'delete' | 'use';
-export type RuleTag = 'student' | 'ta' | 'professor' | 'user' | 'course_admin' | 'super_admin' | 'course_creator';
+export type RuleTag =
+    | 'student'
+    | 'ta'
+    | 'professor'
+    | 'user'
+    | 'course_admin'
+    | 'super_admin'
+    | 'course_creator'
+    | 'ta_manager';
 
 export class RawRule<Resource extends any = any> {
     action: RuleAction;
@@ -133,11 +141,11 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
                 action: 'view',
                 subject: Section,
                 validate: (instance: Section) =>
-                    (!!course &&
-                        course.id === instance.course?.id &&
-                        !!instance.students?.find(student => safeIdComparison(user?.id, student))) ||
-                    safeIdComparison(user?.id, instance.ta) ||
-                    safeIdComparison(user?.id, instance.instructor),
+                    !!course &&
+                    course.id === instance.course?.id &&
+                    (!!instance.students?.find(student => safeIdComparison(user?.id, student)) ||
+                        safeIdComparison(user?.id, instance.ta) ||
+                        safeIdComparison(user?.id, instance.instructor)),
             },
         ],
     },
@@ -150,11 +158,67 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
                 action: 'update',
                 subject: Section,
                 validate: (instance: Section) =>
-                    (!!course &&
-                        course.id === instance.course?.id &&
-                        !!instance.students?.find(student => safeIdComparison(user?.id, student))) ||
-                    safeIdComparison(user?.id, instance.ta) ||
-                    safeIdComparison(user?.id, instance.instructor),
+                    !!course &&
+                    course.id === instance.course?.id &&
+                    (!!instance.students?.find(student => safeIdComparison(user?.id, student)) ||
+                        safeIdComparison(user?.id, instance.ta) ||
+                        safeIdComparison(user?.id, instance.instructor)),
+            },
+        ],
+    },
+    {
+        id: '495aed43-7730-4ee7-b185-650e771e4c9a',
+        name: 'View coverage requests in course',
+        tags: ['course_admin', 'ta', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'view',
+                subject: CoverageRequest,
+                validate: (instance: CoverageRequest) => !!course && safeIdComparison(course.id, instance.course),
+            },
+        ],
+    },
+    {
+        id: '14bd608b-2e44-401a-bb13-c3e70cef1162',
+        name: 'Create coverage requests in course',
+        tags: ['course_admin', 'ta', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'create',
+                subject: CoverageRequest,
+                validate: (instance: CoverageRequest) =>
+                    !!course &&
+                    !!user &&
+                    safeIdComparison(course.id, instance.course) &&
+                    safeIdComparison(user.id, instance.meetingTime.leader),
+            },
+        ],
+    },
+    {
+        id: '5a96ade0-041a-45d5-9c7d-3777a61a40f9',
+        name: 'Delete own coverage requests in course',
+        tags: ['course_admin', 'ta', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'delete',
+                subject: CoverageRequest,
+                validate: (instance: CoverageRequest) =>
+                    !!course &&
+                    !!user &&
+                    safeIdComparison(course.id, instance.course) &&
+                    safeIdComparison(user.id, instance.meetingTime.leader),
+            },
+        ],
+    },
+    {
+        id: 'f29090f8-6d4a-4ace-8ef6-9dca6ae01604',
+        name: 'Respond to coverage requests in course',
+        tags: ['course_admin', 'ta', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'use',
+                subject: CoverageRequest,
+                validate: (instance: CoverageRequest) => !!course && safeIdComparison(course.id, instance.course),
             },
         ],
     },
@@ -249,7 +313,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '08b14ba7-91b8-4b15-9c96-f572f796eff6',
         name: 'Update all course lesson plans',
-        tags: ['ta', 'super_admin'],
+        tags: ['ta', 'course_admin', 'super_admin'],
         actions: (_user, course) => [
             {
                 action: 'update',
@@ -355,6 +419,85 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
             {
                 action: 'create',
                 subject: User,
+            },
+        ],
+    },
+    {
+        id: '40d3807c-622a-4fee-a056-28c2db5e2e9b',
+        name: 'View all coverage requests',
+        tags: ['super_admin', 'ta_manager'],
+        isGlobal: true,
+        actions: () => [
+            {
+                action: 'view',
+                subject: CoverageRequest,
+            },
+        ],
+    },
+    {
+        id: 'e1b24572-9963-4bc7-bb42-c4c687fc1348',
+        name: 'View all course lessons',
+        tags: ['ta', 'professor', 'course_admin', 'super_admin'],
+        actions: (_user, course) => [
+            {
+                action: 'view',
+                subject: Lesson,
+                validate: (instance: Lesson) => !!course && safeIdComparison(course.id, instance.course),
+            },
+        ],
+    },
+    {
+        id: '1fb643b7-6867-4696-ae14-96a2bed043d6',
+        name: 'Update own lessons',
+        tags: ['ta', 'professor', 'course_admin', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'update',
+                subject: Lesson,
+                validate: (instance: Lesson) =>
+                    !!user &&
+                    !!course &&
+                    !!instance?.meetingTime &&
+                    safeIdComparison(course.id, instance.course) &&
+                    safeIdComparison(user.id, instance.meetingTime?.leader),
+            },
+        ],
+    },
+    {
+        id: '0a362716-f0e2-4578-8c6f-c587040ab440',
+        name: 'Update all course lessons',
+        tags: ['course_admin', 'super_admin'],
+        actions: (_user, course) => [
+            {
+                action: 'update',
+                subject: Lesson,
+                validate: (instance: Lesson) => !!course && safeIdComparison(course.id, instance.course),
+            },
+        ],
+    },
+    {
+        id: 'c8fb492f-497a-41e1-be8b-4e6a61376ff2',
+        name: 'Create default course lessons',
+        tags: ['course_admin', 'super_admin'],
+        actions: (_user, course) => [
+            {
+                action: 'create',
+                subject: Lesson,
+                validate: (instance: Lesson) =>
+                    !!course && safeIdComparison(course.id, instance.course) && !instance.meetingTime,
+            },
+        ],
+    },
+    {
+        id: 'd7622fcd-9c0e-4b36-b56c-e89d651a48d8',
+        name: 'Delete course lessons',
+        tags: ['course_admin', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'delete',
+                subject: Lesson,
+                validate: (instance: Lesson) =>
+                    !!course && !!user && safeIdComparison(course.id, instance.course) && !instance.meetingTime,
             },
         ],
     },

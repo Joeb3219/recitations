@@ -25,7 +25,7 @@ export class LessonPlanService {
     @ListRequest<LessonPlan>(LessonPlan)
     public async getCourseLessonPlans(
         course: Course,
-        args: HttpFilterInterface
+        args?: HttpFilterInterface
     ): Promise<StandardResponseInterface<LessonPlan[]>> {
         throw new Error('Decorator Overloading Failed');
     }

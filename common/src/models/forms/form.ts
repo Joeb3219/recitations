@@ -16,6 +16,8 @@ export type FormInputType =
     | 'multiChoiceOptions'
     | 'file'
     | 'textBlock'
+    | 'lessonPlan'
+    | 'quiz'
     | 'abilities';
 
 type Undefinable<T> = { [P in keyof T]?: never };
@@ -65,6 +67,8 @@ export type FormInput<InputType extends FormInputType = FormInputType, G extends
     (InputType extends 'learningGoals' ? LearningGoalsInput : Undefinable<LearningGoalsInput>) &
     (InputType extends 'abilities' ? AbilitiesInput : Undefinable<AbilitiesInput>) &
     (InputType extends 'user' ? UserInput : Undefinable<UserInput>) &
+    (InputType extends 'lessonPlan' ? ProblemInput : Undefinable<ProblemInput>) &
+    (InputType extends 'quiz' ? ProblemInput : Undefinable<ProblemInput>) &
     (InputType extends 'wysiwyg' ? WysiwygInput : Undefinable<WysiwygInput>);
 
 export interface FormFieldUpdated<T extends any = any> {

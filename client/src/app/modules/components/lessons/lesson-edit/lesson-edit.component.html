@@ -1,0 +1,12 @@
+<app-form-modal
+    *ngIf="isVisible"
+    [submitText]="lesson && lesson.id ? 'Save Lesson' : 'Create Lesson'"
+    [showModal]="isVisible"
+    [form]="form"
+    [modalSize]="'xl'"
+    [title]="lesson && lesson.id ? 'Edit Lesson' : 'New Lesson'"
+    (onSubmit)="formSubmitted($event)"
+    (onClose)="handleClose()"
+    [forceClose]="forceClose"
+>
+</app-form-modal>

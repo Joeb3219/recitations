@@ -25,7 +25,7 @@
             </mat-tab>
             <mat-tab label="{{ tabs[3] }}" [ngStyle]="{ display: activeTabIndex === 3 ? 'block' : 'none' }">
                 <div class="container-margin">
-                    <app-weeks></app-weeks>
+                    <app-weeks [course]="course"></app-weeks>
                 </div>
             </mat-tab>
             <mat-tab label="{{ tabs[5] }}" [ngStyle]="{ display: activeTabIndex === 5 ? 'block' : 'none' }">

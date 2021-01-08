@@ -1,0 +1,10 @@
+<input
+    type="text"
+    name="{{ name }}"
+    value="{{ quiz ? formatter(quiz) : undefined }}"
+    class="form-control"
+    [ngbTypeahead]="search"
+    [resultFormatter]="formatter"
+    [inputFormatter]="formatter"
+    (selectItem)="handleQuizSelected($event)"
+/>

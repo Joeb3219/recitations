@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Ability, AbilityManager, Course, User } from '@dynrec/common';
 import * as Boom from '@hapi/boom';
+import { plainToClass } from 'class-transformer';
 import { Express, NextFunction } from 'express';
 import fileUpload from 'express-fileupload';
 import { BAD_REQUEST } from 'http-status-codes';
@@ -234,7 +235,7 @@ export function generateCreateResource<T extends BaseEntity>(
             return !!item;
         });
 
-        if (!ability.can('create', data as T)) {
+        if (!ability.can('create', plainToClass(resourceClass, data))) {
             throw Boom.unauthorized(`Unauthorized to create selected resource`);
         }
 

@@ -3,10 +3,12 @@ import { Injectable } from '@angular/core';
 import { Course, Section, SectionSyncFormatPayload, StandardResponseInterface } from '@dynrec/common';
 import { environment } from '@environment';
 import { plainToClass } from 'class-transformer';
-import { DeleteRequest, ListRequest, UpsertRequest } from '../decorators';
+import { DeleteRequest, GetRequest, ListRequest, UpsertRequest } from '../decorators';
 import { HttpFilterInterface } from '../http/httpFilter.interface';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root',
+})
 export class SectionService {
     constructor(private http: HttpClient) {}
 
@@ -25,6 +27,11 @@ export class SectionService {
 
     @DeleteRequest<Section>(Section)
     public async deleteSection(sectionID: string): Promise<StandardResponseInterface<void>> {
+        throw new Error('Decorator Overloading Failed');
+    }
+
+    @GetRequest<Section>(Section)
+    public async getSection(sectionID: string): Promise<StandardResponseInterface<Section>> {
         throw new Error('Decorator Overloading Failed');
     }
 

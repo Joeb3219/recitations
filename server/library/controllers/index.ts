@@ -1,5 +1,7 @@
 import { CourseController } from './course.controller';
+import { CoverageRequestController } from './coverageRequest.controller';
 import { LearningGoalController } from './learningGoal.controller';
+import { LessonController } from './lesson.controller';
 import { LessonPlanController } from './lessonPlan.controller';
 import { MeetingController } from './meetings/meeting.controller';
 import { MeetingTimeController } from './meetingTime.controller';
@@ -24,6 +26,8 @@ export {
     RosterController,
     UploadController,
     RoleController,
+    CoverageRequestController,
+    LessonController,
 };
 
 export const AllControllers = [
@@ -39,4 +43,6 @@ export const AllControllers = [
     RosterController,
     UploadController,
     RoleController,
+    CoverageRequestController,
+    LessonController,
 ];

@@ -27,7 +27,6 @@
 export function Column(typeOrOptions: any = null, options: any = null) {
     return function (object: any, propertyName: any) {};
 }
-// exports.Column = Column;
 
 export function CreateDateColumn(options: any = null) {
     return function (object: any, propertyName: any) {};
@@ -67,6 +66,9 @@ export function ChildEntity(tableName: any = null, options: any = null) {
 // exports.ChildEntity = ChildEntity;
 
 export function Entity(name: any = null, options: any = null) {
+    return function (object: any) {};
+}
+export function Unique(name: any = null, options: any = null) {
     return function (object: any) {};
 }
 // exports.Entity = Entity;

@@ -24,11 +24,14 @@ export class RecitationMeetingDataSource extends MeetingDataSource<MeetingType.R
             config.dates.map(date => {
                 return meetingTimes
                     .filter(time => time.canOccurOnDate(date))
-                    .map(time => ({
-                        meetingTime: time,
-                        meetingType: MeetingType.RECITATION,
-                        date: time.getStartTime(date),
-                    }));
+                    .map(
+                        time =>
+                            new Meeting<MeetingType.RECITATION>({
+                                meetingTime: time,
+                                meetingType: MeetingType.RECITATION,
+                                date: time.getStartTime(date),
+                            })
+                    );
             })
         );
     }

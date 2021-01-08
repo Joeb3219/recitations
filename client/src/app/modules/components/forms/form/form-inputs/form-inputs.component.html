@@ -51,6 +51,24 @@
 >
 </app-problem-search-form>
 
+<app-lesson-plan-formfield
+    *ngIf="input.type == 'lessonPlan' && input.course"
+    [lessonPlan]="input.value"
+    [name]="input.name"
+    [course]="input.course"
+    (onChange)="fieldUpdated(input.name, $event)"
+>
+</app-lesson-plan-formfield>
+
+<app-quiz-search-formfield
+    *ngIf="input.type == 'quiz' && input.course"
+    [quiz]="input.value"
+    [name]="input.name"
+    [course]="input.course"
+    (onChange)="fieldUpdated(input.name, $event)"
+>
+</app-quiz-search-formfield>
+
 <app-meeting-times-formfield
     *ngIf="input.type == 'meetingTimes' && input.meetable"
     [meetable]="input.meetable"

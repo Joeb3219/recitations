@@ -3,14 +3,14 @@
 import { Ability, AbilityManager, Course, User } from '@dynrec/common';
 import * as Boom from '@hapi/boom';
 import { plainToClass } from 'class-transformer';
-import { Express, NextFunction } from 'express';
 import fileUpload from 'express-fileupload';
 import { BAD_REQUEST } from 'http-status-codes';
 import { get, isEqual, pickBy, sortBy } from 'lodash';
 import 'reflect-metadata';
 import { BaseEntity, DeleteResult, getRepository } from 'typeorm';
 import { ResourceAction, ResourceArgs, SearchableData, SortableData } from '../decorators/controller.decorator';
-import { HttpRequest, HttpResponse } from '../express';
+import { Express } from '../express';
+import { HttpRequest, HttpResponse } from '../express_custom';
 import { isAuthenticated } from './auth/auth.helper';
 
 function searchIn<ObjectType extends any = any, TargetType extends any = any>(
@@ -108,7 +108,6 @@ function httpMiddleware(
                 body: req.body,
                 currentUser: res.locals.currentUser,
                 params: req.params,
-                file: req.files ? req.files.file ?? req.files : undefined,
                 ability: AbilityManager.getUserAbilities(res.locals.currentUser),
             } as HttpArgs);
 
@@ -286,9 +285,7 @@ export function generateResource<T extends BaseEntity & { id: string }>(
     ) => {
         const providedFunction = fn;
 
-        const middlewares: [
-            (req: HttpRequest, res: HttpResponse, next: NextFunction) => Promise<HttpResponse> | Promise<any>
-        ] = [isAuthenticated];
+        const middlewares = [isAuthenticated];
         middlewares.push(httpMiddleware(providedFunction, method, route, args));
 
         app.route(route)[method](...middlewares);

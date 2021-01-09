@@ -8,12 +8,13 @@ import * as jwt from 'jsonwebtoken';
 import 'reflect-metadata';
 import { Connection, createConnection } from 'typeorm';
 import { AllControllers } from './controllers';
+import { CASHelper } from './helpers/auth/cas.helper';
 import { RolesHelper } from './helpers/roles.helper';
 import { generateResource, generateRoute, ResourceData, RouteData } from './helpers/route.helper';
 import { AllListeners } from './listeners/index';
 
 class AppWrapper {
-    port = 3000;
+    port = process.env.PORT ?? 3000;
 
     app?: Express.Express = undefined;
 
@@ -71,6 +72,8 @@ class AppWrapper {
                 generateResource(this.app, data, controllerInstance);
             });
         });
+
+        CASHelper.getCASRoutes(this.app);
     }
 
     async initJWTParser() {
@@ -121,10 +124,10 @@ class AppWrapper {
         this.connection = await createConnection({
             name: 'default',
             type: 'postgres',
-            host: 'localhost',
-            username: 'postgres',
-            password: 'banana',
-            database: 'recitations_dev',
+            host: process.env.DB_HOST ?? 'localhost',
+            username: process.env.DB_USERNAME ?? 'postgres',
+            password: process.env.DB_PASSWORD ?? 'banana',
+            database: process.env.DB_DATABASE ?? 'recitations_dev',
             synchronize: true,
             logging: false,
             entities: AllEntities,

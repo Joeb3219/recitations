@@ -9,26 +9,33 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let label of weekLabels; let idx = index">
-            <td>Week {{ idx + 1 }}</td>
-            <td>{{ label }}</td>
-            <td>{{ weeks[idx]?.lessonPlan ? weeks[idx].lessonPlan.name : '' }}</td>
-            <td>{{ weeks[idx]?.quiz ? weeks[idx].quiz.name : '' }}</td>
-            <td>
-                <div class="btn-group btn-group-sm" data-toggle="buttons">
-                    <ng-container *can="{ action: 'create', subject: sampleLesson }">
-                        <span *ngIf="!weeks[idx]" class="btn btn-outline-secondary" (click)="handleEditLesson(idx)"
-                            >Create</span
-                        >
-                    </ng-container>
-                    <ng-container *can="{ action: 'delete', subject: weeks[idx] }">
-                        <span *ngIf="!!weeks[idx]" class="btn btn-outline-secondary" (click)="handleDeleteLesson(idx)"
-                            >Delete</span
-                        >
-                    </ng-container>
-                </div>
-            </td>
-        </tr>
+        <ng-container *ngFor="let label of weekLabels; let idx = index">
+            <tr *ngIf="!!weeks">
+                <td>Week {{ idx + 1 }}</td>
+                <td>{{ label }}</td>
+                <td>{{ weeks[idx]?.lessonPlan?.name ? weeks[idx]?.lessonPlan?.name : '' }}</td>
+                <td>{{ weeks[idx]?.quiz?.name ? weeks[idx]?.quiz?.name : '' }}</td>
+                <td>
+                    <div class="btn-group btn-group-sm" data-toggle="buttons">
+                        <ng-container *can="{ action: 'create', subject: sampleLesson }">
+                            <span *ngIf="!weeks[idx]" class="btn btn-outline-secondary" (click)="handleEditLesson(idx)"
+                                >Create</span
+                            >
+                        </ng-container>
+                        <ng-container *ngIf="weeks">
+                            <ng-container *can="{ action: 'delete', subject: weeks[idx] }">
+                                <span
+                                    *ngIf="!!weeks[idx]"
+                                    class="btn btn-outline-secondary"
+                                    (click)="handleDeleteLesson(idx)"
+                                    >Delete</span
+                                >
+                            </ng-container>
+                        </ng-container>
+                    </div>
+                </td>
+            </tr>
+        </ng-container>
     </tbody>
 </table>
 

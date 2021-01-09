@@ -4,7 +4,8 @@
         "declaration": true,
         "strict": true,
         "strictPropertyInitialization": false,
-        "baseUrl": "./",
+        "baseUrl": "./library",
+        "outDir": "./dist",
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
         "moduleResolution": "node",
@@ -16,5 +17,5 @@
         "typeRoots": ["./@types", "./node_modules/@types", "../node_modules/@types"],
         "allowSyntheticDefaultImports": true
     },
-    "files": ["./library/express.d.ts"]
+    "include": ["./library/**/*"]
 }

@@ -365,9 +365,9 @@ export function generateRoute(
     const middlewares = [];
     const providedFunction = target[propertyKey].bind(target);
 
-    const isUnauthenticated = Reflect.getMetadata('unauthenticated', controller) ?? false;
-    const searchableFields = Reflect.getMetadata('searchable', controller) ?? undefined;
-    const sortableFields = Reflect.getMetadata('sortable', controller) ?? undefined;
+    const isUnauthenticated = !!Reflect.getMetadata('unauthenticated', target, propertyKey);
+    const searchableFields = Reflect.getMetadata('searchable', target, propertyKey) ?? undefined;
+    const sortableFields = Reflect.getMetadata('sortable', target, propertyKey) ?? undefined;
 
     if (!isUnauthenticated) middlewares.push(isAuthenticated);
 

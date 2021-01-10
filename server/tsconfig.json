@@ -17,5 +17,6 @@
         "typeRoots": ["./@types", "./node_modules/@types", "../node_modules/@types"],
         "allowSyntheticDefaultImports": true
     },
+    "files": ["./library/casAuth.d.ts", "./library/express.d.ts"],
     "include": ["./library/**/*"]
 }

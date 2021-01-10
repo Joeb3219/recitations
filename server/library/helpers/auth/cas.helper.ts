@@ -1,4 +1,4 @@
-import CASAuthentication from 'cas-authentication';
+// import CASAuthentication from 'cas-authentication';
 import Express from 'express';
 import session from 'express-session';
 
@@ -30,9 +30,10 @@ export class CASHelper {
             return undefined;
         }
 
-        return new CASAuthentication({
-            cas_url: process.env.CAS_URL,
-            service_url: process.env.SERVICE_URL,
-        });
+        return undefined;
+        // return new CASAuthentication({
+        //     cas_url: process.env.CAS_URL,
+        //     service_url: process.env.SERVICE_URL,
+        // });
     }
 }

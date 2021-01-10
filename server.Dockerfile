@@ -22,5 +22,7 @@ RUN cd common && yarn build
 RUN cd ../server && yarn build
 
 EXPOSE 3000
+EXPOSE 80
+EXPOSE 443
 
 CMD cd ../server && yarn serve:prod

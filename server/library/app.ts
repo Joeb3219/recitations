@@ -34,6 +34,7 @@ class AppWrapper {
         await this.initJWTParser();
         await this.initAccessControl();
         await this.registerControllers();
+        await RolesHelper.upsertAllCourseRoles();
         await this.listen();
     }
 

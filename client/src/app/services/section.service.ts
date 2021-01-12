@@ -12,12 +12,12 @@ import { HttpFilterInterface } from '../http/httpFilter.interface';
 export class SectionService {
     constructor(private http: HttpClient) {}
 
-    @UpsertRequest<Section>(Section)
+    @UpsertRequest<Section>(Section, 'section')
     public async upsertSection(section: Section): Promise<StandardResponseInterface<Section>> {
         throw new Error('Decorator Overloading Failed');
     }
 
-    @ListRequest<Section>(Section)
+    @ListRequest<Section>(Section, 'section')
     public async getCourseSections(
         course: Course,
         args?: HttpFilterInterface
@@ -25,12 +25,12 @@ export class SectionService {
         throw new Error('Decorator Overloading Failed');
     }
 
-    @DeleteRequest<Section>(Section)
+    @DeleteRequest<Section>(Section, 'section')
     public async deleteSection(sectionID: string): Promise<StandardResponseInterface<void>> {
         throw new Error('Decorator Overloading Failed');
     }
 
-    @GetRequest<Section>(Section)
+    @GetRequest<Section>(Section, 'section')
     public async getSection(sectionID: string): Promise<StandardResponseInterface<Section>> {
         throw new Error('Decorator Overloading Failed');
     }

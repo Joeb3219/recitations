@@ -39,7 +39,7 @@ export class CourseController {
         }
 
         const course = await Course.save(data as Course);
-        await RolesHelper.createCourseRoles(course);
+        await RolesHelper.upsertCourseRoles(course);
 
         return course;
     }

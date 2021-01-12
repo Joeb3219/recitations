@@ -5,5 +5,5 @@
 export const environment = {
     production: true,
     authMechanism: 'manual',
-    apiURL: 'http://localhost:3000',
+    apiURL: 'http://rutgers-dynrec-staging-1186179149.us-east-1.elb.amazonaws.com',
 };

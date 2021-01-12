@@ -10,12 +10,12 @@ import { DeleteRequest, GetRequest, ListRequest, UpsertRequest } from '../decora
 export class LessonService {
     constructor(private http: HttpClient) {}
 
-    @UpsertRequest<Lesson>(Lesson)
+    @UpsertRequest<Lesson>(Lesson, 'lesson')
     public async upsertLesson(lesson: Lesson): Promise<StandardResponseInterface<Lesson>> {
         throw new Error('Decorator Overloading Failed');
     }
 
-    @ListRequest<Lesson>(Lesson)
+    @ListRequest<Lesson>(Lesson, 'lesson')
     public async getCourseLessons(
         course: Course,
         filter?: HttpFilterInterface
@@ -23,12 +23,12 @@ export class LessonService {
         throw new Error('Decorator Overloading Failed');
     }
 
-    @GetRequest<Lesson>(Lesson)
+    @GetRequest<Lesson>(Lesson, 'lesson')
     public async getLesson(lessonID: string): Promise<StandardResponseInterface<Lesson>> {
         throw new Error('Decorator Overloading Failed');
     }
 
-    @DeleteRequest<Lesson>(Lesson)
+    @DeleteRequest<Lesson>(Lesson, 'lesson')
     public async deleteLesson(lessonID: string): Promise<StandardResponseInterface<void>> {
         throw new Error('Decorator Overloading Failed');
     }

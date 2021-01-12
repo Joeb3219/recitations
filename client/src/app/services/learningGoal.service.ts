@@ -8,14 +8,14 @@ import { HttpFilterInterface } from '../http/httpFilter.interface';
 export class LearningGoalService {
     constructor(private http: HttpClient) {}
 
-    @UpsertRequest<LearningGoalCategory>(LearningGoalCategory)
+    @UpsertRequest<LearningGoalCategory>(LearningGoalCategory, 'learninggoalcategory')
     public async upsertLearningGoalCategory(
         category: LearningGoalCategory
     ): Promise<StandardResponseInterface<LearningGoalCategory>> {
         throw new Error('Decorator Overloading Failed');
     }
 
-    @ListRequest<LearningGoalCategory>(LearningGoalCategory)
+    @ListRequest<LearningGoalCategory>(LearningGoalCategory, 'learninggoalcategory')
     public async getCourseLearningGoalCategories(
         course: Course,
         args?: HttpFilterInterface
@@ -23,7 +23,7 @@ export class LearningGoalService {
         throw new Error('Decorator Overloading Failed');
     }
 
-    @DeleteRequest<LearningGoalCategory>(LearningGoalCategory)
+    @DeleteRequest<LearningGoalCategory>(LearningGoalCategory, 'learninggoalcategory')
     public async deleteSection(categoryID: string): Promise<StandardResponseInterface<void>> {
         throw new Error('Decorator Overloading Failed');
     }

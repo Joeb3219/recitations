@@ -28,10 +28,11 @@ function getResolvedRoute(route: string, mappings: { [key: string]: string }) {
 
 export function ListRequest<ResourceModel>(
     BaseEntity: new (data: Partial<ResourceModel>) => ResourceModel,
+    baseResourceName: string,
     route?: string
 ): any {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor): any {
-        const resourceName = BaseEntity.name.toLowerCase();
+        const resourceName = baseResourceName ?? BaseEntity.name.toLowerCase();
         const realRoute = route || `course/:courseid/${resourceName}s`;
 
         // eslint-disable-next-line no-param-reassign, func-names
@@ -67,11 +68,12 @@ export function ListRequest<ResourceModel>(
 
 export function GetRequest<ResourceModel>(
     BaseEntity: new (data: Partial<ResourceModel>) => ResourceModel,
+    baseResourceName: string,
     route?: string
 ): any {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor): any {
         Reflect.defineMetadata('GetResource', { BaseEntity, propertyKey, target }, target);
-        const resourceName = BaseEntity.name.toLowerCase();
+        const resourceName = baseResourceName ?? BaseEntity.name.toLowerCase();
         const realRoute = route || `${resourceName}/:resourceid`;
 
         // eslint-disable-next-line no-param-reassign, func-names
@@ -102,10 +104,11 @@ export function GetRequest<ResourceModel>(
 
 export function UpsertRequest<ResourceModel extends { id: string }>(
     BaseEntity: new (data: Partial<ResourceModel>) => ResourceModel,
+    baseResourceName: string,
     route?: string
 ): any {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor): any {
-        const resourceName = BaseEntity.name.toLowerCase();
+        const resourceName = baseResourceName ?? BaseEntity.name.toLowerCase();
 
         // eslint-disable-next-line no-param-reassign, func-names
         descriptor.value = async function (resource: ResourceModel): Promise<StandardResponseInterface<ResourceModel>> {
@@ -142,10 +145,11 @@ export function UpsertRequest<ResourceModel extends { id: string }>(
 
 export function DeleteRequest<ResourceModel>(
     BaseEntity: new (data: Partial<ResourceModel>) => ResourceModel,
+    baseResourceName: string,
     route?: string
 ): any {
     return function (target: any, propertyKey: string, descriptor: PropertyDescriptor): any {
-        const resourceName = BaseEntity.name.toLowerCase();
+        const resourceName = baseResourceName ?? BaseEntity.name.toLowerCase();
         const realRoute = route || `${resourceName}/:resourceid`;
 
         // eslint-disable-next-line no-param-reassign, func-names

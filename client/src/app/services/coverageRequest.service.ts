@@ -12,12 +12,12 @@ import { DeleteRequest, GetRequest, ListRequest, UpsertRequest } from '../decora
 export class CoverageRequestService {
     constructor(private http: HttpClient) {}
 
-    @UpsertRequest<CoverageRequest>(CoverageRequest)
+    @UpsertRequest<CoverageRequest>(CoverageRequest, 'coveragerequest')
     public async upsertCoverageRequest(request: CoverageRequest): Promise<StandardResponseInterface<CoverageRequest>> {
         throw new Error('Decorator Overloading Failed');
     }
 
-    @ListRequest<CoverageRequest>(CoverageRequest)
+    @ListRequest<CoverageRequest>(CoverageRequest, 'coveragerequest')
     public async getCourseCoverageRequests(
         course: Course,
         filter?: HttpFilterInterface
@@ -25,12 +25,12 @@ export class CoverageRequestService {
         throw new Error('Decorator Overloading Failed');
     }
 
-    @GetRequest<CoverageRequest>(CoverageRequest)
+    @GetRequest<CoverageRequest>(CoverageRequest, 'coveragerequest')
     public async getCoverageRequest(requestID: string): Promise<StandardResponseInterface<CoverageRequest>> {
         throw new Error('Decorator Overloading Failed');
     }
 
-    @DeleteRequest<CoverageRequest>(CoverageRequest)
+    @DeleteRequest<CoverageRequest>(CoverageRequest, 'coveragerequest')
     public async deleteCoverageRequest(requestID: string): Promise<StandardResponseInterface<void>> {
         throw new Error('Decorator Overloading Failed');
     }

@@ -4,6 +4,6 @@
 
 export const environment = {
     production: false,
-    authMechanism: 'manual',
+    authMechanism: 'cas',
     apiURL: 'http://localhost:3000',
 };

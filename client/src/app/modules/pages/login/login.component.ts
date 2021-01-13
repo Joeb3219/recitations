@@ -36,13 +36,16 @@ export class LoginComponent implements OnInit {
     }
 
     successfulLogout(): void {
-        if (this.authMechanism === 'cas') {
-            this.userService.casLogout().subscribe({
-                next: () => {
-                    this.userService.signOut();
-                },
-            });
-        }
+        // if (this.authMechanism === 'cas') {
+        //     this.userService.casLogout().subscribe({
+        //         next: () => {
+        //             this.userService.signOut();
+        //         },
+        //     });
+        // } else {
+        //     this.
+        // }
+        this.userService.signOut();
     }
 
     successfulLogin(): void {

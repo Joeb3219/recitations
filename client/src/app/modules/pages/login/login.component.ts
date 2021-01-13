@@ -21,10 +21,28 @@ export class LoginComponent implements OnInit {
         if (localStorage.getItem('jwt')) {
             this.successfulLogout();
         }
+
+        if (this.authMechanism === 'cas') {
+            this.casLogin();
+        }
+    }
+
+    casLogin() {
+        this.userService.casLogin().subscribe({
+            next: data => {
+                console.log(data);
+            },
+        });
     }
 
     successfulLogout(): void {
-        this.userService.signOut();
+        if (this.authMechanism === 'cas') {
+            this.userService.casLogout().subscribe({
+                next: () => {
+                    this.userService.signOut();
+                },
+            });
+        }
     }
 
     successfulLogin(): void {

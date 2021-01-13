@@ -5,5 +5,5 @@
 export const environment = {
     production: true,
     authMechanism: 'manual',
-    apiURL: 'http://rutgers-dynrec-staging-1186179149.us-east-1.elb.amazonaws.com',
+    apiURL: 'https://staging-rutgers.cstoolbelt.com',
 };

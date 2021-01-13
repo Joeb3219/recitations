@@ -5,5 +5,6 @@
 export const environment = {
     production: true,
     authMechanism: 'manual',
+    baseURL: 'https://devdynrec.cs.rutgers.edu',
     apiURL: 'https://staging-rutgers.cstoolbelt.com',
 };

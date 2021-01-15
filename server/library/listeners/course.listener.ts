@@ -12,7 +12,7 @@ export class CourseListener implements EntitySubscriberInterface<Course> {
         const { entity } = event;
 
         // Create roles
-        await RolesHelper.createCourseRoles(entity);
+        await RolesHelper.upsertCourseRoles(entity);
         const role = await Role.findOne({ course: entity, ruleTag: 'course_admin' });
 
         if (!role || !entity.creator) {

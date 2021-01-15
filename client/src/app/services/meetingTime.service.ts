@@ -7,7 +7,7 @@ import { UpsertRequest } from '../decorators';
 export class MeetingTimeService {
     constructor(private http: HttpClient) {}
 
-    @UpsertRequest<MeetingTime>(MeetingTime)
+    @UpsertRequest<MeetingTime>(MeetingTime, 'meetingtime')
     public async upsertMeetingTime(meetingtime: MeetingTime): Promise<StandardResponseInterface<MeetingTime>> {
         throw new Error('Decorator Overloading Failed');
     }

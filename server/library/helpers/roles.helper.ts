@@ -20,7 +20,17 @@ export class RolesHelper {
         }
     }
 
-    static async createCourseRoles(course: Course) {
+    // This is madly inefficient, but it's the easiest way to handle this right now
+    // We ensure that the default roles are re-synced at every application launch
+    // In the future, we will want to change this to only update those needed
+    // when changes actually happen.
+    static async upsertAllCourseRoles() {
+        const courses = await Course.find();
+
+        await Promise.all(courses.map(async course => this.upsertCourseRoles(course)));
+    }
+
+    static async upsertCourseRoles(course: Course) {
         const allAbilities = AbilityManager.getAllAbilities(undefined);
 
         const ruleTags: RuleTag[] = ['student', 'professor', 'ta', 'course_admin'];
@@ -35,7 +45,11 @@ export class RolesHelper {
                     ruleTag: tag,
                 };
 
-                await Role.insert(data);
+                if (await Role.findOne({ ruleTag: tag, course })) {
+                    await Role.update({ ruleTag: tag, course }, data);
+                } else {
+                    await Role.insert(data);
+                }
             })
         );
     }

@@ -12,6 +12,7 @@ import { ViewUserSettingsComponent } from '@pages/user/view-user-settings/view-u
 import { ListCoverageRequestsComponent } from './modules/pages/coverage-requests/list-coverage-requests/list-coverage-requests.component';
 import { ListLearningGoalsComponent } from './modules/pages/learning-goals/list-learning-goals/list-learning-goals.component';
 import { ViewLessonPlanComponent } from './modules/pages/lesson-plans/view-lesson-plan/view-lesson-plan.component';
+import { CasAuthComponent } from './modules/pages/login/cas-auth/cas-auth.component';
 import { ListQuizzesComponent } from './modules/pages/quizzes/list-quizzes/list-quizzes.component';
 import { ViewQuizComponent } from './modules/pages/quizzes/view-quiz/view-quiz.component';
 import { ListRolesComponent } from './modules/pages/roles/list-roles/list-roles.component';
@@ -19,6 +20,7 @@ import { ViewSectionComponent } from './modules/pages/sections/view-section/view
 
 const routes: Routes = [
     { path: 'login', component: LoginComponent },
+    { path: 'cas/ticket', component: CasAuthComponent },
 
     { path: 'courses/:courseID', component: ViewCourseComponent },
     { path: 'courses/:courseID/sections', component: ViewSectionsComponent },

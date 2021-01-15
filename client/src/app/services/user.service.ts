@@ -22,6 +22,7 @@ export class UserService {
     }
 
     public signOut() {
+        localStorage.removeItem('jwt');
         this.flushCurrentUser();
     }
 
@@ -55,6 +56,21 @@ export class UserService {
             username,
             password,
         });
+    }
+
+    public casLogin(): Observable<StandardResponseInterface<string>> {
+        const url = `${environment.apiURL}/cas/login`;
+        return this.http.get<StandardResponseInterface<string>>(url);
+    }
+
+    public casLogout(): Observable<unknown> {
+        const url = `${environment.apiURL}/cas/logout`;
+        return this.http.get<unknown>(url);
+    }
+
+    public casAuthentication(token: string): Observable<StandardResponseInterface<string>> {
+        const url = `${environment.apiURL}/cas/ticket?ticket=${token}`;
+        return this.http.get<StandardResponseInterface<string>>(url);
     }
 
     public impersonateUser(username: string): Observable<StandardResponseInterface<string>> {

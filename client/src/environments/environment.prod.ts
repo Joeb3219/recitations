@@ -5,6 +5,6 @@
 export const environment = {
     production: true,
     authMechanism: 'cas',
-    baseURL: 'https://devdynrec.cs.rutgers.edu',
+    baseURL: 'http://localhost:4200',
     apiURL: 'http://localhost:3000',
 };

@@ -20,7 +20,7 @@ import { ViewSectionComponent } from './modules/pages/sections/view-section/view
 
 const routes: Routes = [
     { path: 'login', component: LoginComponent },
-    { path: 'cas/authenticate', component: CasAuthComponent },
+    { path: 'cas/ticket', component: CasAuthComponent },
 
     { path: 'courses/:courseID', component: ViewCourseComponent },
     { path: 'courses/:courseID/sections', component: ViewSectionsComponent },

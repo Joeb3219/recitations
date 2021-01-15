@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Component, Inject, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from '@environment';
 import { UserService } from '@services/user.service';
@@ -11,7 +12,11 @@ import { UserService } from '@services/user.service';
 export class LoginComponent implements OnInit {
     authMechanism = '';
 
-    constructor(private router: Router, private userService: UserService) {}
+    constructor(
+        private router: Router,
+        private userService: UserService,
+        @Inject(DOCUMENT) private document: Document
+    ) {}
 
     ngOnInit(): void {
         this.authMechanism = environment.authMechanism;
@@ -30,7 +35,9 @@ export class LoginComponent implements OnInit {
     casLogin() {
         this.userService.casLogin().subscribe({
             next: data => {
-                console.log(data);
+                if (data.data) {
+                    this.document.location.href = data.data;
+                }
             },
         });
     }

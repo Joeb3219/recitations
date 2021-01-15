@@ -27,7 +27,6 @@ import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AbilitiesDirective } from './directives/abilities.directive';
-import { CasInterceptor } from './http/cas.interceptor';
 import { TokenInterceptor } from './http/token.interceptor';
 import { CalendarComponent } from './modules/components/calendar/calendar.component';
 import { ConfigurationsComponent } from './modules/components/configurations/configurations.component';
@@ -216,7 +215,6 @@ export let GlobalActivatedRoute: ActivatedRoute;
         MeetingTimeService,
         LearningGoalService,
         { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
-        { provide: HTTP_INTERCEPTORS, useClass: CasInterceptor, multi: true },
     ],
     entryComponents: [],
     bootstrap: [AppComponent],

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UserService } from '@services/user.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -12,12 +12,13 @@ export class CasAuthComponent implements OnInit {
     constructor(
         private readonly userService: UserService,
         private readonly route: ActivatedRoute,
+        private readonly router: Router,
         private readonly toastr: ToastrService
     ) {}
 
     ngOnInit(): void {
         this.route.queryParams.subscribe(params => {
-            const token = params.token;
+            const token = params.ticket;
 
             if (!token) {
                 this.toastr.error('Invalid login token');
@@ -29,14 +30,15 @@ export class CasAuthComponent implements OnInit {
 
     processLoginToken(token: string) {
         this.userService.casAuthentication(token).subscribe({
-            next: res => {
-                console.log(res);
-                this.userService.casJwt().subscribe({
-                    next: jwt => {
-                        localStorage.setItem('jwt', jwt.data);
-                        this.userService.flushCurrentUser();
-                    },
-                });
+            next: jwt => {
+                localStorage.setItem('jwt', jwt.data);
+                this.userService.flushCurrentUser();
+                this.toastr.success('Successfully logged in via CAS.');
+                this.router.navigate(['/']);
+            },
+            error: () => {
+                this.toastr.error('Failed to authorize login.');
+                this.router.navigate(['/']);
             },
         });
     }

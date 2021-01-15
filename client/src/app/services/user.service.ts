@@ -58,9 +58,9 @@ export class UserService {
         });
     }
 
-    public casLogin(): Observable<unknown> {
+    public casLogin(): Observable<StandardResponseInterface<string>> {
         const url = `${environment.apiURL}/cas/login`;
-        return this.http.get<unknown>(url);
+        return this.http.get<StandardResponseInterface<string>>(url);
     }
 
     public casLogout(): Observable<unknown> {
@@ -68,16 +68,9 @@ export class UserService {
         return this.http.get<unknown>(url);
     }
 
-    public casJwt(): Observable<StandardResponseInterface<string>> {
-        const url = `${environment.apiURL}/cas/me`;
+    public casAuthentication(token: string): Observable<StandardResponseInterface<string>> {
+        const url = `${environment.apiURL}/cas/ticket?ticket=${token}`;
         return this.http.get<StandardResponseInterface<string>>(url);
-    }
-
-    public casAuthentication(token: string): Observable<unknown> {
-        const url = `${environment.apiURL}/cas/authenticate`;
-        return this.http.post<unknown>(url, {
-            token,
-        });
     }
 
     public impersonateUser(username: string): Observable<StandardResponseInterface<string>> {

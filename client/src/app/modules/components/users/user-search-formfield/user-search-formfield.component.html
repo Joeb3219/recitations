@@ -1,3 +1,23 @@
-<input type="text" name="{{ name }}" value="{{ user ? formatter(user) : undefined }}" class="form-control"
-  [ngbTypeahead]="search" [resultFormatter]="formatter" [inputFormatter]="formatter"
-  (selectItem)="handleUserSelected($event)">
+<input
+    type="text"
+    name="{{ name }}"
+    value="{{ user ? formatter(user) : undefined }}"
+    class="form-control"
+    [ngbTypeahead]="search"
+    [resultFormatter]="formatter"
+    [inputFormatter]="formatter"
+    (selectItem)="handleUserSelected($event)"
+/>
+
+<ng-container *can="{ action: 'create', subject: baseUser }">
+    <div style="float: right; font-size: 12px; cursor: pointer" (click)="handleOpenCreateUserModal()">
+        <fa-icon [icon]="createUserIcon"></fa-icon>Create User
+    </div>
+</ng-container>
+
+<app-user-create
+    *ngIf="isCreateUserModalOpen"
+    [isVisible]="isCreateUserModalOpen"
+    (onClose)="handleUserCreateModalClosed($event)"
+>
+</app-user-create>

@@ -1,0 +1,12 @@
+<div class="page" style="padding: 1rem">
+    <ng-container *ngIf="!section">
+        <h4>Not Found</h4>
+    </ng-container>
+    <ng-container *ngIf="section">
+        <h4>{{ section.course.name }}, Section {{ section.sectionNumber }}</h4>
+
+        <div class="divider-sm"></div>
+
+        <app-section-view [section]="section"> </app-section-view>
+    </ng-container>
+</div>

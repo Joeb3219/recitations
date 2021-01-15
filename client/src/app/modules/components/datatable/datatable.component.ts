@@ -11,17 +11,26 @@ import {
 import { FormFieldUpdated, FormInput, ProblemDifficulty, StandardResponseInterface, User } from '@dynrec/common';
 import { HttpFilterInterface } from '@http/httpFilter.interface';
 import { ColumnMode, TableColumn } from '@swimlane/ngx-datatable';
+import { AbilitiesCanDirectivePayload } from 'app/directives/abilities.directive';
+import dayjs from 'dayjs';
 import _, { get } from 'lodash';
 import { Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
-export type DatatableColumnCellTemplateName = 'difficultyCell' | 'userCell' | 'actionsCell' | 'editCell' | 'toggleCell';
+export type DatatableColumnCellTemplateName =
+    | 'difficultyCell'
+    | 'userCell'
+    | 'actionsCell'
+    | 'editCell'
+    | 'toggleCell'
+    | 'dateCell';
 
 export interface DatatableAction {
     text: string;
     action?: 'edit' | 'save' | undefined;
     click?: () => Promise<unknown> | void;
     href?: string;
+    can?: AbilitiesCanDirectivePayload | AbilitiesCanDirectivePayload[];
 }
 
 interface DatatableColumnBase<
@@ -71,6 +80,9 @@ export class DatatableComponent<T extends { id?: string }> implements OnInit {
 
     @ViewChild('userCellTemplate', { static: true })
     userCellTemplate: TemplateRef<unknown>;
+
+    @ViewChild('dateCellTemplate', { static: true })
+    dateCellTemplate: TemplateRef<unknown>;
 
     @ViewChild('actionsCellTemplate', { static: true })
     actionsCellTemplate: TemplateRef<unknown>;
@@ -226,6 +238,10 @@ export class DatatableComponent<T extends { id?: string }> implements OnInit {
                 csv: (user: User | undefined) =>
                     user ? `${user.firstName} ${user.lastName} (${user.username})` : undefined,
             },
+            dateCell: {
+                template: this.dateCellTemplate,
+                csv: (date?: Date) => (date ? dayjs(date).format('MM/DD/YYYY HH:mm') : undefined),
+            },
             actionsCell: {
                 template: this.actionsCellTemplate,
             },
@@ -322,6 +338,8 @@ export class DatatableComponent<T extends { id?: string }> implements OnInit {
         this.sort = sorts[0].prop;
         this.sortDirection = sorts[0].dir;
 
+        this.offset = 0;
+
         this.loadData();
     }
 
@@ -398,7 +416,7 @@ export class DatatableComponent<T extends { id?: string }> implements OnInit {
 
         const { data, metadata } = await this.dataFunction({
             limit: this.pageSize,
-            offset: this.offset,
+            offset: this.offset * this.pageSize,
             sort: this.sort,
             sortDirection: this.sortDirection,
             search: this.search,

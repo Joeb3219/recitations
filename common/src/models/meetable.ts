@@ -1,7 +1,7 @@
 import { Type } from 'class-transformer';
 import { BaseEntity, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn, TableInheritance } from 'typeorm';
-import { MeetableInterface } from '../interfaces';
-import { MeetingTime } from '../models';
+import { MeetableInterface } from '../interfaces/meetable.interface';
+import { MeetingTime } from '../models/meetingTime';
 
 @Entity()
 @TableInheritance({ column: { type: 'varchar', name: 'type' } })

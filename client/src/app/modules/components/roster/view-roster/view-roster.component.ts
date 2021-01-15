@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input } from '@angular/core';
 import { DatatableColumn } from '@components/datatable/datatable.component';
-import { Course } from '@dynrec/common';
+import { Course, StandardResponseInterface } from '@dynrec/common';
 import { HttpFilterInterface } from '@http/httpFilter.interface';
 import { RosterService } from '@services/roster.service';
 
@@ -44,7 +44,7 @@ export class ViewRosterComponent {
         this.uploadingRosterModalOpen = true;
     }
 
-    async fetchRoster(args: HttpFilterInterface) {
+    async fetchRoster(args: HttpFilterInterface): Promise<StandardResponseInterface<any>> {
         return this.rosterService.listCourseRoster(this.course, args);
     }
 }

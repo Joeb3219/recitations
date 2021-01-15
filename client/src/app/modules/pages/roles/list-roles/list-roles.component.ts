@@ -27,10 +27,6 @@ export class ListRolesComponent {
             name: 'Actions',
             cellTemplate: 'actionsCell',
             actions: (row: Role) => [
-                {
-                    text: 'View',
-                    href: `/courses/${row.course?.id}/roles/${row.id}`,
-                },
                 ...(!row.ruleTag
                     ? [
                           {

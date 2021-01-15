@@ -26,9 +26,11 @@ import { QuillModule } from 'ngx-quill';
 import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AbilitiesDirective } from './directives/abilities.directive';
 import { TokenInterceptor } from './http/token.interceptor';
 import { CalendarComponent } from './modules/components/calendar/calendar.component';
 import { ConfigurationsComponent } from './modules/components/configurations/configurations.component';
+import { CoverageRequestEditComponent } from './modules/components/coverage-requests/coverage-request-edit/coverage-request-edit.component';
 import { DatatableComponent } from './modules/components/datatable/datatable.component';
 import { FooterComponent } from './modules/components/footer/footer.component';
 import { FileUploaderComponent } from './modules/components/forms/file-uploader/file-uploader.component';
@@ -42,10 +44,12 @@ import { LearningGoalSearchFormfieldComponent } from './modules/components/learn
 import { LearningGoalsComponent } from './modules/components/learning-goals/learning-goals.component';
 import { LessonPlanDeleteComponent } from './modules/components/lesson-plans/lesson-plan-delete/lesson-plan-delete.component';
 import { LessonPlanEditComponent } from './modules/components/lesson-plans/lesson-plan-edit/lesson-plan-edit.component';
+import { LessonPlanFormfieldComponent } from './modules/components/lesson-plans/lesson-plan-formfield/lesson-plan-formfield.component';
 import { LessonPlanStepEditComponent } from './modules/components/lesson-plans/lesson-plan-step-edit/lesson-plan-step-edit.component';
 import { LessonPlanStepViewComponent } from './modules/components/lesson-plans/lesson-plan-step-view/lesson-plan-step-view.component';
 import { LessonPlanStepsFormComponent } from './modules/components/lesson-plans/lesson-plan-steps/lesson-plan-steps-form/lesson-plan-steps-form.component';
 import { LessonPlanViewComponent } from './modules/components/lesson-plans/lesson-plan-view/lesson-plan-view.component';
+import { LessonEditComponent } from './modules/components/lessons/lesson-edit/lesson-edit.component';
 import { MeetingTimeEditComponent } from './modules/components/meeting-times/meeting-time-edit/meeting-time-edit.component';
 import { MeetingTimesFormfieldComponent } from './modules/components/meeting-times/meeting-times-formfield/meeting-times-formfield.component';
 import { ModalComponent } from './modules/components/modal/modal.component';
@@ -56,6 +60,7 @@ import { ProblemViewComponent } from './modules/components/problems/problem-view
 import { MultipleChoiceComponent } from './modules/components/quizzes/formfields/multiple-choice/multiple-choice/multiple-choice.component';
 import { QuizBuilderComponent } from './modules/components/quizzes/quiz-builder/quiz-builder/quiz-builder.component';
 import { QuizEditComponent } from './modules/components/quizzes/quiz-edit/quiz-edit.component';
+import { QuizSearchFormfieldComponent } from './modules/components/quizzes/quiz-search-formfield/quiz-search-formfield.component';
 import { QuizViewFreeResponseComponent } from './modules/components/quizzes/quiz-view/quiz-view-free-response/quiz-view-free-response.component';
 import { QuizViewMultipleChoiceComponent } from './modules/components/quizzes/quiz-view/quiz-view-multiple-choice/quiz-view-multiple-choice.component';
 import { QuizViewComponent } from './modules/components/quizzes/quiz-view/quiz-view.component';
@@ -69,21 +74,26 @@ import { EditRosterComponent } from './modules/components/roster/edit-roster/edi
 import { ViewRosterComponent } from './modules/components/roster/view-roster/view-roster.component';
 import { SectionDeleteComponent } from './modules/components/sections/section-delete/section-delete.component';
 import { SectionEditComponent } from './modules/components/sections/section-edit/section-edit.component';
+import { SectionViewComponent } from './modules/components/sections/section-view/section-view.component';
 import { SectionsSyncComponent } from './modules/components/sections/sections-sync/sections-sync.component';
 import { SidebarComponent } from './modules/components/sidebar/sidebar.component';
 import { UserBadgeComponent } from './modules/components/users/user-badge/user-badge.component';
+import { UserCreateComponent } from './modules/components/users/user-create/user-create.component';
 import { UserSearchFormfieldComponent } from './modules/components/users/user-search-formfield/user-search-formfield.component';
+import { UsersMultiFormfieldComponent } from './modules/components/users/users-multi-formfield/users-multi-formfield.component';
 import { WeeksComponent } from './modules/components/weeks/weeks.component';
 import { ViewCourseComponent } from './modules/pages/courses/view-course/view-course.component';
-import { CoverageRequestsComponent } from './modules/pages/coverage-requests/coverage-requests.component';
+import { ListCoverageRequestsComponent } from './modules/pages/coverage-requests/list-coverage-requests/list-coverage-requests.component';
 import { ListLearningGoalsComponent } from './modules/pages/learning-goals/list-learning-goals/list-learning-goals.component';
 import { ListLessonPlansComponent } from './modules/pages/lesson-plans/list-lesson-plans/list-lesson-plans.component';
 import { ViewLessonPlanComponent } from './modules/pages/lesson-plans/view-lesson-plan/view-lesson-plan.component';
+import { CasAuthComponent } from './modules/pages/login/cas-auth/cas-auth.component';
 import { LoginComponent } from './modules/pages/login/login.component';
 import { ListQuizzesComponent } from './modules/pages/quizzes/list-quizzes/list-quizzes.component';
 import { ViewQuizComponent } from './modules/pages/quizzes/view-quiz/view-quiz.component';
 import { RecitationsComponent } from './modules/pages/recitations/recitations.component';
 import { ListRolesComponent } from './modules/pages/roles/list-roles/list-roles.component';
+import { ViewSectionComponent } from './modules/pages/sections/view-section/view-section.component';
 import { ViewSectionsComponent } from './modules/pages/sections/view-sections/view-sections.component';
 import { ViewUserSettingsComponent } from './modules/pages/user/view-user-settings/view-user-settings.component';
 import { CourseService } from './services/course.service';
@@ -91,8 +101,6 @@ import { LearningGoalService } from './services/learningGoal.service';
 import { MeetingTimeService } from './services/meetingTime.service';
 import { SectionService } from './services/section.service';
 import { UserService } from './services/user.service';
-import { AbilitiesDirective } from './directives/abilities.directive';
-import { UsersMultiFormfieldComponent } from './modules/components/users/users-multi-formfield/users-multi-formfield.component';
 
 export let GlobalActivatedRoute: ActivatedRoute;
 
@@ -121,7 +129,6 @@ export let GlobalActivatedRoute: ActivatedRoute;
         ProblemDeleteComponent,
         SectionDeleteComponent,
         CourseSettingsComponent,
-        CoverageRequestsComponent,
         RecitationsComponent,
         ConfigurationsComponent,
         GradebookComponent,
@@ -164,6 +171,15 @@ export let GlobalActivatedRoute: ActivatedRoute;
         RolesFormfieldComponent,
         AbilitiesDirective,
         UsersMultiFormfieldComponent,
+        UserCreateComponent,
+        ListCoverageRequestsComponent,
+        CoverageRequestEditComponent,
+        ViewSectionComponent,
+        SectionViewComponent,
+        LessonEditComponent,
+        LessonPlanFormfieldComponent,
+        QuizSearchFormfieldComponent,
+        CasAuthComponent,
     ],
     imports: [
         HttpClientModule,

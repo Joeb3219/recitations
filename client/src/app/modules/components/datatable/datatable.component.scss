@@ -2,35 +2,36 @@
 @import '~@swimlane/ngx-datatable/themes/bootstrap.scss';
 @import '~@swimlane/ngx-datatable/assets/icons.css';
 
-
 :host {
-  ::ng-deep .datatable-row-detail {
-    height: 100% !important;
-    background-color: red !important;
-  }
+    ::ng-deep .datatable-row-detail {
+        height: 100% !important;
+        background-color: red !important;
+    }
 }
 
+.datatable-row-detail {
+    height: auto;
+}
 
 button:focus,
 button:active:focus,
 button.active:focus {
-  outline: none !important;
+    outline: none !important;
 }
 
 /* make sure we have a visible focus ring */
 .btn:focus {
-  outline: none;
-  box-shadow: rgba(17, 204, 12, 0);
+    outline: none;
+    box-shadow: rgba(17, 204, 12, 0);
 }
-
 
 /* hide focus style if not from keyboard navigation */
 .js-focus-visible .btn:focus:not(.focus-visible) {
-  box-shadow: none;
+    box-shadow: none;
 }
 
 .search {
-  float: right;
-  clear: both;
-  height: 100%;
+    float: right;
+    clear: both;
+    height: 100%;
 }

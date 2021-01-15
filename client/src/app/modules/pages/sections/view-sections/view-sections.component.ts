@@ -53,7 +53,7 @@ export class ViewSectionsComponent {
             actions: (row: Section) => [
                 {
                     text: 'View',
-                    href: `/courses/${row.course.id}/section/${row.id}`,
+                    href: `/courses/${row.course.id}/sections/${row.id}`,
                 },
                 {
                     text: 'Modify',

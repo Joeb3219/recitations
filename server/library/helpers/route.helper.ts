@@ -2,14 +2,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Ability, AbilityManager, Course, User } from '@dynrec/common';
 import * as Boom from '@hapi/boom';
-import { Express, NextFunction } from 'express';
+import { plainToClass } from 'class-transformer';
 import fileUpload from 'express-fileupload';
 import { BAD_REQUEST } from 'http-status-codes';
 import { get, isEqual, pickBy, sortBy } from 'lodash';
 import 'reflect-metadata';
 import { BaseEntity, DeleteResult, getRepository } from 'typeorm';
 import { ResourceAction, ResourceArgs, SearchableData, SortableData } from '../decorators/controller.decorator';
-import { HttpRequest, HttpResponse } from '../express';
+import { Express } from '../express';
+import { HttpRequest, HttpResponse } from '../express_custom';
 import { isAuthenticated } from './auth/auth.helper';
 
 function searchIn<ObjectType extends any = any, TargetType extends any = any>(
@@ -107,7 +108,6 @@ function httpMiddleware(
                 body: req.body,
                 currentUser: res.locals.currentUser,
                 params: req.params,
-                file: req.files ? req.files.file ?? req.files : undefined,
                 ability: AbilityManager.getUserAbilities(res.locals.currentUser),
             } as HttpArgs);
 
@@ -152,7 +152,7 @@ export function generateUpdateResource<T extends BaseEntity>(
     dataFn: (args: HttpArgs<T>) => Partial<T>
 ) {
     return async (args: HttpArgs<T>): Promise<T> => {
-        const { params } = args;
+        const { params, ability } = args;
         const id = params[`${resourceName}ID`];
 
         const updateableData = pickBy(await dataFn(args), item => {
@@ -163,6 +163,10 @@ export function generateUpdateResource<T extends BaseEntity>(
         let resource = await getRepository<T>(resourceClass).findOne({
             where: { id },
         });
+
+        if (!ability.can('update', resource)) {
+            throw Boom.unauthorized(`Unauthorized to update selected ${resourceName}`);
+        }
 
         // no resource found, 404 it out
         if (!resource) throw Boom.notFound(`${resourceName} not found`);
@@ -200,13 +204,17 @@ export function generateDeleteResource<T extends BaseEntity & { id: string }>(
     resourceName: string
 ) {
     return async (args: HttpArgs<T>): Promise<DeleteResult> => {
-        const { params } = args;
+        const { params, ability } = args;
         const id = params[`${resourceName}ID`];
 
         // first, we find the resource that is referenced by the given ID
         const resource = await getRepository<T>(resourceClass).findOne({
             where: { id },
         });
+
+        if (!ability.can('delete', resource)) {
+            throw Boom.unauthorized(`Unauthorized to delete selected ${resourceName}`);
+        }
 
         // no resource found, 404 it out
         if (!resource) throw Boom.notFound(`${resourceName} not found`);
@@ -220,9 +228,15 @@ export function generateCreateResource<T extends BaseEntity>(
     dataFn: (args: HttpArgs<T>) => Partial<T>
 ) {
     return async (args: HttpArgs<T>): Promise<T> => {
+        const { ability } = args;
+
         const data = pickBy(await dataFn(args), item => {
             return !!item;
         });
+
+        if (!ability.can('create', plainToClass(resourceClass, data))) {
+            throw Boom.unauthorized(`Unauthorized to create selected resource`);
+        }
 
         return getRepository<T>(resourceClass).save(data as any);
     };
@@ -271,9 +285,7 @@ export function generateResource<T extends BaseEntity & { id: string }>(
     ) => {
         const providedFunction = fn;
 
-        const middlewares: [
-            (req: HttpRequest, res: HttpResponse, next: NextFunction) => Promise<HttpResponse> | Promise<any>
-        ] = [isAuthenticated];
+        const middlewares = [isAuthenticated];
         middlewares.push(httpMiddleware(providedFunction, method, route, args));
 
         app.route(route)[method](...middlewares);
@@ -353,9 +365,9 @@ export function generateRoute(
     const middlewares = [];
     const providedFunction = target[propertyKey].bind(target);
 
-    const isUnauthenticated = Reflect.getMetadata('unauthenticated', controller) ?? false;
-    const searchableFields = Reflect.getMetadata('searchable', controller) ?? undefined;
-    const sortableFields = Reflect.getMetadata('sortable', controller) ?? undefined;
+    const isUnauthenticated = !!Reflect.getMetadata('unauthenticated', target, propertyKey);
+    const searchableFields = Reflect.getMetadata('searchable', target, propertyKey) ?? undefined;
+    const sortableFields = Reflect.getMetadata('sortable', target, propertyKey) ?? undefined;
 
     if (!isUnauthenticated) middlewares.push(isAuthenticated);
 

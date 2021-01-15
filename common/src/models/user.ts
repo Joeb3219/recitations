@@ -8,17 +8,17 @@ export class User extends BaseEntity implements UserInterface {
     @PrimaryGeneratedColumn('uuid')
     public id: string;
 
-    @Column()
-    public firstName: string;
+    @Column({ nullable: true })
+    public firstName?: string;
 
-    @Column()
-    public lastName: string;
+    @Column({ nullable: true })
+    public lastName?: string;
 
     @Column()
     public username: string;
 
-    @Column()
-    public email: string;
+    @Column({ nullable: true })
+    public email?: string;
 
     @ManyToMany(() => Role, { eager: true })
     @JoinTable()

@@ -22,6 +22,7 @@ export class UserService {
     }
 
     public signOut() {
+        localStorage.removeItem('jwt');
         this.flushCurrentUser();
     }
 
@@ -57,6 +58,21 @@ export class UserService {
         });
     }
 
+    public casLogin(): Observable<StandardResponseInterface<string>> {
+        const url = `${environment.apiURL}/cas/login`;
+        return this.http.get<StandardResponseInterface<string>>(url);
+    }
+
+    public casLogout(): Observable<unknown> {
+        const url = `${environment.apiURL}/cas/logout`;
+        return this.http.get<unknown>(url);
+    }
+
+    public casAuthentication(token: string): Observable<StandardResponseInterface<string>> {
+        const url = `${environment.apiURL}/cas/ticket?ticket=${token}`;
+        return this.http.get<StandardResponseInterface<string>>(url);
+    }
+
     public impersonateUser(username: string): Observable<StandardResponseInterface<string>> {
         const url = `${environment.apiURL}/user/impersonate`;
         return this.http.post<StandardResponseInterface<string>>(url, {
@@ -69,6 +85,24 @@ export class UserService {
         return new Promise((resolve, reject) => {
             this.http
                 .post<StandardResponseInterface<User>>(url, { user })
+                .subscribe(
+                    result => {
+                        if (result) {
+                            resolve(result);
+                        } else reject(new Error('No result returned'));
+                    },
+                    (err: Error) => {
+                        reject(err);
+                    }
+                );
+        });
+    }
+
+    public createUser(user: User): Promise<StandardResponseInterface<User>> {
+        const url = `${environment.apiURL}/user`;
+        return new Promise((resolve, reject) => {
+            this.http
+                .put<StandardResponseInterface<User>>(url, { user })
                 .subscribe(
                     result => {
                         if (result) {

@@ -1,4 +1,4 @@
-import { Course, Role, Section, User } from '@dynrec/common';
+import { Course, Role, User } from '@dynrec/common';
 import { EntitySubscriberInterface, EventSubscriber, InsertEvent } from 'typeorm';
 import { RolesHelper } from '../helpers/roles.helper';
 
@@ -8,18 +8,18 @@ export class CourseListener implements EntitySubscriberInterface<Course> {
         return Course;
     }
 
-    async afterInsert(event: InsertEvent<Section>) {
+    async afterInsert(event: InsertEvent<Course>) {
         const { entity } = event;
 
         // Create roles
-        await RolesHelper.createCourseRoles(entity.course);
-        const role = await Role.findOne({ course: entity.course, ruleTag: 'course_admin' });
+        await RolesHelper.upsertCourseRoles(entity);
+        const role = await Role.findOne({ course: entity, ruleTag: 'course_admin' });
 
-        if (!role || !entity.course.creator) {
+        if (!role || !entity.creator) {
             return;
         }
 
-        const creator = await User.findOne({ id: entity.course.creator.id });
+        const creator = await User.findOne({ id: entity.creator.id });
 
         if (!creator) {
             return;

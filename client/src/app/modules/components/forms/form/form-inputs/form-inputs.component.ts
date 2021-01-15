@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
 import { ChangeEvent } from '@ckeditor/ckeditor5-angular';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { FormFieldUpdated, FormInput } from '@dynrec/common';
@@ -7,6 +7,7 @@ import { FormFieldUpdated, FormInput } from '@dynrec/common';
     selector: 'app-form-inputs',
     templateUrl: './form-inputs.component.html',
     styleUrls: ['./form-inputs.component.scss'],
+    encapsulation: ViewEncapsulation.None,
 })
 export class FormInputsComponent {
     @Input() input: FormInput;

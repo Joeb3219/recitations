@@ -10,32 +10,32 @@ import { HttpFilterInterface } from '../http/httpFilter.interface';
 export class LessonPlanService {
     constructor(private http: HttpClient) {}
 
-    @UpsertRequest<LessonPlan>(LessonPlan)
+    @UpsertRequest<LessonPlan>(LessonPlan, 'lessonplan')
     public async upsertLessonPlan(lessonPlan: LessonPlan): Promise<StandardResponseInterface<LessonPlan>> {
         throw new Error('Decorator Overloading Failed');
     }
 
-    @UpsertRequest<LessonPlanStep>(LessonPlanStep)
+    @UpsertRequest<LessonPlanStep>(LessonPlanStep, 'lessonplan')
     public async upsertLessonPlanStep(
         lessonPlanStep: LessonPlanStep
     ): Promise<StandardResponseInterface<LessonPlanStep>> {
         throw new Error('Decorator Overloading Failed');
     }
 
-    @ListRequest<LessonPlan>(LessonPlan)
+    @ListRequest<LessonPlan>(LessonPlan, 'lessonplan')
     public async getCourseLessonPlans(
         course: Course,
-        args: HttpFilterInterface
+        args?: HttpFilterInterface
     ): Promise<StandardResponseInterface<LessonPlan[]>> {
         throw new Error('Decorator Overloading Failed');
     }
 
-    @GetRequest<LessonPlan>(LessonPlan)
+    @GetRequest<LessonPlan>(LessonPlan, 'lessonplan')
     public async getLessonPlan(lessonPlanID: string): Promise<StandardResponseInterface<LessonPlan>> {
         throw new Error('Decorator Overloading Failed');
     }
 
-    @DeleteRequest<LessonPlan>(LessonPlan)
+    @DeleteRequest<LessonPlan>(LessonPlan, 'lessonplan')
     public async deleteLessonPlan(lessonPlanID: string): Promise<StandardResponseInterface<LessonPlan>> {
         throw new Error('Decorator Overloading Failed');
     }

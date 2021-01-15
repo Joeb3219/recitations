@@ -1,22 +1,24 @@
 <nav class="d-md-block bg-light sidebar">
-  <mat-accordion *ngFor="let course of userCourses; let i = index" class="example-headers-align">
-    <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)" class="mat-expansion-panel mat-elevation-z0">
-      <mat-expansion-panel-header [collapsedHeight]="'max-content'" [expandedHeight]="'max-content'">
-        <mat-panel-title>
-          <strong>{{userCourses[i].name}}</strong>
-        </mat-panel-title>
-      </mat-expansion-panel-header>
+    <mat-accordion *ngFor="let course of userCourses; let i = index" class="example-headers-align">
+        <mat-expansion-panel [expanded]="step === i" (opened)="setStep(i)" class="mat-expansion-panel mat-elevation-z0">
+            <mat-expansion-panel-header [collapsedHeight]="'max-content'" [expandedHeight]="'max-content'">
+                <mat-panel-title>
+                    <strong>{{ userCourses[i].name }}</strong>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
 
-      <div class="btn-group-vertical">
-        <a *ngFor="let entry of courseEntries"
-          class="btn btn-light btn-sidebar input-block-level form-control link-style"
-          routerLink="/courses/{{ course.id }}{{ entry.slug !== '' ? '/' : '' }}{{ entry.slug }}"
-          [ngClass]="{'link-bold': activeSlug === entry.slug && course.id==selectedCourse?.id}">
-          {{ entry.name }}
-        </a>
-      </div>
-
-    </mat-expansion-panel>
-  </mat-accordion>
-
+            <div class="btn-group-vertical" *ngIf="!!courseEntries[course.id]">
+                <ng-container *ngFor="let entry of courseEntries[course.id]">
+                    <a
+                        *can="entry.can"
+                        class="btn btn-light btn-sidebar input-block-level form-control link-style"
+                        routerLink="/courses/{{ course.id }}{{ entry.slug !== '' ? '/' : '' }}{{ entry.slug }}"
+                        [ngClass]="{ 'link-bold': activeSlug === entry.slug && course.id == selectedCourse?.id }"
+                    >
+                        {{ entry.name }}
+                    </a>
+                </ng-container>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
 </nav>

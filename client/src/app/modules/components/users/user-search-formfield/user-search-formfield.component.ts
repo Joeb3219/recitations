@@ -1,9 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { User } from '@dynrec/common';
+import { faPlusSquare } from '@fortawesome/free-solid-svg-icons';
 import { UserService } from '@services/user.service';
 import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map } from 'rxjs/operators';
-
 @Component({
     selector: 'app-user-search-formfield',
     templateUrl: './user-search-formfield.component.html',
@@ -16,7 +16,14 @@ export class UserSearchFormfieldComponent implements OnInit {
 
     @Output() onChange: EventEmitter<User> = new EventEmitter<User>();
 
+    // Dummy angular-ism, creating a var to be used in the template
+    baseUser: User = new User();
+
+    createUserIcon = faPlusSquare;
+
     users: User[];
+
+    isCreateUserModalOpen: boolean = false;
 
     constructor(private userService: UserService) {}
 
@@ -25,12 +32,25 @@ export class UserSearchFormfieldComponent implements OnInit {
     }
 
     formatter = (user: User): string => {
-        if (user) return `${user.firstName} ${user.lastName} (${user.username}, ${user.email})`;
+        if (user) return `${user?.firstName} ${user?.lastName} (${user.username}, ${user?.email})`;
         return ``;
     };
 
     handleUserSelected(data: { item: User }): void {
         this.onChange.emit(data.item);
+    }
+
+    handleOpenCreateUserModal() {
+        this.isCreateUserModalOpen = true;
+    }
+
+    handleUserCreateModalClosed(user?: User) {
+        this.isCreateUserModalOpen = false;
+
+        if (user) {
+            this.user = user;
+            this.onChange.emit(this.user);
+        }
     }
 
     search = (text$: Observable<string>): Observable<User[]> =>
@@ -43,9 +63,9 @@ export class UserSearchFormfieldComponent implements OnInit {
                     : this.users
                           .filter(user => {
                               return (
-                                  user.firstName.toLowerCase().indexOf(term.toLowerCase()) > -1 ||
-                                  user.lastName.toLowerCase().indexOf(term.toLowerCase()) > -1 ||
-                                  user.email.toLowerCase().indexOf(term.toLowerCase()) > -1 ||
+                                  (user.firstName && user.firstName.toLowerCase().indexOf(term.toLowerCase()) > -1) ||
+                                  (user.lastName && user.lastName.toLowerCase().indexOf(term.toLowerCase()) > -1) ||
+                                  (user.email && user.email.toLowerCase().indexOf(term.toLowerCase()) > -1) ||
                                   user.username.toLowerCase().indexOf(term.toLowerCase()) > -1
                               );
                           })

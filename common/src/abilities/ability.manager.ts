@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { User } from '../models';
-import { Ability, ABILITY_GENERATORS } from './ability.definition';
+import { Ability, ABILITY_GENERATORS, RawRule } from './ability.definition';
 
 export class AbilityManager {
     static getAllAbilities(user?: User) {
@@ -26,8 +26,12 @@ export class AbilityManager {
 
         // And now we can restrict down.
         const abilities = user.roles.map(role =>
-            role.abilities.map(abilityId =>
-                keyedAbilities[abilityId] ? keyedAbilities[abilityId].actions(user, role.course) : []
+            role.abilities.map<RawRule[]>(abilityId =>
+                keyedAbilities[abilityId]
+                    ? keyedAbilities[abilityId]
+                          .actions(user, role.course)
+                          .map(rule => ({ ...rule, course: role.course }))
+                    : []
             )
         );
 

@@ -119,7 +119,8 @@ function httpMiddleware(
 
             console.log({
                 method,
-                result,
+                route,
+                // result,
                 statusCode: 200,
             });
 

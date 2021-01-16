@@ -1,5 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Section } from '@dynrec/common';
+import { Component, EventEmitter, Input, OnInit } from '@angular/core';
+import { DatatableColumn } from '@components/datatable/datatable.component';
+import { Lesson, MeetingType, MeetingWithLesson, Section } from '@dynrec/common';
+import { MeetingService } from '../../../../services/meeting.service';
 
 @Component({
     selector: 'app-section-view',
@@ -9,7 +11,77 @@ import { Section } from '@dynrec/common';
 export class SectionViewComponent implements OnInit {
     @Input() section: Section;
 
-    constructor() {}
+    refreshData: EventEmitter<void> = new EventEmitter();
+    meetings: MeetingWithLesson[];
+
+    selectedLesson?: Lesson & { id: undefined | string };
+    isEditLessonModalOpen: boolean = false;
+
+    columns: DatatableColumn<MeetingWithLesson<MeetingType.RECITATION>>[] = [
+        {
+            name: 'Date',
+            prop: 'date',
+            cellTemplate: 'dateCell',
+        },
+        {
+            name: 'Lesson',
+            prop: 'lesson',
+            cellTemplate: 'lessonCell',
+        },
+        {
+            name: 'Actions',
+            cellTemplate: 'actionsCell',
+            actions: (row: MeetingWithLesson<MeetingType.RECITATION> & { getAccessCode: () => string }) => [
+                {
+                    text: 'Access Code',
+                    can: {
+                        action: 'update',
+                        subject: new Lesson({ meetingTime: row.meetingTime, course: this.section.course }),
+                    },
+                    click: () => {
+                        // Stupid, and hacky, but Datatables doesn't currently support sending over the needed functions data, just the json.
+                        const foundMeeting = this.meetings.find(m => m.date === row.date);
+
+                        if (foundMeeting) {
+                            window.alert(`Access code: ${foundMeeting.getAccessCode()}`);
+                        }
+                    },
+                },
+                {
+                    text: 'Update Lesson',
+                    can: {
+                        action: 'update',
+                        subject: new Lesson({ meetingTime: row.meetingTime, course: this.section.course }),
+                    },
+                    click: () => this.handleOpenEditLessonModal(row),
+                },
+            ],
+        },
+    ];
+
+    constructor(private readonly meetingService: MeetingService) {
+        this.fetchMeetingTimes = this.fetchMeetingTimes.bind(this);
+    }
 
     ngOnInit(): void {}
+
+    handleOpenEditLessonModal(meeting: MeetingWithLesson): void {
+        this.isEditLessonModalOpen = true;
+        this.selectedLesson = meeting.lesson.meetingTime
+            ? meeting.lesson
+            : { ...meeting.lesson, meetingTime: meeting.meetingTime, id: undefined };
+    }
+
+    handleCloseEditLessonModal() {
+        this.isEditLessonModalOpen = false;
+        this.selectedLesson = undefined;
+        this.refreshData.next();
+    }
+
+    async fetchMeetingTimes() {
+        const result = await this.meetingService.getSectionMeetingTimes(this.section);
+        this.meetings = result.data;
+
+        return result;
+    }
 }

@@ -1,5 +1,7 @@
-import { Lesson } from '@dynrec/common';
-import { Controller, Resource } from '../decorators';
+import { Lesson, MeetingTime, Section } from '@dynrec/common';
+import Boom from '@hapi/boom';
+import { Any } from 'typeorm';
+import { Controller, GetRequest, Resource } from '../decorators';
 import { HttpArgs } from '../helpers/route.helper';
 
 @Controller
@@ -25,4 +27,17 @@ import { HttpArgs } from '../helpers/route.helper';
         };
     },
 })
-export class LessonController {}
+export class LessonController {
+    @GetRequest('/section/:sectionID/lessons')
+    async getSectionLessons({ params }: HttpArgs<never, { sectionID: string }>) {
+        const section = await Section.findOne({ id: params.sectionID });
+
+        if (!section) {
+            throw Boom.notFound('Unable to find section.');
+        }
+
+        const meetingTimes = await MeetingTime.find({ meetable: section });
+
+        return Lesson.find({ meetingTime: Any(meetingTimes) });
+    }
+}

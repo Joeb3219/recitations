@@ -13,6 +13,7 @@ export class LessonEditComponent implements OnInit {
     @Input() isVisible: boolean;
 
     @Input() lesson?: Lesson;
+    @Input() editQuiz: boolean = true;
 
     @Output() onClose: EventEmitter<void> = new EventEmitter();
     @Output() lessonChange: EventEmitter<Lesson> = new EventEmitter();
@@ -54,6 +55,7 @@ export class LessonEditComponent implements OnInit {
                 course: this.lesson?.course,
                 value: this.lesson?.quiz,
                 label: 'Quiz',
+                hidden: !this.editQuiz,
                 row: 1,
                 col: 0,
             },

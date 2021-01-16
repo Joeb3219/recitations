@@ -116,7 +116,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
             {
                 action: 'view',
                 subject: Section,
-                validate: (instance: Section) => !!course && course.id === instance.course?.id,
+                validate: (instance: Section) => !!course && safeIdComparison(course.id, instance.course),
             },
         ],
     },
@@ -128,7 +128,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
             {
                 action: 'update',
                 subject: Section,
-                validate: (instance: Section) => !!course && course.id === instance.course?.id,
+                validate: (instance: Section) => !!course && safeIdComparison(course.id, instance.course),
             },
         ],
     },
@@ -142,7 +142,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
                 subject: Section,
                 validate: (instance: Section) =>
                     !!course &&
-                    course.id === instance.course?.id &&
+                    safeIdComparison(course.id, instance.course) &&
                     (!!instance.students?.find(student => safeIdComparison(user?.id, student)) ||
                         safeIdComparison(user?.id, instance.ta) ||
                         safeIdComparison(user?.id, instance.instructor)),
@@ -159,7 +159,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
                 subject: Section,
                 validate: (instance: Section) =>
                     !!course &&
-                    course.id === instance.course?.id &&
+                    safeIdComparison(course.id, instance.course) &&
                     (!!instance.students?.find(student => safeIdComparison(user?.id, student)) ||
                         safeIdComparison(user?.id, instance.ta) ||
                         safeIdComparison(user?.id, instance.instructor)),
@@ -230,7 +230,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
             {
                 action: 'view',
                 subject: Problem,
-                validate: instance => !!course && course.id === instance.course?.id,
+                validate: instance => !!course && safeIdComparison(course.id, instance.course),
             },
         ],
     },
@@ -242,7 +242,35 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
             {
                 action: 'update',
                 subject: Problem,
-                validate: instance => !!course && course.id === instance.course?.id,
+                validate: instance => !!course && safeIdComparison(course.id, instance.course),
+            },
+        ],
+    },
+    {
+        id: '38ac4fc2-1d1a-474b-b911-d210b20b74f5',
+        name: 'Create course problems',
+        tags: ['ta', 'professor', 'course_admin', 'super_admin'],
+        actions: (_user, course) => [
+            {
+                action: 'create',
+                subject: Problem,
+                validate: instance => !!course && safeIdComparison(course.id, instance.course),
+            },
+        ],
+    },
+    {
+        id: '878907ed-1731-4783-956d-7f47c01fe31d',
+        name: 'Update own course problems',
+        tags: ['ta', 'professor', 'course_admin', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'update',
+                subject: Problem,
+                validate: instance =>
+                    !!course &&
+                    !!user &&
+                    safeIdComparison(course.id, instance.course) &&
+                    safeIdComparison(user.id, instance.creator),
             },
         ],
     },
@@ -301,6 +329,22 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
         actions: (user, course) => [
             {
                 action: 'update',
+                subject: LessonPlan,
+                validate: (instance: LessonPlan) =>
+                    !!user &&
+                    !!course &&
+                    safeIdComparison(course.id, instance.course) &&
+                    safeIdComparison(user.id, instance.creator),
+            },
+        ],
+    },
+    {
+        id: 'fcab3d19-107e-439e-a6d9-c2173c478a0d',
+        name: 'Create course lesson plans',
+        tags: ['ta', 'professor', 'course_admin', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'create',
                 subject: LessonPlan,
                 validate: (instance: LessonPlan) =>
                     !!user &&
@@ -447,7 +491,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
         ],
     },
     {
-        id: '1fb643b7-6867-4696-ae14-96a2bed043d6',
+        id: '407c96fd-f982-4c93-aec0-bf3b2f832470',
         name: 'Update own lessons',
         tags: ['ta', 'professor', 'course_admin', 'super_admin'],
         actions: (user, course) => [
@@ -459,7 +503,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
                     !!course &&
                     !!instance?.meetingTime &&
                     safeIdComparison(course.id, instance.course) &&
-                    safeIdComparison(user.id, instance.meetingTime?.leader),
+                    safeIdComparison(user.id, instance.meetingTime.leader),
             },
         ],
     },
@@ -485,6 +529,23 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
                 subject: Lesson,
                 validate: (instance: Lesson) =>
                     !!course && safeIdComparison(course.id, instance.course) && !instance.meetingTime,
+            },
+        ],
+    },
+    {
+        id: 'bb28e4bf-b7e6-4e24-bb30-a6c609b47f73',
+        name: 'Create lessons for assigned sections',
+        tags: ['ta', 'course_admin', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'create',
+                subject: Lesson,
+                validate: (instance: Lesson) =>
+                    !!user &&
+                    !!course &&
+                    !!instance?.meetingTime &&
+                    safeIdComparison(course.id, instance.course) &&
+                    safeIdComparison(user.id, instance.meetingTime.leader),
             },
         ],
     },

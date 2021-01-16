@@ -17,6 +17,7 @@ export class MeetingManager {
         const defaultLessons = await Lesson.find({ course: course, meetingTime: null });
 
         const range = dateRange(semesterStartDate ?? new Date(), semesterEndDate ?? new Date());
+        console.log({ defaultLessons, range });
         return range.filter(date =>
             defaultLessons.find(lesson => dayjs(lesson.beginDate).isBefore(date) && dayjs(lesson.endDate).isAfter(date))
         );

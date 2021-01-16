@@ -9,6 +9,16 @@
     }
 }
 
+::ng-deep {
+    .progress-linear {
+        position: relative !important;
+
+        .container {
+            max-width: 100% !important;
+        }
+    }
+}
+
 .datatable-row-detail {
     height: auto;
 }

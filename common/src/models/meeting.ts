@@ -81,8 +81,4 @@ export class MeetingWithLesson<Type extends MeetingType = MeetingType> extends M
         super(args);
         Object.assign(this, args);
     }
-
-    getAccessCode() {
-        return super.getAccessCode();
-    }
 }

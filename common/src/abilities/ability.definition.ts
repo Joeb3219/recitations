@@ -1,7 +1,8 @@
 import _ from 'lodash';
-import { Course, CoverageRequest, Lesson, Problem, Role, Section, User } from '../models';
+import { Course, CoverageRequest, Lesson, MeetingTime, Problem, Role, Section, User } from '../models';
 import { LearningGoalCategory } from '../models/learningGoalCategory';
 import { LessonPlan } from '../models/lessonPlan';
+import { MeetingReport } from '../models/meetingReport';
 import { Quiz } from '../models/quiz';
 
 export type RawRuleConditions<Resource extends any> = {
@@ -529,6 +530,76 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
                 subject: Lesson,
                 validate: (instance: Lesson) =>
                     !!course && safeIdComparison(course.id, instance.course) && !instance.meetingTime,
+            },
+        ],
+    },
+    {
+        id: '9fac8916-06f8-4fb6-8c03-fd4e013e5e48',
+        name: 'Create meeting times',
+        tags: ['course_admin', 'super_admin'],
+        actions: (_user, course) => [
+            {
+                action: 'create',
+                subject: MeetingTime,
+                validate: (instance: MeetingTime) => !!course,
+            },
+        ],
+    },
+    {
+        id: 'be180a52-8dba-4bea-b768-752f25614f24',
+        name: 'Update meeting times',
+        tags: ['course_admin', 'super_admin'],
+        actions: (_user, course) => [
+            {
+                action: 'update',
+                subject: MeetingTime,
+                validate: (instance: MeetingTime) => !!course,
+            },
+        ],
+    },
+    {
+        id: '0392418c-ba4c-4dd9-a927-30d02c298ff2',
+        name: 'Delete meeting times',
+        tags: ['course_admin', 'super_admin'],
+        actions: (_user, course) => [
+            {
+                action: 'delete',
+                subject: MeetingTime,
+                validate: (instance: MeetingTime) => !!course,
+            },
+        ],
+    },
+    {
+        id: 'd885afae-7698-4722-82d3-f1bbdefc5852',
+        name: 'Create meeting reports',
+        tags: ['ta', 'course_admin', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'create',
+                subject: MeetingReport,
+                validate: (instance: MeetingReport) =>
+                    !!course &&
+                    !!user &&
+                    safeIdComparison(user.id, instance.creator) &&
+                    safeIdComparison(course.id, instance.course) &&
+                    _.every(instance.meetingTimes.map(time => safeIdComparison(user.id, time.leader))),
+            },
+        ],
+    },
+    {
+        id: '871e9d32-0bb4-4cb4-b2b7-37a04abc468b',
+        name: 'Update meeting reports',
+        tags: ['ta', 'course_admin', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'update',
+                subject: MeetingReport,
+                validate: (instance: MeetingReport) =>
+                    !!course &&
+                    !!user &&
+                    safeIdComparison(user.id, instance.creator) &&
+                    safeIdComparison(course.id, instance.course) &&
+                    _.every(instance.meetingTimes.map(time => safeIdComparison(user.id, time.leader))),
             },
         ],
     },

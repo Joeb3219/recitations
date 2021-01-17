@@ -1,4 +1,4 @@
-import { Course, Lesson, Meeting, MeetingType, MeetingWithLesson, Section } from '@dynrec/common';
+import { Course, Meeting, MeetingType, MeetingWithLesson, Section } from '@dynrec/common';
 import * as Boom from '@hapi/boom';
 import dayjs from 'dayjs';
 import { Controller, GetRequest } from '../../decorators';
@@ -18,10 +18,6 @@ export class MeetingController {
         return MeetingManager.getMeetings(course);
     }
 
-    lessonOverlapsDate(lesson: Lesson, date: Date) {
-        return dayjs(lesson.beginDate).isBefore(date) && dayjs(lesson.endDate).isAfter(date);
-    }
-
     @GetRequest('/section/:sectionID/meetings')
     async getSectionMeetings({
         params,
@@ -38,26 +34,24 @@ export class MeetingController {
             throw Boom.notFound('No course found');
         }
 
-        const lessons = await Lesson.find({ course: course });
-        const courseMeetings = await MeetingManager.getMeetings(course);
+        return MeetingManager.getMeetingWithLessons(course, meeting => meeting.meetingTime.meetable.id === section.id);
+    }
 
-        return courseMeetings
-            .filter(meeting => meeting.meetingTime.meetable.id === section.id)
-            .map(
-                meeting =>
-                    new MeetingWithLesson({
-                        ...meeting,
-                        lesson:
-                            lessons.find(
-                                lesson =>
-                                    lesson.meetingTime?.id === meeting.meetingTime.id &&
-                                    this.lessonOverlapsDate(lesson, meeting.date)
-                            ) ??
-                            lessons.find(
-                                lesson => !lesson.meetingTime && this.lessonOverlapsDate(lesson, meeting.date)
-                            ),
-                    })
-            )
-            .filter(meeting => !!meeting.lesson);
+    @GetRequest('/course/:courseID/meetings/:date')
+    async getMeetingsAtTime({
+        params,
+        currentUser,
+    }: HttpArgs<never, { courseID: string; date: string }>): Promise<MeetingWithLesson<MeetingType>[]> {
+        const course = await Course.findOne({ id: params.courseID }, { relations: ['sections'] });
+
+        if (!course) {
+            throw Boom.notFound('No course found');
+        }
+
+        return MeetingManager.getMeetingWithLessons(
+            course,
+            meeting =>
+                meeting.meetingTime.leader?.id === currentUser.id && dayjs(meeting.date).isSame(new Date(params.date))
+        );
     }
 }

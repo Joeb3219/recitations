@@ -4,6 +4,7 @@ import {
     Course,
     CourseRosterPayload,
     RosterFormatPayload,
+    Section,
     StandardResponseInterface,
     UpdateRosterPayload,
 } from '@dynrec/common';
@@ -73,6 +74,27 @@ export class RosterService {
                         if (result) {
                             // eslint-disable-next-line no-param-reassign
                             result.data = result.data.map(section => plainToClass(CourseRosterPayload, section));
+                            resolve(result);
+                        } else reject(new Error('No result returned'));
+                    },
+                    (err: Error) => {
+                        reject(err);
+                    }
+                );
+        });
+    }
+
+    public async listSectionsRosters(course: Course): Promise<StandardResponseInterface<Section[]>> {
+        const url = `${environment.apiURL}/course/${course.id}/sections-roster`;
+        const params = getFilterParams({ limit: -1 });
+        return new Promise((resolve, reject) => {
+            this.http
+                .get<StandardResponseInterface<Section[]>>(url, { params })
+                .subscribe(
+                    result => {
+                        if (result) {
+                            // eslint-disable-next-line no-param-reassign
+                            result.data = result.data.map(section => plainToClass(Section, section));
                             resolve(result);
                         } else reject(new Error('No result returned'));
                     },

@@ -2,6 +2,7 @@ import {
     Course,
     CourseRosterPayload,
     RosterFormatPayload,
+    Section,
     UpdateRosterPayload,
     UpdateRosterStudentPayload,
     User,
@@ -260,6 +261,17 @@ export class RosterController {
         );
 
         return _.compact(_.flattenDeep(sectionUsers));
+    }
+
+    @GetRequest('/course/:courseId/sections-roster')
+    async getSectionsRosterList({ params, currentUser }: HttpArgs<never, unknown>): Promise<Section[]> {
+        const course = await Course.findOne({ id: params.courseId });
+
+        if (!course) {
+            throw Boom.notFound('No course found');
+        }
+
+        return Section.find({ where: { course, ta: currentUser }, relations: ['students'] });
     }
 
     @GetRequest('/roster/formats')

@@ -150,4 +150,11 @@
     (onChange)="fieldUpdated(input.name, $event)"
 ></app-file-uploader>
 
+<app-roster-formfield
+    *ngIf="input.type === 'roster' && !!input.users"
+    [users]="input.users"
+    [value]="input.value"
+    (onChange)="fieldUpdated(input.name, $event)"
+></app-roster-formfield>
+
 <div *ngIf="input.type === 'textBlock'">{{ input.value }}</div>

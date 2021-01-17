@@ -57,4 +57,30 @@ export class MeetingService {
                 );
         });
     }
+
+    public async getMeetingLessonsAtTime(
+        course: Course,
+        date: Date
+    ): Promise<StandardResponseInterface<MeetingWithLesson<MeetingType>[]>> {
+        const url = `${environment.apiURL}/course/${course.id}/meetings/${date.toISOString()}`;
+
+        const params = getFilterParams({ limit: -1 });
+
+        return new Promise((resolve, reject) => {
+            this.http
+                .get<StandardResponseInterface<MeetingWithLesson<MeetingType>[]>>(url, { params })
+                .subscribe(
+                    result => {
+                        if (result) {
+                            // eslint-disable-next-line no-param-reassign
+                            result.data = result.data.map(item => plainToClass(MeetingWithLesson, item));
+                            resolve(result);
+                        } else reject(new Error('No result returned'));
+                    },
+                    (err: Error) => {
+                        reject(err);
+                    }
+                );
+        });
+    }
 }

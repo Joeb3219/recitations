@@ -8,6 +8,7 @@ export * from './lessonPlan';
 export * from './lessonPlanStep';
 export * from './meetable';
 export * from './meeting';
+export * from './meetingReport';
 export * from './meetingTime';
 export * from './problem';
 export * from './quiz';
@@ -23,6 +24,7 @@ import { LessonPlan } from './lessonPlan';
 import { LessonPlanStep } from './lessonPlanStep';
 import { Meetable } from './meetable';
 import { Meeting } from './meeting';
+import { MeetingReport } from './meetingReport';
 import { MeetingTime } from './meetingTime';
 import { Problem } from './problem';
 import { Quiz } from './quiz';
@@ -46,4 +48,5 @@ export const AllEntities = [
     User,
     CoverageRequest,
     Lesson,
+    MeetingReport,
 ];

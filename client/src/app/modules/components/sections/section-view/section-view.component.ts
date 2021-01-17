@@ -14,7 +14,7 @@ export class SectionViewComponent implements OnInit {
     refreshData: EventEmitter<void> = new EventEmitter();
     meetings: MeetingWithLesson[];
 
-    selectedLesson?: Lesson & { id: undefined | string };
+    selectedLesson?: Omit<Lesson, 'id'> & { id: undefined | string };
     isEditLessonModalOpen: boolean = false;
 
     columns: DatatableColumn<MeetingWithLesson<MeetingType.RECITATION>>[] = [
@@ -54,6 +54,14 @@ export class SectionViewComponent implements OnInit {
                         subject: new Lesson({ meetingTime: row.meetingTime, course: this.section.course }),
                     },
                     click: () => this.handleOpenEditLessonModal(row),
+                },
+                {
+                    text: 'Feedback & Attendance',
+                    can: {
+                        action: 'update',
+                        subject: new Lesson({ meetingTime: row.meetingTime, course: this.section.course }),
+                    },
+                    href: `/courses/${row.lesson.course.id}/meeting-feedback/${row.date.toISOString?.() ?? row.date}`,
                 },
             ],
         },

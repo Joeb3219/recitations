@@ -101,6 +101,9 @@ import { LearningGoalService } from './services/learningGoal.service';
 import { MeetingTimeService } from './services/meetingTime.service';
 import { SectionService } from './services/section.service';
 import { UserService } from './services/user.service';
+import { ViewMeetingFeedbackComponent } from './modules/pages/meetings/view-meeting-feedback/view-meeting-feedback.component';
+import { MeetingFeedbackEditComponent } from './modules/components/meetings/meeting-feedback-edit/meeting-feedback-edit.component';
+import { RosterFormfieldComponent } from './modules/components/roster/roster-formfield/roster-formfield.component';
 
 export let GlobalActivatedRoute: ActivatedRoute;
 
@@ -180,6 +183,9 @@ export let GlobalActivatedRoute: ActivatedRoute;
         LessonPlanFormfieldComponent,
         QuizSearchFormfieldComponent,
         CasAuthComponent,
+        ViewMeetingFeedbackComponent,
+        MeetingFeedbackEditComponent,
+        RosterFormfieldComponent,
     ],
     imports: [
         HttpClientModule,

@@ -37,10 +37,7 @@ export class ListLessonPlansComponent {
                 {
                     text: 'Modify',
                     click: () => this.handleOpenEditLessonPlanModal(row),
-                },
-                {
-                    text: 'Delete',
-                    click: () => this.handleOpenDeleteLessonPlanModal(row),
+                    can: { action: 'update', subject: new LessonPlan(row) },
                 },
             ],
         },

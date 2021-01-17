@@ -44,10 +44,12 @@ export class ListProblemsComponent {
                 {
                     text: 'Modify',
                     click: () => this.handleOpenEditProblemModal(row),
+                    can: { action: 'update', subject: new Problem(row) },
                 },
                 {
                     text: 'Delete',
                     click: () => this.handleOpenDeleteProblemModal(row),
+                    can: { action: 'delete', subject: new Problem(row) },
                 },
             ],
         },

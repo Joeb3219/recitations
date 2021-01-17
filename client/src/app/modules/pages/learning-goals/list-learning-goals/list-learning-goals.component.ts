@@ -53,6 +53,7 @@ export class ListLearningGoalsComponent {
                           {
                               text: 'Save',
                               action: 'save',
+                              can: { action: 'update', subject: row },
                               click: async () => this.handleCategorySaved(row),
                           },
                       ]
@@ -60,9 +61,11 @@ export class ListLearningGoalsComponent {
                           {
                               text: 'Modify',
                               action: 'edit',
+                              can: { action: 'update', subject: row },
                           },
                           {
                               text: 'Delete',
+                              can: { action: 'delete', subject: row },
                               click: () => this.handleOpenDeleteModal(row),
                           },
                       ],

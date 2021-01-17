@@ -33,7 +33,8 @@
     (page)="handlePageChange($event)"
     (sort)="handleSort($event)"
 >
-    <ngx-datatable-row-detail *ngIf="detailTemplate" [template]="detailTemplate"> </ngx-datatable-row-detail>
+    <ngx-datatable-row-detail *ngIf="detailTemplate" [template]="detailTemplate" [rowHeight]="100">
+    </ngx-datatable-row-detail>
 </ngx-datatable>
 
 <ng-template #detailToggleCellTemplate let-row="row" let-index="rowIndex" let-expanded="expanded" let-col="column">

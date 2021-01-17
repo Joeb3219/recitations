@@ -57,10 +57,12 @@ export class ViewSectionsComponent {
                 },
                 {
                     text: 'Modify',
+                    can: { action: 'update', subject: row.course },
                     click: () => this.handleOpenEditSectionModal(row),
                 },
                 {
                     text: 'Delete',
+                    can: { action: 'delete', subject: row },
                     click: () => this.handleOpenDeleteSectionModal(row),
                 },
             ],

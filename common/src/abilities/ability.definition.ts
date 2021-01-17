@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { Course, CoverageRequest, Lesson, MeetingTime, Problem, Role, Section, User } from '../models';
+import { Course, CoverageRequest, Lesson, LessonPlanStep, MeetingTime, Problem, Role, Section, User } from '../models';
 import { LearningGoalCategory } from '../models/learningGoalCategory';
 import { LessonPlan } from '../models/lessonPlan';
 import { MeetingReport } from '../models/meetingReport';
@@ -106,7 +106,7 @@ export class AbilityGenerator {
 }
 
 const safeIdComparison = (id?: string, obj?: { id: string } | string) =>
-    typeof obj === 'string' ? obj === id : obj?.id === id;
+    !!id && !!obj && (typeof obj === 'string' ? obj === id : !!obj.id && obj.id === id);
 
 export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
@@ -125,9 +125,21 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
         id: '946d2945-f09b-4e81-a574-bf2f9f1d1cca',
         name: 'Update all course sections',
         tags: ['course_admin', 'super_admin'],
-        actions: (user, course) => [
+        actions: (_user, course) => [
             {
                 action: 'update',
+                subject: Section,
+                validate: (instance: Section) => !!course && safeIdComparison(course.id, instance.course),
+            },
+        ],
+    },
+    {
+        id: '6901f58f-aef0-4dfc-8910-3610af8574f8',
+        name: 'Delete course sections',
+        tags: ['course_admin', 'super_admin'],
+        actions: (_user, course) => [
+            {
+                action: 'delete',
                 subject: Section,
                 validate: (instance: Section) => !!course && safeIdComparison(course.id, instance.course),
             },
@@ -238,7 +250,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '656c65b4-fe3d-4d9a-b891-3f949eab36c2',
         name: 'Update all course problems',
-        tags: ['ta', 'professor', 'course_admin', 'super_admin'],
+        tags: ['professor', 'course_admin', 'super_admin'],
         actions: (_user, course) => [
             {
                 action: 'update',
@@ -356,9 +368,57 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
         ],
     },
     {
-        id: '08b14ba7-91b8-4b15-9c96-f572f796eff6',
+        id: '7a8223d7-67c3-4ce3-8b16-c2b6c6a993b2',
+        name: 'Update own lesson plan steps',
+        tags: ['ta', 'professor', 'course_admin', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'update',
+                subject: LessonPlanStep,
+                validate: (instance: LessonPlanStep) =>
+                    !!user &&
+                    !!course &&
+                    safeIdComparison(course.id, instance.course) &&
+                    safeIdComparison(user.id, instance.creator),
+            },
+        ],
+    },
+    {
+        id: '1821a33d-aefb-4da5-81e2-310b5baca74c',
+        name: 'Create own course lesson plan steps',
+        tags: ['ta', 'professor', 'course_admin', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'create',
+                subject: LessonPlanStep,
+                validate: (instance: LessonPlanStep) =>
+                    !!user &&
+                    !!course &&
+                    safeIdComparison(course.id, instance.course) &&
+                    safeIdComparison(user.id, instance.creator),
+            },
+        ],
+    },
+    {
+        id: '8cd5c650-951c-4429-b162-648809c53ae5',
+        name: 'Delete own lesson plan steps',
+        tags: ['ta', 'professor', 'course_admin', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'delete',
+                subject: LessonPlanStep,
+                validate: (instance: LessonPlanStep) =>
+                    !!user &&
+                    !!course &&
+                    safeIdComparison(course.id, instance.course) &&
+                    safeIdComparison(user.id, instance.creator),
+            },
+        ],
+    },
+    {
+        id: 'e4723e62-fa48-4dfc-9e69-4cc36e97cc73',
         name: 'Update all course lesson plans',
-        tags: ['ta', 'course_admin', 'super_admin'],
+        tags: ['course_admin', 'super_admin'],
         actions: (_user, course) => [
             {
                 action: 'update',

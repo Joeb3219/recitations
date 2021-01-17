@@ -38,10 +38,12 @@ export class ListQuizzesComponent {
                 {
                     text: 'Modify',
                     click: () => this.handleOpenEditQuizModal(row),
+                    can: { action: 'update', subject: new Quiz(row) },
                 },
                 {
                     text: 'Delete',
                     click: () => this.handleOpenDeleteQuizModal(row),
+                    can: { action: 'delete', subject: new Quiz(row) },
                 },
             ],
         },

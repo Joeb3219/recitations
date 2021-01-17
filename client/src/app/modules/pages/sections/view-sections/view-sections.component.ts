@@ -1,4 +1,4 @@
-import { Component, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { DatatableColumn } from '@components/datatable/datatable.component';
 import { Course, Section, StandardResponseInterface } from '@dynrec/common';
 import { HttpFilterInterface } from '@http/httpFilter.interface';
@@ -11,7 +11,7 @@ import { SectionService } from '../../../../services/section.service';
     templateUrl: './view-sections.component.html',
     styleUrls: ['./view-sections.component.scss'],
 })
-export class ViewSectionsComponent {
+export class ViewSectionsComponent implements OnChanges {
     @LoadedArg(CourseService, Course, 'courseID')
     course: Course;
 
@@ -43,11 +43,6 @@ export class ViewSectionsComponent {
             cellTemplate: 'userCell',
         },
         {
-            name: 'Instructor',
-            prop: 'instructor',
-            cellTemplate: 'userCell',
-        },
-        {
             name: 'Actions',
             cellTemplate: 'actionsCell',
             actions: (row: Section) => [
@@ -71,6 +66,12 @@ export class ViewSectionsComponent {
 
     constructor(private SectionService: SectionService) {
         this.fetchSections = this.fetchSections.bind(this);
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes) {
+            this.refreshData.next();
+        }
     }
 
     async fetchSections(args: HttpFilterInterface): Promise<StandardResponseInterface<Section[]>> {

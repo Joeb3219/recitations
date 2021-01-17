@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DatatableColumn } from '@components/datatable/datatable.component';
 import { Lesson, MeetingType, MeetingWithLesson, Section } from '@dynrec/common';
 import { MeetingService } from '../../../../services/meeting.service';
@@ -8,7 +8,7 @@ import { MeetingService } from '../../../../services/meeting.service';
     templateUrl: './section-view.component.html',
     styleUrls: ['./section-view.component.scss'],
 })
-export class SectionViewComponent implements OnInit {
+export class SectionViewComponent implements OnChanges {
     @Input() section: Section;
 
     refreshData: EventEmitter<void> = new EventEmitter();
@@ -71,7 +71,9 @@ export class SectionViewComponent implements OnInit {
         this.fetchMeetingTimes = this.fetchMeetingTimes.bind(this);
     }
 
-    ngOnInit(): void {}
+    ngOnChanges(changes: SimpleChanges): void {
+        this.refreshData.next();
+    }
 
     handleOpenEditLessonModal(meeting: MeetingWithLesson): void {
         this.isEditLessonModalOpen = true;

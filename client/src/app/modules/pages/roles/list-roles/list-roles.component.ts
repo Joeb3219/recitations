@@ -1,4 +1,4 @@
-import { Component, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { Course, Role, StandardResponseInterface } from '@dynrec/common';
 import { CourseService } from '@services/course.service';
 import { RoleService } from '@services/role.service';
@@ -12,7 +12,7 @@ import { DatatableColumn } from '../../../components/datatable/datatable.compone
     encapsulation: ViewEncapsulation.None,
     styleUrls: ['./list-roles.component.scss'],
 })
-export class ListRolesComponent {
+export class ListRolesComponent implements OnChanges {
     @LoadedArg(CourseService, Course, 'courseID')
     course: Course;
 
@@ -56,6 +56,12 @@ export class ListRolesComponent {
 
     constructor(private roleService: RoleService) {
         this.fetchRoles = this.fetchRoles.bind(this);
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes) {
+            this.refreshData.next();
+        }
     }
 
     async fetchRoles(args: HttpFilterInterface): Promise<StandardResponseInterface<Role[]>> {

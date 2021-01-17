@@ -1,4 +1,4 @@
-import { Component, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { DatatableColumn } from '@components/datatable/datatable.component';
 import { Course, LearningGoal, LearningGoalCategory, StandardResponseInterface } from '@dynrec/common';
 import { HttpFilterInterface } from '@http/httpFilter.interface';
@@ -11,7 +11,7 @@ import { LoadedArg } from '../../../../decorators';
     templateUrl: './list-learning-goals.component.html',
     styleUrls: ['./list-learning-goals.component.scss'],
 })
-export class ListLearningGoalsComponent {
+export class ListLearningGoalsComponent implements OnChanges {
     @LoadedArg(CourseService, Course, 'courseID')
     course: Course;
 
@@ -79,6 +79,12 @@ export class ListLearningGoalsComponent {
     constructor(private readonly learningGoalsService: LearningGoalService) {
         this.fetchCategories = this.fetchCategories.bind(this);
         this.createNewCategory = this.createNewCategory.bind(this);
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes) {
+            this.refreshData.next();
+        }
     }
 
     async handleCategorySaved(category: LearningGoalCategory) {

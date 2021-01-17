@@ -171,6 +171,16 @@ export class MeetingFeedbackEditComponent implements OnInit {
         }));
     }
 
+    generateDefaultReport() {
+        this.report = new MeetingReport({
+            course: this.course,
+            date: this.date,
+            meetingTimes: this.meetings.map(meeting => meeting.meetingTime),
+            problemFeedback: [],
+            studentsPresent: [],
+        });
+    }
+
     async loadMeetings() {
         const result = await this.meetingService.getMeetingLessonsAtTime(this.course, this.date);
         this.meetings = result.data;
@@ -182,15 +192,11 @@ export class MeetingFeedbackEditComponent implements OnInit {
             const reportResult = await this.meetingReportService.getMeetingReportOnDate(this.course, this.date);
             this.report = reportResult.data;
         } catch (err) {
-            console.error(err);
+            this.generateDefaultReport();
         }
 
         if (!this.report) {
-            this.report = new MeetingReport({
-                course: this.course,
-                date: this.date,
-                meetingTimes: this.meetings.map(meeting => meeting.meetingTime),
-            });
+            this.generateDefaultReport();
         }
 
         this.generateForm();

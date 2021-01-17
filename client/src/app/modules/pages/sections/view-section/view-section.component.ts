@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Section } from '@dynrec/common';
 import { LoadedArg } from '../../../../decorators/input.decorator';
 import { SectionService } from '../../../../services/section.service';
@@ -8,11 +8,7 @@ import { SectionService } from '../../../../services/section.service';
     templateUrl: './view-section.component.html',
     styleUrls: ['./view-section.component.scss'],
 })
-export class ViewSectionComponent implements OnInit {
+export class ViewSectionComponent {
     @LoadedArg(SectionService, Section, 'sectionID')
     section: Section;
-
-    constructor() {}
-
-    ngOnInit(): void {}
 }

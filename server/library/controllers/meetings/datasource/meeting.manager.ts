@@ -18,18 +18,17 @@ export class MeetingManager {
 
         const range = dateRange(semesterStartDate ?? new Date(), semesterEndDate ?? new Date());
 
-        return range.filter(date =>
-            defaultLessons.find(lesson => dayjs(lesson.beginDate).isBefore(date) && dayjs(lesson.endDate).isAfter(date))
-        );
+        return range.filter(date => defaultLessons.find(lesson => this.lessonOverlapsDate(lesson, date)));
     }
 
     static async getMeetings(course: Course): Promise<Meeting<MeetingType>[]> {
         const meetings = await Promise.all(
             AllMeetingSources.map(async MeetingSourceClass => {
                 const sourceInstance = new MeetingSourceClass();
+                const dates = await this.getDateRange(course);
                 return sourceInstance.getPotentialMeetingDates({
                     course,
-                    dates: await this.getDateRange(course),
+                    dates,
                 });
             })
         );
@@ -47,6 +46,9 @@ export class MeetingManager {
     ): Promise<MeetingWithLesson<MeetingType>[]> {
         const lessons = await Lesson.find({ course: course });
         const courseMeetings = await MeetingManager.getMeetings(course);
+
+        console.log(lessons);
+        console.log(courseMeetings.filter(meeting => (meetingFilter ? meetingFilter(meeting) : true)));
 
         return courseMeetings
             .filter(meeting => (meetingFilter ? meetingFilter(meeting) : true))

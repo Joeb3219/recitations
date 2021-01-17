@@ -1,4 +1,4 @@
-import { Component, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { DatatableColumn } from '@components/datatable/datatable.component';
 import { Course, CoverageRequest, RuleAction, StandardResponseInterface } from '@dynrec/common';
 import { HttpFilterInterface } from '@http/httpFilter.interface';
@@ -13,7 +13,7 @@ import { LoadedArg } from '../../../../decorators';
     encapsulation: ViewEncapsulation.None,
     styleUrls: ['./list-coverage-requests.component.scss'],
 })
-export class ListCoverageRequestsComponent {
+export class ListCoverageRequestsComponent implements OnChanges {
     @LoadedArg<Course>(CourseService, Course, 'courseID')
     course: Course;
 
@@ -70,6 +70,12 @@ export class ListCoverageRequestsComponent {
 
     constructor(private coverageRequestService: CoverageRequestService, private readonly toastr: ToastrService) {
         this.fetchCoverageRequests = this.fetchCoverageRequests.bind(this);
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes) {
+            this.refreshData.next();
+        }
     }
 
     async fetchCoverageRequests(args: HttpFilterInterface): Promise<StandardResponseInterface<CoverageRequest[]>> {

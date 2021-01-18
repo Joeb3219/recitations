@@ -39,6 +39,7 @@ export interface DatatableAction {
     click?: () => Promise<unknown> | void;
     href?: string;
     can?: AbilitiesCanDirectivePayload | AbilitiesCanDirectivePayload[];
+    if?: boolean;
 }
 
 interface DatatableColumnBase<

@@ -86,16 +86,18 @@
 <ng-template #actionsCellTemplate let-column="column" let-value="value" let-rowIndex="rowIndex" let-row="row">
     <div class="btn-group btn-group-sm" data-toggle="buttons">
         <ng-container *ngFor="let action of column.actions(row, editedIndices.includes(rowIndex))">
-            <ng-container *can="action.can">
-                <a *ngIf="action.href" class="btn btn-outline-secondary" routerLink="{{ action.href }}">{{
-                    action.text
-                }}</a>
-                <span
-                    *ngIf="action.click || action.action"
-                    class="btn btn-outline-secondary"
-                    (click)="handleActionClicked(rowIndex, action)"
-                    >{{ action.text }}</span
-                >
+            <ng-container *ngIf="action.if === undefined || action.if">
+                <ng-container *can="action.can">
+                    <a *ngIf="action.href" class="btn btn-outline-secondary" routerLink="{{ action.href }}">{{
+                        action.text
+                    }}</a>
+                    <span
+                        *ngIf="action.click || action.action"
+                        class="btn btn-outline-secondary"
+                        (click)="handleActionClicked(rowIndex, action)"
+                        >{{ action.text }}</span
+                    >
+                </ng-container>
             </ng-container>
         </ng-container>
     </div>

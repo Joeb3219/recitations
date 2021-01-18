@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DatatableColumn } from '@components/datatable/datatable.component';
 import { Lesson, MeetingType, MeetingWithLesson, Section } from '@dynrec/common';
+import dayjs from 'dayjs';
 import { MeetingService } from '../../../../services/meeting.service';
 
 @Component({
@@ -62,6 +63,7 @@ export class SectionViewComponent implements OnChanges {
                         subject: new Lesson({ meetingTime: row.meetingTime, course: this.section.course }),
                     },
                     href: `/courses/${row.lesson.course.id}/meeting-feedback/${row.date.toISOString?.() ?? row.date}`,
+                    if: dayjs().isAfter(row.date),
                 },
             ],
         },

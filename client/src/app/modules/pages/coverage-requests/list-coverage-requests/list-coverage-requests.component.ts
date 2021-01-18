@@ -1,6 +1,7 @@
-import { Component, EventEmitter, OnChanges, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { DatatableColumn } from '@components/datatable/datatable.component';
-import { Course, CoverageRequest } from '@dynrec/common';
+import { Course, CoverageRequest, StandardResponseInterface } from '@dynrec/common';
+import { HttpFilterInterface } from '@http/httpFilter.interface';
 import { CourseService } from '@services/course.service';
 import { CoverageRequestService } from '@services/coverageRequest.service';
 import { ToastrService } from 'ngx-toastr';

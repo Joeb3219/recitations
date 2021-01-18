@@ -44,11 +44,8 @@ export class MeetingManager {
         course: Course,
         meetingFilter?: (meeting: Meeting) => boolean
     ): Promise<MeetingWithLesson<MeetingType>[]> {
-        const lessons = await Lesson.find({ course: course });
+        const lessons = await Lesson.find({ course });
         const courseMeetings = await MeetingManager.getMeetings(course);
-
-        console.log(lessons);
-        console.log(courseMeetings.filter(meeting => (meetingFilter ? meetingFilter(meeting) : true)));
 
         return courseMeetings
             .filter(meeting => (meetingFilter ? meetingFilter(meeting) : true))

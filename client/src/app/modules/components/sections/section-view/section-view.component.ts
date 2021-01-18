@@ -35,7 +35,7 @@ export class SectionViewComponent implements OnChanges {
                 {
                     text: 'Access Code',
                     can: {
-                        action: 'update',
+                        action: 'create',
                         subject: new Lesson({ meetingTime: row.meetingTime, course: this.section.course }),
                     },
                     click: () => {
@@ -50,7 +50,7 @@ export class SectionViewComponent implements OnChanges {
                 {
                     text: 'Update Lesson',
                     can: {
-                        action: 'update',
+                        action: 'create',
                         subject: new Lesson({ meetingTime: row.meetingTime, course: this.section.course }),
                     },
                     click: () => this.handleOpenEditLessonModal(row),
@@ -58,7 +58,7 @@ export class SectionViewComponent implements OnChanges {
                 {
                     text: 'Feedback & Attendance',
                     can: {
-                        action: 'update',
+                        action: 'create',
                         subject: new Lesson({ meetingTime: row.meetingTime, course: this.section.course }),
                     },
                     href: `/courses/${row.lesson.course.id}/meeting-feedback/${row.date.toISOString?.() ?? row.date}`,

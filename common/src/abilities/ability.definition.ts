@@ -146,6 +146,18 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
         ],
     },
     {
+        id: 'e7d708b7-c786-4ed2-81f1-ce2ac0f3fbff',
+        name: 'Create course sections',
+        tags: ['course_admin', 'super_admin'],
+        actions: (_user, course) => [
+            {
+                action: 'create',
+                subject: Section,
+                validate: (instance: Section) => !!course && safeIdComparison(course.id, instance.course),
+            },
+        ],
+    },
+    {
         id: 'f7572352-6048-4cf5-998c-2fdb0026495a',
         name: 'View assigned sections in course',
         tags: ['professor', 'ta', 'student', 'course_admin', 'super_admin'],
@@ -318,6 +330,18 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
         actions: (_user, course) => [
             {
                 action: 'update',
+                subject: Role,
+                validate: (instance: Role) => !!course && safeIdComparison(course.id, instance.course),
+            },
+        ],
+    },
+    {
+        id: '982aba07-32ed-4d7a-8bfc-c1ccff7915ed',
+        name: 'Create course roles',
+        tags: ['course_admin', 'super_admin'],
+        actions: (_user, course) => [
+            {
+                action: 'create',
                 subject: Role,
                 validate: (instance: Role) => !!course && safeIdComparison(course.id, instance.course),
             },
@@ -597,11 +621,11 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
         id: '9fac8916-06f8-4fb6-8c03-fd4e013e5e48',
         name: 'Create meeting times',
         tags: ['course_admin', 'super_admin'],
-        actions: (_user, course) => [
+        actions: (_user, _course) => [
             {
                 action: 'create',
                 subject: MeetingTime,
-                validate: (instance: MeetingTime) => !!course,
+                validate: () => true,
             },
         ],
     },

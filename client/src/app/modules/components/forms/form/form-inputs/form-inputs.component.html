@@ -1,3 +1,5 @@
+<input type="text" ngbAutoFocus style="display: none" />
+
 <input
     *ngIf="input.type == 'text'"
     type="text"
@@ -95,10 +97,10 @@
 
 <ckeditor
     class="ckeditor"
+    *ngIf="input.type === 'wysiwyg'"
     [editor]="Editor"
     (change)="fieldUpdatedWysiwyg(input.name, $event)"
     data="{{ input.value }}"
-    *ngIf="input.type === 'wysiwyg'"
     name="input.name"
 ></ckeditor>
 

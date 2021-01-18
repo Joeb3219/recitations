@@ -1,0 +1,18 @@
+<div class="page">
+    <ng-container *ngIf="!course || !dateStr">
+        <h4>Not Found</h4>
+    </ng-container>
+    <ng-container *ngIf="course && dateStr">
+        <div class="container-margin">
+            <div class="row">
+                <div style="float: left; text-align: left" class="col">
+                    <h4>Meeting Feedback for {{ dateStr | date: 'MM/dd/YYYY HH:mm' }}</h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-margin">
+            <app-meeting-feedback-edit [course]="course" [date]="getDate()"></app-meeting-feedback-edit>
+        </div>
+    </ng-container>
+</div>

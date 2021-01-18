@@ -1,5 +1,4 @@
-.ckeditor {
-    .ck-editor {
-        width: 99% !important;
-    }
+:ng-deep .ck-editor {
+    width: 100% !important;
+    min-width: 500px;
 }

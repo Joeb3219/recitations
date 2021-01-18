@@ -1,3 +1,5 @@
+<input type="text" ngbAutoFocus style="display: none" />
+
 <input
     *ngIf="input.type == 'text'"
     type="text"
@@ -95,10 +97,10 @@
 
 <ckeditor
     class="ckeditor"
+    *ngIf="input.type === 'wysiwyg'"
     [editor]="Editor"
     (change)="fieldUpdatedWysiwyg(input.name, $event)"
     data="{{ input.value }}"
-    *ngIf="input.type === 'wysiwyg'"
     name="input.name"
 ></ckeditor>
 
@@ -149,5 +151,12 @@
     [course]="input.course"
     (onChange)="fieldUpdated(input.name, $event)"
 ></app-file-uploader>
+
+<app-roster-formfield
+    *ngIf="input.type === 'roster' && !!input.users"
+    [users]="input.users"
+    [value]="input.value"
+    (onChange)="fieldUpdated(input.name, $event)"
+></app-roster-formfield>
 
 <div *ngIf="input.type === 'textBlock'">{{ input.value }}</div>

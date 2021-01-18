@@ -15,7 +15,7 @@ export class LessonPlanService {
         throw new Error('Decorator Overloading Failed');
     }
 
-    @UpsertRequest<LessonPlanStep>(LessonPlanStep, 'lessonplan')
+    @UpsertRequest<LessonPlanStep>(LessonPlanStep, 'lessonplanstep')
     public async upsertLessonPlanStep(
         lessonPlanStep: LessonPlanStep
     ): Promise<StandardResponseInterface<LessonPlanStep>> {

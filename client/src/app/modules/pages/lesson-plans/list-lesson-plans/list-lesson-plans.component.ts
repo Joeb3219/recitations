@@ -1,4 +1,4 @@
-import { Component, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { DatatableColumn } from '@components/datatable/datatable.component';
 import { Course, LessonPlan, StandardResponseInterface } from '@dynrec/common';
 import { HttpFilterInterface } from '@http/httpFilter.interface';
@@ -12,7 +12,7 @@ import { LoadedArg } from '../../../../decorators';
     encapsulation: ViewEncapsulation.None,
     styleUrls: ['./list-lesson-plans.component.scss'],
 })
-export class ListLessonPlansComponent {
+export class ListLessonPlansComponent implements OnChanges {
     @LoadedArg<Course>(CourseService, Course, 'courseID')
     course: Course;
 
@@ -37,10 +37,7 @@ export class ListLessonPlansComponent {
                 {
                     text: 'Modify',
                     click: () => this.handleOpenEditLessonPlanModal(row),
-                },
-                {
-                    text: 'Delete',
-                    click: () => this.handleOpenDeleteLessonPlanModal(row),
+                    can: { action: 'update', subject: new LessonPlan(row) },
                 },
             ],
         },
@@ -56,6 +53,12 @@ export class ListLessonPlansComponent {
 
     constructor(private lessonPlanService: LessonPlanService) {
         this.fetchLessonPlans = this.fetchLessonPlans.bind(this);
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes) {
+            this.refreshData.next();
+        }
     }
 
     async fetchLessonPlans(args: HttpFilterInterface): Promise<StandardResponseInterface<LessonPlan[]>> {

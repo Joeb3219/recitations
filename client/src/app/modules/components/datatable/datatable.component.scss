@@ -5,12 +5,27 @@
 :host {
     ::ng-deep .datatable-row-detail {
         height: 100% !important;
-        background-color: red !important;
     }
 }
 
 .datatable-row-detail {
-    height: auto;
+    height: 100% !important;
+}
+
+::ng-deep {
+    .datatable-row-detail {
+        height: 100% !important;
+    }
+}
+
+::ng-deep {
+    .progress-linear {
+        position: relative !important;
+
+        .container {
+            max-width: 100% !important;
+        }
+    }
 }
 
 button:focus,

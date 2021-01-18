@@ -8,7 +8,14 @@ import {
     ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
-import { FormFieldUpdated, FormInput, ProblemDifficulty, StandardResponseInterface, User } from '@dynrec/common';
+import {
+    FormFieldUpdated,
+    FormInput,
+    Lesson,
+    ProblemDifficulty,
+    StandardResponseInterface,
+    User,
+} from '@dynrec/common';
 import { HttpFilterInterface } from '@http/httpFilter.interface';
 import { ColumnMode, TableColumn } from '@swimlane/ngx-datatable';
 import { AbilitiesCanDirectivePayload } from 'app/directives/abilities.directive';
@@ -23,7 +30,8 @@ export type DatatableColumnCellTemplateName =
     | 'actionsCell'
     | 'editCell'
     | 'toggleCell'
-    | 'dateCell';
+    | 'dateCell'
+    | 'lessonCell';
 
 export interface DatatableAction {
     text: string;
@@ -31,6 +39,7 @@ export interface DatatableAction {
     click?: () => Promise<unknown> | void;
     href?: string;
     can?: AbilitiesCanDirectivePayload | AbilitiesCanDirectivePayload[];
+    if?: boolean;
 }
 
 interface DatatableColumnBase<
@@ -83,6 +92,9 @@ export class DatatableComponent<T extends { id?: string }> implements OnInit {
 
     @ViewChild('dateCellTemplate', { static: true })
     dateCellTemplate: TemplateRef<unknown>;
+
+    @ViewChild('lessonCellTemplate', { static: true })
+    lessonCellTemplate: TemplateRef<unknown>;
 
     @ViewChild('actionsCellTemplate', { static: true })
     actionsCellTemplate: TemplateRef<unknown>;
@@ -237,6 +249,10 @@ export class DatatableComponent<T extends { id?: string }> implements OnInit {
                 template: this.userCellTemplate,
                 csv: (user: User | undefined) =>
                     user ? `${user.firstName} ${user.lastName} (${user.username})` : undefined,
+            },
+            lessonCell: {
+                template: this.lessonCellTemplate,
+                csv: (lesson: Lesson | undefined) => lesson?.lessonPlan?.name,
             },
             dateCell: {
                 template: this.dateCellTemplate,

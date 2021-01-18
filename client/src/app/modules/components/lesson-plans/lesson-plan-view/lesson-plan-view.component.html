@@ -2,13 +2,12 @@
     <div class="row">
         <div class="col">
             <h2>{{ lessonPlan.name }}</h2>
-            <app-user-badge [user]="lessonPlan.creator"></app-user-badge>
         </div>
     </div>
 
     <div class="row">
         <ng-container *ngFor="let step of lessonPlan.steps">
-            <app-lesson-plan-step-view [lessonPlanStep]="step"></app-lesson-plan-step-view>
+            <app-lesson-plan-step-view [lessonPlanStep]="step" class="step"></app-lesson-plan-step-view>
         </ng-container>
     </div>
 </div>

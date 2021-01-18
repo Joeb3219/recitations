@@ -1,4 +1,4 @@
-import { Course, dateRange, Lesson, Meeting, MeetingType } from '@dynrec/common';
+import { Course, dateRange, Lesson, Meeting, MeetingType, MeetingWithLesson } from '@dynrec/common';
 import dayjs from 'dayjs';
 import _ from 'lodash';
 import { AllMeetingSources } from './index';
@@ -17,22 +17,53 @@ export class MeetingManager {
         const defaultLessons = await Lesson.find({ course: course, meetingTime: null });
 
         const range = dateRange(semesterStartDate ?? new Date(), semesterEndDate ?? new Date());
-        return range.filter(date =>
-            defaultLessons.find(lesson => dayjs(lesson.beginDate).isBefore(date) && dayjs(lesson.endDate).isAfter(date))
-        );
+
+        return range.filter(date => defaultLessons.find(lesson => this.lessonOverlapsDate(lesson, date)));
     }
 
     static async getMeetings(course: Course): Promise<Meeting<MeetingType>[]> {
         const meetings = await Promise.all(
             AllMeetingSources.map(async MeetingSourceClass => {
                 const sourceInstance = new MeetingSourceClass();
+                const dates = await this.getDateRange(course);
                 return sourceInstance.getPotentialMeetingDates({
                     course,
-                    dates: await this.getDateRange(course),
+                    dates,
                 });
             })
         );
 
         return _.flatten(meetings);
+    }
+
+    static lessonOverlapsDate(lesson: Lesson, date: Date) {
+        return dayjs(lesson.beginDate).isBefore(date) && dayjs(lesson.endDate).isAfter(date);
+    }
+
+    static async getMeetingWithLessons(
+        course: Course,
+        meetingFilter?: (meeting: Meeting) => boolean
+    ): Promise<MeetingWithLesson<MeetingType>[]> {
+        const lessons = await Lesson.find({ course });
+        const courseMeetings = await MeetingManager.getMeetings(course);
+
+        return courseMeetings
+            .filter(meeting => (meetingFilter ? meetingFilter(meeting) : true))
+            .map(
+                meeting =>
+                    new MeetingWithLesson({
+                        ...meeting,
+                        lesson:
+                            lessons.find(
+                                lesson =>
+                                    lesson.meetingTime?.id === meeting.meetingTime.id &&
+                                    this.lessonOverlapsDate(lesson, meeting.date)
+                            ) ??
+                            lessons.find(
+                                lesson => !lesson.meetingTime && this.lessonOverlapsDate(lesson, meeting.date)
+                            ),
+                    })
+            )
+            .filter(meeting => !!meeting.lesson);
     }
 }

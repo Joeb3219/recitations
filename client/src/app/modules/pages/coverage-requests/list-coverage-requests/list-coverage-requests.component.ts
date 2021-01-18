@@ -1,6 +1,6 @@
-import { Component, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { DatatableColumn } from '@components/datatable/datatable.component';
-import { Course, CoverageRequest, RuleAction, StandardResponseInterface } from '@dynrec/common';
+import { Course, CoverageRequest, StandardResponseInterface } from '@dynrec/common';
 import { HttpFilterInterface } from '@http/httpFilter.interface';
 import { CourseService } from '@services/course.service';
 import { CoverageRequestService } from '@services/coverageRequest.service';
@@ -13,7 +13,7 @@ import { LoadedArg } from '../../../../decorators';
     encapsulation: ViewEncapsulation.None,
     styleUrls: ['./list-coverage-requests.component.scss'],
 })
-export class ListCoverageRequestsComponent {
+export class ListCoverageRequestsComponent implements OnChanges {
     @LoadedArg<Course>(CourseService, Course, 'courseID')
     course: Course;
 
@@ -34,24 +34,18 @@ export class ListCoverageRequestsComponent {
             actions: (row: CoverageRequest) => {
                 const instance = new CoverageRequest(row);
                 return [
-                    ...(!row.coveredBy
-                        ? [
-                              {
-                                  text: 'Accept',
-                                  can: { action: 'use' as RuleAction, subject: instance },
-                                  click: () => this.handleToggleAcceptance(row),
-                              },
-                          ]
-                        : []),
-                    ...(row.coveredBy
-                        ? [
-                              {
-                                  text: 'Reject',
-                                  can: { action: 'use' as RuleAction, subject: instance },
-                                  click: () => this.handleToggleAcceptance(row),
-                              },
-                          ]
-                        : []),
+                    {
+                        text: 'Accept',
+                        can: { action: 'use', subject: instance },
+                        click: () => this.handleToggleAcceptance(row),
+                        if: !!row.coveredBy,
+                    },
+                    {
+                        text: 'Reject',
+                        can: { action: 'use', subject: instance },
+                        click: () => this.handleToggleAcceptance(row),
+                        if: !!row.coveredBy,
+                    },
                     {
                         text: 'Delete',
                         can: { action: 'delete', subject: instance },
@@ -70,6 +64,12 @@ export class ListCoverageRequestsComponent {
 
     constructor(private coverageRequestService: CoverageRequestService, private readonly toastr: ToastrService) {
         this.fetchCoverageRequests = this.fetchCoverageRequests.bind(this);
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes) {
+            this.refreshData.next();
+        }
     }
 
     async fetchCoverageRequests(args: HttpFilterInterface): Promise<StandardResponseInterface<CoverageRequest[]>> {

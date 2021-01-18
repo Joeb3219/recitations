@@ -1,4 +1,4 @@
-import { Component, EventEmitter } from '@angular/core';
+import { Component, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
 import { Course, Quiz, StandardResponseInterface } from '@dynrec/common';
 import { CourseService } from '@services/course.service';
 import { LoadedArg } from '../../../../decorators';
@@ -11,7 +11,7 @@ import { DatatableColumn } from '../../../components/datatable/datatable.compone
     templateUrl: './list-quizzes.component.html',
     styleUrls: ['./list-quizzes.component.scss'],
 })
-export class ListQuizzesComponent {
+export class ListQuizzesComponent implements OnChanges {
     @LoadedArg(CourseService, Course, 'courseID')
     course: Course;
 
@@ -38,10 +38,12 @@ export class ListQuizzesComponent {
                 {
                     text: 'Modify',
                     click: () => this.handleOpenEditQuizModal(row),
+                    can: { action: 'update', subject: new Quiz(row) },
                 },
                 {
                     text: 'Delete',
                     click: () => this.handleOpenDeleteQuizModal(row),
+                    can: { action: 'delete', subject: new Quiz(row) },
                 },
             ],
         },
@@ -57,6 +59,12 @@ export class ListQuizzesComponent {
 
     constructor(private quizService: QuizService) {
         this.fetchQuizzes = this.fetchQuizzes.bind(this);
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes) {
+            this.refreshData.next();
+        }
     }
 
     async fetchQuizzes(args: HttpFilterInterface): Promise<StandardResponseInterface<Quiz[]>> {

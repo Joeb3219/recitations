@@ -1,4 +1,4 @@
-import { Course, LessonPlan, Meetable } from '../../models';
+import { Course, LessonPlan, Meetable, User } from '../../models';
 
 export type FormInputType =
     | 'text'
@@ -18,7 +18,8 @@ export type FormInputType =
     | 'textBlock'
     | 'lessonPlan'
     | 'quiz'
-    | 'abilities';
+    | 'abilities'
+    | 'roster';
 
 type Undefinable<T> = { [P in keyof T]?: never };
 
@@ -50,6 +51,10 @@ interface UserInput {
     multi?: boolean;
 }
 
+interface RosterInput {
+    users?: User[];
+}
+
 export type FormInput<InputType extends FormInputType = FormInputType, G extends any = any> = {
     group?: string;
     name?: keyof G & string;
@@ -69,6 +74,7 @@ export type FormInput<InputType extends FormInputType = FormInputType, G extends
     (InputType extends 'user' ? UserInput : Undefinable<UserInput>) &
     (InputType extends 'lessonPlan' ? ProblemInput : Undefinable<ProblemInput>) &
     (InputType extends 'quiz' ? ProblemInput : Undefinable<ProblemInput>) &
+    (InputType extends 'roster' ? RosterInput : Undefinable<RosterInput>) &
     (InputType extends 'wysiwyg' ? WysiwygInput : Undefinable<WysiwygInput>);
 
 export interface FormFieldUpdated<T extends any = any> {

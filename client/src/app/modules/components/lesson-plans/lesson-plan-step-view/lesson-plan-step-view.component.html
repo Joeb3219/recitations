@@ -1,10 +1,16 @@
 <div class="task">
-  <span class="task__header">
-    {{ lessonPlanStep.title }} --
-    {{ lessonPlanStep.estimatedDuration ? lessonPlanStep.estimatedDuration : lessonPlanStep.problem?.estimatedDuration }}
-  </span>
-  <div class="task__body">
-    <app-problem-view *ngIf="lessonPlanStep.problem" [problem]="lessonPlanStep.problem"></app-problem-view>
-    <span>{{ lessonPlanStep.description }}</span>
-  </div>
+    <h4 class="task__header" style="margin-left: 0.2rem" *ngIf="!lessonPlanStep.problem">
+        <b>{{ lessonPlanStep.title }}</b>
+    </h4>
+    <div class="task__body">
+        <div class="task__description" *ngIf="lessonPlanStep.description?.length">
+            {{ lessonPlanStep.description }}
+        </div>
+        <app-problem-view
+            *ngIf="lessonPlanStep.problem"
+            [problem]="lessonPlanStep.problem"
+            [allowShowEdit]="false"
+            [allowShowSolution]="true"
+        ></app-problem-view>
+    </div>
 </div>

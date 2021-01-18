@@ -3,6 +3,7 @@ import { CoverageRequestController } from './coverageRequest.controller';
 import { LearningGoalController } from './learningGoal.controller';
 import { LessonController } from './lesson.controller';
 import { LessonPlanController } from './lessonPlan.controller';
+import { MeetingReportController } from './meetingReport.controller';
 import { MeetingController } from './meetings/meeting.controller';
 import { MeetingTimeController } from './meetingTime.controller';
 import { ProblemController } from './problem.controller';
@@ -28,6 +29,7 @@ export {
     RoleController,
     CoverageRequestController,
     LessonController,
+    MeetingReportController,
 };
 
 export const AllControllers = [
@@ -45,4 +47,5 @@ export const AllControllers = [
     RoleController,
     CoverageRequestController,
     LessonController,
+    MeetingReportController,
 ];

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { Course, Problem, StandardResponseInterface } from '@dynrec/common';
 import { CourseService } from '@services/course.service';
 import { ProblemService } from '@services/problem.service';
@@ -12,7 +12,7 @@ import { DatatableColumn } from '../../../components/datatable/datatable.compone
     encapsulation: ViewEncapsulation.None,
     styleUrls: ['./list-problems.component.scss'],
 })
-export class ListProblemsComponent {
+export class ListProblemsComponent implements OnChanges {
     @LoadedArg(CourseService, Course, 'courseID')
     course: Course;
 
@@ -44,10 +44,12 @@ export class ListProblemsComponent {
                 {
                     text: 'Modify',
                     click: () => this.handleOpenEditProblemModal(row),
+                    can: { action: 'update', subject: new Problem(row) },
                 },
                 {
                     text: 'Delete',
                     click: () => this.handleOpenDeleteProblemModal(row),
+                    can: { action: 'delete', subject: new Problem(row) },
                 },
             ],
         },
@@ -63,6 +65,12 @@ export class ListProblemsComponent {
 
     constructor(private problemService: ProblemService) {
         this.fetchProblems = this.fetchProblems.bind(this);
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes) {
+            this.refreshData.next();
+        }
     }
 
     async fetchProblems(args: HttpFilterInterface): Promise<StandardResponseInterface<Problem[]>> {

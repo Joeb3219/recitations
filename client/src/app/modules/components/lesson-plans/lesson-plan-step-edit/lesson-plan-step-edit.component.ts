@@ -60,11 +60,20 @@ export class LessonPlanStepEditComponent implements OnInit {
                 col: 1,
             },
             {
+                type: 'problem',
+                name: 'problem',
+                label: 'Problem',
+                course: get(this.lessonPlanStep, 'course'),
+                value: get(this.lessonPlanStep, 'problem'),
+                hidden: get(this.lessonPlanStep, 'type') !== 'problem',
+                row: 1,
+            },
+            {
                 type: 'text',
                 name: 'title',
                 label: 'Title',
                 value: get(this.lessonPlanStep, 'title'),
-                row: 1,
+                row: 2,
                 col: 0,
             },
             {
@@ -72,22 +81,13 @@ export class LessonPlanStepEditComponent implements OnInit {
                 name: 'description',
                 label: 'Description',
                 value: get(this.lessonPlanStep, 'description'),
-                row: 2,
-            },
-            {
-                type: 'problem',
-                name: 'problem',
-                label: 'Problem',
-                course: get(this.lessonPlanStep, 'course'),
-                value: get(this.lessonPlanStep, 'problem'),
-                hidden: get(this.lessonPlanStep, 'type') !== 'problem',
                 row: 3,
             },
         ];
     }
 
     handleFieldChange({ name, value }: FormFieldUpdated): void {
-        Object.assign(this.lessonPlanService, { [name]: value });
+        Object.assign(this.lessonPlanStep, { [name]: value });
         this.generateForm();
     }
 

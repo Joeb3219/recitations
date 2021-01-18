@@ -17,6 +17,8 @@ export abstract class Meetable extends BaseEntity implements MeetableInterface {
     @Type(() => MeetingTime)
     public meetingTimes?: MeetingTime[];
 
+    abstract get meetingIdentifier(): string;
+
     constructor(args: Partial<Meetable> = {}) {
         super();
         Object.assign(this, args);

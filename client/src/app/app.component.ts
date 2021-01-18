@@ -41,6 +41,23 @@ export class AppComponent implements OnInit {
                 stub: string;
             }[] = Reflect.getMetadata('loadedArgs', data) || [];
 
+            const loadedStringArgs: {
+                propertyKey: string;
+                stub: string;
+            }[] = Reflect.getMetadata('loadedStringArgs', data) || [];
+
+            loadedStringArgs.map(arg => {
+                const value = this.currentParams[arg.stub];
+                // and now we can set the component's value
+                // eslint-disable-next-line no-proto, no-param-reassign
+                (data.__proto__ as any)[arg.propertyKey] = value;
+
+                // Tick an update in
+                setTimeout(() => {
+                    this.aRef.tick();
+                });
+            });
+
             await Promise.all(
                 loadedArgs.map(async arg => {
                     // This will contain the metadata of what resource this service providers for, and the function to call for a Getter.

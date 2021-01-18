@@ -1,0 +1,5 @@
+<ng-container *ngIf="meetings && meetings.length">
+    <span *ngIf="meetings.length > 1">There are {{ meetings.length + 1 }} meetings in this report.</span>
+
+    <app-form [form]="form" (onSubmit)="formSubmitted($event)"></app-form>
+</ng-container>

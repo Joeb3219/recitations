@@ -1,6 +1,6 @@
-import { Type } from 'class-transformer';
+import { Expose, Type } from 'class-transformer';
 import { MeetingType } from '../enums';
-import { MeetingTime } from '../models';
+import { Lesson, MeetingTime } from '../models';
 
 export class Meeting<Type extends MeetingType = MeetingType> {
     @Type(() => MeetingTime)
@@ -10,6 +10,7 @@ export class Meeting<Type extends MeetingType = MeetingType> {
 
     date: Date;
 
+    @Expose()
     getAccessCode() {
         const baseStr = JSON.stringify({
             meetingTime: this.meetingTime.id,
@@ -69,6 +70,15 @@ export class Meeting<Type extends MeetingType = MeetingType> {
     }
 
     constructor(args: Partial<Meeting> = {}) {
+        Object.assign(this, args);
+    }
+}
+
+export class MeetingWithLesson<Type extends MeetingType = MeetingType> extends Meeting<Type> {
+    lesson: Lesson;
+
+    constructor(args: Partial<MeetingWithLesson> = {}) {
+        super(args);
         Object.assign(this, args);
     }
 }

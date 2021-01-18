@@ -34,6 +34,10 @@ export class Section extends Meetable implements SectionInterface {
     @Type(() => User)
     public students?: User[];
 
+    get meetingIdentifier() {
+        return this.sectionNumber;
+    }
+
     constructor(args: Partial<Section> = {}) {
         super();
         Object.assign(this, args);

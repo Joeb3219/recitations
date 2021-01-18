@@ -1,4 +1,4 @@
-import { Meeting, MeetingType, Section } from '@dynrec/common';
+import { Meeting, MeetingTime, MeetingType, Section } from '@dynrec/common';
 import _ from 'lodash';
 import { MeetingDataSource } from './meeting.datasource';
 import { MeetingDataSourceConfig } from './meeting.manager';
@@ -27,7 +27,7 @@ export class RecitationMeetingDataSource extends MeetingDataSource<MeetingType.R
                     .map(
                         time =>
                             new Meeting<MeetingType.RECITATION>({
-                                meetingTime: time,
+                                meetingTime: new MeetingTime({ ...time, meetable: section }),
                                 meetingType: MeetingType.RECITATION,
                                 date: time.getStartTime(date),
                             })

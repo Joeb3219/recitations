@@ -1,0 +1,22 @@
+<div class="page">
+    <ng-container *ngIf="!section">
+        <h4>Not Found</h4>
+    </ng-container>
+    <ng-container *ngIf="section">
+        <div class="container-margin">
+            <app-datatable
+                [dataFunction]="fetchMeetingTimes"
+                [columns]="columns"
+                [reload]="refreshData"
+            ></app-datatable>
+        </div>
+    </ng-container>
+</div>
+
+<app-lesson-edit
+    *ngIf="selectedLesson && isEditLessonModalOpen"
+    [lesson]="selectedLesson"
+    [isVisible]="isEditLessonModalOpen"
+    [editQuiz]="false"
+    (onClose)="handleCloseEditLessonModal()"
+></app-lesson-edit>

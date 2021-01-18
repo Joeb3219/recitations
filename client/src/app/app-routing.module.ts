@@ -4,6 +4,7 @@ import { CourseSettingsComponent } from '@pages/course-settings/course-settings.
 import { ViewCourseComponent } from '@pages/courses/view-course/view-course.component';
 import { ListLessonPlansComponent } from '@pages/lesson-plans/list-lesson-plans/list-lesson-plans.component';
 import { LoginComponent } from '@pages/login/login.component';
+import { ViewMeetingFeedbackComponent } from '@pages/meetings/view-meeting-feedback/view-meeting-feedback.component';
 import { ListProblemsComponent } from '@pages/problems/list-problems/list-problems.component';
 import { ViewProblemComponent } from '@pages/problems/view-problem/view-problem.component';
 import { RecitationsComponent } from '@pages/recitations/recitations.component';
@@ -60,6 +61,10 @@ const routes: Routes = [
     {
         path: 'settings',
         component: ViewUserSettingsComponent,
+    },
+    {
+        path: `courses/:courseID/meeting-feedback/:date`,
+        component: ViewMeetingFeedbackComponent,
     },
 ];
 

@@ -90,7 +90,7 @@ export class SidebarComponent implements OnInit {
                 {
                     slug: 'learning-goals',
                     name: 'Learning Goals',
-                    can: { action: 'view', subject: LearningGoalCategory, existsOnCourse: course },
+                    can: { action: 'update', subject: LearningGoalCategory, existsOnCourse: course },
                 },
                 {
                     slug: 'coverage-requests',

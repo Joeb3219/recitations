@@ -39,9 +39,7 @@ export class RolesHelper {
                 const data: Omit<RoleInterface, 'id'> = {
                     course,
                     name: _.startCase(tag),
-                    abilities: allAbilities
-                        .filter(ability => ability.tags?.includes('super_admin'))
-                        .map(ability => ability.id),
+                    abilities: allAbilities.filter(ability => ability.tags?.includes(tag)).map(ability => ability.id),
                     ruleTag: tag,
                 };
 

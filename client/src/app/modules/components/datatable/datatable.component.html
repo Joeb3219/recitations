@@ -33,7 +33,8 @@
     (page)="handlePageChange($event)"
     (sort)="handleSort($event)"
 >
-    <ngx-datatable-row-detail *ngIf="detailTemplate" [template]="detailTemplate"> </ngx-datatable-row-detail>
+    <ngx-datatable-row-detail *ngIf="detailTemplate" [template]="detailTemplate" [rowHeight]="100">
+    </ngx-datatable-row-detail>
 </ngx-datatable>
 
 <ng-template #detailToggleCellTemplate let-row="row" let-index="rowIndex" let-expanded="expanded" let-col="column">
@@ -73,19 +74,30 @@
     {{ value | date: 'MM/dd/YYYY HH:mm' }}
 </ng-template>
 
+<ng-template #lessonCellTemplate let-value="value" let-row="row">
+    <a
+        *ngIf="value && value.lessonPlan"
+        [routerLink]="['/courses', value.course.id, 'lesson-plans', value.lessonPlan.id]"
+    >
+        {{ value.lessonPlan.name }}
+    </a>
+</ng-template>
+
 <ng-template #actionsCellTemplate let-column="column" let-value="value" let-rowIndex="rowIndex" let-row="row">
     <div class="btn-group btn-group-sm" data-toggle="buttons">
         <ng-container *ngFor="let action of column.actions(row, editedIndices.includes(rowIndex))">
-            <ng-container *can="action.can">
-                <a *ngIf="action.href" class="btn btn-outline-secondary" routerLink="{{ action.href }}">{{
-                    action.text
-                }}</a>
-                <span
-                    *ngIf="action.click || action.action"
-                    class="btn btn-outline-secondary"
-                    (click)="handleActionClicked(rowIndex, action)"
-                    >{{ action.text }}</span
-                >
+            <ng-container *ngIf="action.if === undefined || action.if">
+                <ng-container *can="action.can">
+                    <a *ngIf="action.href" class="btn btn-outline-secondary" routerLink="{{ action.href }}">{{
+                        action.text
+                    }}</a>
+                    <span
+                        *ngIf="action.click || action.action"
+                        class="btn btn-outline-secondary"
+                        (click)="handleActionClicked(rowIndex, action)"
+                        >{{ action.text }}</span
+                    >
+                </ng-container>
             </ng-container>
         </ng-container>
     </div>

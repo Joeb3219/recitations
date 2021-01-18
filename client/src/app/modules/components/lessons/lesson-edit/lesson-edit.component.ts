@@ -12,7 +12,8 @@ import { LessonService } from '../../../../services/lesson.service';
 export class LessonEditComponent implements OnInit {
     @Input() isVisible: boolean;
 
-    @Input() lesson?: Lesson;
+    @Input() lesson?: Omit<Lesson, 'id'> & { id: string | undefined };
+    @Input() editQuiz: boolean = true;
 
     @Output() onClose: EventEmitter<void> = new EventEmitter();
     @Output() lessonChange: EventEmitter<Lesson> = new EventEmitter();
@@ -54,6 +55,7 @@ export class LessonEditComponent implements OnInit {
                 course: this.lesson?.course,
                 value: this.lesson?.quiz,
                 label: 'Quiz',
+                hidden: !this.editQuiz,
                 row: 1,
                 col: 0,
             },
@@ -78,7 +80,8 @@ export class LessonEditComponent implements OnInit {
 
             this.toastr.success('Successfully edited lesson');
             this.forceClose.next();
-            this.lessonChange.emit(this.lesson);
+
+            if (this.lesson?.id !== undefined) this.lessonChange.emit(this.lesson as Lesson);
         } catch (err) {
             this.toastr.error('Failed to edit lesson');
         }

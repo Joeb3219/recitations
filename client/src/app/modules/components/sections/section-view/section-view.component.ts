@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DatatableColumn } from '@components/datatable/datatable.component';
-import { Lesson, MeetingType, MeetingWithLesson, Section } from '@dynrec/common';
+import { Lesson, MeetingType, MeetingWithLesson, Section, StandardResponseInterface } from '@dynrec/common';
 import dayjs from 'dayjs';
 import { MeetingService } from '../../../../services/meeting.service';
 
@@ -18,7 +18,7 @@ export class SectionViewComponent implements OnChanges {
     selectedLesson?: Omit<Lesson, 'id'> & { id: undefined | string };
     isEditLessonModalOpen: boolean = false;
 
-    columns: DatatableColumn<MeetingWithLesson<MeetingType.RECITATION>>[] = [
+    columns: DatatableColumn<MeetingWithLesson<MeetingType.RECITATION> & { id?: undefined }>[] = [
         {
             name: 'Date',
             prop: 'date',
@@ -44,6 +44,7 @@ export class SectionViewComponent implements OnChanges {
                         const foundMeeting = this.meetings.find(m => m.date === row.date);
 
                         if (foundMeeting) {
+                            // eslint-disable-next-line no-alert
                             window.alert(`Access code: ${foundMeeting.getAccessCode()}`);
                         }
                     },
@@ -74,7 +75,9 @@ export class SectionViewComponent implements OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        this.refreshData.next();
+        if (changes) {
+            this.refreshData.next();
+        }
     }
 
     handleOpenEditLessonModal(meeting: MeetingWithLesson): void {
@@ -90,10 +93,20 @@ export class SectionViewComponent implements OnChanges {
         this.refreshData.next();
     }
 
-    async fetchMeetingTimes() {
+    async fetchMeetingTimes(): Promise<
+        StandardResponseInterface<(MeetingWithLesson<MeetingType.RECITATION> & { id?: undefined })[]>
+    > {
         const result = await this.meetingService.getSectionMeetingTimes(this.section);
-        this.meetings = result.data;
 
-        return result;
+        const recitationsResult: StandardResponseInterface<MeetingWithLesson<MeetingType.RECITATION>[]> = {
+            ...result,
+            data: result.data.filter(
+                (e): e is MeetingWithLesson<MeetingType.RECITATION> => e.meetingType === MeetingType.RECITATION
+            ),
+        };
+
+        this.meetings = recitationsResult.data;
+
+        return recitationsResult;
     }
 }

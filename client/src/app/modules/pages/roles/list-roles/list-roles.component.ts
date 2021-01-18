@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
-import { Course, Role, RuleAction, StandardResponseInterface } from '@dynrec/common';
+import { Course, Role, StandardResponseInterface } from '@dynrec/common';
 import { CourseService } from '@services/course.service';
 import { RoleService } from '@services/role.service';
 import { LoadedArg } from '../../../../decorators';
@@ -27,24 +27,18 @@ export class ListRolesComponent implements OnChanges {
             name: 'Actions',
             cellTemplate: 'actionsCell',
             actions: (row: Role) => [
-                ...(!row.ruleTag
-                    ? [
-                          {
-                              text: 'Modify',
-                              click: () => this.handleOpenEditRoleModal(row),
-                              can: { action: 'update' as RuleAction, subject: new Role(row) },
-                          },
-                      ]
-                    : []),
-                ...(!row.ruleTag
-                    ? [
-                          {
-                              text: 'Assign Users',
-                              click: () => this.handleOpenAssignUsersModal(row),
-                              can: { action: 'update' as RuleAction, subject: new Role(row) },
-                          },
-                      ]
-                    : []),
+                {
+                    text: 'Modify',
+                    click: () => this.handleOpenEditRoleModal(row),
+                    can: { action: 'update', subject: new Role(row) },
+                    if: !row.ruleTag,
+                },
+                {
+                    text: 'Assign Users',
+                    click: () => this.handleOpenAssignUsersModal(row),
+                    can: { action: 'update', subject: new Role(row) },
+                    if: !row.ruleTag,
+                },
             ],
         },
     ];

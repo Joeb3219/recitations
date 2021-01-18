@@ -1,7 +1,6 @@
-import { Component, EventEmitter, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, OnChanges, ViewEncapsulation } from '@angular/core';
 import { DatatableColumn } from '@components/datatable/datatable.component';
-import { Course, CoverageRequest, RuleAction, StandardResponseInterface } from '@dynrec/common';
-import { HttpFilterInterface } from '@http/httpFilter.interface';
+import { Course, CoverageRequest } from '@dynrec/common';
 import { CourseService } from '@services/course.service';
 import { CoverageRequestService } from '@services/coverageRequest.service';
 import { ToastrService } from 'ngx-toastr';
@@ -34,24 +33,18 @@ export class ListCoverageRequestsComponent implements OnChanges {
             actions: (row: CoverageRequest) => {
                 const instance = new CoverageRequest(row);
                 return [
-                    ...(!row.coveredBy
-                        ? [
-                              {
-                                  text: 'Accept',
-                                  can: { action: 'use' as RuleAction, subject: instance },
-                                  click: () => this.handleToggleAcceptance(row),
-                              },
-                          ]
-                        : []),
-                    ...(row.coveredBy
-                        ? [
-                              {
-                                  text: 'Reject',
-                                  can: { action: 'use' as RuleAction, subject: instance },
-                                  click: () => this.handleToggleAcceptance(row),
-                              },
-                          ]
-                        : []),
+                    {
+                        text: 'Accept',
+                        can: { action: 'use', subject: instance },
+                        click: () => this.handleToggleAcceptance(row),
+                        if: !!row.coveredBy,
+                    },
+                    {
+                        text: 'Reject',
+                        can: { action: 'use', subject: instance },
+                        click: () => this.handleToggleAcceptance(row),
+                        if: !!row.coveredBy,
+                    },
                     {
                         text: 'Delete',
                         can: { action: 'delete', subject: instance },

@@ -15,27 +15,27 @@
         >
             <mat-tab label="{{ tabs[0] }}">
                 <div class="container-margin" [ngStyle]="{ display: activeTabIndex === 0 ? 'block' : 'none' }">
-                    <app-configurations [course]="course"></app-configurations>
+                    <app-configurations *ngIf="activeTabIndex === 0" [course]="course"></app-configurations>
                 </div>
             </mat-tab>
-            <mat-tab label="{{ tabs[2] }}" [ngStyle]="{ display: activeTabIndex === 2 ? 'block' : 'none' }">
+            <mat-tab label="{{ tabs[2] }}" [ngStyle]="{ display: activeTabIndex === 1 ? 'block' : 'none' }">
                 <div class="container-margin">
-                    <app-gradebook></app-gradebook>
+                    <app-gradebook *ngIf="activeTabIndex === 1"></app-gradebook>
                 </div>
             </mat-tab>
-            <mat-tab label="{{ tabs[3] }}" [ngStyle]="{ display: activeTabIndex === 3 ? 'block' : 'none' }">
+            <mat-tab label="{{ tabs[3] }}" [ngStyle]="{ display: activeTabIndex === 2 ? 'block' : 'none' }">
                 <div class="container-margin">
-                    <app-weeks [course]="course"></app-weeks>
+                    <app-weeks [course]="course" *ngIf="activeTabIndex === 2"></app-weeks>
                 </div>
             </mat-tab>
-            <mat-tab label="{{ tabs[5] }}" [ngStyle]="{ display: activeTabIndex === 5 ? 'block' : 'none' }">
+            <mat-tab label="{{ tabs[5] }}" [ngStyle]="{ display: activeTabIndex === 3 ? 'block' : 'none' }">
                 <div class="container-margin">
-                    <app-reports></app-reports>
+                    <app-reports *ngIf="activeTabIndex === 3"></app-reports>
                 </div>
             </mat-tab>
-            <mat-tab label="{{ tabs[7] }}" [ngStyle]="{ display: activeTabIndex === 7 ? 'block' : 'none' }">
+            <mat-tab label="{{ tabs[7] }}" [ngStyle]="{ display: activeTabIndex === 4 ? 'block' : 'none' }">
                 <div class="container-margin">
-                    <app-view-roster [course]="course"></app-view-roster>
+                    <app-view-roster [course]="course" *ngIf="activeTabIndex === 4"></app-view-roster>
                 </div>
             </mat-tab>
         </mat-tab-group>

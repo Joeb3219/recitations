@@ -17,8 +17,6 @@ export class ViewSectionsComponent implements OnChanges {
 
     selectedSection?: Section = undefined;
 
-    testSection: Section;
-
     isEditSectionModalOpen = false;
     isSyncSectionModalOpen = false;
     isDeleteSectionModalOpen = false;
@@ -70,9 +68,12 @@ export class ViewSectionsComponent implements OnChanges {
         this.fetchSections = this.fetchSections.bind(this);
     }
 
+    getTestSection() {
+        return new Section({ course: this.course });
+    }
+
     ngOnChanges(changes: SimpleChanges): void {
         if (changes) {
-            this.testSection = new Section({ course: this.course });
             this.refreshData.next();
         }
     }

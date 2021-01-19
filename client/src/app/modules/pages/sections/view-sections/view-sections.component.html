@@ -11,7 +11,7 @@
                 <div
                     style="float: right; text-align: right"
                     class="col"
-                    *can="{ action: 'create', subject: testSection }"
+                    *can="{ action: 'create', subject: getTestSection() }"
                 >
                     <button type="button" class="btn btn-primary" (click)="handleOpenNewSectionModal()">
                         Add Section

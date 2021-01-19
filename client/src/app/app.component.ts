@@ -15,6 +15,8 @@ export class AppComponent implements OnInit {
         private aRef: ApplicationRef
     ) {}
 
+    lastAppData?: any;
+
     currentParams: { [paramName: string]: string } = {};
 
     isLoadingArgs = false;
@@ -23,15 +25,26 @@ export class AppComponent implements OnInit {
         this.router.events.subscribe(event => {
             if (event instanceof ChildActivationEnd) {
                 this.currentParams = event.snapshot.firstChild?.params ?? {};
+                if (this.lastAppData) {
+                    this.handleOnActivate(this.lastAppData);
+                }
             }
         });
 
         this.aRoute.params.subscribe(params => {
             this.currentParams = params;
+            if (this.lastAppData) {
+                this.handleOnActivate(this.lastAppData);
+            }
         });
     }
 
+    handleOnDeactivate() {
+        this.lastAppData = undefined;
+    }
+
     handleOnActivate(data: any) {
+        this.lastAppData = data;
         this.isLoadingArgs = true;
         setTimeout(async () => {
             const loadedArgs: {

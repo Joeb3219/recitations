@@ -29,7 +29,7 @@
         <span
             class="btn btn-outline-primary"
             (click)="handleNewLearningGoal(row)"
-            *can="{ action: 'create', subject: row }"
+            *can="{ action: 'create', subject: getLearningGoal(row) }"
             >Add Learning Goal</span
         >
         <table class="table">

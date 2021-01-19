@@ -476,6 +476,18 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
         ],
     },
     {
+        id: '059257db-0e1c-4a2b-84e0-1cdeb4befa67',
+        name: 'Create course learning goals',
+        tags: ['course_admin', 'super_admin'],
+        actions: (_user, course) => [
+            {
+                action: 'create',
+                subject: LearningGoalCategory,
+                validate: (instance: LearningGoalCategory) => !!course && safeIdComparison(course.id, instance.course),
+            },
+        ],
+    },
+    {
         id: 'f16716a6-7923-4309-aa02-10bc23e566af',
         name: 'View all course quizzes',
         tags: ['course_admin', 'professor', 'student', 'ta', 'super_admin'],
@@ -494,6 +506,18 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
         actions: (_user, course) => [
             {
                 action: 'update',
+                subject: Quiz,
+                validate: (instance: Quiz) => !!course && safeIdComparison(course.id, instance.course),
+            },
+        ],
+    },
+    {
+        id: '0e9792f4-be1a-43d2-abd7-7300cfebbbc8',
+        name: 'Create course quizzes',
+        tags: ['course_admin', 'super_admin'],
+        actions: (_user, course) => [
+            {
+                action: 'create',
                 subject: Quiz,
                 validate: (instance: Quiz) => !!course && safeIdComparison(course.id, instance.course),
             },

@@ -53,7 +53,7 @@ export class ListLearningGoalsComponent implements OnChanges {
                           {
                               text: 'Save',
                               action: 'save',
-                              can: { action: 'update', subject: row },
+                              can: { action: 'update', subject: new LearningGoalCategory(row) },
                               click: async () => this.handleCategorySaved(row),
                           },
                       ]
@@ -61,11 +61,11 @@ export class ListLearningGoalsComponent implements OnChanges {
                           {
                               text: 'Modify',
                               action: 'edit',
-                              can: { action: 'update', subject: row },
+                              can: { action: 'update', subject: new LearningGoalCategory(row) },
                           },
                           {
                               text: 'Delete',
-                              can: { action: 'delete', subject: row },
+                              can: { action: 'delete', subject: new LearningGoalCategory(row) },
                               click: () => this.handleOpenDeleteModal(row),
                           },
                       ],
@@ -93,6 +93,10 @@ export class ListLearningGoalsComponent implements OnChanges {
 
     async fetchCategories(args: HttpFilterInterface): Promise<StandardResponseInterface<LearningGoalCategory[]>> {
         return this.learningGoalsService.getCourseLearningGoalCategories(this.course, args);
+    }
+
+    getLearningGoal(row: LearningGoalCategory) {
+        return new LearningGoalCategory(row);
     }
 
     createNewCategory() {

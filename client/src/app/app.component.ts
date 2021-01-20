@@ -59,16 +59,11 @@ export class AppComponent implements OnInit {
                 stub: string;
             }[] = Reflect.getMetadata('loadedStringArgs', data) || [];
 
-            loadedStringArgs.map(arg => {
+            loadedStringArgs.forEach(arg => {
                 const value = this.currentParams[arg.stub];
                 // and now we can set the component's value
                 // eslint-disable-next-line no-proto, no-param-reassign
                 (data.__proto__ as any)[arg.propertyKey] = value;
-
-                // Tick an update in
-                setTimeout(() => {
-                    this.aRef.tick();
-                });
             });
 
             await Promise.all(
@@ -88,13 +83,16 @@ export class AppComponent implements OnInit {
                     // and now we can set the component's value
                     // eslint-disable-next-line no-proto, no-param-reassign
                     (data.__proto__ as any)[arg.propertyKey] = resource;
-
-                    // Tick an update in
-                    setTimeout(() => {
-                        this.aRef.tick();
-                    });
                 })
             );
+
+            // Tick an update in
+            setTimeout(() => {
+                this.aRef.tick();
+
+                // eslint-disable-next-line no-proto
+                (data.__proto__ as any)?.ngOnChanges.bind(data)?.({});
+            });
 
             this.isLoadingArgs = false;
         });

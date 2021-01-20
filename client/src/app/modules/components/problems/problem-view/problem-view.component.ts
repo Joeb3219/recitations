@@ -25,7 +25,7 @@ export class ProblemViewComponent implements OnInit {
     @Input() problem: Problem;
     @Input() showLearningGoals: boolean = true;
     @Input() allowShowEdit: boolean = true;
-    @Input() allowShowSolution: boolean = false;
+    @Input() allowShowSolution: boolean = true;
 
     userFullName?: string;
 

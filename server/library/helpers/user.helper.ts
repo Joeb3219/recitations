@@ -25,7 +25,7 @@ export class UserHelper {
     static generateJWT(userid: string): string {
         const data = {
             userid,
-            exp: Date.now() + Number(process.env.JWT_EXPIRY_SECONDS),
+            exp: Math.floor(Date.now() / 1000) + Number(process.env.JWT_EXPIRY_SECONDS ?? 3600),
         };
 
         if (!process.env.JWT_SECRET) throw Boom.badData('No JWT Secret Provided');

@@ -62,7 +62,6 @@ export class CASHelper {
         // eslint-disable-next-line no-underscore-dangle
         app.get('/cas/ticket', (req: HttpRequest, res: HttpResponse, next: () => void) => {
             // eslint-disable-next-line no-underscore-dangle
-            // config._validateUri = `serviceValidate`;
             const func = config._handleTicket.bind(config);
             res.redirect = async (url: string | number, status?: string | number) => {
                 const sessionName: string = config.session_name;
@@ -90,6 +89,7 @@ export class CASHelper {
                         throw new Error('Invalid CAS session.');
                     }
                 } catch (err) {
+                    // eslint-disable-next-line no-console
                     console.error(err);
                     return res.status(403).json({
                         message: 'An error occurred',

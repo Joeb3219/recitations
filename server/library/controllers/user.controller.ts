@@ -21,6 +21,10 @@ export class UserController {
     @PostRequest('/user/signin')
     @Unauthenticated()
     async signin({ body }: HttpArgs<{ username: string; password: string }>): Promise<string> {
+        if (process.env.AUTH_MECHANISM !== 'manual') {
+            throw Boom.badRequest('No manual auth allowed.');
+        }
+
         const { username, password } = body;
 
         if (!password) throw Boom.badRequest('No password provided');

@@ -1,5 +1,6 @@
 import { Course } from '@dynrec/common';
 import Boom from '@hapi/boom';
+import _ from 'lodash';
 import { Controller, GetRequest, PostRequest, Resource } from '../decorators';
 import { RolesHelper } from '../helpers/roles.helper';
 import { HttpArgs } from '../helpers/route.helper';
@@ -26,7 +27,10 @@ export class CourseController {
     @GetRequest('/course')
     async getCourses({ ability }: HttpArgs): Promise<Course[]> {
         const courses = await Course.find({});
-        return courses.filter(course => ability.can('view', course));
+        return _.sortBy(
+            courses.filter(course => ability.can('view', course)),
+            course => course.id
+        );
     }
 
     @PostRequest('/course')

@@ -15,6 +15,7 @@ export class ViewUserSettingsComponent implements OnInit {
     user?: User;
 
     selectedImpersonationUser?: User;
+    userNeedsData: boolean = false;
 
     constructor(
         private readonly toastr: ToastrService,
@@ -25,6 +26,7 @@ export class ViewUserSettingsComponent implements OnInit {
     ngOnInit(): void {
         this.userService.getCurrentUser().subscribe(user => {
             this.user = _.cloneDeep(user);
+            this.userNeedsData = !!user && (!user.firstName || !user.lastName || !user.email);
             this.generateForm();
         });
     }

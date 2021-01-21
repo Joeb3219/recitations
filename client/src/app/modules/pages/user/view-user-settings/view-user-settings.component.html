@@ -1,3 +1,7 @@
+<ngb-alert [dismissible]="false" [type]="'danger'" *ngIf="userNeedsData">
+    Before continuing, please enter and save your first name, last name, and email address.
+</ngb-alert>
+
 <div class="row" *ngIf="user">
     <div class="col">
         <app-form

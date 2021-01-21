@@ -91,7 +91,7 @@ export class AppComponent implements OnInit {
                 this.aRef.tick();
 
                 // eslint-disable-next-line no-proto
-                (data.__proto__ as any)?.ngOnChanges.bind(data)?.({});
+                (data.__proto__ as any)?.ngOnChanges?.bind(data)?.({});
             });
 
             this.isLoadingArgs = false;

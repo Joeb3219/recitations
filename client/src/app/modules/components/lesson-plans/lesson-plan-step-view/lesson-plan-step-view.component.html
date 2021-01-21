@@ -3,7 +3,7 @@
         <b>{{ lessonPlanStep.title }}</b>
     </h4>
     <div class="task__body">
-        <div class="task__description" *ngIf="lessonPlanStep.description?.length">
+        <div class="task__description" *ngIf="lessonPlanStep.description?.length && !lessonPlanStep.problem">
             {{ lessonPlanStep.description }}
         </div>
         <app-problem-view

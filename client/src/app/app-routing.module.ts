@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from '@components/home/home/home.component';
 import { CourseSettingsComponent } from '@pages/course-settings/course-settings.component';
 import { ViewCourseComponent } from '@pages/courses/view-course/view-course.component';
 import { ListLessonPlansComponent } from '@pages/lesson-plans/list-lesson-plans/list-lesson-plans.component';
@@ -20,6 +21,7 @@ import { ListRolesComponent } from './modules/pages/roles/list-roles/list-roles.
 import { ViewSectionComponent } from './modules/pages/sections/view-section/view-section.component';
 
 const routes: Routes = [
+    { path: '', component: HomeComponent },
     { path: 'login', component: LoginComponent },
     { path: 'cas/ticket', component: CasAuthComponent },
 

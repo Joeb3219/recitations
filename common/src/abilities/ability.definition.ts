@@ -408,6 +408,19 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
         ],
     },
     {
+        id: 'b4a2f22d-ebf2-4876-9f2d-df1c56740e06',
+        name: 'Update all course lesson plan steps',
+        tags: ['course_admin', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'update',
+                subject: LessonPlanStep,
+                validate: (instance: LessonPlanStep) =>
+                    !!user && !!course && safeIdComparison(course.id, instance.course),
+            },
+        ],
+    },
+    {
         id: '1821a33d-aefb-4da5-81e2-310b5baca74c',
         name: 'Create own course lesson plan steps',
         tags: ['ta', 'professor', 'course_admin', 'super_admin'],

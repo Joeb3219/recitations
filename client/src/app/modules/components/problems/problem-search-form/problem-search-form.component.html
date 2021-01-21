@@ -9,4 +9,9 @@
     (selectItem)="handleProblemSelected($event)"
 />
 
-<app-problem-view *ngIf="problem" [problem]="problem" [allowShowEdit]="false"></app-problem-view>
+<app-problem-view
+    *ngIf="problem"
+    [problem]="problem"
+    [allowShowEdit]="false"
+    [allowShowSolution]="false"
+></app-problem-view>

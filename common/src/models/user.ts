@@ -14,7 +14,7 @@ export class User extends BaseEntity implements UserInterface {
     @Column({ nullable: true })
     public lastName?: string;
 
-    @Column()
+    @Column({ unique: true })
     public username: string;
 
     @Column({ nullable: true })

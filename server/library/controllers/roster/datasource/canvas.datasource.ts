@@ -17,7 +17,7 @@ export class CanvasRoster extends RosterDatasource {
 
     private async parseCSV(path: string): Promise<CanvasRosterRow[]> {
         const parsed = await csv.parseFile<csv.ParserRow<CanvasRosterRow>, csv.ParserRow<CanvasRosterRow>>(path, {
-            skipLines: 2,
+            skipLines: 0,
             headers: ['Student', 'UserID', 'LoginID', 'Section'],
             discardUnmappedColumns: true,
             strictColumnHandling: true,

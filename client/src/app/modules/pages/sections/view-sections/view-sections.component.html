@@ -19,6 +19,7 @@
                     <button type="button" class="btn btn-secondary" (click)="handleOpenSyncSectionModal()">
                         Sync Section
                     </button>
+                    <button type="button" class="btn btn-secondary" (click)="handleOpenSyncTAsModal()">Sync TAs</button>
                 </div>
             </div>
         </div>
@@ -35,6 +36,13 @@
     [course]="course"
     (onClose)="handleCloseSyncSectionModal()"
 ></app-sections-sync>
+
+<app-sections-ta-sync
+    *ngIf="isSyncSectionTAsModalOpen"
+    [isVisible]="isSyncSectionTAsModalOpen"
+    [course]="course"
+    (onClose)="handleCloseTAsSyncSectionModal()"
+></app-sections-ta-sync>
 
 <app-section-edit
     *ngIf="selectedSection"

@@ -106,6 +106,7 @@ import { SectionService } from './services/section.service';
 import { UserService } from './services/user.service';
 import { TakeQuizComponent } from './modules/pages/quizzes/take-quiz/take-quiz.component';
 import { QuizTakeComponent } from './modules/components/quizzes/quiz-take/quiz-take/quiz-take.component';
+import { SectionsTaSyncComponent } from './modules/components/sections/sections-ta-sync/sections-ta-sync/sections-ta-sync.component';
 
 export let GlobalActivatedRoute: ActivatedRoute;
 
@@ -191,6 +192,7 @@ export let GlobalActivatedRoute: ActivatedRoute;
         HomeComponent,
         TakeQuizComponent,
         QuizTakeComponent,
+        SectionsTaSyncComponent,
     ],
     imports: [
         HttpClientModule,

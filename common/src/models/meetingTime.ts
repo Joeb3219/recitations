@@ -71,8 +71,15 @@ export class MeetingTime extends BaseEntity implements MeetingTimeInterface {
     }
 
     getStartTime(date: Date): Date {
-        const baseDate = dayjs(date).startOf('day');
-        return dayjs(`${baseDate.format('YYYY/MM/DD')} ${this.startTime}`).toDate();
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const [hours, minutes, seconds] = this.startTime?.split(':');
+
+        return dayjs(date)
+            .tz()
+            .startOf('day')
+            .add(parseInt(hours ?? '0', 10), 'hour')
+            .add(parseInt(minutes ?? '0', 10), 'minute')
+            .toDate();
     }
 
     constructor(args: Partial<MeetingTime> = {}) {

@@ -1,7 +1,12 @@
 import { Expose, Type } from 'class-transformer';
 import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 import { MeetingType } from '../enums';
 import { Course, Lesson, MeetingTime } from '../models';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export class Meeting<Type extends MeetingType = MeetingType> {
     @Type(() => MeetingTime)
@@ -71,11 +76,12 @@ export class Meeting<Type extends MeetingType = MeetingType> {
     }
 
     canTakeQuiz(course: Course): boolean {
-        const startTime = dayjs(this.date).add(course.getNumberSetting('semester_start_date')?.value ?? 50, 'minute');
-        const endTime = dayjs(this.date).add(
-            course.getNumberSetting('semester_end_date')?.value ?? 60 * 24 * 5,
-            'minute'
-        );
+        const startTime = dayjs(this.date)
+            .tz()
+            .add(course.getNumberSetting('semester_start_date')?.value ?? 50, 'minute');
+        const endTime = dayjs(this.date)
+            .tz()
+            .add(course.getNumberSetting('semester_end_date')?.value ?? 60 * 24 * 5, 'minute');
 
         return dayjs().isAfter(startTime) && dayjs().isBefore(endTime);
     }

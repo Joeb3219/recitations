@@ -256,7 +256,7 @@ export class DatatableComponent<T extends { id?: string }> implements OnInit {
             },
             dateCell: {
                 template: this.dateCellTemplate,
-                csv: (date?: Date) => (date ? dayjs(date).format('MM/DD/YYYY HH:mm') : undefined),
+                csv: (date?: Date) => (date ? dayjs(date).tz().format('MM/DD/YYYY HH:mm') : undefined),
             },
             actionsCell: {
                 template: this.actionsCellTemplate,

@@ -54,7 +54,8 @@ export class QuizViewComponent implements OnInit {
         this.editElement.emit({ element, index });
     }
 
-    handleResponseChanged(index: number, response: QuizElementResponsePayload) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    handleResponseChanged(index: number, response: any) {
         if (!this.answers) {
             return;
         }

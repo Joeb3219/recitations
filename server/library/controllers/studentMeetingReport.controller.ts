@@ -115,7 +115,6 @@ export class StudentMeetingReportController {
         }
 
         if (meeting.getAccessCode() !== params.code) {
-            console.log({ real: meeting.getAccessCode() });
             throw Boom.badRequest('Wrong access code');
         }
 

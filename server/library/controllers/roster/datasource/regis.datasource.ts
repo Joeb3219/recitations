@@ -1,5 +1,5 @@
 import * as csv from 'fast-csv';
-import { RosterDatasource, RosterType } from './roster.datasource';
+import { CourseRosterData, RosterDatasource, RosterType } from './roster.datasource';
 
 interface RegisRosterRow {
     Sec: string;
@@ -64,7 +64,7 @@ export class RegisRoster extends RosterDatasource {
         });
     }
 
-    parseRoster = async (path: string) => {
+    parseRoster = async (path: string): Promise<CourseRosterData> => {
         const parsed = await this.parseCSV(path);
 
         return parsed.map(row => ({
@@ -76,7 +76,7 @@ export class RegisRoster extends RosterDatasource {
             },
             section: {
                 index: row.Index,
-                sectionNum: row.Sec,
+                sectionNumber: row.Sec,
             },
         }));
     };

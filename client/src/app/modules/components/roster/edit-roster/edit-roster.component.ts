@@ -30,6 +30,8 @@ export class EditRosterComponent implements OnInit {
 
     verificationText?: string;
 
+    loading: boolean = false;
+
     constructor(private readonly rosterService: RosterService, private readonly toastr: ToastrService) {}
 
     ngOnInit(): void {
@@ -95,6 +97,8 @@ export class EditRosterComponent implements OnInit {
             return;
         }
 
+        this.loading = true;
+
         try {
             const payload = await this.rosterService.updateRoster(
                 this.course,
@@ -110,6 +114,8 @@ export class EditRosterComponent implements OnInit {
             } students to be removed, and ${groups.moved?.length ?? 0} students to change sections.`;
         } catch (err) {
             this.toastr.error('Failed to process uploaded roster');
+        } finally {
+            this.loading = false;
         }
 
         this.generateForm();

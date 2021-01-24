@@ -53,7 +53,8 @@ export class QuizBuilderComponent {
         this.forceClose.emit();
     }
 
-    formSubmitted(config: unknown) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    formSubmitted(config: any) {
         if (this.selectedIndex === undefined) {
             this.quiz.elements.push({
                 ...this.selectedElement!,

@@ -20,6 +20,8 @@ export class FormModalComponent<T> {
 
     @Input() modalSize = 'lg';
 
+    @Input() loading: boolean = false;
+
     @Output() onSubmit: EventEmitter<T> = new EventEmitter();
 
     @Output() onClose: EventEmitter<void> = new EventEmitter();

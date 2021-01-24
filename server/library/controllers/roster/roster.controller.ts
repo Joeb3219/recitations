@@ -53,7 +53,8 @@ export class RosterController {
         const relevantChanges = changes.filter(
             change =>
                 change.user.username &&
-                (sectionsByIndex[change.section.index] || sectionsByNumber[change.section.sectionNum])
+                ((change.section.index && sectionsByIndex[change.section.index]) ||
+                    (change.section.sectionNumber && sectionsByNumber[change.section.sectionNumber]))
         );
 
         // Grabs all of the users that are matched by the provided
@@ -75,7 +76,7 @@ export class RosterController {
 
         // Now, we begin by creating any usere that are missing.
         const createdUserObjects: Partial<User>[] = relevantChanges
-            .filter(change => !usersByUsername[change.user.username])
+            .filter(change => change.user.username && !usersByUsername[change.user.username])
             .map(change => ({
                 username: change.user.username,
                 email: change.user.email,
@@ -101,14 +102,15 @@ export class RosterController {
 
         // Adds and changes
         relevantChanges.forEach(change => {
-            const user = usersByUsername[change.user.username];
+            const user = change.user.username && usersByUsername[change.user.username];
             if (!user) {
                 return;
             }
 
             // Find the section they ought to be in
             // We treat it as an error for a student to exist in this array, but with an invalid section.
-            const section = sectionsByIndex[change.section.index] ?? sectionsByNumber[change.section.sectionNum];
+            const section =
+                sectionsByIndex[change.section.index ?? ''] ?? sectionsByNumber[change.section.sectionNumber ?? ''];
             if (!section) {
                 return;
             }

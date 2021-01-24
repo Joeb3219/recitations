@@ -1,6 +1,9 @@
 <app-modal *ngIf="showModal" (onClose)="handleOnClose()" [modalSize]="modalSize" [forceClose]="forceClose">
     <span title>{{ title }}</span>
     <div body>
+        <div class="spinner-border text-primary" role="status" *ngIf="loading">
+            <span class="sr-only">Loading...</span>
+        </div>
         <app-form
             [form]="form"
             [showSubmit]="false"
@@ -11,7 +14,7 @@
         </app-form>
     </div>
     <div footer>
-        <button type="button" class="btn btn-primary" (click)="handleModalSubmit()">
+        <button type="button" class="btn btn-primary" (click)="handleModalSubmit()" [disabled]="loading">
             {{ submitText }}
         </button>
     </div>

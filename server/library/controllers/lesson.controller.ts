@@ -29,11 +29,15 @@ import { HttpArgs } from '../helpers/route.helper';
 })
 export class LessonController {
     @GetRequest('/section/:sectionID/lessons')
-    async getSectionLessons({ params }: HttpArgs<never, { sectionID: string }>) {
+    async getSectionLessons({ params, ability }: HttpArgs<never, { sectionID: string }>) {
         const section = await Section.findOne({ id: params.sectionID });
 
         if (!section) {
             throw Boom.notFound('Unable to find section.');
+        }
+
+        if (!ability.can('view', section)) {
+            throw Boom.unauthorized("Unauthorized to view this section's lesosn.");
         }
 
         const meetingTimes = await MeetingTime.find({ meetable: section });

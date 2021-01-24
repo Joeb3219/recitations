@@ -23,6 +23,7 @@ export class MeetingReportController {
     async getMeetingsAtTime({
         params,
         currentUser,
+        ability,
     }: HttpArgs<never, { courseID: string; date: string }>): Promise<MeetingReport> {
         const course = await Course.findOne({ id: params.courseID }, { relations: ['sections'] });
 
@@ -35,8 +36,13 @@ export class MeetingReportController {
             creator: currentUser,
             date: new Date(params.date),
         });
+
         if (!report) {
             throw Boom.notFound('No report found');
+        }
+
+        if (!ability.can('create', report) && !ability.can('view', report)) {
+            throw Boom.unauthorized('Unauthorized to fetch report');
         }
 
         return report;

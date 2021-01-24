@@ -4,6 +4,7 @@ import cors from 'cors';
 import * as dotenv from 'dotenv';
 import { default as Express } from 'express';
 import fileUpload from 'express-fileupload';
+import { sentryInit } from 'helpers/logging.helper';
 import * as jwt from 'jsonwebtoken';
 import 'reflect-metadata';
 import { Connection, createConnection } from 'typeorm';
@@ -28,6 +29,7 @@ class AppWrapper {
     }
 
     async init() {
+        sentryInit();
         await this.initDB();
         await this.initExpress();
         await this.initData();

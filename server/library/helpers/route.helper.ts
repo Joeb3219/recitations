@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Ability, AbilityManager, Course, User } from '@dynrec/common';
 import * as Boom from '@hapi/boom';
+import * as Sentry from '@sentry/node';
 import { plainToClass } from 'class-transformer';
 import fileUpload from 'express-fileupload';
 import { BAD_REQUEST } from 'http-status-codes';
@@ -12,6 +13,7 @@ import { ResourceAction, ResourceArgs, SearchableData, SortableData } from '../d
 import { Express } from '../express';
 import { HttpRequest, HttpResponse } from '../express_custom';
 import { isAuthenticated } from './auth/auth.helper';
+import { isSentryEnabled } from './logging.helper';
 
 function searchIn<ObjectType extends any = any, TargetType extends any = any>(
     object: ObjectType,
@@ -101,8 +103,25 @@ function httpMiddleware(
     route: string,
     { sortableFields, searchableFields }: { sortableFields?: SortableData; searchableFields?: SearchableData }
 ) {
+    const useSentry = isSentryEnabled();
     console.log(`Generating ${method} ${route}`);
     return async (req: HttpRequest, res: HttpResponse) => {
+        const transaction = useSentry
+            ? Sentry?.startTransaction({
+                  op: `${method} ${route}`,
+                  name: `${method}`,
+              })
+            : undefined;
+
+        if (useSentry) {
+            Sentry.setUser({
+                email: res.locals.currentUser?.email,
+                username: res.locals.currentUser?.username,
+                id: res.locals.currentUser?.id,
+                ip_address: `{{auto}}`,
+            });
+        }
+
         try {
             const result = await target({
                 body: req.body,
@@ -133,6 +152,9 @@ function httpMiddleware(
                 },
             });
         } catch (err) {
+            if (useSentry) {
+                Sentry.captureException(err);
+            }
             console.log({ method, route, err });
             if (Boom.isBoom(err)) {
                 return res.status(err.output.statusCode).json({
@@ -144,6 +166,8 @@ function httpMiddleware(
                 message: 'An error occurred',
                 error: new Error('An error occurred'),
             });
+        } finally {
+            transaction?.finish();
         }
     };
 }

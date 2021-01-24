@@ -16,6 +16,7 @@ import { ListLearningGoalsComponent } from './modules/pages/learning-goals/list-
 import { ViewLessonPlanComponent } from './modules/pages/lesson-plans/view-lesson-plan/view-lesson-plan.component';
 import { CasAuthComponent } from './modules/pages/login/cas-auth/cas-auth.component';
 import { ListQuizzesComponent } from './modules/pages/quizzes/list-quizzes/list-quizzes.component';
+import { TakeQuizComponent } from './modules/pages/quizzes/take-quiz/take-quiz.component';
 import { ViewQuizComponent } from './modules/pages/quizzes/view-quiz/view-quiz.component';
 import { ListRolesComponent } from './modules/pages/roles/list-roles/list-roles.component';
 import { ViewSectionComponent } from './modules/pages/sections/view-section/view-section.component';
@@ -67,6 +68,10 @@ const routes: Routes = [
     {
         path: `courses/:courseID/meeting-feedback/:date`,
         component: ViewMeetingFeedbackComponent,
+    },
+    {
+        path: `courses/:courseID/quiz/:date`,
+        component: TakeQuizComponent,
     },
 ];
 

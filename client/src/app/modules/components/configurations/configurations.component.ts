@@ -33,6 +33,12 @@ export class ConfigurationsComponent implements OnInit {
                 'These fields control various dates and times that affect how courses run, when students can take various actions, and more.',
             form: new Form(),
         },
+        {
+            section: 'quizzes',
+            headerText: 'Quizzes',
+            explanationText: 'These fields control various aspects of how and when quizzes are administered.',
+            form: new Form(),
+        },
     ];
 
     constructor(private courseService: CourseService) {}

@@ -1,0 +1,27 @@
+<div class="spinner-border text-primary" role="status" *ngIf="loading">
+    <span class="sr-only">Loading...</span>
+</div>
+
+<ng-container *ngIf="!report || !report.quiz">
+    <div class="row">
+        <label>Access Code: <input type="text" [(ngModel)]="accessCode" [disabled]="loading" /> </label>
+    </div>
+    <div class="row">
+        <button class="btn btn-primary" (click)="handleUpdateAccessCode()" [disabled]="loading">
+            Submit Access Code & Take Quiz
+        </button>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="report && report.quiz">
+    <app-quiz-view [quiz]="report.quiz" (answersUpdated)="handleQuizUpdated($event)"></app-quiz-view>
+    <hr />
+
+    <div class="row" *ngIf="errors && errors.length">
+        Errors in questions: <span *ngFor="let idx of errors">{{ idx + 1 }}, </span>
+    </div>
+
+    <button class="btn btn-primary" *ngIf="quizReadyToSubmit" [disabled]="loading" (click)="handleSubmitQuiz()">
+        Submit Quiz
+    </button>
+</ng-container>

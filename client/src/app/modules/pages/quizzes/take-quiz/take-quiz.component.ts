@@ -4,11 +4,11 @@ import { CourseService } from '@services/course.service';
 import { LoadedArg, LoadedStringArg } from '../../../../decorators/input.decorator';
 
 @Component({
-    selector: 'app-view-meeting-feedback',
-    templateUrl: './view-meeting-feedback.component.html',
-    styleUrls: ['./view-meeting-feedback.component.scss'],
+    selector: 'app-take-quiz',
+    templateUrl: './take-quiz.component.html',
+    styleUrls: ['./take-quiz.component.scss'],
 })
-export class ViewMeetingFeedbackComponent {
+export class TakeQuizComponent {
     @LoadedArg(CourseService, Course, 'courseID')
     course: Course;
 

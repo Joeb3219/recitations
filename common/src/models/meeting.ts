@@ -1,6 +1,7 @@
 import { Expose, Type } from 'class-transformer';
+import dayjs from 'dayjs';
 import { MeetingType } from '../enums';
-import { Lesson, MeetingTime } from '../models';
+import { Course, Lesson, MeetingTime } from '../models';
 
 export class Meeting<Type extends MeetingType = MeetingType> {
     @Type(() => MeetingTime)
@@ -67,6 +68,16 @@ export class Meeting<Type extends MeetingType = MeetingType> {
             (str, divisor) => str + randomData[Math.ceil(Math.abs(hash / divisor)) % randomData.length ?? 0],
             ''
         );
+    }
+
+    canTakeQuiz(course: Course): boolean {
+        const startTime = dayjs(this.date).add(course.getNumberSetting('semester_start_date')?.value ?? 50, 'minute');
+        const endTime = dayjs(this.date).add(
+            course.getNumberSetting('semester_end_date')?.value ?? 60 * 24 * 5,
+            'minute'
+        );
+
+        return dayjs().isAfter(startTime) && dayjs().isBefore(endTime);
     }
 
     constructor(args: Partial<Meeting> = {}) {

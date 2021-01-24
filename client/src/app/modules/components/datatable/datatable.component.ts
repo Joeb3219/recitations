@@ -166,7 +166,7 @@ export class DatatableComponent<T extends { id?: string }> implements OnInit {
     }
 
     ngOnInit(): void {
-        this.reload.subscribe({
+        this.reload.pipe(debounceTime(500)).subscribe({
             next: () => {
                 this.loadData();
             },
@@ -178,7 +178,7 @@ export class DatatableComponent<T extends { id?: string }> implements OnInit {
                 this.loadData();
             });
 
-        this.loadData();
+        this.reload.next();
     }
 
     async handleActionClicked(index: number, action: DatatableAction) {

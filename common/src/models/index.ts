@@ -14,6 +14,7 @@ export * from './problem';
 export * from './quiz';
 export * from './role';
 export * from './section';
+export * from './studentMeetingReport';
 export * from './user';
 import { Course } from './course';
 import { CoverageRequest } from './coverageRequest';
@@ -30,6 +31,7 @@ import { Problem } from './problem';
 import { Quiz } from './quiz';
 import { Role } from './role';
 import { Section } from './section';
+import { StudentMeetingReport } from './studentMeetingReport';
 import { User } from './user';
 
 export const AllEntities = [
@@ -49,4 +51,5 @@ export const AllEntities = [
     CoverageRequest,
     Lesson,
     MeetingReport,
+    StudentMeetingReport,
 ];

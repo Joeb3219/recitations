@@ -28,7 +28,7 @@ export class UserSearchFormfieldComponent implements OnInit {
     constructor(private userService: UserService) {}
 
     async ngOnInit(): Promise<void> {
-        this.users = await this.userService.getUsers();
+        this.users = await this.userService.getUsers({ limit: -1 });
     }
 
     formatter = (user: User): string => {

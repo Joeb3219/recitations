@@ -4,6 +4,7 @@ import { LearningGoalCategory } from '../models/learningGoalCategory';
 import { LessonPlan } from '../models/lessonPlan';
 import { MeetingReport } from '../models/meetingReport';
 import { Quiz } from '../models/quiz';
+import { StudentMeetingReport } from '../models/studentMeetingReport';
 
 export type RawRuleConditions<Resource extends any> = {
     [K in keyof Resource]?: any;
@@ -112,7 +113,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '929a5259-912d-43da-9bc0-8a4dce6fa825',
         name: 'View all course sections',
-        tags: ['professor', 'course_admin', 'super_admin'],
+        tags: ['professor', 'course_admin', 'course_creator', 'super_admin'],
         actions: (user, course) => [
             {
                 action: 'view',
@@ -124,7 +125,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '946d2945-f09b-4e81-a574-bf2f9f1d1cca',
         name: 'Update all course sections',
-        tags: ['course_admin', 'super_admin'],
+        tags: ['course_admin', 'course_creator', 'super_admin'],
         actions: (_user, course) => [
             {
                 action: 'update',
@@ -136,7 +137,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '6901f58f-aef0-4dfc-8910-3610af8574f8',
         name: 'Delete course sections',
-        tags: ['course_admin', 'super_admin'],
+        tags: ['course_admin', 'course_creator', 'super_admin'],
         actions: (_user, course) => [
             {
                 action: 'delete',
@@ -148,7 +149,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: 'e7d708b7-c786-4ed2-81f1-ce2ac0f3fbff',
         name: 'Create course sections',
-        tags: ['course_admin', 'super_admin'],
+        tags: ['course_admin', 'course_creator', 'super_admin'],
         actions: (_user, course) => [
             {
                 action: 'create',
@@ -160,7 +161,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: 'f7572352-6048-4cf5-998c-2fdb0026495a',
         name: 'View assigned sections in course',
-        tags: ['professor', 'ta', 'student', 'course_admin', 'super_admin'],
+        tags: ['professor', 'ta', 'student', 'course_admin', 'course_creator', 'super_admin'],
         actions: (user, course) => [
             {
                 action: 'view',
@@ -177,7 +178,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '59713b50-9be9-4499-a19a-10a6ec2962b1',
         name: 'Update assigned sections in course',
-        tags: ['course_admin', 'super_admin'],
+        tags: ['course_admin', 'course_creator', 'super_admin'],
         actions: (user, course) => [
             {
                 action: 'update',
@@ -194,7 +195,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '495aed43-7730-4ee7-b185-650e771e4c9a',
         name: 'View coverage requests in course',
-        tags: ['course_admin', 'ta', 'super_admin'],
+        tags: ['course_admin', 'course_creator', 'ta', 'super_admin'],
         actions: (user, course) => [
             {
                 action: 'view',
@@ -206,7 +207,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '14bd608b-2e44-401a-bb13-c3e70cef1162',
         name: 'Create coverage requests in course',
-        tags: ['course_admin', 'ta', 'super_admin'],
+        tags: ['course_admin', 'course_creator', 'ta', 'super_admin'],
         actions: (user, course) => [
             {
                 action: 'create',
@@ -222,7 +223,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '5a96ade0-041a-45d5-9c7d-3777a61a40f9',
         name: 'Delete own coverage requests in course',
-        tags: ['course_admin', 'ta', 'super_admin'],
+        tags: ['course_admin', 'course_creator', 'ta', 'super_admin'],
         actions: (user, course) => [
             {
                 action: 'delete',
@@ -238,7 +239,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: 'f29090f8-6d4a-4ace-8ef6-9dca6ae01604',
         name: 'Respond to coverage requests in course',
-        tags: ['course_admin', 'ta', 'super_admin'],
+        tags: ['course_admin', 'course_creator', 'ta', 'super_admin'],
         actions: (user, course) => [
             {
                 action: 'use',
@@ -250,7 +251,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: 'd026fcd5-61ce-4fdd-90c3-74601cd8dec8',
         name: 'View all problems',
-        tags: ['student', 'ta', 'professor', 'course_admin', 'super_admin'],
+        tags: ['student', 'ta', 'professor', 'course_admin', 'course_creator', 'super_admin'],
         actions: (_user, course) => [
             {
                 action: 'view',
@@ -262,7 +263,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '656c65b4-fe3d-4d9a-b891-3f949eab36c2',
         name: 'Update all course problems',
-        tags: ['professor', 'course_admin', 'super_admin'],
+        tags: ['professor', 'course_admin', 'course_creator', 'super_admin'],
         actions: (_user, course) => [
             {
                 action: 'update',
@@ -274,7 +275,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '38ac4fc2-1d1a-474b-b911-d210b20b74f5',
         name: 'Create course problems',
-        tags: ['ta', 'professor', 'course_admin', 'super_admin'],
+        tags: ['ta', 'professor', 'course_admin', 'course_creator', 'super_admin'],
         actions: (_user, course) => [
             {
                 action: 'create',
@@ -286,7 +287,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '878907ed-1731-4783-956d-7f47c01fe31d',
         name: 'Update own course problems',
-        tags: ['ta', 'professor', 'course_admin', 'super_admin'],
+        tags: ['ta', 'professor', 'course_admin', 'course_creator', 'super_admin'],
         actions: (user, course) => [
             {
                 action: 'update',
@@ -302,7 +303,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: 'ee4eb0ec-07f4-4286-93f4-e059ea52a21e',
         name: 'View Course',
-        tags: ['student', 'ta', 'professor', 'course_admin', 'super_admin'],
+        tags: ['student', 'ta', 'professor', 'course_admin', 'course_creator', 'super_admin'],
         actions: (_user, course) => [
             {
                 action: 'view',
@@ -314,7 +315,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '4dd122c7-e32b-4b38-b5ab-25282e524175',
         name: 'View all course roles',
-        tags: ['course_admin', 'super_admin'],
+        tags: ['course_admin', 'course_creator', 'super_admin'],
         actions: (_user, course) => [
             {
                 action: 'view',
@@ -326,7 +327,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '47ea44e8-2c6b-4d8e-a033-18c1ac4b9403',
         name: 'Update all course roles',
-        tags: ['course_admin', 'super_admin'],
+        tags: ['course_admin', 'course_creator', 'super_admin'],
         actions: (_user, course) => [
             {
                 action: 'update',
@@ -338,7 +339,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '982aba07-32ed-4d7a-8bfc-c1ccff7915ed',
         name: 'Create course roles',
-        tags: ['course_admin', 'super_admin'],
+        tags: ['course_admin', 'course_creator', 'super_admin'],
         actions: (_user, course) => [
             {
                 action: 'create',
@@ -350,7 +351,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '71b1d83f-0a0f-4380-bf41-7ed7bb3d56c0',
         name: 'View all course lesson plans',
-        tags: ['ta', 'professor', 'course_admin', 'super_admin'],
+        tags: ['ta', 'professor', 'course_admin', 'course_creator', 'super_admin'],
         actions: (_user, course) => [
             {
                 action: 'view',
@@ -362,7 +363,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '9b99377e-8c72-4b0e-95ce-a15b669459f6',
         name: 'Update own lesson plans',
-        tags: ['ta', 'professor', 'course_admin', 'super_admin'],
+        tags: ['ta', 'professor', 'course_admin', 'course_creator', 'super_admin'],
         actions: (user, course) => [
             {
                 action: 'update',
@@ -378,7 +379,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: 'fcab3d19-107e-439e-a6d9-c2173c478a0d',
         name: 'Create course lesson plans',
-        tags: ['ta', 'professor', 'course_admin', 'super_admin'],
+        tags: ['ta', 'professor', 'course_admin', 'course_creator', 'super_admin'],
         actions: (user, course) => [
             {
                 action: 'create',
@@ -394,7 +395,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '7a8223d7-67c3-4ce3-8b16-c2b6c6a993b2',
         name: 'Update own lesson plan steps',
-        tags: ['ta', 'professor', 'course_admin', 'super_admin'],
+        tags: ['ta', 'professor', 'course_admin', 'course_creator', 'super_admin'],
         actions: (user, course) => [
             {
                 action: 'update',
@@ -410,7 +411,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: 'b4a2f22d-ebf2-4876-9f2d-df1c56740e06',
         name: 'Update all course lesson plan steps',
-        tags: ['course_admin', 'super_admin'],
+        tags: ['course_admin', 'course_creator', 'super_admin'],
         actions: (user, course) => [
             {
                 action: 'update',
@@ -423,7 +424,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '1821a33d-aefb-4da5-81e2-310b5baca74c',
         name: 'Create own course lesson plan steps',
-        tags: ['ta', 'professor', 'course_admin', 'super_admin'],
+        tags: ['ta', 'professor', 'course_admin', 'course_creator', 'super_admin'],
         actions: (user, course) => [
             {
                 action: 'create',
@@ -439,7 +440,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '8cd5c650-951c-4429-b162-648809c53ae5',
         name: 'Delete own lesson plan steps',
-        tags: ['ta', 'professor', 'course_admin', 'super_admin'],
+        tags: ['ta', 'professor', 'course_admin', 'course_creator', 'super_admin'],
         actions: (user, course) => [
             {
                 action: 'delete',
@@ -455,7 +456,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: 'e4723e62-fa48-4dfc-9e69-4cc36e97cc73',
         name: 'Update all course lesson plans',
-        tags: ['course_admin', 'super_admin'],
+        tags: ['course_admin', 'course_creator', 'super_admin'],
         actions: (_user, course) => [
             {
                 action: 'update',
@@ -479,7 +480,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '3db3cde0-c81d-413f-b2e8-96c868d49719',
         name: 'Update all course learning goals',
-        tags: ['course_admin', 'super_admin'],
+        tags: ['course_admin', 'course_creator', 'super_admin'],
         actions: (_user, course) => [
             {
                 action: 'update',
@@ -491,7 +492,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '059257db-0e1c-4a2b-84e0-1cdeb4befa67',
         name: 'Create course learning goals',
-        tags: ['course_admin', 'super_admin'],
+        tags: ['course_admin', 'course_creator', 'super_admin'],
         actions: (_user, course) => [
             {
                 action: 'create',
@@ -503,7 +504,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: 'f16716a6-7923-4309-aa02-10bc23e566af',
         name: 'View all course quizzes',
-        tags: ['course_admin', 'professor', 'student', 'ta', 'super_admin'],
+        tags: ['course_admin', 'course_creator', 'professor', 'ta', 'super_admin'],
         actions: (_user, course) => [
             {
                 action: 'view',
@@ -515,7 +516,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '11c23712-c779-4fa6-96d2-01100da8285f',
         name: 'Update all course quizzes',
-        tags: ['course_admin', 'super_admin'],
+        tags: ['course_admin', 'course_creator', 'super_admin'],
         actions: (_user, course) => [
             {
                 action: 'update',
@@ -527,7 +528,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '0e9792f4-be1a-43d2-abd7-7300cfebbbc8',
         name: 'Create course quizzes',
-        tags: ['course_admin', 'super_admin'],
+        tags: ['course_admin', 'course_creator', 'super_admin'],
         actions: (_user, course) => [
             {
                 action: 'create',
@@ -539,7 +540,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '99652b97-ebc3-4c3b-91dc-7a85fed49ced',
         name: 'Edit course settings',
-        tags: ['course_admin', 'super_admin'],
+        tags: ['course_admin', 'course_creator', 'super_admin'],
         actions: (_user, course) => [
             {
                 action: 'update',
@@ -603,7 +604,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: 'e1b24572-9963-4bc7-bb42-c4c687fc1348',
         name: 'View all course lessons',
-        tags: ['ta', 'professor', 'course_admin', 'super_admin'],
+        tags: ['ta', 'professor', 'course_admin', 'course_creator', 'super_admin'],
         actions: (_user, course) => [
             {
                 action: 'view',
@@ -615,7 +616,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '407c96fd-f982-4c93-aec0-bf3b2f832470',
         name: 'Update own lessons',
-        tags: ['ta', 'professor', 'course_admin', 'super_admin'],
+        tags: ['ta', 'professor', 'course_admin', 'course_creator', 'super_admin'],
         actions: (user, course) => [
             {
                 action: 'update',
@@ -632,7 +633,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '0a362716-f0e2-4578-8c6f-c587040ab440',
         name: 'Update all course lessons',
-        tags: ['course_admin', 'super_admin'],
+        tags: ['course_admin', 'course_creator', 'super_admin'],
         actions: (_user, course) => [
             {
                 action: 'update',
@@ -644,7 +645,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: 'c8fb492f-497a-41e1-be8b-4e6a61376ff2',
         name: 'Create default course lessons',
-        tags: ['course_admin', 'super_admin'],
+        tags: ['course_admin', 'course_creator', 'super_admin'],
         actions: (_user, course) => [
             {
                 action: 'create',
@@ -657,7 +658,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '9fac8916-06f8-4fb6-8c03-fd4e013e5e48',
         name: 'Create meeting times',
-        tags: ['course_admin', 'super_admin'],
+        tags: ['course_admin', 'course_creator', 'super_admin'],
         actions: (_user, _course) => [
             {
                 action: 'create',
@@ -669,7 +670,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: 'be180a52-8dba-4bea-b768-752f25614f24',
         name: 'Update meeting times',
-        tags: ['course_admin', 'super_admin'],
+        tags: ['course_admin', 'course_creator', 'super_admin'],
         actions: (_user, course) => [
             {
                 action: 'update',
@@ -681,7 +682,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '0392418c-ba4c-4dd9-a927-30d02c298ff2',
         name: 'Delete meeting times',
-        tags: ['course_admin', 'super_admin'],
+        tags: ['course_admin', 'course_creator', 'super_admin'],
         actions: (_user, course) => [
             {
                 action: 'delete',
@@ -693,7 +694,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: 'd885afae-7698-4722-82d3-f1bbdefc5852',
         name: 'Create meeting reports',
-        tags: ['ta', 'course_admin', 'super_admin'],
+        tags: ['ta', 'course_admin', 'course_creator', 'super_admin'],
         actions: (user, course) => [
             {
                 action: 'create',
@@ -710,7 +711,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '871e9d32-0bb4-4cb4-b2b7-37a04abc468b',
         name: 'Update meeting reports',
-        tags: ['ta', 'course_admin', 'super_admin'],
+        tags: ['ta', 'course_admin', 'course_creator', 'super_admin'],
         actions: (user, course) => [
             {
                 action: 'update',
@@ -727,7 +728,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: 'bb28e4bf-b7e6-4e24-bb30-a6c609b47f73',
         name: 'Create lessons for assigned sections',
-        tags: ['ta', 'course_admin', 'super_admin'],
+        tags: ['ta', 'course_admin', 'course_creator', 'super_admin'],
         actions: (user, course) => [
             {
                 action: 'create',
@@ -744,13 +745,54 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: 'd7622fcd-9c0e-4b36-b56c-e89d651a48d8',
         name: 'Delete course lessons',
-        tags: ['course_admin', 'super_admin'],
+        tags: ['course_admin', 'course_creator', 'super_admin'],
         actions: (user, course) => [
             {
                 action: 'delete',
                 subject: Lesson,
                 validate: (instance: Lesson) =>
                     !!course && !!user && safeIdComparison(course.id, instance.course) && !instance.meetingTime,
+            },
+        ],
+    },
+    {
+        id: '13f0a408-5f02-4862-b7b0-35eda00cdd4f',
+        name: 'Take course quizes',
+        tags: ['student', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'create',
+                subject: StudentMeetingReport,
+                validate: (instance: StudentMeetingReport) => !!course && safeIdComparison(course.id, instance.course),
+            },
+        ],
+    },
+    {
+        id: 'edd88548-6059-4d30-a4e0-be84491d2933',
+        name: 'View all course quiz responses',
+        tags: ['professor', 'course_creator', 'course_admin', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'view',
+                subject: StudentMeetingReport,
+                validate: (instance: StudentMeetingReport) =>
+                    !!course && !!user && safeIdComparison(course.id, instance.course),
+            },
+        ],
+    },
+    {
+        id: '5291ee3b-e81e-4b1f-b348-7045ec2bcaf3',
+        name: 'View own course quiz responses',
+        tags: ['student', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'view',
+                subject: StudentMeetingReport,
+                validate: (instance: StudentMeetingReport) =>
+                    !!course &&
+                    !!user &&
+                    safeIdComparison(course.id, instance.course) &&
+                    safeIdComparison(user.id, instance.creator),
             },
         ],
     },

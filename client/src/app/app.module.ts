@@ -104,6 +104,8 @@ import { LearningGoalService } from './services/learningGoal.service';
 import { MeetingTimeService } from './services/meetingTime.service';
 import { SectionService } from './services/section.service';
 import { UserService } from './services/user.service';
+import { TakeQuizComponent } from './modules/pages/quizzes/take-quiz/take-quiz.component';
+import { QuizTakeComponent } from './modules/components/quizzes/quiz-take/quiz-take/quiz-take.component';
 
 export let GlobalActivatedRoute: ActivatedRoute;
 
@@ -187,6 +189,8 @@ export let GlobalActivatedRoute: ActivatedRoute;
         MeetingFeedbackEditComponent,
         RosterFormfieldComponent,
         HomeComponent,
+        TakeQuizComponent,
+        QuizTakeComponent,
     ],
     imports: [
         HttpClientModule,

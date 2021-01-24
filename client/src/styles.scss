@@ -26,7 +26,6 @@ $client-theme: mat-light-theme($client-primary, $client-accent, $client-warn);
 @include angular-material-theme($client-theme);
 
 /* You can add global styles to this file, and also import other style files */
-@import '~bootstrap/dist/css/bootstrap.min.css';
 @import '~ngx-toastr/toastr';
 @import '~quill/dist/quill.bubble.css';
 @import '~quill/dist/quill.snow.css';

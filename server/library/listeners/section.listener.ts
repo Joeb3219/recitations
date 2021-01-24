@@ -66,7 +66,12 @@ export class SectionListener implements EntitySubscriberInterface<Section> {
 
                 // Only update if the roles of this user actually changed.
                 if (!_.isEqual(_.sortBy(oldRoles), _.sortBy(user.roles.map(role => role.id)))) {
-                    await user.save();
+                    try {
+                        await user.save();
+                    } catch (err) {
+                        // eslint-disable-next-line no-console
+                        console.error(err);
+                    }
                 }
             })
         );

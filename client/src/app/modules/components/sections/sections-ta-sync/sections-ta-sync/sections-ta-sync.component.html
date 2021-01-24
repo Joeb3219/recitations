@@ -1,14 +1,13 @@
 <app-form-modal
     *ngIf="isVisible"
-    [submitText]="'Save Roster'"
+    [submitText]="'Sync TAs'"
     [showModal]="isVisible"
     [form]="form"
     [modalSize]="'xl'"
-    [title]="'Update Roster'"
+    [title]="'Sync TAs'"
     (onSubmit)="formSubmitted($event)"
     (onClose)="handleClose()"
     [forceClose]="forceClose"
     (onFieldChange)="onFieldChanged($event)"
-    [loading]="loading"
 >
 </app-form-modal>

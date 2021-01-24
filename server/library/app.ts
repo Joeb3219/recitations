@@ -133,6 +133,9 @@ class AppWrapper {
             logging: false,
             entities: AllEntities,
             subscribers: AllListeners,
+            extra: {
+                connectionLimit: 20,
+            },
         });
     }
 

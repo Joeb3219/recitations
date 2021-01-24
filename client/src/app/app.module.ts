@@ -21,7 +21,6 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import { FileUploadModule } from 'ng2-file-upload';
-import { ModalModule } from 'ngx-bootstrap/modal';
 import { QuillModule } from 'ngx-quill';
 import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from './app-routing.module';
@@ -40,6 +39,7 @@ import { FormComponent } from './modules/components/forms/form/form.component';
 import { ManualLoginFormComponent } from './modules/components/forms/manual-login-form/manual-login-form.component';
 import { GradebookComponent } from './modules/components/gradebook/gradebook.component';
 import { HeaderComponent } from './modules/components/header/header.component';
+import { HomeComponent } from './modules/components/home/home/home.component';
 import { LearningGoalSearchFormfieldComponent } from './modules/components/learning-goals/learning-goal-search-formfield/learning-goal-search-formfield.component';
 import { LearningGoalsComponent } from './modules/components/learning-goals/learning-goals.component';
 import { LessonPlanDeleteComponent } from './modules/components/lesson-plans/lesson-plan-delete/lesson-plan-delete.component';
@@ -52,6 +52,7 @@ import { LessonPlanViewComponent } from './modules/components/lesson-plans/lesso
 import { LessonEditComponent } from './modules/components/lessons/lesson-edit/lesson-edit.component';
 import { MeetingTimeEditComponent } from './modules/components/meeting-times/meeting-time-edit/meeting-time-edit.component';
 import { MeetingTimesFormfieldComponent } from './modules/components/meeting-times/meeting-times-formfield/meeting-times-formfield.component';
+import { MeetingFeedbackEditComponent } from './modules/components/meetings/meeting-feedback-edit/meeting-feedback-edit.component';
 import { ModalComponent } from './modules/components/modal/modal.component';
 import { ProblemDeleteComponent } from './modules/components/problems/problem-delete/problem-delete.component';
 import { ProblemEditComponent } from './modules/components/problems/problem-edit/problem-edit.component';
@@ -71,6 +72,7 @@ import { RoleDeleteComponent } from './modules/components/roles/role-delete/role
 import { RoleEditComponent } from './modules/components/roles/role-edit/role-edit.component';
 import { RolesFormfieldComponent } from './modules/components/roles/roles-formfield/roles-formfield.component';
 import { EditRosterComponent } from './modules/components/roster/edit-roster/edit-roster.component';
+import { RosterFormfieldComponent } from './modules/components/roster/roster-formfield/roster-formfield.component';
 import { ViewRosterComponent } from './modules/components/roster/view-roster/view-roster.component';
 import { SectionDeleteComponent } from './modules/components/sections/section-delete/section-delete.component';
 import { SectionEditComponent } from './modules/components/sections/section-edit/section-edit.component';
@@ -89,6 +91,7 @@ import { ListLessonPlansComponent } from './modules/pages/lesson-plans/list-less
 import { ViewLessonPlanComponent } from './modules/pages/lesson-plans/view-lesson-plan/view-lesson-plan.component';
 import { CasAuthComponent } from './modules/pages/login/cas-auth/cas-auth.component';
 import { LoginComponent } from './modules/pages/login/login.component';
+import { ViewMeetingFeedbackComponent } from './modules/pages/meetings/view-meeting-feedback/view-meeting-feedback.component';
 import { ListQuizzesComponent } from './modules/pages/quizzes/list-quizzes/list-quizzes.component';
 import { ViewQuizComponent } from './modules/pages/quizzes/view-quiz/view-quiz.component';
 import { RecitationsComponent } from './modules/pages/recitations/recitations.component';
@@ -101,10 +104,9 @@ import { LearningGoalService } from './services/learningGoal.service';
 import { MeetingTimeService } from './services/meetingTime.service';
 import { SectionService } from './services/section.service';
 import { UserService } from './services/user.service';
-import { ViewMeetingFeedbackComponent } from './modules/pages/meetings/view-meeting-feedback/view-meeting-feedback.component';
-import { MeetingFeedbackEditComponent } from './modules/components/meetings/meeting-feedback-edit/meeting-feedback-edit.component';
-import { RosterFormfieldComponent } from './modules/components/roster/roster-formfield/roster-formfield.component';
-import { HomeComponent } from './modules/components/home/home/home.component';
+import { TakeQuizComponent } from './modules/pages/quizzes/take-quiz/take-quiz.component';
+import { QuizTakeComponent } from './modules/components/quizzes/quiz-take/quiz-take/quiz-take.component';
+import { SectionsTaSyncComponent } from './modules/components/sections/sections-ta-sync/sections-ta-sync/sections-ta-sync.component';
 
 export let GlobalActivatedRoute: ActivatedRoute;
 
@@ -188,6 +190,9 @@ export let GlobalActivatedRoute: ActivatedRoute;
         MeetingFeedbackEditComponent,
         RosterFormfieldComponent,
         HomeComponent,
+        TakeQuizComponent,
+        QuizTakeComponent,
+        SectionsTaSyncComponent,
     ],
     imports: [
         HttpClientModule,
@@ -205,7 +210,7 @@ export let GlobalActivatedRoute: ActivatedRoute;
         MatIconModule,
         MatListModule,
         MatButtonModule,
-        ModalModule.forRoot(),
+        // ModalModule.forRoot(),
         MatTabsModule,
         NgxDatatableModule,
         MatFormFieldModule,

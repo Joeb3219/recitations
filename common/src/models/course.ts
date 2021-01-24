@@ -3,6 +3,7 @@ import { BaseEntity, Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGe
 import { DefaultCourseSettings } from '../constants';
 import { CourseInterface, CourseSetting, CourseSettingKey, CourseSettings } from '../interfaces';
 import { CourseSemesterDescriptor } from '../interfaces/course.interface';
+import { CourseSettingNumber } from '../interfaces/courseSetting.interface';
 import { Section, User } from '../models';
 
 @Entity()
@@ -43,7 +44,7 @@ export class Course extends BaseEntity implements CourseInterface {
             ...(Object.keys(DefaultCourseSettings) as CourseSettingKey[]).map((key: CourseSettingKey) => ({
                 [key]: {
                     ...DefaultCourseSettings[key],
-                    value: this.settings?.[key].value ?? DefaultCourseSettings[key].value,
+                    value: this.settings?.[key]?.value ?? DefaultCourseSettings[key]?.value,
                 },
             }))
         );
@@ -52,6 +53,11 @@ export class Course extends BaseEntity implements CourseInterface {
     getSetting(settingKey: CourseSettingKey): CourseSetting {
         const settings = this.getMergedSettings();
         return settings[settingKey];
+    }
+
+    getNumberSetting(settingKey: CourseSettingKey): CourseSettingNumber | undefined {
+        const setting = this.getSetting(settingKey);
+        return setting.type === 'number' ? setting : undefined;
     }
 
     constructor(args: Partial<Course> = {}) {

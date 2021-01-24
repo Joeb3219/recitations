@@ -109,6 +109,7 @@ function httpMiddleware(
                 currentUser: res.locals.currentUser,
                 params: req.params,
                 ability: AbilityManager.getUserAbilities(res.locals.currentUser),
+                file: req.files ? req.files.file : undefined,
             } as HttpArgs);
 
             const searchedResult = searchResultData(result, req, searchableFields);

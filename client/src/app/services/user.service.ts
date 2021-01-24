@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { StandardResponseInterface, User } from '@dynrec/common';
 import { environment } from '@environment';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { getFilterParams } from '../decorators/request.decorator';
+import { HttpFilterInterface } from '../http/httpFilter.interface';
 
 @Injectable()
 export class UserService {
@@ -35,18 +37,20 @@ export class UserService {
         return this.http.get<StandardResponseInterface<User>>(url);
     }
 
-    public async getUsers(): Promise<User[]> {
+    public async getUsers(filter: HttpFilterInterface): Promise<User[]> {
         const url = `${environment.apiURL}/user`;
         return new Promise((resolve, reject) => {
-            this.http.get<StandardResponseInterface<User[]>>(url).subscribe(
-                (result: StandardResponseInterface<User[]>) => {
-                    if (result) resolve(result.data);
-                    else reject(new Error('No result returned'));
-                },
-                (err: Error) => {
-                    reject(err);
-                }
-            );
+            this.http
+                .get<StandardResponseInterface<User[]>>(url, { params: getFilterParams(filter) })
+                .subscribe(
+                    (result: StandardResponseInterface<User[]>) => {
+                        if (result) resolve(result.data);
+                        else reject(new Error('No result returned'));
+                    },
+                    (err: Error) => {
+                        reject(err);
+                    }
+                );
         });
     }
 

@@ -53,7 +53,8 @@ export class RosterController {
         const relevantChanges = changes.filter(
             change =>
                 change.user.username &&
-                (sectionsByIndex[change.section.index] || sectionsByNumber[change.section.sectionNum])
+                ((change.section.index && sectionsByIndex[change.section.index]) ||
+                    (change.section.sectionNumber && sectionsByNumber[change.section.sectionNumber]))
         );
 
         // Grabs all of the users that are matched by the provided
@@ -75,7 +76,7 @@ export class RosterController {
 
         // Now, we begin by creating any usere that are missing.
         const createdUserObjects: Partial<User>[] = relevantChanges
-            .filter(change => !usersByUsername[change.user.username])
+            .filter(change => change.user.username && !usersByUsername[change.user.username])
             .map(change => ({
                 username: change.user.username,
                 email: change.user.email,
@@ -101,14 +102,15 @@ export class RosterController {
 
         // Adds and changes
         relevantChanges.forEach(change => {
-            const user = usersByUsername[change.user.username];
+            const user = change.user.username && usersByUsername[change.user.username];
             if (!user) {
                 return;
             }
 
             // Find the section they ought to be in
             // We treat it as an error for a student to exist in this array, but with an invalid section.
-            const section = sectionsByIndex[change.section.index] ?? sectionsByNumber[change.section.sectionNum];
+            const section =
+                sectionsByIndex[change.section.index ?? ''] ?? sectionsByNumber[change.section.sectionNumber ?? ''];
             if (!section) {
                 return;
             }
@@ -198,11 +200,17 @@ export class RosterController {
     async verifyRosterChanges({
         params,
         body,
+        ability,
     }: HttpArgs<{ rosterPath: string }, { rosterID: string }>): Promise<UpdateRosterPayload> {
         const course = await Course.findOneOrFail(
             { id: params.courseID },
             { relations: ['sections', 'sections.students'] }
         );
+
+        if (ability.can('update', course)) {
+            throw Boom.unauthorized('Unauthorized to update roster.');
+        }
+
         return this.runRosterUpdate({
             course,
             rosterID: params.rosterID,
@@ -216,11 +224,17 @@ export class RosterController {
     async updateRoster({
         params,
         body,
+        ability,
     }: HttpArgs<{ rosterPath: string }, { rosterID: string }>): Promise<UpdateRosterPayload> {
         const course = await Course.findOneOrFail(
             { id: params.courseID },
             { relations: ['sections', 'sections.students'] }
         );
+
+        if (ability.can('update', course)) {
+            throw Boom.unauthorized('Unauthorized to update roster.');
+        }
+
         return this.runRosterUpdate({
             course,
             rosterID: params.rosterID,
@@ -231,9 +245,15 @@ export class RosterController {
     }
 
     @GetRequest('/course/:courseID/roster/:rosterID')
-    async downloadRoster({ params }: HttpArgs<never, { rosterID: string }>): Promise<string> {
+    async downloadRoster({ params, ability }: HttpArgs<never, { rosterID: string }>): Promise<string> {
         const rosterInstances = ALL_ROSTER_TYPES.map(Roster => new Roster());
         const downloadFormat = rosterInstances.find(instance => instance.id === params.rosterID);
+
+        const course = await Course.findOne(params.courseID);
+
+        if (ability.can('update', course)) {
+            throw Boom.unauthorized('Unauthorized to fetch roster.');
+        }
 
         if (!downloadFormat) {
             throw Boom.notFound(`Failed to find roster format of type ${params.rosterID}`);
@@ -245,10 +265,14 @@ export class RosterController {
     @Searchable(['section.index', 'section.sectionNumber', 'student.firstName', 'student.lastName', 'student.username'])
     @Sortable({})
     @GetRequest('/course/:courseId/roster')
-    async getCourseRosterList({ params }: HttpArgs<never, unknown>): Promise<CourseRosterPayload[]> {
+    async getCourseRosterList({ params, ability }: HttpArgs<never, unknown>): Promise<CourseRosterPayload[]> {
         const course = await Course.findOne({ id: params.courseId }, { relations: ['sections', 'sections.students'] });
         if (!course) {
             throw Boom.notFound('No course found');
+        }
+
+        if (ability.can('update', course)) {
+            throw Boom.unauthorized('Unauthorized to fetch roster.');
         }
 
         const sectionUsers = await Promise.all(
@@ -264,11 +288,15 @@ export class RosterController {
     }
 
     @GetRequest('/course/:courseId/sections-roster')
-    async getSectionsRosterList({ params, currentUser }: HttpArgs<never, unknown>): Promise<Section[]> {
+    async getSectionsRosterList({ params, currentUser, ability }: HttpArgs<never, unknown>): Promise<Section[]> {
         const course = await Course.findOne({ id: params.courseId });
 
         if (!course) {
             throw Boom.notFound('No course found');
+        }
+
+        if (ability.can('update', course)) {
+            throw Boom.unauthorized('Unauthorized to fetch roster.');
         }
 
         return Section.find({ where: { course, ta: currentUser }, relations: ['students'] });

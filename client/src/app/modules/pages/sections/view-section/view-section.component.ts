@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { Section } from '@dynrec/common';
+import { Course, Section } from '@dynrec/common';
 import { LoadedArg } from '../../../../decorators/input.decorator';
+import { CourseService } from '../../../../services/course.service';
 import { SectionService } from '../../../../services/section.service';
 
 @Component({
@@ -11,4 +12,7 @@ import { SectionService } from '../../../../services/section.service';
 export class ViewSectionComponent {
     @LoadedArg(SectionService, Section, 'sectionID')
     section: Section;
+
+    @LoadedArg(CourseService, Course, 'courseID')
+    course: Course;
 }

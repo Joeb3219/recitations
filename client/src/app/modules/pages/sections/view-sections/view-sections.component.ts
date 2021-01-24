@@ -19,6 +19,7 @@ export class ViewSectionsComponent implements OnChanges {
 
     isEditSectionModalOpen = false;
     isSyncSectionModalOpen = false;
+    isSyncSectionTAsModalOpen = false;
     isDeleteSectionModalOpen = false;
 
     refreshData: EventEmitter<void> = new EventEmitter();
@@ -86,6 +87,10 @@ export class ViewSectionsComponent implements OnChanges {
         this.isSyncSectionModalOpen = true;
     }
 
+    handleOpenSyncTAsModal() {
+        this.isSyncSectionTAsModalOpen = true;
+    }
+
     handleOpenNewSectionModal(): void {
         this.isEditSectionModalOpen = true;
 
@@ -95,6 +100,11 @@ export class ViewSectionsComponent implements OnChanges {
 
     handleCloseSyncSectionModal() {
         this.isSyncSectionModalOpen = false;
+        this.refreshData.next();
+    }
+
+    handleCloseTAsSyncSectionModal() {
+        this.isSyncSectionTAsModalOpen = false;
         this.refreshData.next();
     }
 

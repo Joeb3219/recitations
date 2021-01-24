@@ -1,8 +1,18 @@
 import { Component, EventEmitter, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DatatableColumn } from '@components/datatable/datatable.component';
-import { Lesson, MeetingType, MeetingWithLesson, Section, StandardResponseInterface } from '@dynrec/common';
+import {
+    Course,
+    Lesson,
+    MeetingType,
+    MeetingWithLesson,
+    Section,
+    StandardResponseInterface,
+    StudentMeetingReport,
+    User,
+} from '@dynrec/common';
 import dayjs from 'dayjs';
 import { MeetingService } from '../../../../services/meeting.service';
+import { UserService } from '../../../../services/user.service';
 
 @Component({
     selector: 'app-section-view',
@@ -10,6 +20,7 @@ import { MeetingService } from '../../../../services/meeting.service';
     styleUrls: ['./section-view.component.scss'],
 })
 export class SectionViewComponent implements OnChanges {
+    @Input() course: Course;
     @Input() section: Section;
 
     refreshData: EventEmitter<void> = new EventEmitter();
@@ -17,6 +28,8 @@ export class SectionViewComponent implements OnChanges {
 
     selectedLesson?: Omit<Lesson, 'id'> & { id: undefined | string };
     isEditLessonModalOpen: boolean = false;
+
+    currentUser: User | undefined;
 
     columns: DatatableColumn<MeetingWithLesson<MeetingType.RECITATION> & { id?: undefined }>[] = [
         {
@@ -66,11 +79,20 @@ export class SectionViewComponent implements OnChanges {
                     href: `/courses/${row.lesson.course.id}/meeting-feedback/${row.date.toISOString?.() ?? row.date}`,
                     if: dayjs().isAfter(row.date),
                 },
+                {
+                    text: 'Take Quiz',
+                    can: {
+                        action: 'create',
+                        subject: new StudentMeetingReport({ course: this.section.course }),
+                    },
+                    href: `/courses/${row.lesson.course.id}/quiz/${row.date.toISOString?.() ?? row.date}`,
+                    if: new MeetingWithLesson(row).canTakeQuiz(this.course),
+                },
             ],
         },
     ];
 
-    constructor(private readonly meetingService: MeetingService) {
+    constructor(private readonly meetingService: MeetingService, private readonly userService: UserService) {
         this.fetchMeetingTimes = this.fetchMeetingTimes.bind(this);
     }
 

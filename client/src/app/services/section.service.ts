@@ -70,4 +70,24 @@ export class SectionService {
             );
         });
     }
+
+    public syncTAs(course: Course, path: string): Promise<StandardResponseInterface<Section[]>> {
+        const url = `${environment.apiURL}/course/${course.id}/sections/sync-tas`;
+        return new Promise((resolve, reject) => {
+            this.http
+                .post<StandardResponseInterface<Section[]>>(url, { path })
+                .subscribe(
+                    result => {
+                        if (result) {
+                            // eslint-disable-next-line no-param-reassign
+                            result.data = result.data.map(item => plainToClass(Section, item));
+                            resolve(result);
+                        } else reject(new Error('No result returned'));
+                    },
+                    (err: Error) => {
+                        reject(err);
+                    }
+                );
+        });
+    }
 }

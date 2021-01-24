@@ -158,6 +158,11 @@ export class RutgersSocDatasource extends SectionDatasource {
         }
     };
 
+    private timeFormat(time: number) {
+        const timeStr = `${time}`.padStart(4, '0');
+        return `${timeStr.substring(0, 2)}:${timeStr.substring(2, 4)}:00`;
+    }
+
     private processMeetingTime(meetingTime: SOC_MeetingTime): MeetingTimeDescriptor | undefined {
         // for now, we are only dealing with recitations.
         if (meetingTime.meetingModeDesc !== 'RECIT') {
@@ -181,27 +186,38 @@ export class RutgersSocDatasource extends SectionDatasource {
             SU: 'sunday',
         };
 
-        const timeFormat = (time: number) => {
-            const timeStr = `${time}`.padStart(4, '0');
-            return `${timeStr.substring(0, 2)}:${timeStr.substring(2, 4)}:00`;
-        };
-
         // For now, we are not bothering to copy over location information.
         // After COVID, we will revisit this.
         return {
             frequency: 1,
             type: MeetingType.RECITATION,
             weekday: meetingTime.meetingDay ? weekdayMap[meetingTime.meetingDay] ?? 'sunday' : 'sunday',
-            startTime: timeFormat(startTime),
-            endTime: timeFormat(endTime),
+            startTime: this.timeFormat(startTime),
+            endTime: this.timeFormat(endTime),
+        };
+    }
+
+    private createDefaultMeetingTime(): MeetingTimeDescriptor {
+        return {
+            frequency: 1,
+            type: MeetingType.RECITATION,
+            weekday: 'monday',
+            startTime: this.timeFormat(1200),
+            endTime: this.timeFormat(1255),
         };
     }
 
     private processSection(section: SOC_Section): SectionDescriptor | undefined {
+        const meetingTimes = _.compact(section.meetingTimes.map(time => this.processMeetingTime(time)));
+
+        if (!meetingTimes.find(m => m.type === MeetingType.RECITATION)) {
+            meetingTimes.push(this.createDefaultMeetingTime());
+        }
+
         return {
             index: section.index,
             sectionNumber: section.number,
-            meetingTimes: _.compact(section.meetingTimes.map(time => this.processMeetingTime(time))),
+            meetingTimes,
         };
     }
 

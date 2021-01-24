@@ -1,0 +1,18 @@
+<div class="page">
+    <ng-container *ngIf="!course || !dateStr">
+        <h4>Not Found</h4>
+    </ng-container>
+    <ng-container *ngIf="course && dateStr">
+        <div class="container-margin">
+            <div class="row">
+                <div style="float: left; text-align: left" class="col">
+                    <h4>Quiz for {{ dateStr | date: 'MM/dd/YYYY HH:mm' }}</h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-margin">
+            <app-quiz-take [course]="course" [date]="getDate()"></app-quiz-take>
+        </div>
+    </ng-container>
+</div>

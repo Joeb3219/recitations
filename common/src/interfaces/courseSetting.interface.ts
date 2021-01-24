@@ -1,5 +1,9 @@
-export type CourseSettingKey = 'semester_start_date' | 'semester_end_date';
-export type CourseSettingSection = 'dates';
+export type CourseSettingKey =
+    | 'semester_start_date'
+    | 'semester_end_date'
+    | 'recitations_quiz_start'
+    | 'recitations_quiz_end';
+export type CourseSettingSection = 'dates' | 'quizzes';
 
 export type CourseSettingType = 'number' | 'select' | 'text' | 'date';
 

@@ -1,4 +1,4 @@
-import { Course, dateRange, Lesson, Meeting, MeetingType, MeetingWithLesson } from '@dynrec/common';
+import { Course, dateRange, Lesson, Meeting, MeetingTime, MeetingType, MeetingWithLesson } from '@dynrec/common';
 import dayjs from 'dayjs';
 import _ from 'lodash';
 import { AllMeetingSources } from './index';
@@ -14,11 +14,15 @@ export class MeetingManager {
         const semesterStartDate = new Date(course.getSetting('semester_start_date').value ?? '');
         const semesterEndDate = new Date(course.getSetting('semester_end_date').value ?? '');
 
-        const defaultLessons = await Lesson.find({ course: course, meetingTime: null });
+        const defaultLessons = await Lesson.createQueryBuilder('e')
+            .where(`e.courseId = :course`, { course: course.id })
+            .andWhere(`e.meetingTimeId IS NULL`)
+            .getMany();
 
         const range = dateRange(semesterStartDate ?? new Date(), semesterEndDate ?? new Date());
 
-        return range.filter(date => defaultLessons.find(lesson => this.lessonOverlapsDate(lesson, date)));
+        const x = range.filter(date => defaultLessons.find(lesson => this.lessonOverlapsDate(lesson, date)));
+        return x;
     }
 
     static async getMeetings(course: Course): Promise<Meeting<MeetingType>[]> {
@@ -26,6 +30,7 @@ export class MeetingManager {
             AllMeetingSources.map(async MeetingSourceClass => {
                 const sourceInstance = new MeetingSourceClass();
                 const dates = await this.getDateRange(course);
+
                 return sourceInstance.getPotentialMeetingDates({
                     course,
                     dates,
@@ -34,6 +39,11 @@ export class MeetingManager {
         );
 
         return _.flatten(meetings);
+    }
+
+    static async getMeeting(course: Course, meetingTime: MeetingTime, date: Date) {
+        const meetings = await MeetingManager.getMeetings(course);
+        return meetings.find(meeting => dayjs(meeting.date).isSame(date) && meeting.meetingTime.id === meetingTime.id);
     }
 
     static lessonOverlapsDate(lesson: Lesson, date: Date) {

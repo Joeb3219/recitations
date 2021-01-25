@@ -33,10 +33,12 @@ export class WeeksComponent implements OnInit {
         const defaultLessons = lessons.data.filter(lesson => !lesson.meetingTime);
 
         // Now that we have the default lessons, we must make an array of all of the dates
-        const startDate = dayjs(this.course.getSetting('semester_start_date').value ?? '')
+        const startDate = dayjs
+            .tz(this.course.getSetting('semester_start_date').value ?? '', 'America/New_York')
             .startOf('week')
             .startOf('day');
-        const endDate = dayjs(this.course.getSetting('semester_end_date').value ?? '')
+        const endDate = dayjs
+            .tz(this.course.getSetting('semester_end_date').value ?? '', 'America/New_York')
             .endOf('week')
             .endOf('day');
         let currentDate = startDate.clone();
@@ -52,7 +54,7 @@ export class WeeksComponent implements OnInit {
 
         this.weeks = validDates.map(date => {
             const dayjsDate = dayjs(date);
-            const found = defaultLessons.find(lesson => dayjsDate.isSame(dayjs(lesson.beginDate)));
+            const found = defaultLessons.find(lesson => dayjsDate.isSame(dayjs(lesson.beginDate), 'day'));
 
             this.weekLabels?.push(
                 `${dayjsDate.add(1, 'day').format('MM/DD')} - ${dayjsDate.add(6, 'day').format('MM/DD/YYYY')}`

@@ -6,6 +6,7 @@ export const isSentryEnabled = () => process.env.SENTRY_DNS;
 // Initializes Sentry for the current session
 export function sentryInit() {
     if (isSentryEnabled()) {
+        console.log('Initializing sentry');
         Sentry.init({
             dsn: process.env.SENTRY_DNS,
             tracesSampleRate: 0.2,

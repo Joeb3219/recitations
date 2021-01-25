@@ -159,6 +159,8 @@ export class DatatableComponent<T extends { id?: string }> implements OnInit {
 
     ProblemDifficulty = ProblemDifficulty;
 
+    loading: boolean = false;
+
     constructor(private applicationRef: ApplicationRef) {}
 
     ngAfterViewInit(): void {
@@ -427,6 +429,7 @@ export class DatatableComponent<T extends { id?: string }> implements OnInit {
     }
 
     async loadData(): Promise<void> {
+        this.loading = true;
         // First, we update columns to have correct data
         this.updateColumnDefs();
 
@@ -442,5 +445,6 @@ export class DatatableComponent<T extends { id?: string }> implements OnInit {
         this.numFetchedResults = metadata.total || 0;
 
         this.refreshDataCharacteristics();
+        this.loading = false;
     }
 }

@@ -20,7 +20,7 @@ function searchIn<ObjectType extends any = any, TargetType extends any = any>(
     key: string,
     target: TargetType
 ) {
-    if (!target || !('toString' in target)) return true; // Ensure that the search target is actually comparable
+    if (!target || !(target as any)?.toString) return true; // Ensure that the search target is actually comparable
 
     const data = get(object, key); // Lodash get, which will find object.path.to.key, for all key = "path.to.key".
     if (!data) return false; // A real search query was provided, but we don't have it for this key.

@@ -77,7 +77,7 @@ export class MeetingTime extends BaseEntity implements MeetingTimeInterface {
         return dayjs
             .tz(date, 'America/New_York')
             .startOf('day')
-            .add(parseInt(hours ?? '0', 10) + 3, 'hour')
+            .add(parseInt(hours ?? '0', 10), 'hour')
             .add(parseInt(minutes ?? '0', 10), 'minute')
             .toDate();
     }

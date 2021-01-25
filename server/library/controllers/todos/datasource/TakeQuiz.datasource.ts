@@ -25,7 +25,7 @@ export class TakeQuizTodo extends TodoDatasource {
             name: 'Recitation Quiz',
             description: 'You are required to do your weekly quiz to receive credit for your recitation.',
             alertType: 'warning',
-            actionText: `Click here to take quiz`,
+            actionText: `Click here to take the quiz`,
             actionLink: `${process.env.SERVICE_URL}/courses/${course.id}/quiz/${meeting.date.toISOString()}`,
         });
     }

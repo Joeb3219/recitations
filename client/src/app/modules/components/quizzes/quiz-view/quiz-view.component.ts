@@ -20,6 +20,7 @@ export type EditElementPayload = {
 export class QuizViewComponent implements OnInit {
     @Input() quiz: Quiz;
     @Output() editElement: EventEmitter<EditElementPayload> = new EventEmitter<EditElementPayload>();
+    @Output() deleteElement: EventEmitter<EditElementPayload> = new EventEmitter<EditElementPayload>();
     @Input() showEditButtons: boolean = false;
 
     @Input() answers?: QuizElementAnswerInterface[];
@@ -52,6 +53,11 @@ export class QuizViewComponent implements OnInit {
 
     handleEditElement(element: QuizElementItem, index: number) {
         this.editElement.emit({ element, index });
+    }
+
+    handleDeleteElement(element: QuizElementItem, index: number) {
+        this.quiz.elements = this.quiz.elements.filter((element, idx) => idx !== index);
+        this.deleteElement.emit({ element, index });
     }
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

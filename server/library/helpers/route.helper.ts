@@ -109,7 +109,7 @@ function httpMiddleware(
         const transaction = useSentry
             ? Sentry?.startTransaction({
                   op: `${method} ${route}`,
-                  name: `${method}`,
+                  name: `${method} ${route}`,
               })
             : undefined;
 

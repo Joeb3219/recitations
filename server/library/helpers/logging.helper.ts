@@ -8,7 +8,7 @@ export function sentryInit() {
     if (isSentryEnabled()) {
         Sentry.init({
             dsn: process.env.SENTRY_DNS,
-            tracesSampleRate: 1.0,
+            tracesSampleRate: 0.2,
             integrations: [
                 new CaptureConsole({
                     levels: ['error'],

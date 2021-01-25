@@ -107,6 +107,7 @@ import { UserService } from './services/user.service';
 import { TakeQuizComponent } from './modules/pages/quizzes/take-quiz/take-quiz.component';
 import { QuizTakeComponent } from './modules/components/quizzes/quiz-take/quiz-take/quiz-take.component';
 import { SectionsTaSyncComponent } from './modules/components/sections/sections-ta-sync/sections-ta-sync/sections-ta-sync.component';
+import { TodosViewComponent } from './modules/components/todos/todos-view/todos-view.component';
 
 export let GlobalActivatedRoute: ActivatedRoute;
 
@@ -193,6 +194,7 @@ export let GlobalActivatedRoute: ActivatedRoute;
         TakeQuizComponent,
         QuizTakeComponent,
         SectionsTaSyncComponent,
+        TodosViewComponent,
     ],
     imports: [
         HttpClientModule,

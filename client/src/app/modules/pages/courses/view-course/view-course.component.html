@@ -1,15 +1,13 @@
 <div class="page">
-  <ng-container *ngIf="!course">
-    <h4>Not Found</h4>
-  </ng-container>
-  <ng-container *ngIf="course">
+    <ng-container *ngIf="!course">
+        <h4>Not Found</h4>
+    </ng-container>
+    <ng-container *ngIf="course">
+        <div class="container-margin">
+            <h1 class="display-4">{{ course.name }}</h1>
+            <p class="lead">{{ course.department }}:{{ course.courseCode }}</p>
+        </div>
 
-    <div class="container-margin">
-      <h1 class="display-4">{{ course.name }}</h1>
-      <p class="lead">{{course.department}}:{{course.courseCode}}</p>
-    </div>
-
-    <app-calendar [course]="course"></app-calendar>
-
-  </ng-container>
+        <app-calendar [course]="course"></app-calendar>
+    </ng-container>
 </div>

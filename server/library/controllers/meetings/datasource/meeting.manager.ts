@@ -21,8 +21,7 @@ export class MeetingManager {
 
         const range = dateRange(semesterStartDate ?? new Date(), semesterEndDate ?? new Date());
 
-        const x = range.filter(date => defaultLessons.find(lesson => this.lessonOverlapsDate(lesson, date)));
-        return x;
+        return range.filter(date => defaultLessons.find(lesson => this.lessonOverlapsDate(lesson, date)));
     }
 
     static async getMeetings(course: Course): Promise<Meeting<MeetingType>[]> {

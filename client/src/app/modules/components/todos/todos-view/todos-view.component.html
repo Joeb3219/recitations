@@ -1,0 +1,29 @@
+<ng-container *ngIf="todos && todos.length">
+    <div
+        *ngFor="let todo of filteredTodos"
+        class="alert alert-{{ todo.alertType }} {{ todo.actionLink ? '' : 'alert-dismissible fade show' }}"
+        role="alert"
+    >
+        <h4 class="alert-heading">
+            {{ todo.name }}
+            <button
+                type="button"
+                *ngIf="!todo.actionLink"
+                class="close"
+                data-dismiss="alert"
+                aria-label="Close"
+                (click)="handleCloseTodo(todo)"
+            >
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </h4>
+        <p>{{ todo.description }}</p>
+
+        <ng-container *ngIf="todo.actionLink">
+            <hr />
+            <a href="{{ todo.actionLink }}" class="alert-link">{{
+                todo.actionText ? todo.actionText : 'Click here'
+            }}</a>
+        </ng-container>
+    </div>
+</ng-container>

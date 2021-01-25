@@ -15,6 +15,7 @@ export * from './quiz';
 export * from './role';
 export * from './section';
 export * from './studentMeetingReport';
+export * from './todo';
 export * from './user';
 import { Course } from './course';
 import { CoverageRequest } from './coverageRequest';

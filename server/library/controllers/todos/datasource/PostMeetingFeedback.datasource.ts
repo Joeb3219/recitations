@@ -8,7 +8,7 @@ export class PostRecitationFeedbackTodo extends TodoDatasource {
 
     private generateTodo(course: Course, meeting: Meeting, responses: MeetingReport[]): Todo | undefined {
         // Can't do this feedback right now.
-        if (!dayjs().isBefore(meeting.date)) {
+        if (dayjs().isBefore(dayjs(meeting.date))) {
             return undefined;
         }
 

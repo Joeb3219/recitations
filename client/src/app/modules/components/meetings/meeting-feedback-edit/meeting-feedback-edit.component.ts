@@ -190,7 +190,10 @@ export class MeetingFeedbackEditComponent implements OnInit {
         this.meetings = result.data;
 
         const rosterResult = await this.rosterService.listSectionsRosters(this.course);
-        this.sections = rosterResult.data;
+
+        this.sections = rosterResult.data.filter(section =>
+            this.meetings.find(meeting => meeting.meetingTime.meetable.id === section.id)
+        );
 
         try {
             const reportResult = await this.meetingReportService.getMeetingReportOnDate(this.course, this.date);

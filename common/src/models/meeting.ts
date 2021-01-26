@@ -19,9 +19,9 @@ export class Meeting<Type extends MeetingType = MeetingType> {
     @Expose()
     getAccessCode() {
         const baseStr = JSON.stringify({
-            meetingTime: this.meetingTime.id,
+            leader: this.meetingTime.leader?.id,
             meetingType: this.meetingType,
-            date: this.date,
+            date: dayjs(this.date).unix(),
         });
 
         // Based loosely on the Java hash function.
@@ -69,6 +69,7 @@ export class Meeting<Type extends MeetingType = MeetingType> {
             '2',
             'K',
         ];
+
         return [1, 0.5, 0.25, 0.125].reduce<string>(
             (str, divisor) => str + randomData[Math.ceil(Math.abs(hash / divisor)) % randomData.length ?? 0],
             ''

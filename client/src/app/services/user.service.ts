@@ -25,7 +25,6 @@ export class UserService {
                 err => {
                     // Invalid login :(
                     if (err.status === 403) {
-                        console.log('baaad');
                         localStorage.clear();
                         this.route.navigate(['/login']);
                     }

@@ -1,3 +1,8 @@
+<div *ngIf="loading" class="d-flex justify-content-center" style="margin: 8px">
+    <div class="spinner-border text-primary" role="status" style="margin-right: 8px"></div>
+    <span>Loading Data...</span>
+</div>
+
 <ng-container *ngIf="meetings && meetings.length">
     <span *ngIf="meetings.length > 1">There are {{ meetings.length + 1 }} meetings in this report.</span>
 

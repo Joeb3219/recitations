@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { User } from '@dynrec/common';
+import { Course, User } from '@dynrec/common';
 import _ from 'lodash';
 
 @Component({
@@ -8,6 +8,8 @@ import _ from 'lodash';
     styleUrls: ['./roster-formfield.component.scss'],
 })
 export class RosterFormfieldComponent implements OnInit {
+    @Input() course: Course;
+
     @Input() users: User[] = [];
     @Input() value: User[] = [];
 
@@ -20,6 +22,24 @@ export class RosterFormfieldComponent implements OnInit {
             {},
             ...this.users.map(user => ({ [user.id]: this.value.find(vUser => user.id === vUser.id) !== undefined }))
         );
+    }
+
+    handleToggleAttendance() {
+        const numAttending = Object.keys(this.attendingIds).reduce(
+            (sum, id) => sum + (this.attendingIds[id] ? 1 : 0),
+            0
+        );
+
+        Object.keys(this.attendingIds).forEach(id => {
+            this.attendingIds[id] = numAttending === 0;
+        });
+
+        this.value = _.compact(
+            Object.keys(this.attendingIds)
+                .filter(id => !!this.attendingIds[id])
+                .map(id => this.users.find(user => user.id === id))
+        );
+        this.onChange.emit(this.value);
     }
 
     handleUserToggled(user: User, present: boolean) {

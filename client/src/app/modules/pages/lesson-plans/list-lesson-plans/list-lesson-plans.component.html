@@ -1,31 +1,41 @@
 <div class="page">
-  <ng-container *ngIf="!course">
-    <h4>Not Found</h4>
-  </ng-container>
-  <ng-container *ngIf="course">
-
-    <div class="container-margin">
-      <div class="row">
-        <div style="float: left; text-align: left" class="col">
-          <h4>{{course.name}} Lesson Plans</h4>
+    <ng-container *ngIf="!course">
+        <h4>Not Found</h4>
+    </ng-container>
+    <ng-container *ngIf="course">
+        <div class="container-margin">
+            <div class="row">
+                <div style="float: left; text-align: left" class="col">
+                    <h4>{{ course.name }} Lesson Plans</h4>
+                </div>
+                <div
+                    style="float: right; text-align: right"
+                    class="col"
+                    *can="{ action: 'create', subject: testLessonPlan, existsOnCourse: course }"
+                >
+                    <button type="button" class="btn btn-primary" (click)="handleOpenNewLessonPlanModal()">
+                        Add Lesson Plan
+                    </button>
+                </div>
+            </div>
         </div>
-        <div style="float: right; text-align: right" class="col">
-          <button type="button" class="btn btn-primary" (click)="handleOpenNewLessonPlanModal()">Add Lesson Plan
-          </button>
+
+        <div class="container-margin">
+            <app-datatable [dataFunction]="fetchLessonPlans" [columns]="columns" [reload]="refreshData"></app-datatable>
         </div>
-      </div>
-    </div>
-
-    <div class="container-margin">
-      <app-datatable [dataFunction]="fetchLessonPlans" [columns]="columns" [reload]="refreshData"></app-datatable>
-    </div>
-
-
-  </ng-container>
+    </ng-container>
 </div>
 
-<app-lesson-plan-edit *ngIf="selectedLessonPlan" [isVisible]="isEditLessonPlanModalOpen"
-  [lessonPlan]="selectedLessonPlan" (onClose)="handleCloseEditLessonPlanModal()"></app-lesson-plan-edit>
+<app-lesson-plan-edit
+    *ngIf="selectedLessonPlan"
+    [isVisible]="isEditLessonPlanModalOpen"
+    [lessonPlan]="selectedLessonPlan"
+    (onClose)="handleCloseEditLessonPlanModal()"
+></app-lesson-plan-edit>
 
-<app-lesson-plan-delete *ngIf="selectedLessonPlan" [isVisible]="isDeleteLessonPlanModalOpen"
-  [lessonPlan]="selectedLessonPlan" (onClose)="handleCloseDeleteLessonPlanModal()"></app-lesson-plan-delete>
+<app-lesson-plan-delete
+    *ngIf="selectedLessonPlan"
+    [isVisible]="isDeleteLessonPlanModalOpen"
+    [lessonPlan]="selectedLessonPlan"
+    (onClose)="handleCloseDeleteLessonPlanModal()"
+></app-lesson-plan-delete>

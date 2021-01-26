@@ -351,12 +351,23 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '71b1d83f-0a0f-4380-bf41-7ed7bb3d56c0',
         name: 'View all course lesson plans',
-        tags: ['ta', 'professor', 'course_admin', 'course_creator', 'super_admin'],
+        tags: ['ta', 'student', 'professor', 'course_admin', 'course_creator', 'super_admin'],
         actions: (_user, course) => [
             {
                 action: 'view',
                 subject: LessonPlan,
                 validate: (instance: LessonPlan) => !!course && safeIdComparison(course.id, instance.course),
+            },
+        ],
+    },
+    {
+        id: 'd0e934de-a3e2-4760-b9e7-c1ebcc01cb1c',
+        name: 'View lesson plans sidebar',
+        tags: ['ta', 'professor', 'course_admin', 'course_creator', 'super_admin'],
+        actions: (_user, course) => [
+            {
+                action: 'view',
+                subject: 'lesson-plan-sidebar',
             },
         ],
     },
@@ -788,6 +799,17 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
             {
                 action: 'view',
                 subject: 'roster',
+            },
+        ],
+    },
+    {
+        id: '1f4df849-ff88-4f13-ae54-1d670d1be117',
+        name: 'Toggle all students present/absent button',
+        tags: ['course_admin', 'super_admin'],
+        actions: () => [
+            {
+                action: 'use',
+                subject: 'meeting-report-toggle-attendance',
             },
         ],
     },

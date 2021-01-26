@@ -41,6 +41,6 @@ export class TodoController {
             })
         );
 
-        return _.flatten(courseTodos);
+        return _.uniqBy(_.flatten(courseTodos), todo => todo.getHashId());
     }
 }

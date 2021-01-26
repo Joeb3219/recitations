@@ -44,7 +44,7 @@ export class Ability {
     }
 
     private validateOnCourse<Resource extends any>(matchingRule: RawRule<Resource>, course: Course): boolean {
-        return !matchingRule.validate ? !matchingRule.inverted : matchingRule.course?.id === course.id;
+        return !matchingRule.inverted === (matchingRule.course?.id === course.id);
     }
 
     can<Resource extends any>(
@@ -777,6 +777,17 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
                 subject: StudentMeetingReport,
                 validate: (instance: StudentMeetingReport) =>
                     !!course && !!user && safeIdComparison(course.id, instance.course),
+            },
+        ],
+    },
+    {
+        id: 'c928c2bd-0118-41ee-a804-0588c2faacf1',
+        name: 'Fetch course roster',
+        tags: ['professor', 'ta', 'course_creator', 'course_admin', 'super_admin'],
+        actions: () => [
+            {
+                action: 'view',
+                subject: 'roster',
             },
         ],
     },

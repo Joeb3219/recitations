@@ -76,7 +76,7 @@ export class WeeksComponent implements OnInit {
             this.weeks[idx] = new Lesson({
                 course: this.course,
                 beginDate: beginDate.toDate(),
-                endDate: beginDate.endOf('week').endOf('day').toDate(),
+                endDate: beginDate.add(1, 'day').endOf('week').endOf('day').toDate(),
             });
 
             this.selectedIndex = idx;

@@ -49,28 +49,35 @@ export class MeetingManager {
         return dayjs(lesson.beginDate).isBefore(date) && dayjs(lesson.endDate).isAfter(date);
     }
 
+    private static getMeetingLesson(lessons: Lesson[], meeting: Meeting): Lesson | undefined {
+        const customLesson = lessons.find(
+            lesson => lesson.meetingTime?.id === meeting.meetingTime.id && this.lessonOverlapsDate(lesson, meeting.date)
+        );
+
+        const defaultLesson = lessons.find(
+            lesson => !lesson.meetingTime && this.lessonOverlapsDate(lesson, meeting.date)
+        );
+
+        if (!defaultLesson) {
+            return undefined;
+        }
+
+        return customLesson ? new Lesson({ ...customLesson, quiz: defaultLesson.quiz }) : defaultLesson;
+    }
+
     static async getMeetingWithLessons(
         course: Course,
         meetingFilter?: (meeting: Meeting) => boolean
     ): Promise<MeetingWithLesson<MeetingType>[]> {
         const lessons = await Lesson.find({ course });
         const courseMeetings = await MeetingManager.getMeetings(course);
-
         return courseMeetings
             .filter(meeting => (meetingFilter ? meetingFilter(meeting) : true))
             .map(
                 meeting =>
                     new MeetingWithLesson({
                         ...meeting,
-                        lesson:
-                            lessons.find(
-                                lesson =>
-                                    lesson.meetingTime?.id === meeting.meetingTime.id &&
-                                    this.lessonOverlapsDate(lesson, meeting.date)
-                            ) ??
-                            lessons.find(
-                                lesson => !lesson.meetingTime && this.lessonOverlapsDate(lesson, meeting.date)
-                            ),
+                        lesson: MeetingManager.getMeetingLesson(lessons, meeting),
                     })
             )
             .filter(meeting => !!meeting.lesson);

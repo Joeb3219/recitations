@@ -372,6 +372,17 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
         ],
     },
     {
+        id: 'f3842ef6-81d7-4979-8ba3-44385a9d0d28',
+        name: 'View all course access codes',
+        tags: ['course_admin', 'course_creator', 'super_admin'],
+        actions: (_user, course) => [
+            {
+                action: 'view',
+                subject: 'all-access-codes',
+            },
+        ],
+    },
+    {
         id: '9b99377e-8c72-4b0e-95ce-a15b669459f6',
         name: 'Update own lesson plans',
         tags: ['ta', 'professor', 'course_admin', 'course_creator', 'super_admin'],

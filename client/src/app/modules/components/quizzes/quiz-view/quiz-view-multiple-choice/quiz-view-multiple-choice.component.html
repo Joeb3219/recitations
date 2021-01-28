@@ -19,7 +19,7 @@
     <div class="col options">
         <input
             type="checkbox"
-            [checked]="response.selections.includes(option.value)"
+            [checked]="response?.selections?.includes(option.value)"
             (change)="handleResponseToggled(option)"
         />
         <label>{{ option.label }} </label>

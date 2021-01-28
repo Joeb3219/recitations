@@ -29,7 +29,7 @@ export class QuizViewComponent implements OnInit {
     constructor() {}
 
     ngOnInit(): void {
-        if (!this.answers) {
+        if (!this.answers?.length) {
             this.answers = this.quiz.elements.map<QuizElementAnswerInterface>(element => ({
                 elementId: element.elementId,
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any

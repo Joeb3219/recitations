@@ -12,7 +12,7 @@ export class QuizViewMultipleChoiceComponent implements OnInit, OnChanges {
     @Input() quiz: Quiz;
     @Input() element: QuizElementItem<'multiple_choice'>;
 
-    response: QuizElementResponsePayload<'multiple_choice'>['response'];
+    @Input() response?: QuizElementResponsePayload<'multiple_choice'>['response'];
     @Output() responseChanged: EventEmitter<
         QuizElementResponsePayload<'multiple_choice'>['response']
     > = new EventEmitter();
@@ -23,7 +23,7 @@ export class QuizViewMultipleChoiceComponent implements OnInit, OnChanges {
 
     ngOnInit(): void {
         this.shuffle();
-        this.response = { selections: [] };
+        this.response = this.response ?? { selections: [] };
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -37,6 +37,10 @@ export class QuizViewMultipleChoiceComponent implements OnInit, OnChanges {
     }
 
     handleResponseToggled(item: MultipleChoiceOption): void {
+        if (!this.response) {
+            return;
+        }
+
         const foundMatch = this.response.selections.find(selection => selection === item.value);
 
         if (!foundMatch) {

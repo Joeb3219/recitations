@@ -14,7 +14,11 @@
 </ng-container>
 
 <ng-container *ngIf="report && report.quiz">
-    <app-quiz-view [quiz]="report.quiz" (answersUpdated)="handleQuizUpdated($event)"></app-quiz-view>
+    <app-quiz-view
+        [quiz]="report.quiz"
+        [answers]="report.answers"
+        (answersUpdated)="handleQuizUpdated($event)"
+    ></app-quiz-view>
     <hr />
 
     <div class="row" *ngIf="errors && errors.length">

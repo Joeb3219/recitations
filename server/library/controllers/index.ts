@@ -12,6 +12,7 @@ import { RoleController } from './role.controller';
 import { RosterController } from './roster/roster.controller';
 import { SectionController } from './sections/section.controller';
 import { StudentMeetingReportController } from './studentMeetingReport.controller';
+import { TodoController } from './todos/todos.controller';
 import { UploadController } from './upload.controller';
 import { UserController } from './user.controller';
 
@@ -32,6 +33,7 @@ export {
     LessonController,
     MeetingReportController,
     StudentMeetingReportController,
+    TodoController,
 };
 
 export const AllControllers = [
@@ -51,4 +53,5 @@ export const AllControllers = [
     LessonController,
     MeetingReportController,
     StudentMeetingReportController,
+    TodoController,
 ];

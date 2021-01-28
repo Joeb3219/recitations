@@ -9,6 +9,7 @@ import 'reflect-metadata';
 import { Connection, createConnection } from 'typeorm';
 import { AllControllers } from './controllers';
 import { CASHelper } from './helpers/auth/cas.helper';
+import { sentryInit } from './helpers/logging.helper';
 import { RolesHelper } from './helpers/roles.helper';
 import { generateResource, generateRoute, ResourceData, RouteData } from './helpers/route.helper';
 import { AllListeners } from './listeners/index';
@@ -28,6 +29,7 @@ class AppWrapper {
     }
 
     async init() {
+        sentryInit();
         await this.initDB();
         await this.initExpress();
         await this.initData();
@@ -108,7 +110,7 @@ class AppWrapper {
                             }
                         } catch (err) {
                             // eslint-disable-next-line no-console
-                            console.error(err);
+                            console.log(err);
                         }
                     }
                 }

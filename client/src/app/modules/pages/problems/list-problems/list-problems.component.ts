@@ -16,6 +16,8 @@ export class ListProblemsComponent implements OnChanges {
     @LoadedArg(CourseService, Course, 'courseID')
     course: Course;
 
+    testProblem: Problem;
+
     refreshData: EventEmitter<void> = new EventEmitter();
 
     columns: DatatableColumn<Problem>[] = [
@@ -69,6 +71,7 @@ export class ListProblemsComponent implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes) {
+            this.testProblem = new Problem({ course: this.course });
             this.refreshData.next();
         }
     }

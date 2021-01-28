@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { StandardResponseInterface, User } from '@dynrec/common';
 import { environment } from '@environment';
 import { BehaviorSubject, Observable } from 'rxjs';
@@ -10,16 +11,25 @@ import { HttpFilterInterface } from '../http/httpFilter.interface';
 export class UserService {
     private currentUserObservable: BehaviorSubject<User | undefined> = new BehaviorSubject<User | undefined>(undefined);
 
-    constructor(private http: HttpClient) {
+    constructor(private http: HttpClient, private route: Router) {
         this.flushCurrentUser();
     }
 
     public flushCurrentUser(): void {
         if (!localStorage.getItem('jwt')) this.currentUserObservable.next(undefined);
         else {
-            this.getMyUserObject().subscribe((result: { data: User }) => {
-                if (result) this.currentUserObservable.next(result.data);
-            });
+            this.getMyUserObject().subscribe(
+                (result: { data: User }) => {
+                    if (result) this.currentUserObservable.next(result.data);
+                },
+                err => {
+                    // Invalid login :(
+                    if (err.status === 403) {
+                        localStorage.clear();
+                        this.route.navigate(['/login']);
+                    }
+                }
+            );
         }
     }
 

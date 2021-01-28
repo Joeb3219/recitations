@@ -83,4 +83,10 @@ export class QuizBuilderComponent {
 
         this.quizChange.emit(this.quiz);
     }
+
+    handleDeleteElement(payload: EditElementPayload) {
+        const { index, element } = payload;
+
+        this.quizChange.emit(this.quiz);
+    }
 }

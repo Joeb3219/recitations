@@ -30,6 +30,8 @@ export class MeetingFeedbackEditComponent implements OnInit {
     form: Form;
     sections: Section[];
 
+    loading: boolean = false;
+
     constructor(
         private readonly meetingService: MeetingService,
         private readonly rosterService: RosterService,
@@ -132,6 +134,7 @@ export class MeetingFeedbackEditComponent implements OnInit {
                 label: 'Roster',
                 type: 'roster',
                 group: 'roster',
+                course: this.course,
                 users: allStudents,
                 value: this.report.studentsPresent ?? [],
                 row: 0,
@@ -182,11 +185,15 @@ export class MeetingFeedbackEditComponent implements OnInit {
     }
 
     async loadMeetings() {
+        this.loading = true;
         const result = await this.meetingService.getMeetingLessonsAtTime(this.course, this.date);
         this.meetings = result.data;
 
         const rosterResult = await this.rosterService.listSectionsRosters(this.course);
-        this.sections = rosterResult.data;
+
+        this.sections = rosterResult.data.filter(section =>
+            this.meetings.find(meeting => meeting.meetingTime.meetable.id === section.id)
+        );
 
         try {
             const reportResult = await this.meetingReportService.getMeetingReportOnDate(this.course, this.date);
@@ -200,5 +207,6 @@ export class MeetingFeedbackEditComponent implements OnInit {
         }
 
         this.generateForm();
+        this.loading = false;
     }
 }

@@ -37,6 +37,11 @@
     </ngx-datatable-row-detail>
 </ngx-datatable>
 
+<div *ngIf="loading" class="d-flex justify-content-center" style="margin: 8px">
+    <div class="spinner-border text-primary" role="status" style="margin-right: 8px"></div>
+    <span>Loading Data...</span>
+</div>
+
 <ng-template #detailToggleCellTemplate let-row="row" let-index="rowIndex" let-expanded="expanded" let-col="column">
     <span href="javascript:void(0)" (click)="handleRowToggle(row)"> {{ col.name ? col.name : 'Toggle' }} </span>
 </ng-template>

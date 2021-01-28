@@ -1,3 +1,10 @@
+<span
+    class="btn btn-primary"
+    *can="{ action: 'use', subject: 'meeting-report-toggle-attendance', existsOnCourse: course }"
+    (click)="handleToggleAttendance()"
+>
+    Toggle Attendance
+</span>
 <table *ngIf="users" class="table">
     <thead>
         <tr>

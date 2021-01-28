@@ -77,7 +77,7 @@ export class SectionViewComponent implements OnChanges {
                         subject: new Lesson({ meetingTime: row.meetingTime, course: this.section.course }),
                     },
                     href: `/courses/${row.lesson.course.id}/meeting-feedback/${row.date.toISOString?.() ?? row.date}`,
-                    if: dayjs().isAfter(row.date),
+                    if: dayjs().tz().isAfter(row.date),
                 },
                 {
                     text: 'Take Quiz',

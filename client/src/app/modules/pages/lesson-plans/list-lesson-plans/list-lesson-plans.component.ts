@@ -16,6 +16,8 @@ export class ListLessonPlansComponent implements OnChanges {
     @LoadedArg<Course>(CourseService, Course, 'courseID')
     course: Course;
 
+    testLessonPlan: LessonPlan;
+
     columns: DatatableColumn<LessonPlan>[] = [
         {
             name: 'Name',
@@ -57,6 +59,7 @@ export class ListLessonPlansComponent implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes) {
+            this.testLessonPlan = new LessonPlan({ course: this.course });
             this.refreshData.next();
         }
     }

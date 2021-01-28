@@ -53,6 +53,7 @@ interface UserInput {
 
 interface RosterInput {
     users?: User[];
+    course: Course;
 }
 
 export type FormInput<InputType extends FormInputType = FormInputType, G extends any = any> = {

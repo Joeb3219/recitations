@@ -1,7 +1,12 @@
 import { Expose, Type } from 'class-transformer';
 import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
 import { MeetingType } from '../enums';
 import { Course, Lesson, MeetingTime } from '../models';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 export class Meeting<Type extends MeetingType = MeetingType> {
     @Type(() => MeetingTime)
@@ -14,9 +19,9 @@ export class Meeting<Type extends MeetingType = MeetingType> {
     @Expose()
     getAccessCode() {
         const baseStr = JSON.stringify({
-            meetingTime: this.meetingTime.id,
+            leader: this.meetingTime.leader?.id,
             meetingType: this.meetingType,
-            date: this.date,
+            date: dayjs(this.date).unix(),
         });
 
         // Based loosely on the Java hash function.
@@ -64,6 +69,7 @@ export class Meeting<Type extends MeetingType = MeetingType> {
             '2',
             'K',
         ];
+
         return [1, 0.5, 0.25, 0.125].reduce<string>(
             (str, divisor) => str + randomData[Math.ceil(Math.abs(hash / divisor)) % randomData.length ?? 0],
             ''
@@ -71,11 +77,12 @@ export class Meeting<Type extends MeetingType = MeetingType> {
     }
 
     canTakeQuiz(course: Course): boolean {
-        const startTime = dayjs(this.date).add(course.getNumberSetting('semester_start_date')?.value ?? 50, 'minute');
-        const endTime = dayjs(this.date).add(
-            course.getNumberSetting('semester_end_date')?.value ?? 60 * 24 * 5,
-            'minute'
-        );
+        const startTime = dayjs(this.date)
+            .tz()
+            .add(course.getNumberSetting('semester_start_date')?.value ?? 50, 'minute');
+        const endTime = dayjs(this.date)
+            .tz()
+            .add(course.getNumberSetting('semester_end_date')?.value ?? 60 * 24 * 5, 'minute');
 
         return dayjs().isAfter(startTime) && dayjs().isBefore(endTime);
     }

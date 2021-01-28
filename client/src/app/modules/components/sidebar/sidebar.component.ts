@@ -1,15 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-    Course,
-    CoverageRequest,
-    LearningGoalCategory,
-    LessonPlan,
-    Problem,
-    Quiz,
-    Role,
-    Section,
-} from '@dynrec/common';
+import { Course, CoverageRequest, LearningGoalCategory, Problem, Quiz, Role, Section } from '@dynrec/common';
 import { CourseService } from '@services/course.service';
 import { UserService } from '@services/user.service';
 import { AbilitiesCanDirectivePayload } from '../../../directives/abilities.directive';
@@ -85,7 +76,7 @@ export class SidebarComponent implements OnInit {
                 {
                     slug: 'lesson-plans',
                     name: 'Lesson Plans',
-                    can: { action: 'view', subject: LessonPlan, existsOnCourse: course },
+                    can: { action: 'view', subject: 'lesson-plan-sidebar', existsOnCourse: course },
                 },
                 {
                     slug: 'learning-goals',

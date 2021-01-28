@@ -14,6 +14,13 @@
                         >
                             Edit
                         </button>
+                        <button
+                            type="button"
+                            class="btn btn-outline-secondary"
+                            (click)="handleDeleteElement(element, index)"
+                        >
+                            Delete
+                        </button>
                     </div>
                 </div>
             </div>
@@ -21,6 +28,7 @@
                 <app-quiz-view-multiple-choice
                     [quiz]="quiz"
                     [element]="element"
+                    [response]="answers[index]?.response"
                     (responseChanged)="handleResponseChanged(index, $event)"
                 ></app-quiz-view-multiple-choice>
             </div>
@@ -28,6 +36,7 @@
                 <app-quiz-view-free-response
                     [quiz]="quiz"
                     [element]="element"
+                    [response]="answers[index]?.response"
                     (responseChanged)="handleResponseChanged(index, $event)"
                 ></app-quiz-view-free-response>
             </div>

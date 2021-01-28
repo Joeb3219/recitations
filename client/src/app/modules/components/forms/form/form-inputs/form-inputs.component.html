@@ -156,6 +156,7 @@
     *ngIf="input.type === 'roster' && !!input.users"
     [users]="input.users"
     [value]="input.value"
+    [course]="input.course"
     (onChange)="fieldUpdated(input.name, $event)"
 ></app-roster-formfield>
 

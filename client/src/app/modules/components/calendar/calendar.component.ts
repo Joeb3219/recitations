@@ -2,10 +2,12 @@ import { Component, Input, OnInit, TemplateRef, ViewChild, ViewEncapsulation } f
 import { Course, Meeting, MeetingType } from '@dynrec/common';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { MeetingService } from '@services/meeting.service';
+import { UserService } from '@services/user.service';
 import { CalendarEvent, CalendarView } from 'angular-calendar';
 import { isSameDay, isSameMonth } from 'date-fns';
 import dayjs from 'dayjs';
 import _ from 'lodash';
+import { AbilityManager } from '../../../../../../common/src/abilities/ability.manager';
 
 @Component({
     selector: 'app-calendar',
@@ -32,16 +34,28 @@ export class CalendarComponent implements OnInit {
 
     selectedMeeting?: Meeting = undefined;
 
-    constructor(private meetingService: MeetingService, private modal: NgbModal) {}
+    canViewAccessCodes: boolean = false;
+
+    constructor(
+        private readonly userService: UserService,
+        private meetingService: MeetingService,
+        private modal: NgbModal
+    ) {}
 
     ngOnInit(): void {
         this.loadMeetings();
+        this.userService.getCurrentUser().subscribe({
+            next: user => {
+                const abilities = AbilityManager.getUserAbilities(user);
+                this.canViewAccessCodes = abilities.existsOnCourse('view', 'all-access-codes', this.course);
+            },
+        });
     }
 
     getCalendarTitle(meeting: Meeting): string {
         const typeString = _.startCase(meeting.meetingType);
         const date = dayjs(meeting.date).format('MMM DD, YYYY HH:mm');
-        return `${typeString}: ${date}`;
+        return `${typeString}: ${date} ${this.canViewAccessCodes ? `(${meeting.getAccessCode()})` : ``}`;
     }
 
     async loadMeetings(): Promise<void> {

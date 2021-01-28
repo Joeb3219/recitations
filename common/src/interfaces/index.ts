@@ -16,4 +16,5 @@ export * from './quiz.interface';
 export * from './role.interface';
 export * from './section.interface';
 export * from './studentMeetingReport.interface';
+export * from './todo.interface';
 export * from './user.interface';

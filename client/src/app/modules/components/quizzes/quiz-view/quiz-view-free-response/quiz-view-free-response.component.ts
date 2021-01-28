@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Quiz, QuizElementItem, QuizElementResponsePayload } from '@dynrec/common';
 import { ToastrService } from 'ngx-toastr';
 
@@ -7,16 +7,21 @@ import { ToastrService } from 'ngx-toastr';
     templateUrl: './quiz-view-free-response.component.html',
     styleUrls: ['./quiz-view-free-response.component.scss'],
 })
-export class QuizViewFreeResponseComponent {
+export class QuizViewFreeResponseComponent implements OnInit {
     @Input() quiz: Quiz;
     @Input() element: QuizElementItem<'free_response'>;
 
-    response: QuizElementResponsePayload<'free_response'>['response'] = { response: '' };
+    @Input() response?: QuizElementResponsePayload<'free_response'>['response'];
     @Output() responseChanged: EventEmitter<
         QuizElementResponsePayload<'free_response'>['response']
     > = new EventEmitter();
 
     constructor(private readonly toastr: ToastrService) {}
+
+    ngOnInit(): void {
+        this.response = this.response ?? { response: '' };
+        console.log(this.response);
+    }
 
     handleResponseUpdated() {
         if (!this.response?.response) {

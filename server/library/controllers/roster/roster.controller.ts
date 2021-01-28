@@ -207,7 +207,7 @@ export class RosterController {
             { relations: ['sections', 'sections.students'] }
         );
 
-        if (ability.can('update', course)) {
+        if (!ability.can('update', course)) {
             throw Boom.unauthorized('Unauthorized to update roster.');
         }
 
@@ -231,7 +231,7 @@ export class RosterController {
             { relations: ['sections', 'sections.students'] }
         );
 
-        if (ability.can('update', course)) {
+        if (!ability.can('update', course)) {
             throw Boom.unauthorized('Unauthorized to update roster.');
         }
 
@@ -251,7 +251,7 @@ export class RosterController {
 
         const course = await Course.findOne(params.courseID);
 
-        if (ability.can('update', course)) {
+        if (!ability.can('update', course)) {
             throw Boom.unauthorized('Unauthorized to fetch roster.');
         }
 
@@ -271,7 +271,7 @@ export class RosterController {
             throw Boom.notFound('No course found');
         }
 
-        if (ability.can('update', course)) {
+        if (!ability.can('update', course)) {
             throw Boom.unauthorized('Unauthorized to fetch roster.');
         }
 
@@ -295,11 +295,12 @@ export class RosterController {
             throw Boom.notFound('No course found');
         }
 
-        if (ability.can('update', course)) {
+        if (!ability.existsOnCourse('view', 'roster', course)) {
             throw Boom.unauthorized('Unauthorized to fetch roster.');
         }
 
-        return Section.find({ where: { course, ta: currentUser }, relations: ['students'] });
+        const sections = await Section.find({ where: { course, ta: currentUser }, relations: ['students'] });
+        return sections.filter(section => ability.can('view', section));
     }
 
     @GetRequest('/roster/formats')

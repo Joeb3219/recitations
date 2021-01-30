@@ -25,7 +25,9 @@
         Errors in questions: <span *ngFor="let idx of errors">{{ idx + 1 }}, </span>
     </div>
 
-    <button class="btn btn-primary" *ngIf="quizReadyToSubmit" [disabled]="loading" (click)="handleSubmitQuiz()">
-        Submit Quiz
-    </button>
+    <ng-container *can="{ action: 'create', subject: report }">
+        <button class="btn btn-primary" *ngIf="quizReadyToSubmit" [disabled]="loading" (click)="handleSubmitQuiz()">
+            Submit Quiz
+        </button>
+    </ng-container>
 </ng-container>

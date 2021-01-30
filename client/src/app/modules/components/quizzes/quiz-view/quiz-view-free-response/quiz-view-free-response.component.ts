@@ -20,7 +20,6 @@ export class QuizViewFreeResponseComponent implements OnInit {
 
     ngOnInit(): void {
         this.response = this.response ?? { response: '' };
-        console.log(this.response);
     }
 
     handleResponseUpdated() {

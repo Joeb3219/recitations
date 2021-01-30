@@ -28,7 +28,7 @@
                 <app-quiz-view-multiple-choice
                     [quiz]="quiz"
                     [element]="element"
-                    [response]="answers[index]?.response"
+                    [response]="this.answers && this.answers[index] ? $any(this.answers[index].response) : undefined"
                     (responseChanged)="handleResponseChanged(index, $event)"
                 ></app-quiz-view-multiple-choice>
             </div>
@@ -36,7 +36,7 @@
                 <app-quiz-view-free-response
                     [quiz]="quiz"
                     [element]="element"
-                    [response]="answers[index]?.response"
+                    [response]="this.answers && this.answers[index] ? $any(this.answers[index].response) : undefined"
                     (responseChanged)="handleResponseChanged(index, $event)"
                 ></app-quiz-view-free-response>
             </div>

@@ -130,7 +130,9 @@
     *ngIf="input.type === 'checkbox'"
     type="checkbox"
     [checked]="input.value"
-    (change)="fieldUpdated(input.name, $event?.target?.checked !== undefined ? $event.target.checked : false)"
+    (change)="
+        fieldUpdated(input.name, $any($event?.target)?.checked !== undefined ? $any($event.target).checked : false)
+    "
 />
 
 <input

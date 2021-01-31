@@ -199,7 +199,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '495aed43-7730-4ee7-b185-650e771e4c9a',
         name: 'View coverage requests in course',
-        tags: ['course_admin', 'course_creator', 'ta', 'super_admin'],
+        tags: ['course_admin', 'ta_manager', 'course_creator', 'ta', 'super_admin'],
         actions: (user, course) => [
             {
                 action: 'view',
@@ -372,6 +372,17 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
             {
                 action: 'view',
                 subject: 'lesson-plan-sidebar',
+            },
+        ],
+    },
+    {
+        id: '66f0cdcf-c911-495b-b04f-4d87574b04a1',
+        name: 'View Coverage Request Monitor',
+        tags: ['course_admin', 'ta_manager', 'course_creator', 'super_admin'],
+        actions: (_user, course) => [
+            {
+                action: 'use',
+                subject: 'coverage-request-monitor',
             },
         ],
     },

@@ -12,6 +12,7 @@ import { RecitationsComponent } from '@pages/recitations/recitations.component';
 import { ViewSectionsComponent } from '@pages/sections/view-sections/view-sections.component';
 import { ViewUserSettingsComponent } from '@pages/user/view-user-settings/view-user-settings.component';
 import { ListCoverageRequestsComponent } from './modules/pages/coverage-requests/list-coverage-requests/list-coverage-requests.component';
+import { MonitorCoverageRequestsComponent } from './modules/pages/coverage-requests/monitor-coverge-requests/monitor-coverage-requests/monitor-coverage-requests.component';
 import { ListLearningGoalsComponent } from './modules/pages/learning-goals/list-learning-goals/list-learning-goals.component';
 import { ViewLessonPlanComponent } from './modules/pages/lesson-plans/view-lesson-plan/view-lesson-plan.component';
 import { CasAuthComponent } from './modules/pages/login/cas-auth/cas-auth.component';
@@ -39,6 +40,10 @@ const routes: Routes = [
     {
         path: 'courses/:courseID/coverage-requests',
         component: ListCoverageRequestsComponent,
+    },
+    {
+        path: 'courses/:courseID/coverage-requests/monitor',
+        component: MonitorCoverageRequestsComponent,
     },
     { path: 'courses/:courseID/recitations', component: RecitationsComponent },
     {

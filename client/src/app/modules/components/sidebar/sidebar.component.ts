@@ -89,6 +89,11 @@ export class SidebarComponent implements OnInit {
                     can: { action: 'view', subject: CoverageRequest, existsOnCourse: course },
                 },
                 {
+                    slug: 'coverage-requests/monitor',
+                    name: 'Coverage Monitor',
+                    can: { action: 'use', subject: 'coverage-request-monitor', existsOnCourse: course },
+                },
+                {
                     slug: 'settings',
                     name: 'Settings',
                     can: { action: 'update', subject: Course, existsOnCourse: course },

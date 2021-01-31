@@ -108,6 +108,7 @@ import { TakeQuizComponent } from './modules/pages/quizzes/take-quiz/take-quiz.c
 import { QuizTakeComponent } from './modules/components/quizzes/quiz-take/quiz-take/quiz-take.component';
 import { SectionsTaSyncComponent } from './modules/components/sections/sections-ta-sync/sections-ta-sync/sections-ta-sync.component';
 import { TodosViewComponent } from './modules/components/todos/todos-view/todos-view.component';
+import { MonitorCoverageRequestsComponent } from './modules/pages/coverage-requests/monitor-coverge-requests/monitor-coverage-requests/monitor-coverage-requests.component';
 
 export let GlobalActivatedRoute: ActivatedRoute;
 
@@ -195,6 +196,7 @@ export let GlobalActivatedRoute: ActivatedRoute;
         QuizTakeComponent,
         SectionsTaSyncComponent,
         TodosViewComponent,
+        MonitorCoverageRequestsComponent,
     ],
     imports: [
         HttpClientModule,

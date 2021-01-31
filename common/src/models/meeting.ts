@@ -85,10 +85,15 @@ export class Meeting<Type extends MeetingType = MeetingType> {
     canTakeQuiz(course: Course): boolean {
         const startTime = dayjs(this.date)
             .tz()
-            .add(course.getNumberSetting('semester_start_date')?.value ?? 50, 'minute');
+            .add(course.getNumberSetting('recitations_quiz_start')?.value ?? 50, 'minute');
         const endTime = dayjs(this.date)
             .tz()
-            .add(course.getNumberSetting('semester_end_date')?.value ?? 60 * 24 * 5, 'minute');
+            .add(
+                course.getNumberSetting(
+                    this.meetingTime.asynchronous ? 'recitations_async_quiz_end' : 'recitations_quiz_end'
+                )?.value ?? 60 * 24 * 1,
+                'minute'
+            );
 
         return dayjs().isAfter(startTime) && dayjs().isBefore(endTime);
     }

@@ -2,9 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Course, MeetingReport, StandardResponseInterface } from '@dynrec/common';
 import { environment } from '@environment';
-import { HttpFilterInterface } from '@http/httpFilter.interface';
 import { plainToClass } from 'class-transformer';
-import { DeleteRequest, GetRequest, ListRequest, UpsertRequest } from '../decorators';
+import { DeleteRequest, GetRequest, UpsertRequest } from '../decorators';
 
 @Injectable({
     providedIn: 'root',
@@ -14,14 +13,6 @@ export class MeetingReportService {
 
     @UpsertRequest<MeetingReport>(MeetingReport, 'meetingReport')
     public async upsertMeetingReport(report: MeetingReport): Promise<StandardResponseInterface<MeetingReport>> {
-        throw new Error('Decorator Overloading Failed');
-    }
-
-    @ListRequest<MeetingReport>(MeetingReport, 'meetingReport')
-    public async getCourseMeetingReports(
-        course: Course,
-        filter?: HttpFilterInterface
-    ): Promise<StandardResponseInterface<MeetingReport[]>> {
         throw new Error('Decorator Overloading Failed');
     }
 
@@ -43,6 +34,30 @@ export class MeetingReportService {
                     if (result) {
                         // eslint-disable-next-line no-param-reassign
                         result.data = plainToClass(MeetingReport, result.data);
+                        resolve(result);
+                    } else reject(new Error('No result returned'));
+                },
+                (err: Error) => {
+                    reject(err);
+                }
+            );
+        });
+    }
+
+    public async getMeetingReportsInRange(
+        course: Course,
+        start: Date,
+        end: Date
+    ): Promise<StandardResponseInterface<MeetingReport[]>> {
+        const url = `${environment.apiURL}/course/${
+            course.id
+        }/meetingReports/range/${start.toISOString()}/${end.toISOString()}`;
+        return new Promise((resolve, reject) => {
+            this.http.get<StandardResponseInterface<MeetingReport[]>>(url).subscribe(
+                result => {
+                    if (result) {
+                        // eslint-disable-next-line no-param-reassign
+                        result.data = result.data.map(report => plainToClass(MeetingReport, report));
                         resolve(result);
                     } else reject(new Error('No result returned'));
                 },

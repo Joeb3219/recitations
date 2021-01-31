@@ -44,7 +44,6 @@ export class MeetingFeedbackEditComponent implements OnInit {
     }
 
     generateForm() {
-        console.log(this.date);
         const allLessons = _.uniqBy(
             this.meetings.map(meeting => meeting.lesson),
             lesson => lesson.id

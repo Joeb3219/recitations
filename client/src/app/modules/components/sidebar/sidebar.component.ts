@@ -99,6 +99,11 @@ export class SidebarComponent implements OnInit {
                     can: { action: 'update', subject: Course, existsOnCourse: course },
                 },
                 {
+                    slug: 'reports',
+                    name: 'Reports',
+                    can: { action: 'view', subject: 'reports', existsOnCourse: course },
+                },
+                {
                     slug: 'roles',
                     name: 'Roles',
                     can: { action: 'view', subject: Role, existsOnCourse: course },

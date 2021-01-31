@@ -182,6 +182,38 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
         ],
     },
     {
+        id: '356e8044-2ae3-49a6-8798-824d4222dd3b',
+        name: 'View assigned meeting times',
+        tags: ['professor', 'ta', 'student', 'course_admin', 'course_creator', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'view',
+                subject: MeetingTime,
+                validate: (instance: MeetingTime) =>
+                    !!course &&
+                    (safeIdComparison(user?.id, instance.leader) ||
+                        !!course?.coverageRequests?.find(
+                            request =>
+                                safeIdComparison(user?.id, request.coveredBy?.id) &&
+                                instance.id === request.meetingTime.id
+                        )),
+            },
+        ],
+    },
+    {
+        id: '41c6dde1-6e3d-4208-b712-3c2482880b64',
+        name: 'View all meeting times in course',
+        tags: ['professor', 'course_admin', 'course_creator', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'view',
+                subject: MeetingTime,
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                validate: (instance: MeetingTime) => !!course && (instance.meetable as any)?.course?.id === course.id,
+            },
+        ],
+    },
+    {
         id: '59713b50-9be9-4499-a19a-10a6ec2962b1',
         name: 'Update assigned sections in course',
         tags: ['course_admin', 'course_creator', 'super_admin'],
@@ -383,6 +415,17 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
             {
                 action: 'use',
                 subject: 'coverage-request-monitor',
+            },
+        ],
+    },
+    {
+        id: 'c7e8b858-a259-45a7-939b-6342ecf4ac46',
+        name: 'View Reports',
+        tags: ['course_admin', 'course_creator', 'super_admin'],
+        actions: (_user, course) => [
+            {
+                action: 'view',
+                subject: 'reports',
             },
         ],
     },

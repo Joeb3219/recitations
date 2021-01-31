@@ -1,0 +1,52 @@
+<div *ngIf="loading" class="d-flex justify-content-center" style="margin: 8px">
+    <div class="spinner-border text-primary" role="status" style="margin-right: 8px"></div>
+    <span>Loading Data...</span>
+</div>
+<ng-container *ngIf="!loading">
+    <mat-accordion multi>
+        <mat-expansion-panel *ngFor="let bucket of reportBuckets">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{ bucket.date | date: 'MM/dd/YYYY' }}
+                </mat-panel-title>
+                <mat-panel-description>
+                    {{ bucket.found.length }} reports found, {{ bucket.missing.length }} TAs yet to respond.
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div style="border: 1px dashed black" *ngIf="bucket.missing.length > 0">
+                <h4>Missing</h4>
+                <ul>
+                    <li *ngFor="let missing of bucket.missing">
+                        {{ missing.date | date: 'HH:mm' }}:
+                        {{ missing.leader ? missing.leader?.getFullName() : 'Missing TA' }}
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card" style="width: 50%" *ngFor="let found of bucket.found">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        {{ found.date | date: 'HH:mm' }}:
+                        {{ found.creator ? found.creator?.getFullName() : 'Missing TA' }}
+                    </h5>
+                    <p class="card-text">
+                        {{ found.feedback }}
+                    </p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Students Present: {{ found.studentsPresent.length }}</li>
+                    <li
+                        class="list-group-item"
+                        *ngFor="let problemFeedback of found.problemFeedback; let index = index"
+                    >
+                        <a [routerLink]="['/courses', course.id, 'problems', problemFeedback.problem]"
+                            >Problem {{ index + 1 }}</a
+                        >
+                        took {{ problemFeedback.duration }} minutes. {{ problemFeedback.comments }}
+                    </li>
+                </ul>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</ng-container>

@@ -19,6 +19,7 @@ import { CasAuthComponent } from './modules/pages/login/cas-auth/cas-auth.compon
 import { ListQuizzesComponent } from './modules/pages/quizzes/list-quizzes/list-quizzes.component';
 import { TakeQuizComponent } from './modules/pages/quizzes/take-quiz/take-quiz.component';
 import { ViewQuizComponent } from './modules/pages/quizzes/view-quiz/view-quiz.component';
+import { ViewReportsComponent } from './modules/pages/reports/view-reports/view-reports.component';
 import { ListRolesComponent } from './modules/pages/roles/list-roles/list-roles.component';
 import { ViewSectionComponent } from './modules/pages/sections/view-section/view-section.component';
 
@@ -61,6 +62,10 @@ const routes: Routes = [
     {
         path: 'courses/:courseID/quizzes',
         component: ListQuizzesComponent,
+    },
+    {
+        path: 'courses/:courseID/reports',
+        component: ViewReportsComponent,
     },
     {
         path: 'courses/:courseID/quizzes/:quizID',

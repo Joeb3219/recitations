@@ -1,0 +1,45 @@
+<div class="page">
+    <ng-container *ngIf="!course">
+        <h4>Not Found</h4>
+    </ng-container>
+    <ng-container *ngIf="course">
+        <div class="container-margin">
+            <div class="row">
+                <div style="float: left; text-align: left" class="col">
+                    <h4>{{ course.name }} Reports</h4>
+                </div>
+                <div style="float: right">
+                    <label>
+                        Start:
+                        <input type="date" ngbDatepicker [ngModel]="startDate" (change)="updateDate('start', $event)" />
+                    </label>
+                    <label>
+                        End:
+                        <input type="date" ngbDatepicker [ngModel]="endDate" (change)="updateDate('end', $event)" />
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-margin">
+            <mat-tab-group
+                animationDuration="250ms"
+                [disableRipple]="true"
+                mat-stretch-tabs
+                [(selectedIndex)]="activeTabIndex"
+            >
+                <mat-tab label="TA Feedback" [ngStyle]="{ display: activeTabIndex === 0 ? 'block' : 'none' }">
+                    <app-view-ta-feedback
+                        *ngIf="startDate && endDate"
+                        [course]="course"
+                        [meetings]="meetings"
+                        [startDate]="startDate"
+                        [endDate]="endDate"
+                    ></app-view-ta-feedback>
+                </mat-tab>
+                <mat-tab label="Student Feedback" [ngStyle]="{ display: activeTabIndex === 1 ? 'block' : 'none' }">
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </ng-container>
+</div>

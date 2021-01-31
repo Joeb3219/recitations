@@ -127,6 +127,13 @@
 />
 
 <input
+    *ngIf="input.type === 'checkbox'"
+    type="checkbox"
+    [checked]="input.value"
+    (change)="fieldUpdated(input.name, $event.target.checked)"
+/>
+
+<input
     *ngIf="input.type == 'number'"
     value="{{ input.value }}"
     type="number"

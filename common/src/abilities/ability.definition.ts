@@ -214,6 +214,17 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
         ],
     },
     {
+        id: '654b03b1-14bb-4c65-aa46-3d168b34e43b',
+        name: 'View own course gradebook',
+        tags: ['student'],
+        actions: () => [
+            {
+                action: 'view',
+                subject: 'gradebook',
+            },
+        ],
+    },
+    {
         id: '59713b50-9be9-4499-a19a-10a6ec2962b1',
         name: 'Update assigned sections in course',
         tags: ['course_admin', 'course_creator', 'super_admin'],

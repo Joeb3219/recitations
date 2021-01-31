@@ -99,6 +99,11 @@ export class SidebarComponent implements OnInit {
                     can: { action: 'update', subject: Course, existsOnCourse: course },
                 },
                 {
+                    slug: 'my-gradebook',
+                    name: 'Gradebook',
+                    can: { action: 'view', subject: 'gradebook', existsOnCourse: course },
+                },
+                {
                     slug: 'reports',
                     name: 'Reports',
                     can: { action: 'view', subject: 'reports', existsOnCourse: course },

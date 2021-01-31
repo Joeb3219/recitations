@@ -1,5 +1,6 @@
 import { CourseController } from './course.controller';
 import { CoverageRequestController } from './coverageRequest.controller';
+import { GradebookController } from './gradebook.controller';
 import { LearningGoalController } from './learningGoal.controller';
 import { LessonController } from './lesson.controller';
 import { LessonPlanController } from './lessonPlan.controller';
@@ -34,6 +35,7 @@ export {
     MeetingReportController,
     StudentMeetingReportController,
     TodoController,
+    GradebookController,
 };
 
 export const AllControllers = [
@@ -54,4 +56,5 @@ export const AllControllers = [
     MeetingReportController,
     StudentMeetingReportController,
     TodoController,
+    GradebookController,
 ];

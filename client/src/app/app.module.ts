@@ -111,6 +111,7 @@ import { LearningGoalService } from './services/learningGoal.service';
 import { MeetingTimeService } from './services/meetingTime.service';
 import { SectionService } from './services/section.service';
 import { UserService } from './services/user.service';
+import { ViewGradebookComponent } from './modules/pages/gradebook/view-gradebook/view-gradebook.component';
 
 export let GlobalActivatedRoute: ActivatedRoute;
 
@@ -201,6 +202,7 @@ export let GlobalActivatedRoute: ActivatedRoute;
         ViewReportsComponent,
         ViewTaFeedbackComponent,
         ViewStudentFeedbackComponent,
+        ViewGradebookComponent,
     ],
     imports: [
         HttpClientModule,

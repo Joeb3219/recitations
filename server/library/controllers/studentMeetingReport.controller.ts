@@ -1,7 +1,7 @@
 import { Course, MeetingType, Section, StudentMeetingReport } from '@dynrec/common';
 import Boom from '@hapi/boom';
 import dayjs from 'dayjs';
-import { Brackets } from 'typeorm';
+import { Between, Brackets } from 'typeorm';
 import { Controller, Resource } from '../decorators';
 import { GetRequest, PostRequest } from '../decorators/request.decorator';
 import { HttpArgs } from '../helpers/route.helper';
@@ -135,5 +135,22 @@ export class StudentMeetingReportController {
                 answers: [],
             })
         );
+    }
+
+    @GetRequest('/course/:courseID/quiz/range/:start/:end')
+    async getQuizzesInRange({
+        params,
+        ability,
+    }: HttpArgs<{ code: string }, { courseID: string; start: string; end: string }>): Promise<StudentMeetingReport[]> {
+        const course = await Course.findOne({ id: params.courseID }, { relations: ['sections'] });
+
+        if (!course || !ability.existsOnCourse('view', 'reports', course)) {
+            throw Boom.notFound('No course found');
+        }
+
+        return StudentMeetingReport.find({
+            course,
+            date: Between(dayjs(params.start).toDate(), dayjs(params.end).toDate()),
+        });
     }
 }

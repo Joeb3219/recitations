@@ -38,6 +38,13 @@
                     ></app-view-ta-feedback>
                 </mat-tab>
                 <mat-tab label="Student Feedback" [ngStyle]="{ display: activeTabIndex === 1 ? 'block' : 'none' }">
+                    <app-view-student-feedback
+                        *ngIf="startDate && endDate"
+                        [course]="course"
+                        [meetings]="meetings"
+                        [startDate]="startDate"
+                        [endDate]="endDate"
+                    ></app-view-student-feedback>
                 </mat-tab>
             </mat-tab-group>
         </div>

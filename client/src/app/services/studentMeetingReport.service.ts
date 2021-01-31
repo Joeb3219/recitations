@@ -34,6 +34,29 @@ export class StudentMeetingReportService {
         });
     }
 
+    public async getAllReports(
+        course: Course,
+        start: Date,
+        end: Date
+    ): Promise<StandardResponseInterface<StudentMeetingReport[]>> {
+        const url = `${environment.apiURL}/course/${course.id}/quiz/range/${start.toISOString()}/${end.toISOString()}`;
+
+        return new Promise((resolve, reject) => {
+            this.http.get<StandardResponseInterface<StudentMeetingReport[]>>(url).subscribe(
+                result => {
+                    if (result) {
+                        // eslint-disable-next-line no-param-reassign
+                        result.data = result.data.map(report => plainToClass(StudentMeetingReport, report));
+                        resolve(result);
+                    } else reject(new Error('No result returned'));
+                },
+                (err: Error) => {
+                    reject(err);
+                }
+            );
+        });
+    }
+
     public async getReport(
         course: Course,
         date: Date,

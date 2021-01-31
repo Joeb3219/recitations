@@ -1,4 +1,5 @@
-import { Meeting, MeetingTime, MeetingType, Section } from '@dynrec/common';
+import { CoverageRequest, Meeting, MeetingTime, MeetingType, Section } from '@dynrec/common';
+import dayjs from 'dayjs';
 import _ from 'lodash';
 import { MeetingDataSource } from './meeting.datasource';
 import { MeetingDataSourceConfig } from './meeting.manager';
@@ -19,19 +20,27 @@ export class RecitationMeetingDataSource extends MeetingDataSource<MeetingType.R
         config: MeetingDataSourceConfig
     ): Promise<Meeting<MeetingType.RECITATION>[]> {
         const meetingTimes = section.meetingTimes?.filter(time => time.type === MeetingType.RECITATION) ?? [];
+        const coverageRequests = await CoverageRequest.find({ course: { id: section.course.id } });
 
         return _.flatten(
             config.dates.map(date => {
                 return meetingTimes
                     .filter(time => time.canOccurOnDate(date))
-                    .map(
-                        time =>
-                            new Meeting<MeetingType.RECITATION>({
-                                meetingTime: new MeetingTime({ ...time, meetable: section }),
-                                meetingType: MeetingType.RECITATION,
-                                date: time.getStartTime(date),
-                            })
-                    );
+                    .map(time => {
+                        const meetingDate = time.getStartTime(date);
+                        return new Meeting<MeetingType.RECITATION>({
+                            meetingTime: new MeetingTime({ ...time, meetable: section }),
+                            meetingType: MeetingType.RECITATION,
+                            date: meetingDate,
+                            leader:
+                                coverageRequests.find(
+                                    request =>
+                                        dayjs(request.date).isSame(meetingDate) &&
+                                        request.meetingTime.id === time.id &&
+                                        !!request.coveredBy
+                                )?.coveredBy ?? time.leader,
+                        });
+                    });
             })
         );
     }

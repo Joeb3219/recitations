@@ -60,6 +60,10 @@
     </span>
 </ng-template>
 
+<ng-template #meetingTimeIdentifierTemplate let-value="value" let-row="row">
+    <ng-container *ngIf="value.meetable?.sectionNum"> Section {{ value.meetable.sectionNum }} </ng-container>
+</ng-template>
+
 <ng-template #editCellTemplate let-value="value" let-column="column" let-row="row" let-rowIndex="rowIndex">
     <app-form-inputs
         *ngIf="editedIndices.includes(rowIndex)"

@@ -46,7 +46,8 @@ export class PostRecitationFeedbackTodo extends TodoDatasource {
         // Only recitation leaders have to do section feedback!
         const leaderMeetings = meetings.filter(
             (meeting): meeting is Meeting<MeetingType.RECITATION> =>
-                meeting.meetingTime.leader?.id === user.id && meeting.meetingType === MeetingType.RECITATION
+                (meeting.leader ?? meeting.meetingTime.leader)?.id === user.id &&
+                meeting.meetingType === MeetingType.RECITATION
         );
 
         if (!leaderMeetings.length) {

@@ -19,12 +19,12 @@ export class Section extends Meetable implements SectionInterface {
     @Type(() => Course)
     public course: Course;
 
-    @ManyToOne(type => User, { eager: true, cascade: true })
+    @ManyToOne(type => User, { eager: true })
     @JoinColumn()
     @Type(() => User)
     public ta?: User;
 
-    @ManyToOne(type => User, { eager: true, cascade: true })
+    @ManyToOne(type => User, { eager: true })
     @JoinColumn()
     @Type(() => User)
     public instructor?: User;

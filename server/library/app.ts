@@ -1,4 +1,4 @@
-import { AllEntities, User } from '@dynrec/common';
+import { AllEntities, Course, CoverageRequest, Role, User } from '@dynrec/common';
 import * as bodyParser from 'body-parser';
 import cors from 'cors';
 import * as dotenv from 'dotenv';
@@ -107,6 +107,26 @@ class AppWrapper {
                                     .findOne({
                                         id: (decoded as any).userid,
                                     });
+
+                                // TODO: make this work with native typeorm, instead of doing this out of channel.
+                                if (res.locals.currentUser) {
+                                    const userCoverageRequests = await CoverageRequest.find({
+                                        coveredBy: res.locals.currentUser,
+                                    });
+
+                                    res.locals.currentUser.roles = res.locals.currentUser.roles.map(
+                                        role =>
+                                            new Role({
+                                                ...role,
+                                                course: new Course({
+                                                    ...role.course,
+                                                    coverageRequests: (userCoverageRequests ?? []).filter(
+                                                        request => !!role.course && role.course.id === request.course.id
+                                                    ),
+                                                }),
+                                            })
+                                    );
+                                }
                             }
                         } catch (err) {
                             // eslint-disable-next-line no-console

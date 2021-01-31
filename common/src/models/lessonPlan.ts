@@ -23,7 +23,7 @@ export class LessonPlan extends BaseEntity implements LessonPlanInterface {
     @Type(() => Course)
     public course: Course;
 
-    @ManyToOne(type => User, { eager: true, cascade: true })
+    @ManyToOne(type => User, { eager: true })
     @JoinColumn()
     @Type(() => User)
     public creator?: User;

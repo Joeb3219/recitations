@@ -268,13 +268,17 @@ export function generateCreateResource<T extends BaseEntity>(
     };
 }
 
-export function generateListResource<T extends BaseEntity>(resourceClass: new () => T) {
+export function generateListResource<T extends BaseEntity>(
+    resourceClass: new () => T,
+    routeArgs: { relations?: string[] }
+) {
     return async (args: HttpArgs<T>): Promise<T[]> => {
         const { params, ability } = args;
         const { courseID } = params;
 
         const results = await getRepository<T>(resourceClass).find({
             where: { course: courseID },
+            relations: routeArgs.relations ?? [],
         });
         return results.filter(result => ability.can('view', result));
     };
@@ -307,6 +311,7 @@ export function generateResource<T extends BaseEntity & { id: string }>(
         args: {
             searchableFields?: SearchableData;
             sortableFields?: SortableData<T>;
+            relations?: string[];
         }
     ) => {
         const providedFunction = fn;
@@ -354,7 +359,7 @@ export function generateResource<T extends BaseEntity & { id: string }>(
         generateInternalRoute(
             controller,
             app,
-            generateListResource<T>(resourceModel),
+            generateListResource<T>(resourceModel, args),
             `/course/:courseID/${resourceName}s`,
             `get`,
             { searchableFields: searchable, sortableFields: sortable }

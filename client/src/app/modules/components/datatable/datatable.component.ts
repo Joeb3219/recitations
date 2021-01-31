@@ -31,7 +31,8 @@ export type DatatableColumnCellTemplateName =
     | 'editCell'
     | 'toggleCell'
     | 'dateCell'
-    | 'lessonCell';
+    | 'lessonCell'
+    | 'meetingTimeIdentifierCell';
 
 export interface DatatableAction {
     text: string;
@@ -101,6 +102,9 @@ export class DatatableComponent<T extends { id?: string }> implements OnInit {
 
     @ViewChild('editCellTemplate', { static: true })
     editCellTemplate: TemplateRef<unknown>;
+
+    @ViewChild('meetingTimeIdentifierTemplate', { static: true })
+    meetingTimeIdentifierTemplate: TemplateRef<unknown>;
 
     @Input() detailTemplate?: TemplateRef<unknown>;
 
@@ -265,6 +269,10 @@ export class DatatableComponent<T extends { id?: string }> implements OnInit {
             },
             editCell: {
                 template: this.editCellTemplate,
+                csv: val => val,
+            },
+            meetingTimeIdentifierCell: {
+                template: this.meetingTimeIdentifierTemplate,
                 csv: val => val,
             },
             toggleCell: {

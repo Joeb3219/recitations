@@ -32,7 +32,7 @@ export class Problem extends BaseEntity implements ProblemInterface {
     @Column()
     public estimatedDuration: number;
 
-    @ManyToMany(() => LearningGoal, { cascade: true, eager: true })
+    @ManyToMany(() => LearningGoal, { eager: true })
     @JoinTable()
     @Type(() => LearningGoal)
     public learningGoals: LearningGoal[];
@@ -42,7 +42,7 @@ export class Problem extends BaseEntity implements ProblemInterface {
     @Type(() => Course)
     public course: Course;
 
-    @ManyToOne(() => User, { eager: true, cascade: true })
+    @ManyToOne(() => User, { eager: true })
     @JoinColumn()
     @Type(() => User)
     public creator?: User;

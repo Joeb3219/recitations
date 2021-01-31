@@ -32,7 +32,9 @@ export class TakeQuizTodo extends TodoDatasource {
 
     async generateTodos(course: Course, meetings: Meeting[], user: User): Promise<Todo[]> {
         // Recitation leaders don't have to do the quiz!
-        const nonLeaderMeetings = await meetings.filter(meeting => meeting.meetingTime.leader?.id !== user.id);
+        const nonLeaderMeetings = await meetings.filter(
+            meeting => meeting.meetingTime.leader?.id !== user.id && meeting.leader?.id !== user.id
+        );
 
         if (!nonLeaderMeetings.length) {
             return [];

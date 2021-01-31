@@ -37,7 +37,7 @@ export class LessonPlanStep extends BaseEntity implements LessonPlanStepInterfac
     @Type(() => LessonPlan)
     public lessonPlan: LessonPlan;
 
-    @ManyToOne(type => User, { eager: true, cascade: true })
+    @ManyToOne(type => User, { eager: true })
     @JoinColumn()
     @Type(() => User)
     public creator?: User;

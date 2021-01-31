@@ -19,7 +19,7 @@ export class Quiz extends BaseEntity implements QuizInterface {
     @Type(() => Course)
     public course: Course;
 
-    @ManyToOne(() => User, { eager: true, cascade: true })
+    @ManyToOne(() => User, { eager: true })
     @JoinColumn()
     @Type(() => User)
     public creator?: User;

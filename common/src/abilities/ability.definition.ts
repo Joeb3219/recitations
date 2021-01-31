@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import _ from 'lodash';
 import { Course, CoverageRequest, Lesson, LessonPlanStep, MeetingTime, Problem, Role, Section, User } from '../models';
 import { LearningGoalCategory } from '../models/learningGoalCategory';
@@ -171,7 +172,12 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
                     safeIdComparison(course.id, instance.course) &&
                     (!!instance.students?.find(student => safeIdComparison(user?.id, student)) ||
                         safeIdComparison(user?.id, instance.ta) ||
-                        safeIdComparison(user?.id, instance.instructor)),
+                        safeIdComparison(user?.id, instance.instructor) ||
+                        !!course?.coverageRequests?.find(
+                            request =>
+                                safeIdComparison(user?.id, request.coveredBy?.id) &&
+                                instance.meetingTimes?.find(time => time.id === request.meetingTime.id)
+                        )),
             },
         ],
     },
@@ -186,9 +192,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
                 validate: (instance: Section) =>
                     !!course &&
                     safeIdComparison(course.id, instance.course) &&
-                    (!!instance.students?.find(student => safeIdComparison(user?.id, student)) ||
-                        safeIdComparison(user?.id, instance.ta) ||
-                        safeIdComparison(user?.id, instance.instructor)),
+                    (safeIdComparison(user?.id, instance.ta) || safeIdComparison(user?.id, instance.instructor)),
             },
         ],
     },
@@ -648,7 +652,16 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
                     !!course &&
                     !!instance?.meetingTime &&
                     safeIdComparison(course.id, instance.course) &&
-                    safeIdComparison(user.id, instance.meetingTime.leader),
+                    (safeIdComparison(user.id, instance.meetingTime.leader) ||
+                        !!course?.coverageRequests?.find(
+                            request =>
+                                safeIdComparison(user?.id, request.coveredBy?.id) &&
+                                request.meetingTime.id === instance.meetingTime?.id &&
+                                (dayjs(instance.beginDate).isSame(request.date) ||
+                                    dayjs(instance.beginDate).isBefore(request.date)) &&
+                                (dayjs(instance.endDate).isSame(request.date) ||
+                                    dayjs(instance.endDate).isAfter(request.date))
+                        )),
             },
         ],
     },
@@ -726,7 +739,18 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
                     !!user &&
                     safeIdComparison(user.id, instance.creator) &&
                     safeIdComparison(course.id, instance.course) &&
-                    _.every(instance.meetingTimes.map(time => safeIdComparison(user.id, time.leader))),
+                    _.every(
+                        instance.meetingTimes.map(
+                            time =>
+                                safeIdComparison(user.id, time.leader) ||
+                                !!course?.coverageRequests?.find(
+                                    request =>
+                                        safeIdComparison(user?.id, request.coveredBy?.id) &&
+                                        time.id === request.meetingTime.id &&
+                                        dayjs(request.date).isSame(dayjs(instance.date))
+                                )
+                        )
+                    ),
             },
         ],
     },
@@ -743,7 +767,18 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
                     !!user &&
                     safeIdComparison(user.id, instance.creator) &&
                     safeIdComparison(course.id, instance.course) &&
-                    _.every(instance.meetingTimes.map(time => safeIdComparison(user.id, time.leader))),
+                    _.every(
+                        instance.meetingTimes.map(
+                            time =>
+                                safeIdComparison(user.id, time.leader) ||
+                                !!course?.coverageRequests?.find(
+                                    request =>
+                                        safeIdComparison(user?.id, request.coveredBy?.id) &&
+                                        time.id === request.meetingTime.id &&
+                                        dayjs(request.date).isSame(dayjs(instance.date))
+                                )
+                        )
+                    ),
             },
         ],
     },
@@ -760,7 +795,16 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
                     !!course &&
                     !!instance?.meetingTime &&
                     safeIdComparison(course.id, instance.course) &&
-                    safeIdComparison(user.id, instance.meetingTime.leader),
+                    (safeIdComparison(user.id, instance.meetingTime.leader) ||
+                        !!course?.coverageRequests?.find(
+                            request =>
+                                safeIdComparison(user?.id, request.coveredBy?.id) &&
+                                instance.meetingTime?.id === request.meetingTime.id &&
+                                (dayjs(instance.beginDate).isSame(request.date) ||
+                                    dayjs(instance.beginDate).isBefore(request.date)) &&
+                                (dayjs(instance.endDate).isSame(request.date) ||
+                                    dayjs(instance.endDate).isAfter(request.date))
+                        )),
             },
         ],
     },

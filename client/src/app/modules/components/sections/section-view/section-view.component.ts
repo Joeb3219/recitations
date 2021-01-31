@@ -43,6 +43,11 @@ export class SectionViewComponent implements OnChanges {
             cellTemplate: 'lessonCell',
         },
         {
+            name: 'Leader',
+            prop: 'leader',
+            cellTemplate: 'userCell',
+        },
+        {
             name: 'Actions',
             cellTemplate: 'actionsCell',
             actions: (row: MeetingWithLesson<MeetingType.RECITATION> & { getAccessCode: () => string }) => [
@@ -50,7 +55,7 @@ export class SectionViewComponent implements OnChanges {
                     text: 'Access Code',
                     can: {
                         action: 'create',
-                        subject: new Lesson({ meetingTime: row.meetingTime, course: this.section.course }),
+                        subject: this.getSampleLesson(row),
                     },
                     click: () => {
                         // Stupid, and hacky, but Datatables doesn't currently support sending over the needed functions data, just the json.
@@ -66,7 +71,7 @@ export class SectionViewComponent implements OnChanges {
                     text: 'Update Lesson',
                     can: {
                         action: 'create',
-                        subject: new Lesson({ meetingTime: row.meetingTime, course: this.section.course }),
+                        subject: this.getSampleLesson(row),
                     },
                     click: () => this.handleOpenEditLessonModal(row),
                 },
@@ -74,7 +79,7 @@ export class SectionViewComponent implements OnChanges {
                     text: 'Feedback & Attendance',
                     can: {
                         action: 'create',
-                        subject: new Lesson({ meetingTime: row.meetingTime, course: this.section.course }),
+                        subject: this.getSampleLesson(row),
                     },
                     href: `/courses/${row.lesson.course.id}/meeting-feedback/${row.date.toISOString?.() ?? row.date}`,
                     if: dayjs().tz().isAfter(row.date),
@@ -100,6 +105,15 @@ export class SectionViewComponent implements OnChanges {
         if (changes) {
             this.refreshData.next();
         }
+    }
+
+    getSampleLesson(meeting: MeetingWithLesson<MeetingType.RECITATION>): Lesson {
+        return new Lesson({
+            meetingTime: meeting.meetingTime,
+            course: this.section.course,
+            beginDate: meeting.date,
+            endDate: meeting.date,
+        });
     }
 
     handleOpenEditLessonModal(meeting: MeetingWithLesson): void {

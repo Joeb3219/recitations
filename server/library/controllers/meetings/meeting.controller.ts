@@ -8,14 +8,15 @@ import { MeetingManager } from './datasource/meeting.manager';
 @Controller
 export class MeetingController {
     @GetRequest('/course/:courseID/meetings')
-    async getMeetings({ params }: HttpArgs<any, { courseID: string }>): Promise<Meeting<MeetingType>[]> {
+    async getMeetings({ params, currentUser }: HttpArgs<any, { courseID: string }>): Promise<Meeting<MeetingType>[]> {
         const course = await Course.findOne({ id: params.courseID }, { relations: ['sections'] });
 
         if (!course) {
             throw Boom.notFound('No course found');
         }
 
-        return MeetingManager.getMeetings(course);
+        const meetings = await MeetingManager.getMeetings(course);
+        return meetings.filter(meeting => meeting.leader?.id === currentUser.id);
     }
 
     @GetRequest('/section/:sectionID/meetings')
@@ -51,7 +52,8 @@ export class MeetingController {
         return MeetingManager.getMeetingWithLessons(
             course,
             meeting =>
-                meeting.meetingTime.leader?.id === currentUser.id && dayjs(meeting.date).isSame(new Date(params.date))
+                (meeting.meetingTime.leader?.id === currentUser.id || meeting.leader?.id === currentUser.id) &&
+                dayjs(meeting.date).isSame(new Date(params.date))
         );
     }
 }

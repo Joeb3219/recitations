@@ -1,4 +1,4 @@
-import { Course, Todo } from '@dynrec/common';
+import { Course, CoverageRequest, Todo } from '@dynrec/common';
 import _ from 'lodash';
 import { Controller, GetRequest } from '../../decorators';
 import { HttpArgs } from '../../helpers/route.helper';
@@ -12,13 +12,19 @@ export class TodoController {
         const courses = await Course.find({ relations: ['sections'] });
         const userCourses = courses.filter(course => ability.can('view', course));
 
+        const coverageRequests = await CoverageRequest.find({ coveredBy: currentUser });
+
         const userSections = _.flatten(
             userCourses.map(course =>
                 (course.sections ?? []).filter(
                     section =>
                         section.ta?.id === currentUser.id ||
                         section.students?.find(s => s.id === currentUser.id) ||
-                        (section.meetingTimes ?? []).find(time => time.leader?.id === currentUser.id)
+                        (section.meetingTimes ?? []).find(
+                            time =>
+                                time.leader?.id === currentUser.id ||
+                                coverageRequests.find(request => request.meetingTime.id === time.id)
+                        )
                 )
             )
         );

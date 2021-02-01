@@ -10,4 +10,5 @@ export interface MeetingTimeInterface {
     frequency: number;
     leader?: UserInterface;
     meetable: MeetableInterface;
+    meetingLink?: string;
 }

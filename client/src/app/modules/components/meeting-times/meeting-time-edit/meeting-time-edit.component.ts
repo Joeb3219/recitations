@@ -87,6 +87,12 @@ export class MeetingTimeEditComponent implements OnInit {
                 value: this.meetingTime?.frequency,
                 label: 'Frequency',
             },
+            {
+                type: 'text',
+                name: 'meetingLink',
+                value: this.meetingTime?.meetingLink,
+                label: 'Meeting Link',
+            },
         ];
     }
 

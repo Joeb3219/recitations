@@ -22,6 +22,9 @@ export class MeetingTime extends BaseEntity implements MeetingTimeInterface {
     })
     public endTime: string;
 
+    @Column({ nullable: true })
+    public meetingLink?: string;
+
     @Column()
     public weekday: Weekdays;
 

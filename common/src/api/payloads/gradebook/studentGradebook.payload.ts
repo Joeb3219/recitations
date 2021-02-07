@@ -5,6 +5,6 @@ export class StudentGradebookPayload {
     @Type(() => Meeting)
     meeting: Meeting;
 
-    attended: boolean;
-    didQuiz: boolean;
+    attended: 'present' | 'absent' | 'unsubmitted' | 'overriden';
+    didQuiz: 'complete' | 'incomplete' | 'overriden';
 }

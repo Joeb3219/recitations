@@ -1,4 +1,10 @@
-import { Course, MeetingReport, StudentGradebookPayload, StudentMeetingReport } from '@dynrec/common';
+import {
+    Course,
+    GradebookOverride,
+    MeetingReport,
+    StudentGradebookPayload,
+    StudentMeetingReport,
+} from '@dynrec/common';
 import Boom from '@hapi/boom';
 import dayjs from 'dayjs';
 import _ from 'lodash';
@@ -37,19 +43,57 @@ export class GradebookController {
 
         const studentReports = await StudentMeetingReport.find({ course, creator: currentUser });
         const attendanceReports = await MeetingReport.find({ course });
+        const allOverrides = await GradebookOverride.find({ course });
 
         // and now we can generate the gradebook entries
-        return userMeetings.map(meeting => ({
-            meeting,
-            attended: !!attendanceReports.find(
-                report =>
-                    report.meetingTimes.find(time => userMeetingTimeIds.includes(time.id)) &&
-                    dayjs(report.date).isSame(meeting.date) &&
-                    report.studentsPresent.find(student => student.id === currentUser.id)
-            ),
-            didQuiz: !!studentReports.find(
+        return userMeetings.map(meeting => {
+            const overrides = allOverrides.filter(
+                override =>
+                    override.userOverrides.find(
+                        uOverride =>
+                            uOverride.user.id === currentUser.id &&
+                            uOverride.meetingTime.id === meeting.meetingTime.id &&
+                            dayjs(uOverride.date).isSame(meeting.date)
+                    ) ||
+                    override.meetingOverrides.find(
+                        mOverride =>
+                            mOverride.meetingTime.id === meeting.meetingTime.id &&
+                            dayjs(mOverride.date).isSame(meeting.date)
+                    ) ||
+                    override.dateRangeOverrides.find(
+                        drOverride =>
+                            dayjs(drOverride.start).isBefore(meeting.date) &&
+                            dayjs(drOverride.end).isAfter(meeting.date)
+                    )
+            );
+
+            const report = attendanceReports.find(
+                rep =>
+                    rep.meetingTimes.find(time => userMeetingTimeIds.includes(time.id)) &&
+                    dayjs(rep.date).isSame(meeting.date)
+            );
+
+            const feedback = studentReports.find(
                 report => dayjs(report.date).isSame(meeting.date) && report.meetingTime.id === meeting.meetingTime.id
-            ),
-        }));
+            );
+
+            const attendanceOverridden = overrides.find(override => override.overrideAttendance);
+            const quizOverridden = overrides.find(override => override.overrideQuiz);
+
+            return {
+                meeting,
+                // eslint-disable-next-line no-nested-ternary
+                attended: report
+                    ? // eslint-disable-next-line no-nested-ternary
+                      report.studentsPresent.find(student => student.id === currentUser.id)
+                        ? 'present'
+                        : attendanceOverridden
+                        ? 'overriden'
+                        : 'absent'
+                    : 'unsubmitted',
+                // eslint-disable-next-line no-nested-ternary
+                didQuiz: feedback ? 'complete' : quizOverridden ? 'overriden' : 'incomplete',
+            };
+        });
     }
 }

@@ -28,8 +28,8 @@
                 <tbody>
                     <tr *ngFor="let entry of entries">
                         <td>{{ entry.meeting.date | date: 'MM/dd/YYYY' }}</td>
-                        <td>{{ entry.attended ? 'Present' : 'Absent' }}</td>
-                        <td>{{ entry.didQuiz ? 'Completed' : 'Incomplete' }}</td>
+                        <td>{{ entry.attended | titlecase }}</td>
+                        <td>{{ entry.didQuiz | titlecase }}</td>
                     </tr>
                 </tbody>
             </table>

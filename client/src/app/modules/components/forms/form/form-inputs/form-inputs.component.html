@@ -169,4 +169,10 @@
     (onChange)="fieldUpdated(input.name, $event)"
 ></app-roster-formfield>
 
+<app-gradebook-override-overrides-formfield
+    *ngIf="input.type === 'override'"
+    [override]="input.value"
+    (onChange)="fieldUpdated(input.name, $event)"
+></app-gradebook-override-overrides-formfield>
+
 <div *ngIf="input.type === 'textBlock'">{{ input.value }}</div>

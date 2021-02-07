@@ -1,0 +1,12 @@
+<app-form-modal
+    *ngIf="isVisible"
+    [submitText]="'Edit Overriden Date Range'"
+    [showModal]="isVisible"
+    [form]="form"
+    [modalSize]="'xl'"
+    [title]="'Edit Overriden Date Range'"
+    (onSubmit)="formSubmitted($event)"
+    (onClose)="handleClose()"
+    [forceClose]="forceClose"
+>
+</app-form-modal>

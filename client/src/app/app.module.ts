@@ -112,6 +112,12 @@ import { MeetingTimeService } from './services/meetingTime.service';
 import { SectionService } from './services/section.service';
 import { UserService } from './services/user.service';
 import { ViewGradebookComponent } from './modules/pages/gradebook/view-gradebook/view-gradebook.component';
+import { ListGradebookOverridesComponent } from './modules/pages/gradebook-overrides/list-gradebook-overrides/list-gradebook-overrides.component';
+import { GradebookOverrideEditComponent } from './modules/components/gradebook-override/gradebook-override-edit/gradebook-override-edit.component';
+import { GradebookOverrideEditDateRangeComponent } from './modules/components/gradebook-override/gradebook-override-edit-date-range/gradebook-override-edit-date-range.component';
+import { GradebookOverrideEditUserComponent } from './modules/components/gradebook-override/gradebook-override-edit-user/gradebook-override-edit-user.component';
+import { GradebookOverrideEditMeetingTimeComponent } from './modules/components/gradebook-override/gradebook-override-edit-meeting-time/gradebook-override-edit-meeting-time.component';
+import { GradebookOverrideOverridesFormfieldComponent } from './modules/components/gradebook-override/gradebook-override-overrides-formfield/gradebook-override-overrides-formfield.component';
 
 export let GlobalActivatedRoute: ActivatedRoute;
 
@@ -203,6 +209,12 @@ export let GlobalActivatedRoute: ActivatedRoute;
         ViewTaFeedbackComponent,
         ViewStudentFeedbackComponent,
         ViewGradebookComponent,
+        ListGradebookOverridesComponent,
+        GradebookOverrideEditComponent,
+        GradebookOverrideEditDateRangeComponent,
+        GradebookOverrideEditUserComponent,
+        GradebookOverrideEditMeetingTimeComponent,
+        GradebookOverrideOverridesFormfieldComponent,
     ],
     imports: [
         HttpClientModule,

@@ -83,6 +83,10 @@
     {{ value | date: 'MM/dd/YYYY HH:mm' }}
 </ng-template>
 
+<ng-template #fnCellTemplate let-column="column" let-row="row">
+    {{ column.fn ? column.fn(row) : '' }}
+</ng-template>
+
 <ng-template #lessonCellTemplate let-value="value" let-row="row">
     <a
         *ngIf="value && value.lessonPlan"

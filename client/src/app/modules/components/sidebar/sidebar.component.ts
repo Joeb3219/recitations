@@ -1,6 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Course, CoverageRequest, LearningGoalCategory, Problem, Quiz, Role, Section } from '@dynrec/common';
+import {
+    Course,
+    CoverageRequest,
+    GradebookOverride,
+    LearningGoalCategory,
+    Problem,
+    Quiz,
+    Role,
+    Section,
+} from '@dynrec/common';
 import { CourseService } from '@services/course.service';
 import { UserService } from '@services/user.service';
 import { AbilitiesCanDirectivePayload } from '../../../directives/abilities.directive';
@@ -92,6 +101,11 @@ export class SidebarComponent implements OnInit {
                     slug: 'coverage-requests/monitor',
                     name: 'Coverage Monitor',
                     can: { action: 'use', subject: 'coverage-request-monitor', existsOnCourse: course },
+                },
+                {
+                    slug: 'gradebook-overrides',
+                    name: 'Gradebook Overrides',
+                    can: { action: 'create', subject: GradebookOverride, existsOnCourse: course },
                 },
                 {
                     slug: 'settings',

@@ -20,7 +20,8 @@ export type FormInputType =
     | 'quiz'
     | 'abilities'
     | 'roster'
-    | 'checkbox';
+    | 'checkbox'
+    | 'override';
 
 type Undefinable<T> = { [P in keyof T]?: never };
 

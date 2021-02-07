@@ -1,6 +1,7 @@
 import dayjs from 'dayjs';
 import _ from 'lodash';
 import { Course, CoverageRequest, Lesson, LessonPlanStep, MeetingTime, Problem, Role, Section, User } from '../models';
+import { GradebookOverride } from '../models/gradebookOverride';
 import { LearningGoalCategory } from '../models/learningGoalCategory';
 import { LessonPlan } from '../models/lessonPlan';
 import { MeetingReport } from '../models/meetingReport';
@@ -210,6 +211,58 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
                 subject: MeetingTime,
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 validate: (instance: MeetingTime) => !!course && (instance.meetable as any)?.course?.id === course.id,
+            },
+        ],
+    },
+    {
+        id: '8d788f89-be72-4621-97c2-bb13902131e4',
+        name: 'View course gradebook overrides',
+        tags: ['course_admin', 'course_creator', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'view',
+                subject: GradebookOverride,
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                validate: (instance: GradebookOverride) => !!course && safeIdComparison(course.id, instance.course),
+            },
+        ],
+    },
+    {
+        id: 'a48d514f-3fc5-4216-9751-f108ed73e97d',
+        name: 'Create course gradebook overrides',
+        tags: ['course_admin', 'course_creator', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'create',
+                subject: GradebookOverride,
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                validate: (instance: GradebookOverride) => !!course && safeIdComparison(course.id, instance.course),
+            },
+        ],
+    },
+    {
+        id: 'c4048ed3-88dc-428d-8704-614113c85cc4',
+        name: 'Update course gradebook overrides',
+        tags: ['course_admin', 'course_creator', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'update',
+                subject: GradebookOverride,
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                validate: (instance: GradebookOverride) => !!course && safeIdComparison(course.id, instance.course),
+            },
+        ],
+    },
+    {
+        id: '993cb0e5-f8cc-4307-8add-66f4565894c1',
+        name: 'Delete course gradebook overrides',
+        tags: ['course_admin', 'course_creator', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'delete',
+                subject: GradebookOverride,
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                validate: (instance: GradebookOverride) => !!course && safeIdComparison(course.id, instance.course),
             },
         ],
     },

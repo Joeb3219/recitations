@@ -1,0 +1,12 @@
+<app-form-modal
+    *ngIf="isVisible"
+    [submitText]="'Edit Overriden User'"
+    [showModal]="isVisible"
+    [form]="form"
+    [modalSize]="'xl'"
+    [title]="'Edit Overriden User'"
+    (onSubmit)="formSubmitted($event)"
+    (onClose)="handleClose()"
+    [forceClose]="forceClose"
+>
+</app-form-modal>

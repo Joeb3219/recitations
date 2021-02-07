@@ -1,0 +1,35 @@
+<div class="page">
+    <ng-container *ngIf="!course">
+        <h4>Not Found</h4>
+    </ng-container>
+    <ng-container *ngIf="course">
+        <div class="container-margin">
+            <div class="row">
+                <div style="float: left; text-align: left" class="col">
+                    <h4>{{ course.name }} Gradebok Overrides</h4>
+                </div>
+                <div
+                    style="float: right; text-align: right"
+                    class="col"
+                    *can="{ action: 'create', subject: testOverride }"
+                >
+                    <button type="button" class="btn btn-primary" (click)="handleOpenNewGradebookOverrideModal()">
+                        Add Gradebook Override
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-margin">
+            <app-datatable [dataFunction]="fetchOverrides" [columns]="columns" [reload]="refreshData"></app-datatable>
+        </div>
+    </ng-container>
+</div>
+
+<app-gradebook-override-edit
+    *ngIf="selectedGradebookOverride && isEditGradebookOverrideModalOpen"
+    [override]="selectedGradebookOverride"
+    [isVisible]="isEditGradebookOverrideModalOpen"
+    (onClose)="handleCloseEditGradebookOverrideModal()"
+>
+</app-gradebook-override-edit>

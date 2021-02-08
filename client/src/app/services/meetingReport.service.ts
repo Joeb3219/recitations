@@ -4,6 +4,7 @@ import { Course, MeetingReport, StandardResponseInterface } from '@dynrec/common
 import { environment } from '@environment';
 import { plainToClass } from 'class-transformer';
 import { DeleteRequest, GetRequest, UpsertRequest } from '../decorators';
+import { getFilterParams } from '../decorators/request.decorator';
 
 @Injectable({
     providedIn: 'root',
@@ -52,19 +53,24 @@ export class MeetingReportService {
         const url = `${environment.apiURL}/course/${
             course.id
         }/meetingReports/range/${start.toISOString()}/${end.toISOString()}`;
+
+        const params = getFilterParams({ limit: -1 });
+
         return new Promise((resolve, reject) => {
-            this.http.get<StandardResponseInterface<MeetingReport[]>>(url).subscribe(
-                result => {
-                    if (result) {
-                        // eslint-disable-next-line no-param-reassign
-                        result.data = result.data.map(report => plainToClass(MeetingReport, report));
-                        resolve(result);
-                    } else reject(new Error('No result returned'));
-                },
-                (err: Error) => {
-                    reject(err);
-                }
-            );
+            this.http
+                .get<StandardResponseInterface<MeetingReport[]>>(url, { params })
+                .subscribe(
+                    result => {
+                        if (result) {
+                            // eslint-disable-next-line no-param-reassign
+                            result.data = result.data.map(report => plainToClass(MeetingReport, report));
+                            resolve(result);
+                        } else reject(new Error('No result returned'));
+                    },
+                    (err: Error) => {
+                        reject(err);
+                    }
+                );
         });
     }
 }

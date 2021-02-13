@@ -2,6 +2,7 @@ import { Expose, Type } from 'class-transformer';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
+import _ from 'lodash';
 import { MeetingType } from '../enums';
 import { Course, Lesson, MeetingTime, User } from '../models';
 
@@ -17,10 +18,21 @@ export class Meeting<Type extends MeetingType = MeetingType> {
     @Type(() => Date)
     date: Date;
 
+    meetingIdentifier: string;
+
     // Unlike the leader in the meeting time, this is the leader assigned to this meeting for this SPECIFIC instance
     // Coverage requests and other events could change who leads a specific meeting, while the original user is still the leader of the meeting time in general.
     @Type(() => User)
     leader: User;
+
+    toString() {
+        const typeString = `${_.startCase(this.meetingType)}${
+            this.meetingIdentifier?.length ? ` ${this.meetingIdentifier}` : ''
+        }`;
+        const date = dayjs(this.date).format('MMM DD, YYYY HH:mm');
+        const leader = (this.leader ?? this.meetingTime.leader)?.getFullName();
+        return `${date} [${typeString}${leader ? `, led by ${leader}` : ''}]`;
+    }
 
     @Expose()
     getAccessCode() {

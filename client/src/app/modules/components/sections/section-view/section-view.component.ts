@@ -85,6 +85,17 @@ export class SectionViewComponent implements OnChanges {
                     if: dayjs().tz().isAfter(row.date),
                 },
                 {
+                    text: 'View Feedback',
+                    can: {
+                        action: 'create',
+                        subject: this.getSampleLesson(row),
+                    },
+                    href: `/courses/${row.lesson.course.id}/sections/${this.section.id}/reports/${
+                        row.date.toISOString?.() ?? row.date
+                    }`,
+                    if: dayjs().tz().isAfter(row.date),
+                },
+                {
                     text: 'Take Quiz',
                     can: {
                         action: 'create',

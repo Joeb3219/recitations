@@ -118,6 +118,8 @@ import { GradebookOverrideEditDateRangeComponent } from './modules/components/gr
 import { GradebookOverrideEditUserComponent } from './modules/components/gradebook-override/gradebook-override-edit-user/gradebook-override-edit-user.component';
 import { GradebookOverrideEditMeetingTimeComponent } from './modules/components/gradebook-override/gradebook-override-edit-meeting-time/gradebook-override-edit-meeting-time.component';
 import { GradebookOverrideOverridesFormfieldComponent } from './modules/components/gradebook-override/gradebook-override-overrides-formfield/gradebook-override-overrides-formfield.component';
+import { ViewSectionReportComponent } from './modules/pages/reports/view-section-report/view-section-report.component';
+import { ReportsSectionViewComponent } from './modules/components/reports/reports-section-view/reports-section-view.component';
 
 export let GlobalActivatedRoute: ActivatedRoute;
 
@@ -215,6 +217,8 @@ export let GlobalActivatedRoute: ActivatedRoute;
         GradebookOverrideEditUserComponent,
         GradebookOverrideEditMeetingTimeComponent,
         GradebookOverrideOverridesFormfieldComponent,
+        ViewSectionReportComponent,
+        ReportsSectionViewComponent,
     ],
     imports: [
         HttpClientModule,

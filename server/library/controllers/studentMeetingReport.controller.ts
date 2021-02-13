@@ -1,6 +1,7 @@
-import { Course, MeetingType, Section, StudentMeetingReport } from '@dynrec/common';
+import { Course, MeetingType, Section, StudentMeetingReport, User } from '@dynrec/common';
 import Boom from '@hapi/boom';
 import dayjs from 'dayjs';
+import faker from 'faker';
 import { Between, Brackets } from 'typeorm';
 import { Controller, Resource } from '../decorators';
 import { GetRequest, PostRequest } from '../decorators/request.decorator';
@@ -152,5 +153,63 @@ export class StudentMeetingReportController {
             course,
             date: Between(dayjs(params.start).toDate(), dayjs(params.end).toDate()),
         });
+    }
+
+    @GetRequest('/course/:courseID/section/:sectionID/quiz/:date')
+    async getSectionQuizResponses({
+        params,
+        ability,
+        currentUser,
+    }: HttpArgs<{ code: string }, { courseID: string; sectionID: string; date: string }>): Promise<
+        StudentMeetingReport[]
+    > {
+        const course = await Course.findOne({ id: params.courseID }, { relations: ['sections'] });
+
+        if (!course || !ability.can('view', course)) {
+            throw Boom.notFound('No course found');
+        }
+
+        const section = await Section.findOne({ id: params.sectionID, course });
+
+        if (!section || !ability.can('view', section)) {
+            throw Boom.unauthorized('Unauthorized to view selected section');
+        }
+
+        const assignedMeetingTime = section.meetingTimes?.find(time => time.type === MeetingType.RECITATION);
+
+        if (!assignedMeetingTime) {
+            throw Boom.notFound('No assigned meeting found.');
+        }
+
+        const meetings = await MeetingManager.getMeetingWithLessons(
+            course,
+            meeting =>
+                meeting.meetingTime.id === assignedMeetingTime.id && dayjs(meeting.date).isSame(new Date(params.date))
+        );
+
+        const meeting = meetings[0];
+
+        if (!meeting || (meeting.leader.id !== currentUser.id && meeting.meetingTime.leader?.id !== currentUser.id)) {
+            throw Boom.unauthorized('Unauthorized to fetch reports of selected meeting time');
+        }
+
+        const reports = await StudentMeetingReport.find({
+            course: { id: course.id },
+            date: dayjs(params.date).toDate(),
+            meetingTime: { id: meeting.meetingTime.id },
+        });
+
+        return reports.map(
+            report =>
+                new StudentMeetingReport({
+                    ...report,
+                    creator: new User({
+                        firstName: faker.name.firstName(),
+                        lastName: faker.name.lastName(),
+                        email: faker.internet.exampleEmail(),
+                        username: faker.internet.userName(),
+                    }),
+                })
+        );
     }
 }

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Course, StandardResponseInterface, StudentMeetingReport } from '@dynrec/common';
+import { Course, Section, StandardResponseInterface, StudentMeetingReport } from '@dynrec/common';
 import { environment } from '@environment';
 import { getFilterParams } from 'app/decorators';
 import { plainToClass } from 'class-transformer';
@@ -25,6 +25,34 @@ export class StudentMeetingReportService {
                         if (result) {
                             // eslint-disable-next-line no-param-reassign
                             result.data = plainToClass(StudentMeetingReport, result.data);
+                            resolve(result);
+                        } else reject(new Error('No result returned'));
+                    },
+                    (err: Error) => {
+                        reject(err);
+                    }
+                );
+        });
+    }
+
+    public async getSectionReports(
+        section: Section,
+        date: Date
+    ): Promise<StandardResponseInterface<StudentMeetingReport[]>> {
+        const url = `${environment.apiURL}/course/${section.course.id}/section/${
+            section.id
+        }/quiz/${date.toISOString()}`;
+
+        const params = getFilterParams({ limit: -1 });
+
+        return new Promise((resolve, reject) => {
+            this.http
+                .get<StandardResponseInterface<StudentMeetingReport[]>>(url, { params })
+                .subscribe(
+                    result => {
+                        if (result) {
+                            // eslint-disable-next-line no-param-reassign
+                            result.data = result.data.map(report => plainToClass(StudentMeetingReport, report));
                             resolve(result);
                         } else reject(new Error('No result returned'));
                     },

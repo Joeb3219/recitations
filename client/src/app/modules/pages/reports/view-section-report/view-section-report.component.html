@@ -1,0 +1,20 @@
+<div class="page">
+    <ng-container *ngIf="!section || !dateStr">
+        <h4>Not Found</h4>
+    </ng-container>
+    <ng-container *ngIf="section && dateStr">
+        <div class="container-margin">
+            <div class="row">
+                <div style="float: left; text-align: left" class="col">
+                    <h4>
+                        Feedback for section {{ section.sectionNumber }} on {{ dateStr | date: 'MM/dd/YYYY HH:mm' }}
+                    </h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-margin">
+            <app-reports-section-view [section]="section" [date]="getDate()"></app-reports-section-view>
+        </div>
+    </ng-container>
+</div>

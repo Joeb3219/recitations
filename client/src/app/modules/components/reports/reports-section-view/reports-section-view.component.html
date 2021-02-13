@@ -22,7 +22,9 @@
                     <td>{{ response.response }}</td>
                     <td>
                         {{ response.count }}
-                        {{ reports.length > 0 ? '(' + (response.count / reports.length) * 100 + '%)' : '' }}
+                        <span *ngIf="reports.length > 0 && bucket.element.elementId === 'multiple_choice'"
+                            >( {{ response.count / reports.length | percent }} )</span
+                        >
                     </td>
                 </tr>
             </tbody>

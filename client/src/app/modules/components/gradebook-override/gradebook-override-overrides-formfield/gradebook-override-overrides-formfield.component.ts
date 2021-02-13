@@ -77,7 +77,7 @@ export class GradebookOverrideOverridesFormfieldComponent implements OnInit {
     }
 
     handleUserEdited(user: GradebookUserOverride) {
-        this.override.meetingOverrides[this.selectedEditIndex] = user;
+        this.override.userOverrides[this.selectedEditIndex] = user;
 
         this.handleCloseEditOverride();
     }

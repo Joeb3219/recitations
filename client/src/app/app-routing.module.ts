@@ -12,12 +12,17 @@ import { RecitationsComponent } from '@pages/recitations/recitations.component';
 import { ViewSectionsComponent } from '@pages/sections/view-sections/view-sections.component';
 import { ViewUserSettingsComponent } from '@pages/user/view-user-settings/view-user-settings.component';
 import { ListCoverageRequestsComponent } from './modules/pages/coverage-requests/list-coverage-requests/list-coverage-requests.component';
+import { MonitorCoverageRequestsComponent } from './modules/pages/coverage-requests/monitor-coverge-requests/monitor-coverage-requests/monitor-coverage-requests.component';
+import { ListGradebookOverridesComponent } from './modules/pages/gradebook-overrides/list-gradebook-overrides/list-gradebook-overrides.component';
+import { ViewGradebookComponent } from './modules/pages/gradebook/view-gradebook/view-gradebook.component';
 import { ListLearningGoalsComponent } from './modules/pages/learning-goals/list-learning-goals/list-learning-goals.component';
 import { ViewLessonPlanComponent } from './modules/pages/lesson-plans/view-lesson-plan/view-lesson-plan.component';
 import { CasAuthComponent } from './modules/pages/login/cas-auth/cas-auth.component';
 import { ListQuizzesComponent } from './modules/pages/quizzes/list-quizzes/list-quizzes.component';
 import { TakeQuizComponent } from './modules/pages/quizzes/take-quiz/take-quiz.component';
 import { ViewQuizComponent } from './modules/pages/quizzes/view-quiz/view-quiz.component';
+import { ViewReportsComponent } from './modules/pages/reports/view-reports/view-reports.component';
+import { ViewSectionReportComponent } from './modules/pages/reports/view-section-report/view-section-report.component';
 import { ListRolesComponent } from './modules/pages/roles/list-roles/list-roles.component';
 import { ViewSectionComponent } from './modules/pages/sections/view-section/view-section.component';
 
@@ -40,6 +45,10 @@ const routes: Routes = [
         path: 'courses/:courseID/coverage-requests',
         component: ListCoverageRequestsComponent,
     },
+    {
+        path: 'courses/:courseID/coverage-requests/monitor',
+        component: MonitorCoverageRequestsComponent,
+    },
     { path: 'courses/:courseID/recitations', component: RecitationsComponent },
     {
         path: 'courses/:courseID/lesson-plans',
@@ -56,6 +65,22 @@ const routes: Routes = [
     {
         path: 'courses/:courseID/quizzes',
         component: ListQuizzesComponent,
+    },
+    {
+        path: 'courses/:courseID/reports',
+        component: ViewReportsComponent,
+    },
+    {
+        path: 'courses/:courseID/sections/:sectionID/reports/:date',
+        component: ViewSectionReportComponent,
+    },
+    {
+        path: 'courses/:courseID/my-gradebook',
+        component: ViewGradebookComponent,
+    },
+    {
+        path: 'courses/:courseID/gradebook-overrides',
+        component: ListGradebookOverridesComponent,
     },
     {
         path: 'courses/:courseID/quizzes/:quizID',

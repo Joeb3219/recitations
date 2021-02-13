@@ -19,7 +19,9 @@ export type FormInputType =
     | 'lessonPlan'
     | 'quiz'
     | 'abilities'
-    | 'roster';
+    | 'roster'
+    | 'checkbox'
+    | 'override';
 
 type Undefinable<T> = { [P in keyof T]?: never };
 

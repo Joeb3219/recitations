@@ -60,6 +60,10 @@
     </span>
 </ng-template>
 
+<ng-template #meetingTimeIdentifierTemplate let-value="value" let-row="row">
+    <ng-container *ngIf="value.meetable?.sectionNum"> Section {{ value.meetable.sectionNum }} </ng-container>
+</ng-template>
+
 <ng-template #editCellTemplate let-value="value" let-column="column" let-row="row" let-rowIndex="rowIndex">
     <app-form-inputs
         *ngIf="editedIndices.includes(rowIndex)"
@@ -77,6 +81,10 @@
 
 <ng-template #dateCellTemplate let-value="value" let-row="row">
     {{ value | date: 'MM/dd/YYYY HH:mm' }}
+</ng-template>
+
+<ng-template #fnCellTemplate let-column="column" let-row="row">
+    {{ column.fn ? column.fn(row) : '' }}
 </ng-template>
 
 <ng-template #lessonCellTemplate let-value="value" let-row="row">

@@ -40,7 +40,7 @@ export class MeetingReport extends BaseEntity implements MeetingReportInterface 
     @Type(() => Course)
     public course: Course;
 
-    @ManyToOne(type => User, { eager: true, cascade: true })
+    @ManyToOne(type => User, { eager: true })
     @JoinColumn()
     @Type(() => User)
     public creator: User;

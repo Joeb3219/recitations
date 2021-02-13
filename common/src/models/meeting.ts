@@ -2,8 +2,9 @@ import { Expose, Type } from 'class-transformer';
 import dayjs from 'dayjs';
 import timezone from 'dayjs/plugin/timezone';
 import utc from 'dayjs/plugin/utc';
+import _ from 'lodash';
 import { MeetingType } from '../enums';
-import { Course, Lesson, MeetingTime } from '../models';
+import { Course, Lesson, MeetingTime, User } from '../models';
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -14,12 +15,29 @@ export class Meeting<Type extends MeetingType = MeetingType> {
 
     meetingType: Type;
 
+    @Type(() => Date)
     date: Date;
+
+    meetingIdentifier: string;
+
+    // Unlike the leader in the meeting time, this is the leader assigned to this meeting for this SPECIFIC instance
+    // Coverage requests and other events could change who leads a specific meeting, while the original user is still the leader of the meeting time in general.
+    @Type(() => User)
+    leader: User;
+
+    toString() {
+        const typeString = `${_.startCase(this.meetingType)}${
+            this.meetingIdentifier?.length ? ` ${this.meetingIdentifier}` : ''
+        }`;
+        const date = dayjs(this.date).format('MMM DD, YYYY HH:mm');
+        const leader = (this.leader ?? this.meetingTime.leader)?.getFullName();
+        return `${date} [${typeString}${leader ? `, led by ${leader}` : ''}]`;
+    }
 
     @Expose()
     getAccessCode() {
         const baseStr = JSON.stringify({
-            leader: this.meetingTime.leader?.id,
+            leader: this.leader.id,
             meetingType: this.meetingType,
             date: dayjs(this.date).unix(),
         });
@@ -79,10 +97,15 @@ export class Meeting<Type extends MeetingType = MeetingType> {
     canTakeQuiz(course: Course): boolean {
         const startTime = dayjs(this.date)
             .tz()
-            .add(course.getNumberSetting('semester_start_date')?.value ?? 50, 'minute');
+            .add(course.getNumberSetting('recitations_quiz_start')?.value ?? 50, 'minute');
         const endTime = dayjs(this.date)
             .tz()
-            .add(course.getNumberSetting('semester_end_date')?.value ?? 60 * 24 * 5, 'minute');
+            .add(
+                course.getNumberSetting(
+                    this.meetingTime.asynchronous ? 'recitations_async_quiz_end' : 'recitations_quiz_end'
+                )?.value ?? 60 * 24 * 1,
+                'minute'
+            );
 
         return dayjs().isAfter(startTime) && dayjs().isBefore(endTime);
     }

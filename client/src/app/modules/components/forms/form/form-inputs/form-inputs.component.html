@@ -127,6 +127,15 @@
 />
 
 <input
+    *ngIf="input.type === 'checkbox'"
+    type="checkbox"
+    [checked]="input.value"
+    (change)="
+        fieldUpdated(input.name, $any($event?.target)?.checked !== undefined ? $any($event.target).checked : false)
+    "
+/>
+
+<input
     *ngIf="input.type == 'number'"
     value="{{ input.value }}"
     type="number"
@@ -159,5 +168,11 @@
     [course]="input.course"
     (onChange)="fieldUpdated(input.name, $event)"
 ></app-roster-formfield>
+
+<app-gradebook-override-overrides-formfield
+    *ngIf="input.type === 'override'"
+    [override]="input.value"
+    (onChange)="fieldUpdated(input.name, $event)"
+></app-gradebook-override-overrides-formfield>
 
 <div *ngIf="input.type === 'textBlock'">{{ input.value }}</div>

@@ -1,5 +1,7 @@
+import dayjs from 'dayjs';
 import _ from 'lodash';
 import { Course, CoverageRequest, Lesson, LessonPlanStep, MeetingTime, Problem, Role, Section, User } from '../models';
+import { GradebookOverride } from '../models/gradebookOverride';
 import { LearningGoalCategory } from '../models/learningGoalCategory';
 import { LessonPlan } from '../models/lessonPlan';
 import { MeetingReport } from '../models/meetingReport';
@@ -171,7 +173,107 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
                     safeIdComparison(course.id, instance.course) &&
                     (!!instance.students?.find(student => safeIdComparison(user?.id, student)) ||
                         safeIdComparison(user?.id, instance.ta) ||
-                        safeIdComparison(user?.id, instance.instructor)),
+                        safeIdComparison(user?.id, instance.instructor) ||
+                        !!course?.coverageRequests?.find(
+                            request =>
+                                safeIdComparison(user?.id, request.coveredBy?.id) &&
+                                instance.meetingTimes?.find(time => time.id === request.meetingTime.id)
+                        )),
+            },
+        ],
+    },
+    {
+        id: '356e8044-2ae3-49a6-8798-824d4222dd3b',
+        name: 'View assigned meeting times',
+        tags: ['professor', 'ta', 'student', 'course_admin', 'course_creator', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'view',
+                subject: MeetingTime,
+                validate: (instance: MeetingTime) =>
+                    !!course &&
+                    (safeIdComparison(user?.id, instance.leader) ||
+                        !!course?.coverageRequests?.find(
+                            request =>
+                                safeIdComparison(user?.id, request.coveredBy?.id) &&
+                                instance.id === request.meetingTime.id
+                        )),
+            },
+        ],
+    },
+    {
+        id: '41c6dde1-6e3d-4208-b712-3c2482880b64',
+        name: 'View all meeting times in course',
+        tags: ['professor', 'course_admin', 'course_creator', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'view',
+                subject: MeetingTime,
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                validate: (instance: MeetingTime) => !!course && (instance.meetable as any)?.course?.id === course.id,
+            },
+        ],
+    },
+    {
+        id: '8d788f89-be72-4621-97c2-bb13902131e4',
+        name: 'View course gradebook overrides',
+        tags: ['course_admin', 'course_creator', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'view',
+                subject: GradebookOverride,
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                validate: (instance: GradebookOverride) => !!course && safeIdComparison(course.id, instance.course),
+            },
+        ],
+    },
+    {
+        id: 'a48d514f-3fc5-4216-9751-f108ed73e97d',
+        name: 'Create course gradebook overrides',
+        tags: ['course_admin', 'course_creator', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'create',
+                subject: GradebookOverride,
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                validate: (instance: GradebookOverride) => !!course && safeIdComparison(course.id, instance.course),
+            },
+        ],
+    },
+    {
+        id: 'c4048ed3-88dc-428d-8704-614113c85cc4',
+        name: 'Update course gradebook overrides',
+        tags: ['course_admin', 'course_creator', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'update',
+                subject: GradebookOverride,
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                validate: (instance: GradebookOverride) => !!course && safeIdComparison(course.id, instance.course),
+            },
+        ],
+    },
+    {
+        id: '993cb0e5-f8cc-4307-8add-66f4565894c1',
+        name: 'Delete course gradebook overrides',
+        tags: ['course_admin', 'course_creator', 'super_admin'],
+        actions: (user, course) => [
+            {
+                action: 'delete',
+                subject: GradebookOverride,
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                validate: (instance: GradebookOverride) => !!course && safeIdComparison(course.id, instance.course),
+            },
+        ],
+    },
+    {
+        id: '654b03b1-14bb-4c65-aa46-3d168b34e43b',
+        name: 'View own course gradebook',
+        tags: ['student'],
+        actions: () => [
+            {
+                action: 'view',
+                subject: 'gradebook',
             },
         ],
     },
@@ -186,16 +288,14 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
                 validate: (instance: Section) =>
                     !!course &&
                     safeIdComparison(course.id, instance.course) &&
-                    (!!instance.students?.find(student => safeIdComparison(user?.id, student)) ||
-                        safeIdComparison(user?.id, instance.ta) ||
-                        safeIdComparison(user?.id, instance.instructor)),
+                    (safeIdComparison(user?.id, instance.ta) || safeIdComparison(user?.id, instance.instructor)),
             },
         ],
     },
     {
         id: '495aed43-7730-4ee7-b185-650e771e4c9a',
         name: 'View coverage requests in course',
-        tags: ['course_admin', 'course_creator', 'ta', 'super_admin'],
+        tags: ['course_admin', 'ta_manager', 'course_creator', 'ta', 'super_admin'],
         actions: (user, course) => [
             {
                 action: 'view',
@@ -303,7 +403,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: 'ee4eb0ec-07f4-4286-93f4-e059ea52a21e',
         name: 'View Course',
-        tags: ['student', 'ta', 'professor', 'course_admin', 'course_creator', 'super_admin'],
+        tags: ['student', 'ta', 'professor', 'course_admin', 'ta_manager', 'course_creator', 'super_admin'],
         actions: (_user, course) => [
             {
                 action: 'view',
@@ -368,6 +468,28 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
             {
                 action: 'view',
                 subject: 'lesson-plan-sidebar',
+            },
+        ],
+    },
+    {
+        id: '66f0cdcf-c911-495b-b04f-4d87574b04a1',
+        name: 'View Coverage Request Monitor',
+        tags: ['course_admin', 'ta_manager', 'course_creator', 'super_admin'],
+        actions: (_user, course) => [
+            {
+                action: 'use',
+                subject: 'coverage-request-monitor',
+            },
+        ],
+    },
+    {
+        id: 'c7e8b858-a259-45a7-939b-6342ecf4ac46',
+        name: 'View Reports',
+        tags: ['course_admin', 'course_creator', 'super_admin'],
+        actions: (_user, course) => [
+            {
+                action: 'view',
+                subject: 'reports',
             },
         ],
     },
@@ -648,7 +770,16 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
                     !!course &&
                     !!instance?.meetingTime &&
                     safeIdComparison(course.id, instance.course) &&
-                    safeIdComparison(user.id, instance.meetingTime.leader),
+                    (safeIdComparison(user.id, instance.meetingTime.leader) ||
+                        !!course?.coverageRequests?.find(
+                            request =>
+                                safeIdComparison(user?.id, request.coveredBy?.id) &&
+                                request.meetingTime.id === instance.meetingTime?.id &&
+                                (dayjs(instance.beginDate).isSame(request.date) ||
+                                    dayjs(instance.beginDate).isBefore(request.date)) &&
+                                (dayjs(instance.endDate).isSame(request.date) ||
+                                    dayjs(instance.endDate).isAfter(request.date))
+                        )),
             },
         ],
     },
@@ -726,7 +857,18 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
                     !!user &&
                     safeIdComparison(user.id, instance.creator) &&
                     safeIdComparison(course.id, instance.course) &&
-                    _.every(instance.meetingTimes.map(time => safeIdComparison(user.id, time.leader))),
+                    _.every(
+                        instance.meetingTimes.map(
+                            time =>
+                                safeIdComparison(user.id, time.leader) ||
+                                !!course?.coverageRequests?.find(
+                                    request =>
+                                        safeIdComparison(user?.id, request.coveredBy?.id) &&
+                                        time.id === request.meetingTime.id &&
+                                        dayjs(request.date).isSame(dayjs(instance.date))
+                                )
+                        )
+                    ),
             },
         ],
     },
@@ -743,7 +885,18 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
                     !!user &&
                     safeIdComparison(user.id, instance.creator) &&
                     safeIdComparison(course.id, instance.course) &&
-                    _.every(instance.meetingTimes.map(time => safeIdComparison(user.id, time.leader))),
+                    _.every(
+                        instance.meetingTimes.map(
+                            time =>
+                                safeIdComparison(user.id, time.leader) ||
+                                !!course?.coverageRequests?.find(
+                                    request =>
+                                        safeIdComparison(user?.id, request.coveredBy?.id) &&
+                                        time.id === request.meetingTime.id &&
+                                        dayjs(request.date).isSame(dayjs(instance.date))
+                                )
+                        )
+                    ),
             },
         ],
     },
@@ -760,7 +913,16 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
                     !!course &&
                     !!instance?.meetingTime &&
                     safeIdComparison(course.id, instance.course) &&
-                    safeIdComparison(user.id, instance.meetingTime.leader),
+                    (safeIdComparison(user.id, instance.meetingTime.leader) ||
+                        !!course?.coverageRequests?.find(
+                            request =>
+                                safeIdComparison(user?.id, request.coveredBy?.id) &&
+                                instance.meetingTime?.id === request.meetingTime.id &&
+                                (dayjs(instance.beginDate).isSame(request.date) ||
+                                    dayjs(instance.beginDate).isBefore(request.date)) &&
+                                (dayjs(instance.endDate).isSame(request.date) ||
+                                    dayjs(instance.endDate).isAfter(request.date))
+                        )),
             },
         ],
     },

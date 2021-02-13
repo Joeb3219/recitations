@@ -5,6 +5,7 @@ import { CourseInterface, CourseSetting, CourseSettingKey, CourseSettings } from
 import { CourseSemesterDescriptor } from '../interfaces/course.interface';
 import { CourseSettingNumber } from '../interfaces/courseSetting.interface';
 import { Section, User } from '../models';
+import { CoverageRequest } from './coverageRequest';
 
 @Entity()
 export class Course extends BaseEntity implements CourseInterface {
@@ -32,6 +33,9 @@ export class Course extends BaseEntity implements CourseInterface {
 
     @Column({ type: 'jsonb', default: { term: 'Fall', year: '1900' } })
     public semester: CourseSemesterDescriptor;
+
+    @Type(() => CoverageRequest)
+    coverageRequests: CoverageRequest[];
 
     @ManyToOne(() => User, { nullable: true })
     @JoinColumn()

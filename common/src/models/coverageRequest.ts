@@ -27,7 +27,7 @@ export class CoverageRequest extends BaseEntity implements CoverageRequestInterf
     @Type(() => Course)
     public course: Course;
 
-    @ManyToOne(() => User, { eager: true, cascade: true, nullable: true })
+    @ManyToOne(() => User, { eager: true, nullable: true })
     @JoinColumn()
     @Type(() => User)
     public coveredBy?: User | null;

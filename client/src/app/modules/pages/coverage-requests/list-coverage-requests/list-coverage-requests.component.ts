@@ -1,9 +1,10 @@
 import { Component, EventEmitter, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { DatatableColumn } from '@components/datatable/datatable.component';
-import { Course, CoverageRequest, StandardResponseInterface } from '@dynrec/common';
+import { Course, CoverageRequest, StandardResponseInterface, User } from '@dynrec/common';
 import { HttpFilterInterface } from '@http/httpFilter.interface';
 import { CourseService } from '@services/course.service';
 import { CoverageRequestService } from '@services/coverageRequest.service';
+import { UserService } from '@services/user.service';
 import { ToastrService } from 'ngx-toastr';
 import { LoadedArg } from '../../../../decorators';
 
@@ -38,13 +39,13 @@ export class ListCoverageRequestsComponent implements OnChanges {
                         text: 'Accept',
                         can: { action: 'use', subject: instance },
                         click: () => this.handleToggleAcceptance(row),
-                        if: !!row.coveredBy,
+                        if: !row.coveredBy && this.currentUser?.id !== row.meetingTime.leader?.id,
                     },
                     {
                         text: 'Reject',
                         can: { action: 'use', subject: instance },
                         click: () => this.handleToggleAcceptance(row),
-                        if: !!row.coveredBy,
+                        if: !!row.coveredBy && row.coveredBy.id === this.currentUser?.id,
                     },
                     {
                         text: 'Delete',
@@ -62,8 +63,22 @@ export class ListCoverageRequestsComponent implements OnChanges {
 
     isEditCoverageRequestModalOpen = false;
 
-    constructor(private coverageRequestService: CoverageRequestService, private readonly toastr: ToastrService) {
+    currentUser?: User;
+
+    constructor(
+        private coverageRequestService: CoverageRequestService,
+        private readonly userService: UserService,
+        private readonly toastr: ToastrService
+    ) {
         this.fetchCoverageRequests = this.fetchCoverageRequests.bind(this);
+    }
+
+    ngOnInit() {
+        this.userService.getCurrentUser().subscribe({
+            next: user => {
+                this.currentUser = user;
+            },
+        });
     }
 
     ngOnChanges(changes: SimpleChanges): void {

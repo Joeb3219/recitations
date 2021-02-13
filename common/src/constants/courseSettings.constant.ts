@@ -23,8 +23,16 @@ export const DefaultCourseSettings: CourseSettings = {
         key: 'recitations_quiz_end',
         name: 'Stop Acccepting Quizzes after Recitation (minutes)',
         section: 'quizzes',
-        default: 60 * 24 * 5,
+        default: 60 * 24 * 1,
         description: 'Number of minutes after a recitation starts to allow quizzes to be submitted',
+    },
+    recitations_async_quiz_end: {
+        type: 'number',
+        key: 'recitations_async_quiz_end',
+        name: 'Stop Acccepting Quizzes after Async Recitation (minutes)',
+        section: 'quizzes',
+        default: 60 * 24 * 6,
+        description: 'Number of minutes after an async recitation starts to allow quizzes to be submitted',
     },
     recitations_quiz_start: {
         type: 'number',

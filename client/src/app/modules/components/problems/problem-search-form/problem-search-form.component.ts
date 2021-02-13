@@ -34,7 +34,7 @@ export class ProblemSearchFormComponent implements OnInit, OnChanges {
 
     async loadProblems(): Promise<void> {
         if (!this.course) this.problems = [];
-        else this.problems = (await this.problemService.getCourseProblems(this.course)).data;
+        else this.problems = (await this.problemService.getCourseProblems(this.course, { limit: -1 })).data;
     }
 
     formatter = (problem: Problem): string => {

@@ -24,6 +24,7 @@ export interface ResourceArgs<ResourceModel extends BaseEntity = any> {
     sortable?: SortableData<ResourceModel>;
     searchable?: SearchableData;
     dataDict: (args: HttpArgs<ResourceModel>) => Partial<ResourceModel>;
+    relations?: string[];
 }
 
 export type ResourceAction = 'create' | 'update' | 'delete' | 'get' | 'list';

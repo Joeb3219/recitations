@@ -1,0 +1,12 @@
+<app-form-modal
+    *ngIf="isVisible"
+    [submitText]="override && override.id ? 'Save Gradebook Override' : 'Create Gradebook Override'"
+    [showModal]="isVisible"
+    [form]="form"
+    [modalSize]="'xl'"
+    [title]="override && override.id ? 'Edit Gradebook Override' : 'New Gradebook Override'"
+    (onSubmit)="formSubmitted($event)"
+    (onClose)="handleClose()"
+    [forceClose]="forceClose"
+>
+</app-form-modal>

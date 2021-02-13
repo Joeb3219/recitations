@@ -299,7 +299,10 @@ export class RosterController {
             throw Boom.unauthorized('Unauthorized to fetch roster.');
         }
 
-        const sections = await Section.find({ where: { course, ta: currentUser }, relations: ['students'] });
+        const sections = await Section.find({
+            where: { course },
+            relations: ['students'],
+        });
         return sections.filter(section => ability.can('view', section));
     }
 

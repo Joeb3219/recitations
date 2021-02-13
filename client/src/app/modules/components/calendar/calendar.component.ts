@@ -53,7 +53,7 @@ export class CalendarComponent implements OnInit {
     }
 
     getCalendarTitle(meeting: Meeting): string {
-        const typeString = _.startCase(meeting.meetingType);
+        const typeString = `${_.startCase(meeting.meetingType)} ${meeting.meetingIdentifier ?? ''}`;
         const date = dayjs(meeting.date).format('MMM DD, YYYY HH:mm');
         return `${typeString}: ${date} ${this.canViewAccessCodes ? `(${meeting.getAccessCode()})` : ``}`;
     }

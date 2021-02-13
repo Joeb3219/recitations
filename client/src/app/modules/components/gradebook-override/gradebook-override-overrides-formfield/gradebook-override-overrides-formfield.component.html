@@ -1,0 +1,98 @@
+<div *ngIf="loading" class="d-flex justify-content-center" style="margin: 8px">
+    <div class="spinner-border text-primary" role="status" style="margin-right: 8px"></div>
+    <span>Loading Data...</span>
+</div>
+
+<ng-container *ngIf="!loading">
+    <app-gradebook-override-edit-date-range
+        *ngIf="selectedEditType === 'dateRange' && selectedEditIndex != -1"
+        [isVisible]="selectedEditType === 'dateRange' && selectedEditIndex != -1"
+        [dateRange]="override.dateRangeOverrides[selectedEditIndex]"
+        (onClose)="handleCloseEditOverride()"
+        (onChange)="handleDateRangeEdited($event)"
+    >
+    </app-gradebook-override-edit-date-range>
+
+    <app-gradebook-override-edit-meeting-time
+        *ngIf="selectedEditType === 'meeting' && selectedEditIndex != -1"
+        [isVisible]="selectedEditType === 'meeting' && selectedEditIndex != -1"
+        [course]="override.course"
+        [meetings]="meetings"
+        [meeting]="override.meetingOverrides[selectedEditIndex]"
+        (onClose)="handleCloseEditOverride()"
+        (onChange)="handleMeetingEdited($event)"
+    >
+    </app-gradebook-override-edit-meeting-time>
+
+    <app-gradebook-override-edit-user
+        *ngIf="selectedEditType === 'user' && selectedEditIndex != -1"
+        [isVisible]="selectedEditType === 'user' && selectedEditIndex != -1"
+        [course]="override.course"
+        [user]="override.userOverrides[selectedEditIndex]"
+        [meetings]="meetings"
+        (onClose)="handleCloseEditOverride()"
+        (onChange)="handleUserEdited($event)"
+    >
+    </app-gradebook-override-edit-user>
+
+    <span (click)="handleAddDateRange()"><fa-icon [icon]="icons.add"></fa-icon>Add Date Range</span>
+    <span (click)="handleAddMeeting()"><fa-icon [icon]="icons.add"></fa-icon>Add Meeting</span>
+    <span (click)="handleAddUser()"><fa-icon [icon]="icons.add"></fa-icon>Add User</span>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Description</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let range of override.dateRangeOverrides; let index = index">
+                <td>Date Range</td>
+                <td>{{ range.start | date: 'MM/dd/YYYY HH:mm' }} - {{ range.end | date: 'MM/dd/YYYY HH:mm' }}</td>
+                <td>
+                    <div ngbDropdown>
+                        <fa-icon ngbDropdownToggle [icon]="icons.modify"></fa-icon>
+                        <div class="dropdown-menu" ngbDropdownMenu>
+                            <span ngbDropdownItem (click)="handleEditDateRange(index)">Edit</span>
+                            <span ngbDropdownItem (click)="handleDeleteDateRange(index)">Delete</span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr *ngFor="let userOverride of override.userOverrides; let index = index">
+                <td>User</td>
+                <td>
+                    <app-user-badge [user]="userOverride.user"></app-user-badge> -
+                    {{ userOverride.date | date: 'MM/dd/YYYY HH:mm' }}
+                </td>
+                <td>
+                    <div ngbDropdown>
+                        <fa-icon ngbDropdownToggle [icon]="icons.modify"></fa-icon>
+                        <div class="dropdown-menu" ngbDropdownMenu>
+                            <span ngbDropdownItem (click)="handleEditUser(index)">Edit</span>
+                            <span ngbDropdownItem (click)="handleDeleteUser(index)">Delete</span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr *ngFor="let meeting of override.meetingOverrides; let index = index">
+                <td>Meeting</td>
+                <td>
+                    {{ meeting?.meetingTime?.meetable?.meetingIdentifier }} -
+                    {{ meeting?.date | date: 'MM/dd/YYYY HH:mm' }}
+                </td>
+                <td>
+                    <div ngbDropdown>
+                        <fa-icon ngbDropdownToggle [icon]="icons.modify"></fa-icon>
+                        <div class="dropdown-menu" ngbDropdownMenu>
+                            <span ngbDropdownItem (click)="handleEditMeeting(index)">Edit</span>
+                            <span ngbDropdownItem (click)="handleDeleteMeeting(index)">Delete</span>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</ng-container>

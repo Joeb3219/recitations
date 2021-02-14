@@ -100,9 +100,19 @@ export class MeetingTimeEditComponent implements OnInit {
         this.onClose.emit();
     }
 
+    handleMeetingLink(meetingTime: MeetingTime) {
+        meetingTime.meetingLink = meetingTime.meetingLink?.replace(/\s/g, '');
+        if (meetingTime.meetingLink != null && meetingTime.meetingLink !== '') {
+            if (!meetingTime.meetingLink.startsWith('http')) {
+                const temp = meetingTime.meetingLink;
+                meetingTime.meetingLink = 'http://' + temp;
+            }
+        }
+    }
+
     async formSubmitted(data: MeetingTime): Promise<void> {
         // first we update the data in the model
-
+        this.handleMeetingLink(data);
         // and now we submit it to the API.
         try {
             const result = await this.meetingTimeService.upsertMeetingTime(Object.assign({}, this.meetingTime, data));

@@ -52,6 +52,15 @@ export class SectionViewComponent implements OnChanges {
             cellTemplate: 'actionsCell',
             actions: (row: MeetingWithLesson<MeetingType.RECITATION> & { getAccessCode: () => string }) => [
                 {
+                    text: 'Join with Zoom',
+                    if: row.meetingTime.meetingLink !== null && row.meetingTime.meetingLink !== '',
+                    click: () => {
+                        if (row.meetingTime.meetingLink != null) {
+                            window.open(row.meetingTime.meetingLink, '_blank');
+                        }
+                    },
+                },
+                {
                     text: 'Access Code',
                     can: {
                         action: 'create',

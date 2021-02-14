@@ -27,9 +27,9 @@
         <app-user-badge [user]="meeting.leader">
         </app-user-badge>
       </td>
-      <td *ngIf="meeting.meetingLink"><a [href]="meeting.meetingLink.startsWith('http') ? meeting.meetingLink : ('http://' + meeting.meetingLink)" target="_blank">{{ meeting.meetingLink }}</a></td>
+      <td *ngIf="meeting.meetingLink!=null && meeting.meetingLink!=''"><a [href]="meeting.meetingLink" target="_blank">{{ meeting.meetingLink }}</a></td>
       <td>
-        <div ngbDropdown>
+        <div class="float-right" ngbDropdown>
           <fa-icon ngbDropdownToggle [icon]="icons.modify"></fa-icon>
           <div class="dropdown-menu" ngbDropdownMenu>
             <span ngbDropdownItem (click)="handleEditMeetingTime(meeting)">Edit</span>

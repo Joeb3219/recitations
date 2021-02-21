@@ -4,7 +4,7 @@
     "description": "",
     "scripts": {
         "serve": "nodemon",
-        "serve:prod": "node dist/app.js",
+        "serve:prod": "node --max-old-space-size=6000 dist/app.js",
         "build": "tsc --declaration --declarationMap -p tsconfig.json",
         "test": "echo \"Error: no test specified\" && exit 1"
     },

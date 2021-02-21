@@ -3,6 +3,7 @@
     [submitText]="request && request.id ? 'Save Coverage Request' : 'Create Coverage Request'"
     [showModal]="isVisible"
     [form]="form"
+    [loading]="loading"
     [modalSize]="'xl'"
     [title]="request && request.id ? 'Edit Coverage Request' : 'New Coverage Request'"
     (onSubmit)="formSubmitted($event)"

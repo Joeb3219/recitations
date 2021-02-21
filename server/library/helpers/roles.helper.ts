@@ -1,5 +1,6 @@
-import { AbilityManager, Course, Role, RoleInterface, RuleTag } from '@dynrec/common';
+import { AbilityManager, Course, Role, RoleInterface, RuleTag, User } from '@dynrec/common';
 import _ from 'lodash';
+import { Brackets } from 'typeorm';
 // Generates some requires roles to be used in the system.
 export class RolesHelper {
     static readonly SUPER_ADMIN_ROLE_ID = 'd8985a0c-67ad-4709-8e1d-3864735a8906';
@@ -50,6 +51,19 @@ export class RolesHelper {
                 }
             })
         );
+    }
+
+    static async getCourseUsersByRole(course: Course, type: RuleTag) {
+        const role = await this.getCourseRole(course, type);
+
+        if (!role) {
+            return [];
+        }
+
+        return User.createQueryBuilder('user')
+            .leftJoinAndSelect('user.roles', 'role')
+            .andWhere(new Brackets(qb => qb.where('role.id = :id', { id: role.id })))
+            .getMany();
     }
 
     static async getCourseRole(course: Course, type: RuleTag) {

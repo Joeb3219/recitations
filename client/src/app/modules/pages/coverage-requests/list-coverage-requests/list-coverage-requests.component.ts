@@ -25,6 +25,11 @@ export class ListCoverageRequestsComponent implements OnChanges {
             cellTemplate: 'dateCell',
         },
         {
+            name: 'Requested By',
+            fn: row => row.meetingTime.leader?.getFullName() ?? ``,
+            cellTemplate: 'fnCell',
+        },
+        {
             name: 'Accepted By',
             prop: 'coveredBy',
             cellTemplate: 'userCell',

@@ -25,6 +25,8 @@ export class CoverageRequestEditComponent implements OnInit {
 
     form: Form;
 
+    loading: boolean;
+
     constructor(
         private coverageRequestService: CoverageRequestService,
         private readonly meetingService: MeetingService,
@@ -44,8 +46,12 @@ export class CoverageRequestEditComponent implements OnInit {
             return;
         }
 
+        this.loading = true;
+
         const result = await this.meetingService.getMeetingTime(this.request.course);
         this.meetings = result.data.filter(meeting => dayjs().isBefore(meeting.date));
+
+        this.loading = false;
 
         this.generateForm();
     }

@@ -11,4 +11,5 @@ export interface MeetingTimeInterface {
     leader?: UserInterface;
     meetable: MeetableInterface;
     meetingLink?: string;
+    asynchronous?: boolean;
 }

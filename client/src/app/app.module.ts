@@ -11,6 +11,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { ViewTaFeedbackComponent } from '@components/reports/view-ta-feedback/view-ta-feedback.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CourseSettingsComponent } from '@pages/course-settings/course-settings.component';
@@ -62,11 +63,12 @@ import { MultipleChoiceComponent } from './modules/components/quizzes/formfields
 import { QuizBuilderComponent } from './modules/components/quizzes/quiz-builder/quiz-builder/quiz-builder.component';
 import { QuizEditComponent } from './modules/components/quizzes/quiz-edit/quiz-edit.component';
 import { QuizSearchFormfieldComponent } from './modules/components/quizzes/quiz-search-formfield/quiz-search-formfield.component';
+import { QuizTakeComponent } from './modules/components/quizzes/quiz-take/quiz-take/quiz-take.component';
 import { QuizViewFreeResponseComponent } from './modules/components/quizzes/quiz-view/quiz-view-free-response/quiz-view-free-response.component';
 import { QuizViewMultipleChoiceComponent } from './modules/components/quizzes/quiz-view/quiz-view-multiple-choice/quiz-view-multiple-choice.component';
 import { QuizViewComponent } from './modules/components/quizzes/quiz-view/quiz-view.component';
 import { QuizzesComponent } from './modules/components/quizzes/quizzes.component';
-import { ReportsComponent } from './modules/components/reports/reports.component';
+import { ViewStudentFeedbackComponent } from './modules/components/reports/view-student-feedback/view-student-feedback.component';
 import { RoleAssignComponent } from './modules/components/roles/role-assign/role-assign.component';
 import { RoleDeleteComponent } from './modules/components/roles/role-delete/role-delete.component';
 import { RoleEditComponent } from './modules/components/roles/role-edit/role-edit.component';
@@ -78,7 +80,9 @@ import { SectionDeleteComponent } from './modules/components/sections/section-de
 import { SectionEditComponent } from './modules/components/sections/section-edit/section-edit.component';
 import { SectionViewComponent } from './modules/components/sections/section-view/section-view.component';
 import { SectionsSyncComponent } from './modules/components/sections/sections-sync/sections-sync.component';
+import { SectionsTaSyncComponent } from './modules/components/sections/sections-ta-sync/sections-ta-sync/sections-ta-sync.component';
 import { SidebarComponent } from './modules/components/sidebar/sidebar.component';
+import { TodosViewComponent } from './modules/components/todos/todos-view/todos-view.component';
 import { UserBadgeComponent } from './modules/components/users/user-badge/user-badge.component';
 import { UserCreateComponent } from './modules/components/users/user-create/user-create.component';
 import { UserSearchFormfieldComponent } from './modules/components/users/user-search-formfield/user-search-formfield.component';
@@ -86,6 +90,7 @@ import { UsersMultiFormfieldComponent } from './modules/components/users/users-m
 import { WeeksComponent } from './modules/components/weeks/weeks.component';
 import { ViewCourseComponent } from './modules/pages/courses/view-course/view-course.component';
 import { ListCoverageRequestsComponent } from './modules/pages/coverage-requests/list-coverage-requests/list-coverage-requests.component';
+import { MonitorCoverageRequestsComponent } from './modules/pages/coverage-requests/monitor-coverge-requests/monitor-coverage-requests/monitor-coverage-requests.component';
 import { ListLearningGoalsComponent } from './modules/pages/learning-goals/list-learning-goals/list-learning-goals.component';
 import { ListLessonPlansComponent } from './modules/pages/lesson-plans/list-lesson-plans/list-lesson-plans.component';
 import { ViewLessonPlanComponent } from './modules/pages/lesson-plans/view-lesson-plan/view-lesson-plan.component';
@@ -93,8 +98,10 @@ import { CasAuthComponent } from './modules/pages/login/cas-auth/cas-auth.compon
 import { LoginComponent } from './modules/pages/login/login.component';
 import { ViewMeetingFeedbackComponent } from './modules/pages/meetings/view-meeting-feedback/view-meeting-feedback.component';
 import { ListQuizzesComponent } from './modules/pages/quizzes/list-quizzes/list-quizzes.component';
+import { TakeQuizComponent } from './modules/pages/quizzes/take-quiz/take-quiz.component';
 import { ViewQuizComponent } from './modules/pages/quizzes/view-quiz/view-quiz.component';
 import { RecitationsComponent } from './modules/pages/recitations/recitations.component';
+import { ViewReportsComponent } from './modules/pages/reports/view-reports/view-reports.component';
 import { ListRolesComponent } from './modules/pages/roles/list-roles/list-roles.component';
 import { ViewSectionComponent } from './modules/pages/sections/view-section/view-section.component';
 import { ViewSectionsComponent } from './modules/pages/sections/view-sections/view-sections.component';
@@ -104,10 +111,15 @@ import { LearningGoalService } from './services/learningGoal.service';
 import { MeetingTimeService } from './services/meetingTime.service';
 import { SectionService } from './services/section.service';
 import { UserService } from './services/user.service';
-import { TakeQuizComponent } from './modules/pages/quizzes/take-quiz/take-quiz.component';
-import { QuizTakeComponent } from './modules/components/quizzes/quiz-take/quiz-take/quiz-take.component';
-import { SectionsTaSyncComponent } from './modules/components/sections/sections-ta-sync/sections-ta-sync/sections-ta-sync.component';
-import { TodosViewComponent } from './modules/components/todos/todos-view/todos-view.component';
+import { ViewGradebookComponent } from './modules/pages/gradebook/view-gradebook/view-gradebook.component';
+import { ListGradebookOverridesComponent } from './modules/pages/gradebook-overrides/list-gradebook-overrides/list-gradebook-overrides.component';
+import { GradebookOverrideEditComponent } from './modules/components/gradebook-override/gradebook-override-edit/gradebook-override-edit.component';
+import { GradebookOverrideEditDateRangeComponent } from './modules/components/gradebook-override/gradebook-override-edit-date-range/gradebook-override-edit-date-range.component';
+import { GradebookOverrideEditUserComponent } from './modules/components/gradebook-override/gradebook-override-edit-user/gradebook-override-edit-user.component';
+import { GradebookOverrideEditMeetingTimeComponent } from './modules/components/gradebook-override/gradebook-override-edit-meeting-time/gradebook-override-edit-meeting-time.component';
+import { GradebookOverrideOverridesFormfieldComponent } from './modules/components/gradebook-override/gradebook-override-overrides-formfield/gradebook-override-overrides-formfield.component';
+import { ViewSectionReportComponent } from './modules/pages/reports/view-section-report/view-section-report.component';
+import { ReportsSectionViewComponent } from './modules/components/reports/reports-section-view/reports-section-view.component';
 
 export let GlobalActivatedRoute: ActivatedRoute;
 
@@ -141,7 +153,6 @@ export let GlobalActivatedRoute: ActivatedRoute;
         GradebookComponent,
         WeeksComponent,
         LearningGoalsComponent,
-        ReportsComponent,
         QuizzesComponent,
         DatatableComponent,
         ListLessonPlansComponent,
@@ -195,6 +206,19 @@ export let GlobalActivatedRoute: ActivatedRoute;
         QuizTakeComponent,
         SectionsTaSyncComponent,
         TodosViewComponent,
+        MonitorCoverageRequestsComponent,
+        ViewReportsComponent,
+        ViewTaFeedbackComponent,
+        ViewStudentFeedbackComponent,
+        ViewGradebookComponent,
+        ListGradebookOverridesComponent,
+        GradebookOverrideEditComponent,
+        GradebookOverrideEditDateRangeComponent,
+        GradebookOverrideEditUserComponent,
+        GradebookOverrideEditMeetingTimeComponent,
+        GradebookOverrideOverridesFormfieldComponent,
+        ViewSectionReportComponent,
+        ReportsSectionViewComponent,
     ],
     imports: [
         HttpClientModule,

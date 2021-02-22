@@ -1,0 +1,39 @@
+<div class="page" *can="{ action: 'use', subject: 'coverage-request-monitor', existsOnCourse: course }">
+    <ng-container *ngIf="!course">
+        <h4>Not Found</h4>
+    </ng-container>
+    <ng-container *ngIf="course">
+        <div class="container-margin">
+            <div class="row">
+                <div style="float: left; text-align: left" class="col">
+                    <h4>{{ course.name }} Coverage Request Monitor</h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-margin">
+            <mat-tab-group animationDuration="250ms" mat-stretch-tabs [(selectedIndex)]="activeTabIndex">
+                <mat-tab label="Person Metrics" [ngStyle]="{ display: activeTabIndex === 0 ? 'block' : 'none' }">
+                    <table class="table" *ngIf="coverageRequestsByUser">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Requested</th>
+                                <th>Accepted</th>
+                                <th>Net</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of coverageRequestsByUser">
+                                <th>{{ row.user.getFullName() }} ({{ row.user.username }})</th>
+                                <th>{{ row.requested.length }}</th>
+                                <th>{{ row.accepted.length }}</th>
+                                <th>{{ row.accepted.length - row.requested.length }}</th>
+                            </tr>
+                        </tbody>
+                    </table>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </ng-container>
+</div>

@@ -47,6 +47,10 @@ export class MeetingTime extends BaseEntity implements MeetingTimeInterface {
     @Type(() => Meetable)
     public meetable: Meetable;
 
+    @Column({ nullable: true, default: false })
+    @Type(() => Boolean)
+    public asynchronous?: boolean;
+
     get numericWeekday(): number {
         switch (this.weekday) {
             case 'monday':

@@ -28,14 +28,9 @@
                     <app-weeks [course]="course" *ngIf="activeTabIndex === 2"></app-weeks>
                 </div>
             </mat-tab>
-            <mat-tab label="{{ tabs[5] }}" [ngStyle]="{ display: activeTabIndex === 3 ? 'block' : 'none' }">
+            <mat-tab label="{{ tabs[7] }}" [ngStyle]="{ display: activeTabIndex === 3 ? 'block' : 'none' }">
                 <div class="container-margin">
-                    <app-reports *ngIf="activeTabIndex === 3"></app-reports>
-                </div>
-            </mat-tab>
-            <mat-tab label="{{ tabs[7] }}" [ngStyle]="{ display: activeTabIndex === 4 ? 'block' : 'none' }">
-                <div class="container-margin">
-                    <app-view-roster [course]="course" *ngIf="activeTabIndex === 4"></app-view-roster>
+                    <app-view-roster [course]="course" *ngIf="activeTabIndex === 3"></app-view-roster>
                 </div>
             </mat-tab>
         </mat-tab-group>

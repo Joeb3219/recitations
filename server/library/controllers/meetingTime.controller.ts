@@ -16,6 +16,7 @@ import { HttpArgs } from '../helpers/route.helper';
                 frequency: body.frequency,
                 leader: body.leader,
                 meetingLink: body.meetingLink,
+                asynchronous: body.asynchronous,
             };
         },
     },

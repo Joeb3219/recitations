@@ -1,5 +1,6 @@
 import { Course, MeetingReport } from '@dynrec/common';
 import Boom from '@hapi/boom';
+import { Between } from 'typeorm';
 import { Controller, GetRequest, Resource } from '../decorators';
 import { HttpArgs } from '../helpers/route.helper';
 
@@ -46,5 +47,26 @@ export class MeetingReportController {
         }
 
         return report;
+    }
+
+    @GetRequest('/course/:courseID/meetingReports/range/:start/:end')
+    async getMeetingReportsInRange({
+        params,
+        ability,
+    }: HttpArgs<never, { courseID: string; start: string; end: string }>): Promise<MeetingReport[]> {
+        const course = await Course.findOne({ id: params.courseID }, { relations: ['sections'] });
+
+        if (!course) {
+            throw Boom.notFound('No course found');
+        }
+
+        if (!ability.existsOnCourse('view', 'reports', course)) {
+            throw Boom.unauthorized('Unauthorized to view reports');
+        }
+
+        return MeetingReport.find({
+            course,
+            date: Between(new Date(params.start), new Date(params.end)),
+        });
     }
 }

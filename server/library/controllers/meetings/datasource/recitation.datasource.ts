@@ -32,6 +32,7 @@ export class RecitationMeetingDataSource extends MeetingDataSource<MeetingType.R
                             meetingTime: new MeetingTime({ ...time, meetable: section }),
                             meetingType: MeetingType.RECITATION,
                             date: meetingDate,
+                            meetingIdentifier: `Section ${section.sectionNumber}`,
                             leader:
                                 coverageRequests.find(
                                     request =>

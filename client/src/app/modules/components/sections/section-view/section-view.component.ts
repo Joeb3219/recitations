@@ -53,7 +53,7 @@ export class SectionViewComponent implements OnChanges {
             actions: (row: MeetingWithLesson<MeetingType.RECITATION> & { getAccessCode: () => string }) => [
                 {
                     text: 'Join with Zoom',
-                    if: row.meetingTime.meetingLink !== null && row.meetingTime.meetingLink !== '',
+                    if: (row.meetingTime.meetingLink !== null && row.meetingTime.meetingLink !== ''),
                     click: () => {
                         if (row.meetingTime.meetingLink != null) {
                             window.open(row.meetingTime.meetingLink, '_blank');
@@ -91,6 +91,17 @@ export class SectionViewComponent implements OnChanges {
                         subject: this.getSampleLesson(row),
                     },
                     href: `/courses/${row.lesson.course.id}/meeting-feedback/${row.date.toISOString?.() ?? row.date}`,
+                    if: dayjs().tz().isAfter(row.date),
+                },
+                {
+                    text: 'View Feedback',
+                    can: {
+                        action: 'create',
+                        subject: this.getSampleLesson(row),
+                    },
+                    href: `/courses/${row.lesson.course.id}/sections/${this.section.id}/reports/${
+                        row.date.toISOString?.() ?? row.date
+                    }`,
                     if: dayjs().tz().isAfter(row.date),
                 },
                 {

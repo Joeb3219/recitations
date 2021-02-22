@@ -1,0 +1,35 @@
+<div *ngIf="loading" class="d-flex justify-content-center" style="margin: 8px">
+    <div class="spinner-border text-primary" role="status" style="margin-right: 8px"></div>
+    <span>Loading Data...</span>
+</div>
+
+<ng-container *ngIf="!loading && reports">
+    {{ reports.length }} {{ reports.length | i18nPlural: { '=1': 'student', other: 'students' } }} completed the quiz so
+    far.
+
+    <div *ngFor="let bucket of responses">
+        <h4>{{ bucket.element.config.question }}</h4>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Response</th>
+                    <th>Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let response of bucket.responses">
+                    <td>{{ response.response }}</td>
+                    <td>
+                        {{ response.count }}
+                        <span *ngIf="reports.length > 0 && bucket.element.elementId === 'multiple_choice'"
+                            >( {{ response.count / reports.length | percent }} )</span
+                        >
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <hr />
+    </div>
+</ng-container>

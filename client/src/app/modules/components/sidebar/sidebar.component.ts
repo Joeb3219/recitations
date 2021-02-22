@@ -1,6 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Course, CoverageRequest, LearningGoalCategory, Problem, Quiz, Role, Section } from '@dynrec/common';
+import {
+    Course,
+    CoverageRequest,
+    GradebookOverride,
+    LearningGoalCategory,
+    Problem,
+    Quiz,
+    Role,
+    Section,
+} from '@dynrec/common';
 import { CourseService } from '@services/course.service';
 import { UserService } from '@services/user.service';
 import { AbilitiesCanDirectivePayload } from '../../../directives/abilities.directive';
@@ -89,9 +98,29 @@ export class SidebarComponent implements OnInit {
                     can: { action: 'view', subject: CoverageRequest, existsOnCourse: course },
                 },
                 {
+                    slug: 'coverage-requests/monitor',
+                    name: 'Coverage Monitor',
+                    can: { action: 'use', subject: 'coverage-request-monitor', existsOnCourse: course },
+                },
+                {
+                    slug: 'gradebook-overrides',
+                    name: 'Gradebook Overrides',
+                    can: { action: 'create', subject: GradebookOverride, existsOnCourse: course },
+                },
+                {
                     slug: 'settings',
                     name: 'Settings',
                     can: { action: 'update', subject: Course, existsOnCourse: course },
+                },
+                {
+                    slug: 'my-gradebook',
+                    name: 'Gradebook',
+                    can: { action: 'view', subject: 'gradebook', existsOnCourse: course },
+                },
+                {
+                    slug: 'reports',
+                    name: 'Reports',
+                    can: { action: 'view', subject: 'reports', existsOnCourse: course },
                 },
                 {
                     slug: 'roles',

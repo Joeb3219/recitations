@@ -93,7 +93,12 @@ export class ConfigurationsComponent implements OnInit {
         }
 
         if (!(name in this.course.settings)) {
-            return;
+            if (!(name in DefaultCourseSettings)) {
+                return;
+            }
+
+            // Copy over the default
+            this.course.settings[name as CourseSettingKey] = DefaultCourseSettings[name as CourseSettingKey];
         }
 
         this.course.settings[name as CourseSettingKey].value = value;

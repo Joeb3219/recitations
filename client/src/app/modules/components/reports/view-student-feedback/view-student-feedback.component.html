@@ -1,0 +1,29 @@
+<div *ngIf="loading" class="d-flex justify-content-center" style="margin: 8px">
+    <div class="spinner-border text-primary" role="status" style="margin-right: 8px"></div>
+    <span>Loading Data...</span>
+</div>
+<ng-container *ngIf="!loading">
+    <mat-accordion multi>
+        <mat-expansion-panel *ngFor="let bucket of quizBuckets">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    {{ bucket.element.config.question }}
+                </mat-panel-title>
+                <mat-panel-description> {{ bucket.responses.length }} responses. </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Response</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let response of bucket.responses">
+                        <td>{{ response ? response : 'No response found' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </mat-expansion-panel>
+    </mat-accordion>
+</ng-container>

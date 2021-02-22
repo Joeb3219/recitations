@@ -88,10 +88,16 @@ export class MeetingTimeEditComponent implements OnInit {
                 label: 'Frequency',
             },
             {
-                type: 'text',
-                name: 'meetingLink',
-                value: this.meetingTime?.meetingLink,
-                label: 'Meeting Link',
+              type: 'text',
+              name: 'meetingLink',
+              value: this.meetingTime?.meetingLink,
+              label: 'Meeting Link',
+            },
+            {
+                type: 'checkbox',
+                name: 'asynchronous',
+                value: this.meetingTime?.asynchronous,
+                label: 'Asynchronous',
             },
         ];
     }

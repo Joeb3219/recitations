@@ -8,7 +8,11 @@ import { MeetingManager } from './datasource/meeting.manager';
 @Controller
 export class MeetingController {
     @GetRequest('/course/:courseID/meetings')
-    async getMeetings({ params, currentUser }: HttpArgs<any, { courseID: string }>): Promise<Meeting<MeetingType>[]> {
+    async getMeetings({
+        params,
+        currentUser,
+        ability,
+    }: HttpArgs<any, { courseID: string }>): Promise<Meeting<MeetingType>[]> {
         const course = await Course.findOne({ id: params.courseID }, { relations: ['sections'] });
 
         if (!course) {
@@ -16,7 +20,7 @@ export class MeetingController {
         }
 
         const meetings = await MeetingManager.getMeetings(course);
-        return meetings.filter(meeting => meeting.leader?.id === currentUser.id);
+        return meetings.filter(meeting => ability.can('view', meeting.meetingTime));
     }
 
     @GetRequest('/section/:sectionID/meetings')

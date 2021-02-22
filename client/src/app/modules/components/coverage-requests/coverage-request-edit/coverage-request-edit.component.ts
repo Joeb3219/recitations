@@ -84,10 +84,7 @@ export class CoverageRequestEditComponent implements OnInit {
     }
 
     getMeetingLabel(meeting: Meeting): string {
-        const typeString = _.startCase(meeting.meetingType);
-        const date = dayjs(meeting.date).format('MMM DD, YYYY HH:mm');
-        const leader = (meeting.leader ?? meeting.meetingTime.leader)?.getFullName();
-        return `${date} [${typeString}${leader ? `, led by ${leader}` : ''}]`;
+        return meeting.toString();
     }
 
     handleClose(): void {

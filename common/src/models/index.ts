@@ -1,6 +1,8 @@
 export * from './course';
 export * from './coverageRequest';
 export * from './forms/form';
+export * from './gradebookOverride';
+export * from './gradebookOverrideData';
 export * from './learningGoal';
 export * from './learningGoalCategory';
 export * from './lesson';
@@ -19,6 +21,8 @@ export * from './todo';
 export * from './user';
 import { Course } from './course';
 import { CoverageRequest } from './coverageRequest';
+import { GradebookOverride } from './gradebookOverride';
+import { GradebookDateRangeOverride, GradebookMeetingOverride, GradebookUserOverride } from './gradebookOverrideData';
 import { LearningGoal } from './learningGoal';
 import { LearningGoalCategory } from './learningGoalCategory';
 import { Lesson } from './lesson';
@@ -53,4 +57,8 @@ export const AllEntities = [
     Lesson,
     MeetingReport,
     StudentMeetingReport,
+    GradebookDateRangeOverride,
+    GradebookUserOverride,
+    GradebookMeetingOverride,
+    GradebookOverride,
 ];

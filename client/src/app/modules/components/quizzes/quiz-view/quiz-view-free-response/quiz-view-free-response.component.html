@@ -8,7 +8,7 @@
     </div>
 </div>
 <div class="row">
-    <div class="col options" *ngIf="response && response.response">
+    <div class="col options" *ngIf="response && response.response !== undefined">
         <textarea [(ngModel)]="response.response" rows="8" (ngModelChange)="handleResponseUpdated()"></textarea>
     </div>
 </div>

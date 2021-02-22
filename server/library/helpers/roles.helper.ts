@@ -33,7 +33,7 @@ export class RolesHelper {
     static async upsertCourseRoles(course: Course) {
         const allAbilities = AbilityManager.getAllAbilities(undefined);
 
-        const ruleTags: RuleTag[] = ['student', 'professor', 'ta', 'course_admin'];
+        const ruleTags: RuleTag[] = ['student', 'professor', 'ta', 'course_admin', 'ta_manager'];
         await Promise.all(
             ruleTags.map(async tag => {
                 const data: Omit<RoleInterface, 'id'> = {

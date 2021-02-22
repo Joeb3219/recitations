@@ -13,6 +13,7 @@ import { ViewSectionsComponent } from '@pages/sections/view-sections/view-sectio
 import { ViewUserSettingsComponent } from '@pages/user/view-user-settings/view-user-settings.component';
 import { ListCoverageRequestsComponent } from './modules/pages/coverage-requests/list-coverage-requests/list-coverage-requests.component';
 import { MonitorCoverageRequestsComponent } from './modules/pages/coverage-requests/monitor-coverge-requests/monitor-coverage-requests/monitor-coverage-requests.component';
+import { ListEmailsComponent } from './modules/pages/email/list-emails/list-emails.component';
 import { ListGradebookOverridesComponent } from './modules/pages/gradebook-overrides/list-gradebook-overrides/list-gradebook-overrides.component';
 import { ViewGradebookComponent } from './modules/pages/gradebook/view-gradebook/view-gradebook.component';
 import { ListLearningGoalsComponent } from './modules/pages/learning-goals/list-learning-goals/list-learning-goals.component';
@@ -73,6 +74,10 @@ const routes: Routes = [
     {
         path: 'courses/:courseID/sections/:sectionID/reports/:date',
         component: ViewSectionReportComponent,
+    },
+    {
+        path: 'courses/:courseID/emails',
+        component: ListEmailsComponent,
     },
     {
         path: 'courses/:courseID/my-gradebook',

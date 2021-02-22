@@ -1,5 +1,6 @@
 export * from './course';
 export * from './coverageRequest';
+export * from './email';
 export * from './forms/form';
 export * from './gradebookOverride';
 export * from './gradebookOverrideData';
@@ -21,6 +22,7 @@ export * from './todo';
 export * from './user';
 import { Course } from './course';
 import { CoverageRequest } from './coverageRequest';
+import { Email } from './email';
 import { GradebookOverride } from './gradebookOverride';
 import { GradebookDateRangeOverride, GradebookMeetingOverride, GradebookUserOverride } from './gradebookOverrideData';
 import { LearningGoal } from './learningGoal';
@@ -61,4 +63,5 @@ export const AllEntities = [
     GradebookUserOverride,
     GradebookMeetingOverride,
     GradebookOverride,
+    Email,
 ];

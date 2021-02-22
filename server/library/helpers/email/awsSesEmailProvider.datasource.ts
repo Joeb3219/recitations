@@ -1,8 +1,9 @@
-import { User } from '@dynrec/common';
+import { EmailProps, EmailProviderType } from '@dynrec/common';
 import * as aws from 'aws-sdk';
 import * as EmailValidator from 'email-validator';
 import _ from 'lodash';
-import { EmailProps, EmailProvider, EmailProviderType } from './emailProvider.definition';
+import { UserInterface } from '../../../../common/dist/interfaces/user.interface';
+import { EmailProvider } from './emailProvider.definition';
 
 aws.config.update({ region: 'us-east-1' });
 
@@ -59,7 +60,7 @@ export class AwsSESEmailProvider extends EmailProvider {
             a => !!a
         );
 
-        const emailFormatter = (user: User) => `"${user.getFullName()}" <${user.email}>`;
+        const emailFormatter = (user: UserInterface) => `"${user.firstName} ${user.lastName}" <${user.email}>`;
 
         await ses
             .sendEmail({

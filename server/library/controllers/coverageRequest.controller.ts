@@ -1,4 +1,4 @@
-import { CoverageRequest, Section } from '@dynrec/common';
+import { CoverageRequest, EmailProps, EmailRecipient, Section } from '@dynrec/common';
 import Boom from '@hapi/boom';
 import { plainToClass } from 'class-transformer';
 import dayjs from 'dayjs';
@@ -6,7 +6,6 @@ import _ from 'lodash';
 import { Controller, GetRequest, Resource } from '../decorators/index';
 import { PostRequest } from '../decorators/request.decorator';
 import { EmailHelper } from '../helpers/email/email.helper';
-import { EmailProps, EmailRecipient } from '../helpers/email/emailProvider.definition';
 import { RolesHelper } from '../helpers/roles.helper';
 import { HttpArgs } from '../helpers/route.helper';
 
@@ -103,7 +102,7 @@ export class CoverageRequestController {
             },
         };
 
-        return EmailHelper.sendEmail('aws-ses', email);
+        return EmailHelper.sendEmail(request.course, 'aws-ses', email);
     }
 
     async coverageFoundEmail(request: CoverageRequest) {
@@ -140,7 +139,7 @@ export class CoverageRequestController {
             },
         };
 
-        return EmailHelper.sendEmail('aws-ses', email);
+        return EmailHelper.sendEmail(request.course, 'aws-ses', email);
     }
 
     @GetRequest('/course/:courseID/coveragerequest/:requestID/cover')

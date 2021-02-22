@@ -1,5 +1,5 @@
+import { Course, Email, EmailProps, EmailProviderType, User } from '@dynrec/common';
 import { AwsSESEmailProvider } from './awsSesEmailProvider.datasource';
-import { EmailProps, EmailProviderType } from './emailProvider.definition';
 
 const ALL_PROVIDERS = [AwsSESEmailProvider];
 
@@ -13,9 +13,22 @@ export class EmailHelper {
         return new Provider();
     }
 
-    public static async sendEmail(type: EmailProviderType, email: EmailProps) {
+    public static async sendEmail(course: Course, type: EmailProviderType, email: EmailProps, sender?: User) {
         const provider = this.getProvider(type);
 
-        return provider.sendEmail(email);
+        const emailResult = new Email({ course, creator: sender, email, provider: type });
+
+        try {
+            await provider.sendEmail(email);
+
+            emailResult.status = 'success';
+        } catch (err) {
+            // eslint-disable-next-line no-console
+            console.error(err);
+            emailResult.status = 'failed';
+            emailResult.failureReason = err.toString();
+        }
+
+        return emailResult.save();
     }
 }

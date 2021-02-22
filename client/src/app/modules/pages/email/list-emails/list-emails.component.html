@@ -1,0 +1,31 @@
+<div class="page">
+    <ng-container *ngIf="!course">
+        <h4>Not Found</h4>
+    </ng-container>
+    <ng-container *ngIf="course">
+        <div class="container-margin">
+            <div class="row">
+                <div style="float: left; text-align: left" class="col">
+                    <h4>{{ course.name }} Emails</h4>
+                </div>
+                <div style="float: right; text-align: right" class="col">
+                    <button type="button" class="btn btn-primary" (click)="handleOpenNewEmailModal()">
+                        Send Section Email
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-margin">
+            <app-datatable [dataFunction]="fetchEmails" [columns]="columns" [reload]="refreshData"></app-datatable>
+        </div>
+    </ng-container>
+</div>
+
+<app-send-section-email
+    *ngIf="isEditEmailModalOpen"
+    [isVisible]="isEditEmailModalOpen"
+    [course]="course"
+    (onClose)="handleCloseEditEmailModal()"
+>
+</app-send-section-email>

@@ -278,6 +278,28 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
         ],
     },
     {
+        id: '7d82aeed-c485-4ec7-9aa0-62fbb08ea91c',
+        name: 'View course emails',
+        tags: ['course_admin', 'course_creator', 'super_admin', 'ta_manager'],
+        actions: () => [
+            {
+                action: 'view',
+                subject: 'email',
+            },
+        ],
+    },
+    {
+        id: '38d731dd-3e23-42d4-89dd-a7cb179d147f',
+        name: 'Send emails to sections',
+        tags: ['course_admin', 'course_creator', 'super_admin', 'ta_manager'],
+        actions: () => [
+            {
+                action: 'use',
+                subject: 'email',
+            },
+        ],
+    },
+    {
         id: '59713b50-9be9-4499-a19a-10a6ec2962b1',
         name: 'Update assigned sections in course',
         tags: ['course_admin', 'course_creator', 'super_admin'],

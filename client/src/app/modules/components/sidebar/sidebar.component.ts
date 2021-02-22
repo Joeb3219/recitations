@@ -103,6 +103,11 @@ export class SidebarComponent implements OnInit {
                     can: { action: 'use', subject: 'coverage-request-monitor', existsOnCourse: course },
                 },
                 {
+                    slug: 'emails',
+                    name: 'Email Center',
+                    can: { action: 'use', subject: 'email', existsOnCourse: course },
+                },
+                {
                     slug: 'gradebook-overrides',
                     name: 'Gradebook Overrides',
                     can: { action: 'create', subject: GradebookOverride, existsOnCourse: course },

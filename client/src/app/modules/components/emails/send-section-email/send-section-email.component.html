@@ -1,11 +1,10 @@
 <app-form-modal
     *ngIf="isVisible"
-    [submitText]="request && request.id ? 'Save Coverage Request' : 'Create Coverage Request'"
+    [submitText]="'Send Section Email'"
     [showModal]="isVisible"
     [form]="form"
-    [loading]="loading"
     [modalSize]="'xl'"
-    [title]="request && request.id ? 'Edit Coverage Request' : 'New Coverage Request'"
+    [title]="'Send Section Email'"
     (onSubmit)="formSubmitted($event)"
     (onClose)="handleClose()"
     [forceClose]="forceClose"

@@ -1,6 +1,7 @@
 export * from './course.interface';
 export * from './courseSetting.interface';
 export * from './coverageRequest.interface';
+export * from './email.interface';
 export * from './gradebookOverride.interface';
 export * from './http/standardResponse.interface';
 export * from './learningGoal.interface';

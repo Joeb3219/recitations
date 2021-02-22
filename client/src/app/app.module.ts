@@ -120,6 +120,8 @@ import { GradebookOverrideEditMeetingTimeComponent } from './modules/components/
 import { GradebookOverrideOverridesFormfieldComponent } from './modules/components/gradebook-override/gradebook-override-overrides-formfield/gradebook-override-overrides-formfield.component';
 import { ViewSectionReportComponent } from './modules/pages/reports/view-section-report/view-section-report.component';
 import { ReportsSectionViewComponent } from './modules/components/reports/reports-section-view/reports-section-view.component';
+import { ListEmailsComponent } from './modules/pages/email/list-emails/list-emails.component';
+import { SendSectionEmailComponent } from './modules/components/emails/send-section-email/send-section-email.component';
 
 export let GlobalActivatedRoute: ActivatedRoute;
 
@@ -219,6 +221,8 @@ export let GlobalActivatedRoute: ActivatedRoute;
         GradebookOverrideOverridesFormfieldComponent,
         ViewSectionReportComponent,
         ReportsSectionViewComponent,
+        ListEmailsComponent,
+        SendSectionEmailComponent,
     ],
     imports: [
         HttpClientModule,

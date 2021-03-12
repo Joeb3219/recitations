@@ -115,7 +115,7 @@ export const ABILITY_GENERATORS: AbilityGenerator[] = [
     {
         id: '929a5259-912d-43da-9bc0-8a4dce6fa825',
         name: 'View all course sections',
-        tags: ['professor', 'course_admin', 'course_creator', 'super_admin'],
+        tags: ['professor', 'ta_manager', 'course_admin', 'course_creator', 'super_admin'],
         actions: (user, course) => [
             {
                 action: 'view',

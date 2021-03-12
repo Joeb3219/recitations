@@ -154,8 +154,9 @@ class AppWrapper {
             logging: false,
             entities: AllEntities,
             subscribers: AllListeners,
+            cache: true,
             extra: {
-                connectionLimit: 20,
+                connectionLimit: 80,
             },
         });
     }

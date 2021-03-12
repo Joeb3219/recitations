@@ -20,7 +20,10 @@ export class GradebookController {
         params,
         ability,
     }: HttpArgs<never, { courseID: string }>): Promise<StudentGradebookPayload[]> {
-        const course = await Course.findOne({ id: params.courseID }, { relations: ['sections'] });
+        const course = await Course.findOne(
+            { id: params.courseID },
+            { relations: ['sections'], cache: MeetingManager.CACHE_DURATION }
+        );
 
         if (!course) {
             throw Boom.notFound('No course found');
@@ -41,9 +44,12 @@ export class GradebookController {
         const meetings = await MeetingManager.getMeetings(course);
         const userMeetings = meetings.filter(meeting => userMeetingTimeIds.includes(meeting.meetingTime.id));
 
-        const studentReports = await StudentMeetingReport.find({ course, creator: currentUser });
-        const attendanceReports = await MeetingReport.find({ course });
-        const allOverrides = await GradebookOverride.find({ course });
+        const studentReports = await StudentMeetingReport.find({
+            where: { course, creator: currentUser },
+            cache: MeetingManager.CACHE_DURATION,
+        });
+        const attendanceReports = await MeetingReport.find({ where: { course }, cache: MeetingManager.CACHE_DURATION });
+        const allOverrides = await GradebookOverride.find({ where: { course }, cache: MeetingManager.CACHE_DURATION });
 
         // and now we can generate the gradebook entries
         return userMeetings.map(meeting => {

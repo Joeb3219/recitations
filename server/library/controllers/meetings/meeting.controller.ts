@@ -13,7 +13,10 @@ export class MeetingController {
         currentUser,
         ability,
     }: HttpArgs<any, { courseID: string }>): Promise<Meeting<MeetingType>[]> {
-        const course = await Course.findOne({ id: params.courseID }, { relations: ['sections'] });
+        const course = await Course.findOne(
+            { id: params.courseID },
+            { relations: ['sections'], cache: MeetingManager.CACHE_DURATION }
+        );
 
         if (!course) {
             throw Boom.notFound('No course found');
@@ -27,13 +30,19 @@ export class MeetingController {
     async getSectionMeetings({
         params,
     }: HttpArgs<never, { sectionID: string }>): Promise<MeetingWithLesson<MeetingType>[]> {
-        const section = await Section.findOne({ id: params.sectionID });
+        const section = await Section.findOne({
+            where: { id: params.sectionID },
+            cache: MeetingManager.CACHE_DURATION,
+        });
 
         if (!section) {
             throw Boom.notFound('No section found');
         }
 
-        const course = await Course.findOne({ id: section?.course.id }, { relations: ['sections'] });
+        const course = await Course.findOne(
+            { id: section?.course.id },
+            { relations: ['sections'], cache: MeetingManager.CACHE_DURATION }
+        );
 
         if (!course) {
             throw Boom.notFound('No course found');
@@ -47,7 +56,10 @@ export class MeetingController {
         params,
         currentUser,
     }: HttpArgs<never, { courseID: string; date: string }>): Promise<MeetingWithLesson<MeetingType>[]> {
-        const course = await Course.findOne({ id: params.courseID }, { relations: ['sections'] });
+        const course = await Course.findOne(
+            { id: params.courseID },
+            { relations: ['sections'], cache: MeetingManager.CACHE_DURATION }
+        );
 
         if (!course) {
             throw Boom.notFound('No course found');

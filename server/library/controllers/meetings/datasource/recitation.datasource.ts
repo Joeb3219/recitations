@@ -20,7 +20,7 @@ export class RecitationMeetingDataSource extends MeetingDataSource<MeetingType.R
         config: MeetingDataSourceConfig
     ): Promise<Meeting<MeetingType.RECITATION>[]> {
         const meetingTimes = section.meetingTimes?.filter(time => time.type === MeetingType.RECITATION) ?? [];
-        const coverageRequests = await CoverageRequest.find({ course: { id: section.course.id } });
+        const coverageRequests = await CoverageRequest.find({ where: { course: { id: section.course.id } } });
 
         return _.flatten(
             config.dates.map(date => {

@@ -9,6 +9,8 @@ export interface MeetingDataSourceConfig {
 }
 
 export class MeetingManager {
+    static CACHE_DURATION: number = 60000;
+
     private static async getDateRange(course: Course): Promise<Date[]> {
         // TODO: restructure the types of the settings so we don't have to cast like this.
         const semesterStartDate = new Date(course.getSetting('semester_start_date').value ?? '');
@@ -69,8 +71,9 @@ export class MeetingManager {
         course: Course,
         meetingFilter?: (meeting: Meeting) => boolean
     ): Promise<MeetingWithLesson<MeetingType>[]> {
-        const lessons = await Lesson.find({ course });
+        const lessons = await Lesson.find({ where: { course } });
         const courseMeetings = await MeetingManager.getMeetings(course);
+
         return courseMeetings
             .filter(meeting => (meetingFilter ? meetingFilter(meeting) : true))
             .map(

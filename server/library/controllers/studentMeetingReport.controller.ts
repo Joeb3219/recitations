@@ -41,7 +41,10 @@ export class StudentMeetingReportController {
         const { code } = args.body;
         const data = dataDict(args);
 
-        const course = await Course.findOne({ id: data.course?.id }, { relations: ['sections'] });
+        const course = await Course.findOne(
+            { id: data.course?.id },
+            { relations: ['sections'], cache: MeetingManager.CACHE_DURATION }
+        );
 
         if (!data.course?.id || !course || !data.meetingTime || !data.date) {
             throw Boom.badRequest('Invalid quiz data.');
@@ -81,7 +84,10 @@ export class StudentMeetingReportController {
         params,
         currentUser,
     }: HttpArgs<{ code: string }, { courseID: string; date: string; code: string }>): Promise<StudentMeetingReport> {
-        const course = await Course.findOne({ id: params.courseID }, { relations: ['sections'] });
+        const course = await Course.findOne(
+            { id: params.courseID },
+            { relations: ['sections'], cache: MeetingManager.CACHE_DURATION }
+        );
 
         if (!course) {
             throw Boom.notFound('No course found');
@@ -91,6 +97,7 @@ export class StudentMeetingReportController {
             .leftJoinAndSelect('s.meetingTimes', 'meetingTimes')
             .leftJoinAndSelect('s.students', 'student')
             .andWhere(new Brackets(qb => qb.where('student.id = :id', { id: currentUser.id })))
+            .cache(MeetingManager.CACHE_DURATION)
             .getOne();
 
         const assignedMeetingTime = assignedSection?.meetingTimes?.find(time => time.type === MeetingType.RECITATION);
@@ -163,7 +170,10 @@ export class StudentMeetingReportController {
     }: HttpArgs<{ code: string }, { courseID: string; sectionID: string; date: string }>): Promise<
         StudentMeetingReport[]
     > {
-        const course = await Course.findOne({ id: params.courseID }, { relations: ['sections'] });
+        const course = await Course.findOne(
+            { id: params.courseID },
+            { relations: ['sections'], cache: MeetingManager.CACHE_DURATION }
+        );
 
         if (!course || !ability.can('view', course)) {
             throw Boom.notFound('No course found');

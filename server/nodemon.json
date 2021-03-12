@@ -1,5 +1,5 @@
 {
     "watch": ["library/app.ts", "library/*", "../common/*"],
     "ext": "ts",
-    "exec": "ts-node -r tsconfig-paths/register ./library/app.ts --project tsconfig.json"
+    "exec": "ts-node -r tsconfig-paths/register ./library/app.ts --max_old_space_size=4096 --project tsconfig.json"
 }

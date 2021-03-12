@@ -9,10 +9,13 @@ import { ALL_TODO_DATASOURCES } from './datasource/index';
 export class TodoController {
     @GetRequest('/todos')
     async getTodos({ params, ability, currentUser }: HttpArgs): Promise<Todo[]> {
-        const courses = await Course.find({ relations: ['sections'] });
+        const courses = await Course.find({ relations: ['sections'], cache: MeetingManager.CACHE_DURATION });
         const userCourses = courses.filter(course => ability.can('view', course));
 
-        const coverageRequests = await CoverageRequest.find({ coveredBy: currentUser });
+        const coverageRequests = await CoverageRequest.find({
+            where: { coveredBy: currentUser },
+            cache: MeetingManager.CACHE_DURATION,
+        });
 
         const userSections = _.flatten(
             userCourses.map(course =>

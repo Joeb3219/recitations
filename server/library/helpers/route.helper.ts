@@ -9,6 +9,7 @@ import { BAD_REQUEST } from 'http-status-codes';
 import { get, isEqual, pickBy, sortBy } from 'lodash';
 import 'reflect-metadata';
 import { BaseEntity, DeleteResult, getRepository } from 'typeorm';
+import uuid from 'uuid';
 import { ResourceAction, ResourceArgs, SearchableData, SortableData } from '../decorators/controller.decorator';
 import { Express } from '../express';
 import { HttpRequest, HttpResponse } from '../express_custom';
@@ -106,6 +107,8 @@ function httpMiddleware(
     const useSentry = isSentryEnabled();
     console.log(`Generating ${method} ${route}`);
     return async (req: HttpRequest, res: HttpResponse) => {
+        const txnId = uuid.v4();
+        const startTime = Date.now();
         const transaction = useSentry
             ? Sentry?.startTransaction({
                   op: `${method} ${route}`,
@@ -122,6 +125,8 @@ function httpMiddleware(
             });
         }
 
+        console.log(`HTTP Txn ${txnId}: ${method} ${route}`);
+
         try {
             const result = await target({
                 body: req.body,
@@ -137,12 +142,7 @@ function httpMiddleware(
             // and now we paginate the data
             const paginatedResult = paginateResultData(sortedResult, req);
 
-            console.log({
-                method,
-                route,
-                // result,
-                statusCode: 200,
-            });
+            console.log(`END Txn ${txnId} (${method} ${route}) successfully after ${Date.now() - startTime}ms`);
 
             return res.status(200).json({
                 data: paginatedResult,
@@ -155,7 +155,8 @@ function httpMiddleware(
             if (useSentry) {
                 Sentry.captureException(err);
             }
-            console.log({ method, route, err });
+            console.log(`END Txn ${txnId} (${method} ${route}) in failure after ${Date.now() - startTime}ms`, err);
+
             if (Boom.isBoom(err)) {
                 return res.status(err.output.statusCode).json({
                     message: get(err, 'output.payload.message') || 'An error occurred.',

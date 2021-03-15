@@ -1,4 +1,4 @@
-import { CoverageRequest, Meeting, MeetingTime, MeetingType, Section } from '@dynrec/common';
+import { Meeting, MeetingTime, MeetingType, Section } from '@dynrec/common';
 import dayjs from 'dayjs';
 import _ from 'lodash';
 import { MeetingDataSource } from './meeting.datasource';
@@ -20,7 +20,7 @@ export class RecitationMeetingDataSource extends MeetingDataSource<MeetingType.R
         config: MeetingDataSourceConfig
     ): Promise<Meeting<MeetingType.RECITATION>[]> {
         const meetingTimes = section.meetingTimes?.filter(time => time.type === MeetingType.RECITATION) ?? [];
-        const coverageRequests = await CoverageRequest.find({ where: { course: { id: section.course.id } } });
+        const { coverageRequests } = config;
 
         return _.flatten(
             config.dates.map(date => {

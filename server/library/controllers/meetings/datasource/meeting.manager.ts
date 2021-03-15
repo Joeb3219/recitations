@@ -1,4 +1,13 @@
-import { Course, dateRange, Lesson, Meeting, MeetingTime, MeetingType, MeetingWithLesson } from '@dynrec/common';
+import {
+    Course,
+    CoverageRequest,
+    dateRange,
+    Lesson,
+    Meeting,
+    MeetingTime,
+    MeetingType,
+    MeetingWithLesson,
+} from '@dynrec/common';
 import dayjs from 'dayjs';
 import _ from 'lodash';
 import { AllMeetingSources } from './index';
@@ -6,6 +15,7 @@ import { AllMeetingSources } from './index';
 export interface MeetingDataSourceConfig {
     course: Course;
     dates: Date[];
+    coverageRequests: CoverageRequest[];
 }
 
 export class MeetingManager {
@@ -27,6 +37,7 @@ export class MeetingManager {
     }
 
     static async getMeetings(course: Course): Promise<Meeting<MeetingType>[]> {
+        const coverageRequests = await CoverageRequest.find({ course });
         const meetings = await Promise.all(
             AllMeetingSources.map(async MeetingSourceClass => {
                 const sourceInstance = new MeetingSourceClass();
@@ -35,6 +46,7 @@ export class MeetingManager {
                 return sourceInstance.getPotentialMeetingDates({
                     course,
                     dates,
+                    coverageRequests,
                 });
             })
         );
@@ -71,7 +83,18 @@ export class MeetingManager {
         course: Course,
         meetingFilter?: (meeting: Meeting) => boolean
     ): Promise<MeetingWithLesson<MeetingType>[]> {
-        const lessons = await Lesson.find({ where: { course } });
+        // We now use this query builder as an optimization for the crazy fetch times we started seeing.
+        // We need to move away from eager, and LEsson is the first symptom.
+        const lessons = await Lesson.createQueryBuilder('lesson')
+            .where({ course })
+            .leftJoinAndSelect('lesson.lessonPlan', 'lessonPlan')
+            .leftJoinAndSelect('lessonPlan.steps', 'steps')
+            .leftJoinAndSelect('steps.problem', 'problem')
+            .leftJoinAndSelect('lesson.course', 'course')
+            .leftJoinAndSelect('lesson.quiz', 'quiz')
+            .leftJoinAndSelect('lesson.meetingTime', 'meetingTime')
+            .getMany();
+
         const courseMeetings = await MeetingManager.getMeetings(course);
 
         return courseMeetings

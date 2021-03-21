@@ -13,6 +13,7 @@ import { Any, getConnection } from 'typeorm';
 import { Controller, GetRequest, Searchable, Sortable } from '../../decorators';
 import { PutRequest } from '../../decorators/request.decorator';
 import { HttpArgs } from '../../helpers/route.helper';
+import { MeetingManager } from '../meetings/datasource/meeting.manager';
 import { ALL_ROSTER_TYPES } from './datasource/index';
 
 @Controller
@@ -289,7 +290,7 @@ export class RosterController {
 
     @GetRequest('/course/:courseId/sections-roster')
     async getSectionsRosterList({ params, currentUser, ability }: HttpArgs<never, unknown>): Promise<Section[]> {
-        const course = await Course.findOne({ id: params.courseId });
+        const course = await Course.findOne({ where: { id: params.courseId }, cache: MeetingManager.CACHE_DURATION });
 
         if (!course) {
             throw Boom.notFound('No course found');
@@ -302,6 +303,7 @@ export class RosterController {
         const sections = await Section.find({
             where: { course },
             relations: ['students'],
+            cache: MeetingManager.CACHE_DURATION,
         });
         return sections.filter(section => ability.can('view', section));
     }

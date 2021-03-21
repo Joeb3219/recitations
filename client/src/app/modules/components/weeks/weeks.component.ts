@@ -36,7 +36,9 @@ export class WeeksComponent implements OnInit {
         const startDate = dayjs
             .tz(this.course.getSetting('semester_start_date').value ?? '', 'America/New_York')
             .startOf('week')
-            .startOf('day');
+            .startOf('day')
+            .add(1, 'day');
+
         const endDate = dayjs
             .tz(this.course.getSetting('semester_end_date').value ?? '', 'America/New_York')
             .endOf('week')

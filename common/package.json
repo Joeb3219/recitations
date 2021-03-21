@@ -21,7 +21,7 @@
         "dayjs": "^1.9.6",
         "eslint-plugin-extra-rules": "^0.0.0-development",
         "lodash": "^4.17.20",
-        "pg": "^7.12.1",
+        "pg": "^8.5.1",
         "reflect-metadata": "^0.1.13",
         "typeorm": "^0.2.20",
         "typescript": "4.1.3",

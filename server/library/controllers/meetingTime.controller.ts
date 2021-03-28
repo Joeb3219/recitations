@@ -15,6 +15,7 @@ import { HttpArgs } from '../helpers/route.helper';
                 type: body.type,
                 frequency: body.frequency,
                 leader: body.leader,
+                meetingLink: body.meetingLink,
                 asynchronous: body.asynchronous,
             };
         },

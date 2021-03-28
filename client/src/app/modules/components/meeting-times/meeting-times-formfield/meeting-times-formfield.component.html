@@ -13,7 +13,7 @@
       <th>Weekday</th>
       <th>Frequency</th>
       <th>Leader</th>
-      <th></th>
+      <th *ngIf="meetable.meetingTimes!=null && meetable.meetingTimes.length>0">Link</th>
     </tr>
   </thead>
   <tbody>
@@ -27,8 +27,9 @@
         <app-user-badge [user]="meeting.leader">
         </app-user-badge>
       </td>
+      <td *ngIf="meeting.meetingLink!=null && meeting.meetingLink!=''"><a [href]="meeting.meetingLink" target="_blank">{{ meeting.meetingLink }}</a></td>
       <td>
-        <div ngbDropdown>
+        <div class="float-right" ngbDropdown>
           <fa-icon ngbDropdownToggle [icon]="icons.modify"></fa-icon>
           <div class="dropdown-menu" ngbDropdownMenu>
             <span ngbDropdownItem (click)="handleEditMeetingTime(meeting)">Edit</span>

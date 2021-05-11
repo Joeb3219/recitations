@@ -1,4 +1,5 @@
 import { AllEntities, Course, CoverageRequest, Role, User } from '@dynrec/common';
+import connectTimeout from 'connect-timeout';
 import cors from 'cors';
 import * as dotenv from 'dotenv';
 import express, { default as Express } from 'express';
@@ -180,6 +181,7 @@ class AppWrapper {
                 methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
             })
         );
+        this.app.use(connectTimeout('150s'));
         this.app.use(express.json({ limit: '50mb' }));
         this.app.use(express.urlencoded({ extended: false, limit: '50mb', parameterLimit: 50000 }));
         this.app.use(fileUpload({ useTempFiles: true, tempFileDir: '/tmp/' }));

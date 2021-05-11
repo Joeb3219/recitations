@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Course, CourseGradebookEntryPayload } from '@dynrec/common';
 import dayjs from 'dayjs';
 import _ from 'lodash';
+import { CourseGradebookEntryScorePayload } from '../../../../../../common/src/api/payloads/gradebook/courseGradebookEntry.payload';
 import { GradebookService } from '../../../services/gradebook.service';
 const weekOfYear = require('dayjs/plugin/weekOfYear');
 dayjs.extend(weekOfYear);
@@ -20,7 +21,6 @@ export class GradebookComponent {
     constructor(private readonly gradebookService: GradebookService) {}
 
     async handleDownloadGradebook() {
-        console.log;
         if (!this.course) {
             return;
         }
@@ -31,6 +31,11 @@ export class GradebookComponent {
         this.handleCSVExport(result.data);
     }
 
+    getWeekNumber(date: string | Date): number {
+        const converted = dayjs(date);
+        return (converted as any).week();
+    }
+
     handleCSVExport(payloads: CourseGradebookEntryPayload[]) {
         const csvStringWrap = (str: string) => {
             const escapedStr = `${str}`.replace(/"/g, '""');
@@ -38,7 +43,11 @@ export class GradebookComponent {
         };
 
         const allDates = _.uniq(
-            _.flatten(payloads.map(payload => payload.scores.map(score => dayjs(score.date).week())))
+            _.flatten(
+                payloads.map(payload =>
+                    payload.scores.map((score: CourseGradebookEntryScorePayload) => this.getWeekNumber(score.date))
+                )
+            )
         );
 
         const headers = ['Student', ...allDates.map(w => `Week ${w} 2021`)].map(name => csvStringWrap(name)).join(',');
@@ -47,7 +56,9 @@ export class GradebookComponent {
             const rowCells = [
                 csvStringWrap(payload.studentId),
                 ...allDates.map(weekNum => {
-                    const score = payload.scores.find(score => dayjs(score.date).week() === weekNum);
+                    const score = payload.scores.find(
+                        (score: CourseGradebookEntryScorePayload) => this.getWeekNumber(score.date) === weekNum
+                    );
 
                     if (!score) {
                         return -1;

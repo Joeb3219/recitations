@@ -300,11 +300,14 @@ export class RosterController {
             throw Boom.unauthorized('Unauthorized to fetch roster.');
         }
 
-        const sections = await Section.find({
-            where: { course },
-            relations: ['students'],
-            cache: MeetingManager.CACHE_DURATION,
-        });
+        const sections = await Section.createQueryBuilder('section')
+            .where({ course })
+            .leftJoinAndSelect('section.students', 'students')
+            .leftJoinAndSelect('section.ta', 'ta')
+            .leftJoinAndSelect('section.course', 'course')
+            .leftJoinAndSelect('section.instructor', 'instructor')
+            .leftJoinAndSelect('section.meetingTimes', 'meetingTimes')
+            .getMany();
         return sections.filter(section => ability.can('view', section));
     }
 

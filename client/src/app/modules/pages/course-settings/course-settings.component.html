@@ -20,7 +20,7 @@
             </mat-tab>
             <mat-tab label="{{ tabs[2] }}" [ngStyle]="{ display: activeTabIndex === 1 ? 'block' : 'none' }">
                 <div class="container-margin">
-                    <app-gradebook *ngIf="activeTabIndex === 1"></app-gradebook>
+                    <app-gradebook [course]="course" *ngIf="activeTabIndex === 1"></app-gradebook>
                 </div>
             </mat-tab>
             <mat-tab label="{{ tabs[3] }}" [ngStyle]="{ display: activeTabIndex === 2 ? 'block' : 'none' }">

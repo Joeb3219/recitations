@@ -1,1 +1,6 @@
-<p>gradebook works!</p>
+<button type="button" class="btn btn-primary" (click)="handleDownloadGradebook()">Download Gradebook</button>
+
+<div *ngIf="loading" class="d-flex justify-content-center" style="margin: 8px">
+    <div class="spinner-border text-primary" role="status" style="margin-right: 8px"></div>
+    <span>Retrieving Gradebook...</span>
+</div>

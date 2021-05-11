@@ -1,3 +1,4 @@
+export * from './payloads/gradebook/courseGradebookEntry.payload';
 export * from './payloads/gradebook/studentGradebook.payload';
 export * from './payloads/roster/courseRoster.payload';
 export * from './payloads/roster/rosterFormats.payload';

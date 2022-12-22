@@ -44,7 +44,7 @@
     "eslint-plugin-extra-rules": "^0.0.0-development",
     "hammerjs": "^2.0.8",
     "jquery": "^3.5.1",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.15",
     "ng2-file-upload": "^1.4.0",
     "ngx-quill": "^8.0.0",
